@@ -127,12 +127,18 @@
 		02E626701997168800565D62 /* KeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E6266F1997168800565D62 /* KeyChain.m */; };
 		02E6267219973A0700565D62 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E6267119973A0700565D62 /* Security.framework */; };
 		02E8436519B39FAD0044AC1D /* OsmNotesDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E8436419B39FAD0044AC1D /* OsmNotesDatabase.m */; };
+<<<<<<< HEAD
 		02ED19811BBF119C00A57CF4 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ED19801BBF119C00A57CF4 /* Launch Screen.storyboard */; };
+=======
+		02E8436F19B407C40044AC1D /* WebPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02E8436E19B407C40044AC1D /* WebPageView.xib */; };
+		02E8437C19B4DE510044AC1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 02E8437E19B4DE510044AC1D /* Localizable.strings */; };
+>>>>>>> 3e18952b... Added Kaart's styles
 		02EDCC081683EC2D007F9934 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02EDCC071683EC2D007F9934 /* CFNetwork.framework */; };
 		02F04AD21BC4D3B50044FD95 /* GpxConfigureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F04AD11BC4D3B50044FD95 /* GpxConfigureViewController.m */; };
 		02F373F916822C2C004614D4 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F373F816822C2C004614D4 /* UploadViewController.m */; };
 		02F8F4341696004B002A0820 /* NominatimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F8F4331696004B002A0820 /* NominatimViewController.m */; };
 		02FFCE0B16A7360B001A5B8A /* NSMutableArray+PartialSort.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+<<<<<<< HEAD
 <<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 		3E49F4B224DFA64800A347BB /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E49F4B124DFA64800A347BB /* RulerView.m */; };
 		64305F7223E7224E00232BB9 /* LocationURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 64305F7123E7224E00232BB9 /* LocationURLParser.m */; };
@@ -166,8 +172,11 @@
 		64E21EB822651F2D004605D7 /* XCTestCase+UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21EB722651F2D004605D7 /* XCTestCase+UserDefaults.swift */; };
 		64F59A50240915840093DCDB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F59A4F240915840093DCDB /* MainViewController.swift */; };
 =======
+=======
+		262A4909216CF34800E794E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 262A4908216CF34800E794E1 /* Launch Screen.storyboard */; };
+		262A490B216CF42F00E794E1 /* TagInfo_Kaart.xml in Resources */ = {isa = PBXBuildFile; fileRef = 262A490A216CF42F00E794E1 /* TagInfo_Kaart.xml */; };
+>>>>>>> 3e18952b... Added Kaart's styles
 		26350648216BF445002D3471 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26350647216BF445002D3471 /* Images.xcassets */; };
-		2635064C216C0BF0002D3471 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2635064B216C0BEF002D3471 /* Launch Screen.storyboard */; };
 		26350652216C0CAC002D3471 /* marioKaart72.png in Resources */ = {isa = PBXBuildFile; fileRef = 2635064D216C0CAB002D3471 /* marioKaart72.png */; };
 		26350653216C0CAC002D3471 /* marioKaart144.png in Resources */ = {isa = PBXBuildFile; fileRef = 2635064E216C0CAB002D3471 /* marioKaart144.png */; };
 		26350654216C0CAC002D3471 /* marioKaart256.png in Resources */ = {isa = PBXBuildFile; fileRef = 2635064F216C0CAC002D3471 /* marioKaart256.png */; };
@@ -481,10 +490,17 @@
 		02E6267119973A0700565D62 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		02E8436019B2F4A20044AC1D /* Go Map!!-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Go Map!!-Bridging-Header.h"; sourceTree = "<group>"; };
 		02E8436319B39FAD0044AC1D /* OsmNotesDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = OsmNotesDatabase.h; path = ../Shared/OsmNotesDatabase.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+<<<<<<< HEAD
 		02E8436419B39FAD0044AC1D /* OsmNotesDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = OsmNotesDatabase.m; path = ../Shared/OsmNotesDatabase.m; sourceTree = "<group>"; };
 		02EC2EA225902E8D00B7B4B9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
 		02EC2EA325902E8D00B7B4B9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/POI.strings"; sourceTree = "<group>"; };
 		02ED19801BBF119C00A57CF4 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+=======
+		02E8436419B39FAD0044AC1D /* OsmNotesDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = OsmNotesDatabase.m; path = ../Shared/OsmNotesDatabase.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		02E8436E19B407C40044AC1D /* WebPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebPageView.xib; sourceTree = "<group>"; };
+		02E8437919B4DD730044AC1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		02E8438219B4DF960044AC1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+>>>>>>> 3e18952b... Added Kaart's styles
 		02EDCC071683EC2D007F9934 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		02F04AD01BC4D3B50044FD95 /* GpxConfigureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GpxConfigureViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		02F04AD11BC4D3B50044FD95 /* GpxConfigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GpxConfigureViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -532,6 +548,7 @@
 		02F8F4331696004B002A0820 /* NominatimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NominatimViewController.m; sourceTree = "<group>"; };
 		02FFCE0916A7360B001A5B8A /* NSMutableArray+PartialSort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+PartialSort.h"; path = "../Shared/NSMutableArray+PartialSort.h"; sourceTree = "<group>"; };
 		02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSMutableArray+PartialSort.mm"; path = "../Shared/NSMutableArray+PartialSort.mm"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 <<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 		3E49F4B124DFA64800A347BB /* RulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RulerView.m; path = ../Shared/RulerView.m; sourceTree = "<group>"; };
 		64305F7023E7224E00232BB9 /* LocationURLParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationURLParser.h; sourceTree = "<group>"; };
@@ -576,8 +593,11 @@
 		64E21EB722651F2D004605D7 /* XCTestCase+UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+UserDefaults.swift"; sourceTree = "<group>"; };
 		64F59A4F240915840093DCDB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 =======
+=======
+		262A4908216CF34800E794E1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		262A490A216CF42F00E794E1 /* TagInfo_Kaart.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TagInfo_Kaart.xml; path = ../Shared/TagInfo_Kaart.xml; sourceTree = "<group>"; };
+>>>>>>> 3e18952b... Added Kaart's styles
 		26350647216BF445002D3471 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		2635064B216C0BEF002D3471 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = "Launch Screen.storyboard"; path = "../../../Go_Kaart/OpenStreetMap/iOS/Launch Screen.storyboard"; sourceTree = "<group>"; };
 		2635064D216C0CAB002D3471 /* marioKaart72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart72.png; sourceTree = "<group>"; };
 		2635064E216C0CAB002D3471 /* marioKaart144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart144.png; sourceTree = "<group>"; };
 		2635064F216C0CAC002D3471 /* marioKaart256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart256.png; sourceTree = "<group>"; };
@@ -782,8 +802,12 @@
 				02BC04E924C6767100BFA5EF /* Height */,
 				027EDC5D206F3EED00D349D6 /* KissXML */,
 				02B69D0E1BF5A66B002605A3 /* LanguageTableViewController.h */,
-				2635064B216C0BEF002D3471 /* Launch Screen.storyboard */,
 				02B69D0F1BF5A66B002605A3 /* LanguageTableViewController.m */,
+<<<<<<< HEAD
+=======
+				262A4908216CF34800E794E1 /* Launch Screen.storyboard */,
+				02E8437E19B4DE510044AC1D /* Localizable.strings */,
+>>>>>>> 3e18952b... Added Kaart's styles
 				029043A11682797A00BE3480 /* LoginViewController.h */,
 				029043A21682797A00BE3480 /* LoginViewController.m */,
 				02ACBA5116713CCB00BB4414 /* MainViewController.h */,
@@ -933,6 +957,14 @@
 				02ACBBB716713F2A00BB4414 /* SpeechBalloonLayer.m */,
 				02C4255116796B5800761C54 /* SpeechBalloonView.h */,
 				02C4255216796B5800761C54 /* SpeechBalloonView.m */,
+<<<<<<< HEAD
+=======
+				02ACBD2216717D6F00BB4414 /* TagInfo.h */,
+				02ACBD2316717D7000BB4414 /* TagInfo.m */,
+				02ACBBBA16713F2A00BB4414 /* TagInfo.menu.xml */,
+				02ACBBBB16713F2A00BB4414 /* TagInfo.xml */,
+				262A490A216CF42F00E794E1 /* TagInfo_Kaart.xml */,
+>>>>>>> 3e18952b... Added Kaart's styles
 				025F1CF21BCD9B070097D7FE /* TapAndDragGesture.h */,
 				025F1CF31BCD9B070097D7FE /* TapAndDragGesture.m */,
 				02BF744F20793EE10028ED6A /* TurnRestrictHwyView.h */,
@@ -1347,7 +1379,6 @@
 				02ACBC1B16713F2B00BB4414 /* health_hospital_emergency.p.64.png in Resources */,
 				02ACBC1C16713F2B00BB4414 /* health_hospital_emergency2.p.64.png in Resources */,
 				26350652216C0CAC002D3471 /* marioKaart72.png in Resources */,
-				2635064C216C0BF0002D3471 /* Launch Screen.storyboard in Resources */,
 				02ACBC1D16713F2B00BB4414 /* health_opticians.p.64.png in Resources */,
 				02ACBC1E16713F2B00BB4414 /* health_pharmacy.p.64.png in Resources */,
 				02ACBC1F16713F2B00BB4414 /* health_pharmacy_dispencing.p.64.png in Resources */,
@@ -1518,7 +1549,6 @@
 				02ACBCAE16713F2B00BB4414 /* tourist_battlefield.p.64.png in Resources */,
 				02ACBCAF16713F2B00BB4414 /* tourist_beach.p.64.png in Resources */,
 				02ACBCB016713F2B00BB4414 /* tourist_casino.p.64.png in Resources */,
-				02ED19811BBF119C00A57CF4 /* Launch Screen.storyboard in Resources */,
 				02ACBCB116713F2B00BB4414 /* tourist_castle.p.64.png in Resources */,
 				02ACBCB216713F2B00BB4414 /* tourist_castle2.p.64.png in Resources */,
 				02ACBCB316713F2B00BB4414 /* tourist_cinema.p.64.png in Resources */,
@@ -1576,6 +1606,7 @@
 				02ACBCE216713F2B00BB4414 /* transport_parking_private.p.64.png in Resources */,
 				02ACBCE316713F2B00BB4414 /* transport_parking_private2.p.64.png in Resources */,
 				02ACBCE416713F2B00BB4414 /* transport_parking_private3.p.64.png in Resources */,
+				262A4909216CF34800E794E1 /* Launch Screen.storyboard in Resources */,
 				02ACBCE516713F2B00BB4414 /* transport_port.p.64.png in Resources */,
 				02ACBCE616713F2B00BB4414 /* transport_rental_bicycle.p.64.png in Resources */,
 				02ACBCE716713F2B00BB4414 /* transport_rental_car.p.64.png in Resources */,
@@ -1637,6 +1668,7 @@
 				0266D3AE16C02D9200AD9A83 /* seamark_buoy_lateral.p.64.png in Resources */,
 				0266D3AF16C02D9200AD9A83 /* seamark_buoy_safe_water.p.64.png in Resources */,
 				0266D3B016C02D9200AD9A83 /* seamark_buoy_special_purpose.p.64.png in Resources */,
+				262A490B216CF42F00E794E1 /* TagInfo_Kaart.xml in Resources */,
 				0266D3B116C02D9200AD9A83 /* seamark_fog_signal.p.64.png in Resources */,
 				02DAB7DB1BFA4C3B00360AED /* 723-location-arrow-toolbar.png in Resources */,
 				0266D3B216C02D9200AD9A83 /* seamark_light_float.p.64.png in Resources */,
