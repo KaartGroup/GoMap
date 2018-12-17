@@ -1884,21 +1884,87 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
     double screenAngle = OSMTransformRotation(self.mapView.screenFromMapTransform);
     layer.affineTransform = CGAffineTransformMakeRotation(screenAngle);
 
-    CGFloat radius = 30.0;
-	CGFloat fieldOfViewRadius = direction.length ?: 55;
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddArc(path,
-                 NULL,
-                 0.0,
-                 0.0,
-                 radius,
-                 radiansFromDegrees(heading - fieldOfViewRadius / 2),
-                 radiansFromDegrees(heading + fieldOfViewRadius / 2),
-                 NO);
-    CGPathAddLineToPoint(path, NULL, 0, 0);
-    CGPathCloseSubpath(path);
-    layer.path = path;
-    CGPathRelease(path);
+    // Arrow heads and street names
+    for ( OsmBaseObject * object in _shownObjects ) {
+        if ( object.isOneWay ) {
+
+            // arrow heads
+            [self invokeAlongScreenClippedWay:object.isWay offset:50 interval:100 block:^(OSMPoint loc, OSMPoint dir){
+                // draw direction arrow at loc/dir
+                BOOL reversed = object.isOneWay == ONEWAY_BACKWARD;
+                double len = reversed ? -15 : 15;
+                double width = 5;
+
+                OSMPoint p1 = { loc.x - dir.x*len + dir.y*width, loc.y - dir.y*len - dir.x*width };
+                OSMPoint p2 = { loc.x - dir.x*len - dir.y*width, loc.y - dir.y*len + dir.x*width };
+
+                CGMutablePathRef arrowPath = CGPathCreateMutable();
+                CGPathMoveToPoint(arrowPath, NULL, p1.x, p1.y);
+                CGPathAddLineToPoint(arrowPath, NULL, loc.x, loc.y);
+                CGPathAddLineToPoint(arrowPath, NULL, p2.x, p2.y);
+                CGPathAddLineToPoint(arrowPath, NULL, loc.x-dir.x*len*0.5, loc.y-dir.y*len*0.5);
+                CGPathCloseSubpath(arrowPath);
+
+                CAShapeLayer * arrow = [CAShapeLayer new];
+                arrow.path = arrowPath;
+                arrow.lineWidth = 1;
+                arrow.fillColor = UIColor.blackColor.CGColor;
+                arrow.zPosition    = Z_ARROWS;
+                [layers addObject:arrow];
+                CGPathRelease(arrowPath);
+            }];
+        }
+        if ( [highlights containsObject:object] ) {
+            
+            // arrow heads
+            [self invokeAlongScreenClippedWay:object.isWay offset: object.isOneWay ? 30 : 50 interval:100 block:^(OSMPoint loc, OSMPoint dir){
+                // draw direction arrow at loc/dir
+                double len = 15;
+                double width = 5;
+                
+                OSMPoint p1 = { loc.x - dir.x*len + dir.y*width, loc.y - dir.y*len - dir.x*width };
+                OSMPoint p2 = { loc.x - dir.x*len - dir.y*width, loc.y - dir.y*len + dir.x*width };
+                
+                CGMutablePathRef arrowPath = CGPathCreateMutable();
+                CGPathMoveToPoint(arrowPath, NULL, p1.x, p1.y);
+                CGPathAddLineToPoint(arrowPath, NULL, loc.x, loc.y);
+                CGPathAddLineToPoint(arrowPath, NULL, p2.x, p2.y);
+                CGPathAddLineToPoint(arrowPath, NULL, loc.x-dir.x*len*0.5, loc.y-dir.y*len*0.5);
+                CGPathCloseSubpath(arrowPath);
+                
+                CAShapeLayer * arrow = [CAShapeLayer new];
+                arrow.path = arrowPath;
+                arrow.lineWidth = 1;
+                arrow.fillColor = UIColor.redColor.CGColor;
+                arrow.zPosition    = Z_ARROWS;
+                [layers addObject:arrow];
+                CGPathRelease(arrowPath);
+            }];
+        }
+
+        // street names
+        if ( nameLimit > 0 ) {
+            BOOL isHighway = object.isWay && !object.isWay.isArea;
+            if ( isHighway ) {
+                NSString * name = object.tags[ @"name" ];
+                if ( name ) {
+                    if ( ![nameSet containsObject:name] ) {
+                        double length = 0.0;
+                        CGPathRef path = [self pathClippedToViewRect:object.isWay length:&length];
+                        if ( length >= name.length * Pixels_Per_Character ) {
+                            NSArray * a = [CurvedTextLayer.shared layersWithString:name alongPath:path whiteOnBlock:self.whiteText];
+                            if ( a.count ) {
+                                [layers addObjectsFromArray:a];
+                                --nameLimit;
+                                [nameSet addObject:name];
+                            }
+                        }
+                        CGPathRelease(path);
+                    }
+                }
+            }
+        }
+    }
 
 	LayerProperties *layerProperties = layer.properties;
     layerProperties->position = pt;
