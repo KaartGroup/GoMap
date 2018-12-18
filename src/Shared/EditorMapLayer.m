@@ -3060,6 +3060,18 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 	[[NSUserDefaults standardUserDefaults] setObject:object.tags forKey:@"copyPasteTags"];
 	return object.tags.count > 0;
 }
+- (BOOL)copyName:(OsmBaseObject *)object
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDictionary dictionaryWithObjectsAndKeys: object.tags[@"name"], @"name", nil] forKey:@"copyPasteTags"];
+    return object.tags[@"name"];
+}
+- (BOOL)copyNameAndClass:(OsmBaseObject *)object
+{
+    NSDictionary * tags = [NSDictionary dictionaryWithObjectsAndKeys:object.tags[@"name"], @"name", object.tags[@"highway"], @"highway", nil];
+    NSLog(@"TAGS: %@", tags);
+    [[NSUserDefaults standardUserDefaults] setObject:tags forKey:@"copyPasteTags"];
+    return ( object.tags[@"name"] && object.tags[@"highway"] );
+}
 - (BOOL)canPasteTags
 {
 	NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
