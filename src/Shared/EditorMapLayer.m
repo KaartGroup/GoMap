@@ -1466,10 +1466,18 @@ const static CGFloat Z_ARROWS            = Z_BASE + 11 * ZSCALE;
             props->position        = refPoint;
             props->lineWidth    = layer.lineWidth;
 
-#if 0    // Enable to show motorway_link with dashed lines. Looks kind of ugly and reduces framerate by up to 30%f
+#if 1    // Enable to show motorway_link with dashed lines. Looks kind of ugly and reduces framerate by up to 30%f
             BOOL link = [object.tags[@"highway"] hasSuffix:@"_link"];
+            BOOL alley = [object.tags[@"service"] isEqualToString:@"alley"];
+            BOOL driveway = [object.tags[@"service"] isEqualToString:@"driveway"];
             if ( link ) {
                 props->lineDashes = @[@(10 * _highwayScale), @(10 * _highwayScale)];
+            }
+            if ( alley ) {
+                props->lineDashes = @[@(1 * _highwayScale), @(2 * _highwayScale)];
+            }
+            if ( driveway ) {
+                props->lineDashes = @[@(10 * _highwayScale), @(5 * _highwayScale)];
             }
 #endif
 
@@ -1596,11 +1604,15 @@ const static CGFloat Z_ARROWS            = Z_BASE + 11 * ZSCALE;
                         props->lineWidth    = 1.0;
                         roof.transform = t;
                         [layers addObject:roof];
+                        
+                        
                     }
 #endif // USE_SCENEKIT
                 }
 #endif    // SHOW_3D
 
+                
+                
                 CGPathRelease(path);
             }
         }
@@ -1844,7 +1856,7 @@ const static CGFloat Z_ARROWS            = Z_BASE + 11 * ZSCALE;
 
     // Arrow heads and street names
     for ( OsmBaseObject * object in _shownObjects ) {
-        if ( object.isOneWay || [highlights containsObject:object] ) {
+        if ( object.isOneWay ) {
 
             // arrow heads
             [self invokeAlongScreenClippedWay:object.isWay offset:50 interval:100 block:^(OSMPoint loc, OSMPoint dir){
@@ -1867,6 +1879,33 @@ const static CGFloat Z_ARROWS            = Z_BASE + 11 * ZSCALE;
                 arrow.path = arrowPath;
                 arrow.lineWidth = 1;
                 arrow.fillColor = UIColor.blackColor.CGColor;
+                arrow.zPosition    = Z_ARROWS;
+                [layers addObject:arrow];
+                CGPathRelease(arrowPath);
+            }];
+        }
+        if ( [highlights containsObject:object] ) {
+            
+            // arrow heads
+            [self invokeAlongScreenClippedWay:object.isWay offset: object.isOneWay ? 30 : 50 interval:100 block:^(OSMPoint loc, OSMPoint dir){
+                // draw direction arrow at loc/dir
+                double len = 15;
+                double width = 5;
+                
+                OSMPoint p1 = { loc.x - dir.x*len + dir.y*width, loc.y - dir.y*len - dir.x*width };
+                OSMPoint p2 = { loc.x - dir.x*len - dir.y*width, loc.y - dir.y*len + dir.x*width };
+                
+                CGMutablePathRef arrowPath = CGPathCreateMutable();
+                CGPathMoveToPoint(arrowPath, NULL, p1.x, p1.y);
+                CGPathAddLineToPoint(arrowPath, NULL, loc.x, loc.y);
+                CGPathAddLineToPoint(arrowPath, NULL, p2.x, p2.y);
+                CGPathAddLineToPoint(arrowPath, NULL, loc.x-dir.x*len*0.5, loc.y-dir.y*len*0.5);
+                CGPathCloseSubpath(arrowPath);
+                
+                CAShapeLayer * arrow = [CAShapeLayer new];
+                arrow.path = arrowPath;
+                arrow.lineWidth = 1;
+                arrow.fillColor = UIColor.redColor.CGColor;
                 arrow.zPosition    = Z_ARROWS;
                 [layers addObject:arrow];
                 CGPathRelease(arrowPath);
@@ -2740,6 +2779,18 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
     [[NSUserDefaults standardUserDefaults] setObject:object.tags forKey:@"copyPasteTags"];
     return object.tags.count > 0;
 }
+- (BOOL)copyName:(OsmBaseObject *)object
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDictionary dictionaryWithObjectsAndKeys: object.tags[@"name"], @"name", nil] forKey:@"copyPasteTags"];
+    return object.tags[@"name"];
+}
+- (BOOL)copyNameAndClass:(OsmBaseObject *)object
+{
+    NSDictionary * tags = [NSDictionary dictionaryWithObjectsAndKeys:object.tags[@"name"], @"name", object.tags[@"highway"], @"highway", nil];
+    NSLog(@"TAGS: %@", tags);
+    [[NSUserDefaults standardUserDefaults] setObject:tags forKey:@"copyPasteTags"];
+    return ( object.tags[@"name"] && object.tags[@"highway"] );
+}
 - (BOOL)canPasteTags
 {
     NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
@@ -2747,19 +2798,19 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 }
 - (BOOL)pasteTags:(OsmBaseObject *)object
 {
-    NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
-    if ( copyPasteTags.count == 0 )
-        return NO;
-    NSDictionary * newTags = MergeTags(object.tags, copyPasteTags, YES);
-    [self.mapData setTags:newTags forObject:object];
+    // Merge tags
+	NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
+	NSDictionary * newTags = MergeTags(object.tags, copyPasteTags, YES);
+	[self.mapData setTags:newTags forObject:object];
+	[self setNeedsLayout];
     return YES;
 }
 - (BOOL)replaceTags:(OsmBaseObject *)object
 {
+    // Replace all tags
     NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
-    if ( copyPasteTags.count == 0 )
-        return NO;
     [self.mapData setTags:copyPasteTags forObject:object];
+    [self setNeedsLayout];
     return YES;
 }
 

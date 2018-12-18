@@ -1913,6 +1913,42 @@ static NSString * const DisplayLinkHeading    = @"Heading";
 
 #pragma mark Key presses
 
+/**
+ Offers the option to copy all tags, copy the name, or copy name and classification
+ in the case of a highway
+ @param sender nil
+ */
+-(IBAction)copy:(id)sender
+{
+    if ( _editorLayer.selectedPrimary.tags.count < 1 ) {
+        [self showAlert:NSLocalizedString(@"The object does contain any tags",nil) message:nil];
+        return;
+    }
+    else {
+        NSString * question = [NSString stringWithFormat:@"Copying Tags"];
+        UIAlertController * alertCopy = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Copy",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
+        [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
+        if ( !_editorLayer.selectedWay.isOneWay ){
+            [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy All Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
+                [_editorLayer copyTags:_editorLayer.selectedPrimary];
+                [self refreshPushpinText];
+            }]];
+        }
+        if ( _editorLayer.selectedPrimary.tags[@"name"] ){
+            [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy Name",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
+                [_editorLayer copyName:_editorLayer.selectedPrimary];
+                [self refreshPushpinText];
+            }]];
+            if ( _editorLayer.selectedWay.tags[@"highway"] ){
+                [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy Name & Classification",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
+                    [_editorLayer copyNameAndClass:_editorLayer.selectedPrimary];
+                    [self refreshPushpinText];
+                }]];
+            }
+        }
+        [self.viewController presentViewController:alertCopy animated:YES completion:nil];
+    }
+}
 
 -(IBAction)delete:(id)sender
 {
@@ -2078,7 +2114,10 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
                                 self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
                             else
                                 if (!_editorLayer.selectedWay.isClosed && _editorLayer.selectedWay.isOneWay)
-                                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                                    if ( [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", nil]] ||  [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", @"highway", nil]])
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                                    else
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
                                 else
                                     self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS),  @(ACTION_REPLACETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
                 }
@@ -2182,7 +2221,9 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
     actionSheet.popoverPresentationController.sourceView = self.editControl;
     actionSheet.popoverPresentationController.sourceRect = button;
     
-    //    Same as main repo
+    /*
+    Same as main repo
+     */
     //    NSArray * actionList = nil;
     //    if ( _editorLayer.selectedWay ) {
     //        if ( _editorLayer.selectedNode ) {
@@ -2303,8 +2344,9 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
     NSString * error = nil;
     switch (action) {
         case ACTION_COPYTAGS:
-            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
-                error = NSLocalizedString(@"The object does contain any tags",nil);
+//            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
+//                error = NSLocalizedString(@"The object does contain any tags",nil);
+            [self copy:nil];
             break;
         case ACTION_PASTETAGS:
             if ( _editorLayer.selectedPrimary == nil ) {
