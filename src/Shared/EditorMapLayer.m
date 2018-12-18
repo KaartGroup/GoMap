@@ -2782,12 +2782,11 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 - (BOOL)copyName:(OsmBaseObject *)object
 {
     [[NSUserDefaults standardUserDefaults] setObject:[NSDictionary dictionaryWithObjectsAndKeys: object.tags[@"name"], @"name", nil] forKey:@"copyPasteTags"];
-    return object.tags[@"name"];
+    return YES;
 }
 - (BOOL)copyNameAndClass:(OsmBaseObject *)object
 {
     NSDictionary * tags = [NSDictionary dictionaryWithObjectsAndKeys:object.tags[@"name"], @"name", object.tags[@"highway"], @"highway", nil];
-    NSLog(@"TAGS: %@", tags);
     [[NSUserDefaults standardUserDefaults] setObject:tags forKey:@"copyPasteTags"];
     return ( object.tags[@"name"] && object.tags[@"highway"] );
 }
