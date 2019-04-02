@@ -2032,53 +2032,53 @@ static NSString * const DisplayLinkHeading    = @"Heading";
 #pragma mark Edit Actions
 
 typedef enum {
-    // used by edit control:
-    ACTION_EDITTAGS,
-    ACTION_ADDNOTE,
-    ACTION_DELETE,
-    ACTION_MORE,
-    // used for action sheet edits:
-    ACTION_SPLIT,
-    ACTION_RECTANGULARIZE,
-    ACTION_STRAIGHTEN,
-    ACTION_REVERSE,
-    ACTION_DUPLICATE,
-    ACTION_ROTATE,
-    ACTION_JOIN,
-    ACTION_DISCONNECT,
-    ACTION_CIRCULARIZE,
-    ACTION_HEIGHT,
-    ACTION_COPYTAGS,
-    ACTION_PASTETAGS,
-    ACTION_RESTRICT,
-    ACTION_CREATE_RELATION,
-    ACTION_REPLACETAGS
+	// used by edit control:
+	ACTION_EDITTAGS,
+	ACTION_ADDNOTE,
+	ACTION_DELETE,
+	ACTION_MORE,
+	// used for action sheet edits:
+	ACTION_SPLIT,
+	ACTION_RECTANGULARIZE,
+	ACTION_STRAIGHTEN,
+	ACTION_REVERSE,
+	ACTION_DUPLICATE,
+	ACTION_ROTATE,
+	ACTION_JOIN,
+	ACTION_DISCONNECT,
+	ACTION_CIRCULARIZE,
+	ACTION_HEIGHT,
+    ACTION_MEASURE_DIRECTION,
+	ACTION_COPYTAGS,
+	ACTION_PASTETAGS,
+	ACTION_RESTRICT,
+	ACTION_CREATE_RELATION
 } EDIT_ACTION;
 
 NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 {
-    switch (action) {
-        case ACTION_SPLIT:            return NSLocalizedString(@"Split",nil);
-        case ACTION_RECTANGULARIZE:    return NSLocalizedString(@"Make Rectangular",nil);
-        case ACTION_STRAIGHTEN:        return NSLocalizedString(@"Straighten",nil);
-        case ACTION_REVERSE:        return NSLocalizedString(@"Reverse",nil);
-        case ACTION_DUPLICATE:        return NSLocalizedString(@"Duplicate",nil);
-        case ACTION_ROTATE:            return NSLocalizedString(@"Rotate",nil);
-        case ACTION_CIRCULARIZE:    return NSLocalizedString(@"Make Circular",nil);
-        case ACTION_JOIN:            return NSLocalizedString(@"Join",nil);
-        case ACTION_DISCONNECT:        return NSLocalizedString(@"Disconnect",nil);
-        case ACTION_COPYTAGS:        return NSLocalizedString(@"Copy Tags",nil);
-        case ACTION_PASTETAGS:        return NSLocalizedString(@"Paste",nil);
-        case ACTION_EDITTAGS:        return NSLocalizedString(@"Tags", nil);
-        case ACTION_ADDNOTE:        return NSLocalizedString(@"Add Note", nil);
-        case ACTION_DELETE:            return NSLocalizedString(@"Delete",nil);
-        case ACTION_MORE:            return NSLocalizedString(@"More...",nil);
-        case ACTION_HEIGHT:            return NSLocalizedString(@"Measure Height", nil);
-        case ACTION_RESTRICT:        return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
-        case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
-        case ACTION_REPLACETAGS:    return NSLocalizedString(@"Replace Tags", nil);
-    };
-    return nil;
+	switch (action) {
+		case ACTION_SPLIT:			return NSLocalizedString(@"Split",nil);
+		case ACTION_RECTANGULARIZE:	return NSLocalizedString(@"Make Rectangular",nil);
+		case ACTION_STRAIGHTEN:		return NSLocalizedString(@"Straighten",nil);
+		case ACTION_REVERSE:		return NSLocalizedString(@"Reverse",nil);
+		case ACTION_DUPLICATE:		return NSLocalizedString(@"Duplicate",nil);
+		case ACTION_ROTATE:			return NSLocalizedString(@"Rotate",nil);
+		case ACTION_CIRCULARIZE:	return NSLocalizedString(@"Make Circular",nil);
+		case ACTION_JOIN:			return NSLocalizedString(@"Join",nil);
+		case ACTION_DISCONNECT:		return NSLocalizedString(@"Disconnect",nil);
+		case ACTION_COPYTAGS:		return NSLocalizedString(@"Copy Tags",nil);
+		case ACTION_PASTETAGS:		return NSLocalizedString(@"Paste",nil);
+		case ACTION_EDITTAGS:		return NSLocalizedString(@"Tags", nil);
+		case ACTION_ADDNOTE:		return NSLocalizedString(@"Add Note", nil);
+		case ACTION_DELETE:			return NSLocalizedString(@"Delete",nil);
+		case ACTION_MORE:			return NSLocalizedString(@"More...",nil);
+		case ACTION_HEIGHT:			return NSLocalizedString(@"Measure Height", nil);
+        case ACTION_MEASURE_DIRECTION: return NSLocalizedString(@"Measure Direction", nil);
+		case ACTION_RESTRICT:		return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
+		case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
+	};
+	return nil;
 }
 
 - (void)updateEditControl
@@ -2169,337 +2169,264 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
             BOOL join             = parentWays.count > 1;
             //            BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
             
-            NSMutableArray * a = [NSMutableArray arrayWithObjects:@(ACTION_COPYTAGS), nil];
-            if ( disconnect )
-                [a addObject:@(ACTION_DISCONNECT)];
-            //            if ( split )
-            //                [a addObject:@(ACTION_SPLIT)];
-            if ( join )
-                [a addObject:@(ACTION_JOIN)];
-            [a addObject:@(ACTION_ROTATE)];
-            //            if ( restriction )
-            //                [a addObject:@(ACTION_RESTRICT)];
-            //            [a addObject:@(ACTION_HEIGHT)];
-            actionList = [NSArray arrayWithArray:a];
-        } else {
-            if ( _editorLayer.selectedWay.isClosed ) {
-                // polygon
-                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE) ];
-            } else {
-                // line
-                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE) ];
-            }
-        }
-    } else if ( _editorLayer.selectedNode ) {
-        // node
-        actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
-    } else if ( _editorLayer.selectedRelation ) {
-        // relation
-        if ( _editorLayer.selectedRelation.isMultipolygon ) {
-            actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
-        } else {
-            actionList = @[ @(ACTION_COPYTAGS) ];
-        }
-    } else {
-        // nothing selected
-        return;
-    }
-    UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    for ( NSNumber * value in actionList ) {
-        NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
-        [actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self performEditAction: (EDIT_ACTION)value.integerValue];
-        }]];
-    }
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-    [self.viewController presentViewController:actionSheet animated:YES completion:nil];
-    // compute location for action sheet to originate
-    CGRect button = self.editControl.bounds;
-    CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;    // hack because we can't get the frame for an individual segment
-    button.origin.x += button.size.width - segmentWidth;
-    button.size.width = segmentWidth;
-    actionSheet.popoverPresentationController.sourceView = self.editControl;
-    actionSheet.popoverPresentationController.sourceRect = button;
-    
-    /*
-    Same as main repo
-     */
-    //    NSArray * actionList = nil;
-    //    if ( _editorLayer.selectedWay ) {
-    //        if ( _editorLayer.selectedNode ) {
-    //            // node in way
-    //            NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
-    //            BOOL disconnect        = parentWays.count > 1 || _editorLayer.selectedNode.hasInterestingTags;
-    //            BOOL split             = _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
-    //            BOOL join             = parentWays.count > 1;
-    //            BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
-    //
-    //            NSMutableArray * a = [NSMutableArray arrayWithObject:@(ACTION_COPYTAGS)];
-    //            if ( disconnect )
-    //            [a addObject:@(ACTION_DISCONNECT)];
-    //            if ( split )
-    //            [a addObject:@(ACTION_SPLIT)];
-    //            if ( join )
-    //            [a addObject:@(ACTION_JOIN)];
-    //            [a addObject:@(ACTION_ROTATE)];
-    //            if ( restriction )
-    //            [a addObject:@(ACTION_RESTRICT)];
-    //            [a addObject:@(ACTION_HEIGHT)];
-    //            actionList = [NSArray arrayWithArray:a];
-    //        } else {
-    //            if ( _editorLayer.selectedWay.isClosed ) {
-    //                // polygon
-    //                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE), @(ACTION_CREATE_RELATION) ];
-    //            } else {
-    //                // line
-    //                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE), @(ACTION_CREATE_RELATION) ];
-    //            }
-    //        }
-    //    } else if ( _editorLayer.selectedNode ) {
-    //        // node
-    //        actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
-    //    } else if ( _editorLayer.selectedRelation ) {
-    //        // relation
-    //        if ( _editorLayer.selectedRelation.isMultipolygon ) {
-    //            actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
-    //        } else {
-    //            actionList = @[ @(ACTION_COPYTAGS) ];
-    //        }
-    //    } else {
-    //        // nothing selected
-    //        return;
-    //    }
-    //    UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    //    for ( NSNumber * value in actionList ) {
-    //        NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
-    //        [actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-    //            [self performEditAction:(EDIT_ACTION)value.integerValue];
-    //        }]];
-    //    }
-    //    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-    //    [self.viewController presentViewController:actionSheet animated:YES completion:nil];
-    //
-    //    // compute location for action sheet to originate
-    //    CGRect button = self.editControl.bounds;
-    //    CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;    // hack because we can't get the frame for an individual segment
-    //    button.origin.x += button.size.width - segmentWidth;
-    //    button.size.width = segmentWidth;
-    //    actionSheet.popoverPresentationController.sourceView = self.editControl;
-    //    actionSheet.popoverPresentationController.sourceRect = button;
+			if ( disconnect )
+				[a addObject:@(ACTION_DISCONNECT)];
+			if ( split )
+				[a addObject:@(ACTION_SPLIT)];
+			if ( join )
+				[a addObject:@(ACTION_JOIN)];
+			[a addObject:@(ACTION_ROTATE)];
+			if ( restriction )
+				[a addObject:@(ACTION_RESTRICT)];
+			[a addObject:@(ACTION_HEIGHT)];
+            [a addObject:@(ACTION_MEASURE_DIRECTION)];
+			actionList = [NSArray arrayWithArray:a];
+		} else {
+			if ( _editorLayer.selectedWay.isClosed ) {
+				// polygon
+				actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_MEASURE_DIRECTION), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE), @(ACTION_CREATE_RELATION) ];
+			} else {
+				// line
+				actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_MEASURE_DIRECTION), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE), @(ACTION_CREATE_RELATION) ];
+			}
+		}
+	} else if ( _editorLayer.selectedNode ) {
+		// node
+		actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_MEASURE_DIRECTION), @(ACTION_DUPLICATE) ];
+	} else if ( _editorLayer.selectedRelation ) {
+		// relation
+		if ( _editorLayer.selectedRelation.isMultipolygon ) {
+			actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
+		} else {
+			actionList = @[ @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
+		}
+	} else {
+		// nothing selected
+		return;
+	}
+	UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for ( NSNumber * value in actionList ) {
+		NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
+		[actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+			[self performEditAction:(EDIT_ACTION)value.integerValue];
+		}]];
+	}
+	[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+	[self.viewController presentViewController:actionSheet animated:YES completion:nil];
+
+	// compute location for action sheet to originate
+	CGRect button = self.editControl.bounds;
+	CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;	// hack because we can't get the frame for an individual segment
+	button.origin.x += button.size.width - segmentWidth;
+	button.size.width = segmentWidth;
+	actionSheet.popoverPresentationController.sourceView = self.editControl;
+	actionSheet.popoverPresentationController.sourceRect = button;
 }
 
 
 -(IBAction)editControlAction:(id)sender
 {
-    // get the selected button: has to be done before modifying the node/way selection
-    UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
-    NSInteger segment = segmentedControl.selectedSegmentIndex;
-    
-    if ( segment < _editControlActions.count ) {
-        NSNumber * actionNum = _editControlActions[ segment ];
-        EDIT_ACTION action = (EDIT_ACTION)actionNum.integerValue;
-        
-        // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-        switch ( action ) {
-            case ACTION_RECTANGULARIZE:
-            case ACTION_STRAIGHTEN:
-            case ACTION_REVERSE:
-            case ACTION_DUPLICATE:
-            case ACTION_ROTATE:
-            case ACTION_CIRCULARIZE:
-            case ACTION_COPYTAGS:
-            case ACTION_PASTETAGS:
-            case ACTION_REPLACETAGS:
-            case ACTION_EDITTAGS:
-            case ACTION_CREATE_RELATION:
-                if ( self.editorLayer.selectedWay &&
-                    self.editorLayer.selectedNode &&
-                    self.editorLayer.selectedNode.tags.count == 0 &&
-                    self.editorLayer.selectedWay.tags.count == 0 &&
-                    !self.editorLayer.selectedWay.isMultipolygonMember )
-                {
-                    // promote the selection to the way
-                    self.editorLayer.selectedNode = nil;
-                    [self refreshPushpinText];
-                }
-                break;
-            case ACTION_SPLIT:
-            case ACTION_JOIN:
-            case ACTION_DISCONNECT:
-            case ACTION_RESTRICT:
-            case ACTION_ADDNOTE:
-            case ACTION_DELETE:
-            case ACTION_MORE:
-            case ACTION_HEIGHT:
-                break;
-        }
-        
-        [self performEditAction:action];
-    }
-    segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
+	// get the selected button: has to be done before modifying the node/way selection
+	UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
+	NSInteger segment = segmentedControl.selectedSegmentIndex;
+
+	if ( segment < _editControlActions.count ) {
+		NSNumber * actionNum = _editControlActions[ segment ];
+		EDIT_ACTION action = (EDIT_ACTION)actionNum.integerValue;
+
+		// if trying to edit a node in a way that has no tags assume user wants to edit the way instead
+		switch ( action ) {
+			case ACTION_RECTANGULARIZE:
+			case ACTION_STRAIGHTEN:
+			case ACTION_REVERSE:
+			case ACTION_DUPLICATE:
+			case ACTION_ROTATE:
+			case ACTION_CIRCULARIZE:
+			case ACTION_COPYTAGS:
+			case ACTION_PASTETAGS:
+			case ACTION_EDITTAGS:
+			case ACTION_CREATE_RELATION:
+				if ( self.editorLayer.selectedWay &&
+					self.editorLayer.selectedNode &&
+					self.editorLayer.selectedNode.tags.count == 0 &&
+					self.editorLayer.selectedWay.tags.count == 0 &&
+					!self.editorLayer.selectedWay.isMultipolygonMember )
+				{
+					// promote the selection to the way
+					self.editorLayer.selectedNode = nil;
+					[self refreshPushpinText];
+				}
+				break;
+			case ACTION_SPLIT:
+			case ACTION_JOIN:
+			case ACTION_DISCONNECT:
+			case ACTION_RESTRICT:
+			case ACTION_ADDNOTE:
+			case ACTION_DELETE:
+			case ACTION_MORE:
+			case ACTION_HEIGHT:
+            case ACTION_MEASURE_DIRECTION:
+				break;
+		}
+
+		[self performEditAction:action];
+	}
+	segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
 }
 
 -(void)performEditAction:(EDIT_ACTION)action
 {
-    NSString * error = nil;
-    switch (action) {
-        case ACTION_COPYTAGS:
-//            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
-//                error = NSLocalizedString(@"The object does contain any tags",nil);
-            [self copy:nil];
-            break;
-        case ACTION_PASTETAGS:
-            if ( _editorLayer.selectedPrimary == nil ) {
-                // pasting to brand new object, so we need to create it first
-                [self setTagsForCurrentObject:@{}];
-            }
-            if ( _editorLayer.selectedWay && _editorLayer.selectedNode && _editorLayer.selectedWay.tags.count == 0 ) {
-                // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-                _editorLayer.selectedNode = nil;
-                [self refreshPushpinText];
-            }
-            if ( ! [_editorLayer pasteTags:_editorLayer.selectedPrimary] )
-                error = NSLocalizedString(@"No tags to paste",nil);
-            break;
-        case ACTION_REPLACETAGS:
-            if ( _editorLayer.selectedPrimary == nil ) {
-                // pasting to brand new object, so we need to create it first
-                [self setTagsForCurrentObject:@{}];
-            }
-            if ( _editorLayer.selectedWay && _editorLayer.selectedNode && _editorLayer.selectedWay.tags.count == 0 ) {
-                // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-                _editorLayer.selectedNode = nil;
-                [self refreshPushpinText];
-            }
-            if ( ! [_editorLayer replaceTags:_editorLayer.selectedPrimary] )
-                error = NSLocalizedString(@"No tags to replace",nil);
-            break;
-        case ACTION_DUPLICATE:
-        {
-            OsmBaseObject * newObject = [_editorLayer duplicateObject:_editorLayer.selectedPrimary];
-            if ( newObject == nil ) {
-                error = NSLocalizedString(@"Could not duplicate object",nil);
-            } else {
-                _editorLayer.selectedNode        = newObject.isNode;
-                _editorLayer.selectedWay        = newObject.isWay;
-                _editorLayer.selectedRelation    = newObject.isRelation;
-                [self placePushpinForSelection];
-            }
-        }
-            break;
-        case ACTION_ROTATE:
-            if ( _editorLayer.selectedWay == nil && !_editorLayer.selectedRelation.isMultipolygon ) {
-                error = NSLocalizedString(@"Only ways/multipolygons can be rotated", nil);
-            } else {
-                [self startObjectRotation];
-            }
-            break;
-        case ACTION_RECTANGULARIZE:
-        {
-            if ( _editorLayer.selectedWay.ident.longLongValue >= 0  &&  !OSMRectContainsRect( self.screenLongitudeLatitude, _editorLayer.selectedWay.boundingBox ) ) {
-                error = NSLocalizedString(@"The selected way must be completely visible", nil);    // avoid bugs where nodes are deleted from other objects
-            } else {
-                EditAction rect = [_editorLayer.mapData canOrthogonalizeWay:_editorLayer.selectedWay error:&error];
-                if ( rect )
-                    rect();
-            }
-        }
-            break;
-        case ACTION_REVERSE:
-        {
-            EditAction reverse = [_editorLayer.mapData canReverseWay:_editorLayer.selectedWay error:&error];
-            if ( reverse )
-                reverse();
-        }
-            break;
-        case ACTION_JOIN:
-        {
-            EditAction join = [_editorLayer.mapData canJoinWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
-            if ( join )
-                join();
-        }
-            break;
-        case ACTION_DISCONNECT:
-        {
-            EditActionReturnNode disconnect = [_editorLayer.mapData canDisconnectWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
-            if ( disconnect ) {
-                _editorLayer.selectedNode = disconnect();
-                [self placePushpinForSelection];
-            }
-        }
-            break;
-        case ACTION_SPLIT:
-        {
-            EditActionReturnWay split = [_editorLayer.mapData canSplitWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
-            if ( split )
-                split();
-        }
-            break;
-        case ACTION_STRAIGHTEN:
-        {
-            if ( _editorLayer.selectedWay.ident.longLongValue >= 0  &&  !OSMRectContainsRect( self.screenLongitudeLatitude, _editorLayer.selectedWay.boundingBox ) ) {
-                error = NSLocalizedString(@"The selected way must be completely visible", nil);    // avoid bugs where nodes are deleted from other objects
-            } else {
-                EditAction straighten = [_editorLayer.mapData canStraightenWay:_editorLayer.selectedWay error:&error];
-                if ( straighten )
-                    straighten();
-            }
-        }
-            break;
-        case ACTION_CIRCULARIZE:
-        {
-            EditAction circle = [_editorLayer.mapData canCircularizeWay:_editorLayer.selectedWay error:&error];
-            if ( circle )
-                circle();
-        }
-            break;
-        case ACTION_HEIGHT:
-            if ( self.gpsState != GPS_STATE_NONE ) {
-                [self.viewController performSegueWithIdentifier:@"CalculateHeightSegue" sender:nil];
-            } else {
-                error = NSLocalizedString(@"This action requires GPS to be turned on",nil);
+	NSString * error = nil;
+	switch (action) {
+		case ACTION_COPYTAGS:
+			if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
+				error = NSLocalizedString(@"The object does contain any tags",nil);
+			break;
+		case ACTION_PASTETAGS:
+			if ( _editorLayer.selectedPrimary == nil ) {
+				// pasting to brand new object, so we need to create it first
+				[self setTagsForCurrentObject:@{}];
+			}
+			if ( _editorLayer.selectedWay && _editorLayer.selectedNode && _editorLayer.selectedWay.tags.count == 0 ) {
+				// if trying to edit a node in a way that has no tags assume user wants to edit the way instead
+				_editorLayer.selectedNode = nil;
+				[self refreshPushpinText];
+			}
+            [self paste:nil];
+			break;
+		case ACTION_DUPLICATE:
+			{
+				OsmBaseObject * newObject = [_editorLayer duplicateObject:_editorLayer.selectedPrimary];
+				if ( newObject == nil ) {
+					error = NSLocalizedString(@"Could not duplicate object",nil);
+				} else {
+					_editorLayer.selectedNode		= newObject.isNode;
+					_editorLayer.selectedWay		= newObject.isWay;
+					_editorLayer.selectedRelation	= newObject.isRelation;
+					[self placePushpinForSelection];
+				}
+			}
+			break;
+		case ACTION_ROTATE:
+			if ( _editorLayer.selectedWay == nil && !_editorLayer.selectedRelation.isMultipolygon ) {
+				error = NSLocalizedString(@"Only ways/multipolygons can be rotated", nil);
+			} else {
+				[self startObjectRotation];
+			}
+			break;
+		case ACTION_RECTANGULARIZE:
+			{
+				if ( _editorLayer.selectedWay.ident.longLongValue >= 0  &&  !OSMRectContainsRect( self.screenLongitudeLatitude, _editorLayer.selectedWay.boundingBox ) ) {
+					error = NSLocalizedString(@"The selected way must be completely visible", nil);	// avoid bugs where nodes are deleted from other objects
+				} else {
+					EditAction rect = [_editorLayer.mapData canOrthogonalizeWay:_editorLayer.selectedWay error:&error];
+					if ( rect )
+						rect();
+				}
+			}
+			break;
+		case ACTION_REVERSE:
+			{
+				EditAction reverse = [_editorLayer.mapData canReverseWay:_editorLayer.selectedWay error:&error];
+				if ( reverse )
+					reverse();
+			}
+			break;
+		case ACTION_JOIN:
+			{
+				EditAction join = [_editorLayer.mapData canJoinWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
+				if ( join )
+					join();
+			}
+			break;
+		case ACTION_DISCONNECT:
+			{
+				EditActionReturnNode disconnect = [_editorLayer.mapData canDisconnectWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
+				if ( disconnect ) {
+					_editorLayer.selectedNode = disconnect();
+					[self placePushpinForSelection];
+				}
+			}
+			break;
+		case ACTION_SPLIT:
+			{
+				EditActionReturnWay split = [_editorLayer.mapData canSplitWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
+				if ( split )
+					split();
+			}
+			break;
+		case ACTION_STRAIGHTEN:
+			{
+				if ( _editorLayer.selectedWay.ident.longLongValue >= 0  &&  !OSMRectContainsRect( self.screenLongitudeLatitude, _editorLayer.selectedWay.boundingBox ) ) {
+					error = NSLocalizedString(@"The selected way must be completely visible", nil);	// avoid bugs where nodes are deleted from other objects
+				} else {
+					EditAction straighten = [_editorLayer.mapData canStraightenWay:_editorLayer.selectedWay error:&error];
+					if ( straighten )
+						straighten();
+				}
+			}
+			break;
+		case ACTION_CIRCULARIZE:
+			{
+				EditAction circle = [_editorLayer.mapData canCircularizeWay:_editorLayer.selectedWay error:&error];
+				if ( circle )
+					circle();
+			}
+			break;
+		case ACTION_HEIGHT:
+			if ( self.gpsState != GPS_STATE_NONE ) {
+				[self.viewController performSegueWithIdentifier:@"CalculateHeightSegue" sender:nil];
+			} else {
+				error = NSLocalizedString(@"This action requires GPS to be turned on",nil);
+			}
+			break;
+        case ACTION_MEASURE_DIRECTION: {
+                DirectionViewController *viewController = [[DirectionViewController alloc] init];
+                [self.viewController presentViewController:viewController
+                                                  animated:YES
+                                                completion:nil];
             }
             break;
-        case ACTION_EDITTAGS:
-            [self presentTagEditor:nil];
-            break;
-        case ACTION_ADDNOTE:
-        {
-            CLLocationCoordinate2D pos = [self longitudeLatitudeForScreenPoint:_pushpinView.arrowPoint birdsEye:YES];
-            OsmNote * note = [[OsmNote alloc] initWithLat:pos.latitude lon:pos.longitude];
-            [self.viewController performSegueWithIdentifier:@"NotesSegue" sender:note];
-            [self removePin];
-        }
-            break;
-        case ACTION_DELETE:
-            [self delete:nil];
-            break;
-        case ACTION_MORE:
-            [self presentEditActionSheet:nil];
-            break;
-        case ACTION_RESTRICT:
-            [self restrictOptionSelected];
-            break;
-        case ACTION_CREATE_RELATION:
-        {
-            void (^create)(NSString * type) = ^(NSString * type){
-                OsmRelation * relation = [_editorLayer.mapData createRelation];
-                NSDictionary * tags = @{ @"type" : type };
-                [_editorLayer.mapData setTags:tags forObject:relation];
-                EditAction add = [_editorLayer.mapData canAddObject:_editorLayer.selectedPrimary toRelation:relation withRole:@"outer" error:nil];
-                add();
-                _editorLayer.selectedNode = nil;
-                _editorLayer.selectedWay = nil;
-                _editorLayer.selectedRelation = relation;
-                [self.editorLayer setNeedsLayout];
-                [self refreshPushpinText];
-                [self showAlert:NSLocalizedString(@"Adding members:",nil)
-                        message:NSLocalizedString(@"To add another member to the relation 'long press' on the way to be added",nil)];
-            };
-            UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Create Relation Type",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Multipolygon", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action2) {
-                create(@"multipolygon");
-            }]];
+		case ACTION_EDITTAGS:
+			[self presentTagEditor:nil];
+			break;
+		case ACTION_ADDNOTE:
+			{
+				CLLocationCoordinate2D pos = [self longitudeLatitudeForScreenPoint:_pushpinView.arrowPoint birdsEye:YES];
+				OsmNote * note = [[OsmNote alloc] initWithLat:pos.latitude lon:pos.longitude];
+				[self.viewController performSegueWithIdentifier:@"NotesSegue" sender:note];
+				[self removePin];
+			}
+			break;
+		case ACTION_DELETE:
+			[self delete:nil];
+			break;
+		case ACTION_MORE:
+			[self presentEditActionSheet:nil];
+			break;
+		case ACTION_RESTRICT:
+			[self restrictOptionSelected];
+			break;
+		case ACTION_CREATE_RELATION:
+			{
+				void (^create)(NSString * type) = ^(NSString * type){
+					OsmRelation * relation = [_editorLayer.mapData createRelation];
+					NSDictionary * tags = @{ @"type" : type };
+					[_editorLayer.mapData setTags:tags forObject:relation];
+					EditAction add = [_editorLayer.mapData canAddObject:_editorLayer.selectedPrimary toRelation:relation withRole:@"outer" error:nil];
+					add();
+					_editorLayer.selectedNode = nil;
+					_editorLayer.selectedWay = nil;
+					_editorLayer.selectedRelation = relation;
+					[self.editorLayer setNeedsLayout];
+					[self refreshPushpinText];
+					[self showAlert:NSLocalizedString(@"Adding members:",nil)
+							message:NSLocalizedString(@"To add another member to the relation 'long press' on the way to be added",nil)];
+				};
+				UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Create Relation Type",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+				[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Multipolygon", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action2) {
+					create(@"multipolygon");
+				}]];
 #if 0
             [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Building", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action2) {
                 create(@"building");
