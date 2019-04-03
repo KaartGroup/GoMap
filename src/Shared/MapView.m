@@ -72,8 +72,8 @@ static const CGFloat Z_FLASH            = 110;
 
 
 
-@interface MapView ()
-@property (strong,nonatomic) IBOutlet UIView    *    statusBarBackground;
+@interface MapView () <DirectionViewControllerDelegate>
+@property (strong,nonatomic) IBOutlet UIView	*	statusBarBackground;
 @end
 
 @implementation MapView
@@ -2382,6 +2382,7 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 			break;
         case ACTION_MEASURE_DIRECTION: {
                 DirectionViewController *viewController = [[DirectionViewController alloc] init];
+                viewController.delegate = self;
                 [self.viewController presentViewController:viewController
                                                   animated:YES
                                                 completion:nil];
@@ -3704,4 +3705,22 @@ static NSString * const DisplayLinkPanning    = @"Panning";
     }
 }
 
+#pragma mark - DirectionViewControllerDelegate
+
+- (void)directionViewControllerDidDetermineDirection:(NSString *)direction {
+    if (direction.length == 0) {
+        // Ignore emmpty directions, and don't change the old value.
+    } else if (_editorLayer.selectedPrimary == nil) {
+        // Without something selected, there's no need to update anything.
+        // TODO: Should we maybe create a node here? Or just don't offer the action?
+    } else {
+        // Update the object's tags.
+        OsmBaseObject *object = _editorLayer.selectedPrimary;
+        NSMutableDictionary *tags = [object.tags mutableCopy];
+        [tags setObject:direction forKey:@"direction"];
+        [_editorLayer.mapData setTags:tags forObject:object];
+    }
+}
+
 @end
+
