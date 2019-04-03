@@ -1437,29 +1437,46 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(void)setLocating:(BOOL)locating
 {
-    if ( _locating == locating )
-        return;
-    _locating = locating;
-    
-    if ( locating ) {
-        
-        CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-        if ( status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied ) {
-            NSString * appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-            NSString * title = [NSString stringWithFormat:NSLocalizedString(@"Turn On Location Services to Allow %@ to Determine Your Location",nil),appName];
-            [self showAlert:title message:nil];
-            self.gpsState = GPS_STATE_NONE;
-            return;
-        }
-        
-        // ios 8 and later:
-        if ( [_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] ) {
-            [_locationManager requestWhenInUseAuthorization];
-        }
-        
-        self.userOverrodeLocationPosition    = NO;
-        self.userOverrodeLocationZoom        = NO;
-        [_locationManager startUpdatingLocation];
+	if ( _locating == locating )
+		return;
+	_locating = locating;
+
+	if ( locating ) {
+		
+		CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+		if ( status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied ) {
+			NSString * appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+			NSString * title = [NSString stringWithFormat:NSLocalizedString(@"Turn On Location Services to Allow %@ to Determine Your Location",nil),appName];
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                     message:nil
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okayAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil)
+                                                                 style:UIAlertActionStyleCancel
+                                                               handler:nil];
+            UIAlertAction *openSettings = [UIAlertAction actionWithTitle:NSLocalizedString(@"Open Settings",nil)
+                                                                 style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                                     [self openAppSettings];
+                                                                 }];
+            
+            [alertController addAction:openSettings];
+            [alertController addAction:okayAction];
+            
+            [self.viewController presentViewController:alertController animated:YES completion:nil];
+            
+			self.gpsState = GPS_STATE_NONE;
+			return;
+		}
+
+		// ios 8 and later:
+		if ( [_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] ) {
+			[_locationManager requestWhenInUseAuthorization];
+		}
+
+		self.userOverrodeLocationPosition	= NO;
+		self.userOverrodeLocationZoom		= NO;
+		[_locationManager startUpdatingLocation];
 #if TARGET_OS_IPHONE
         [_locationManager startUpdatingHeading];
 #endif
@@ -1470,6 +1487,13 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 #endif
         [_locationBallLayer removeFromSuperlayer];
         _locationBallLayer = nil;
+    }
+}
+
+- (void)openAppSettings {
+    NSURL *openSettingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    if (openSettingsURL) {
+        [[UIApplication sharedApplication] openURL:openSettingsURL];
     }
 }
 
