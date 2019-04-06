@@ -308,41 +308,41 @@ static const CGFloat Z_FLASH            = 110;
     }
     _locationManager.activityType = CLActivityTypeOther;
 #endif
-    
-    // set up action button
-    _editControl.hidden = YES;
-    _editControl.selected = NO;
-    _editControl.selectedSegmentIndex = UISegmentedControlNoSegment;
-    [_editControl setTitleTextAttributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] }
-                                forState:UIControlStateNormal];
-    _editControl.layer.zPosition = Z_TOOLBAR;
-    
-    // long press for selecting from multiple objects
-    UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-    longPress.delegate = self;
-    [self addGestureRecognizer:longPress];
-    
-    // two-finger rotation
-    UIRotationGestureRecognizer * rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGesture:)];
-    rotationGesture.delegate = self;
-    [self addGestureRecognizer:rotationGesture];
-    
-    // long-press on + for adding nodes via taps
-    _addNodeButtonLongPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addNodeButtonLongPressHandler:)];
-    _addNodeButtonLongPressGestureRecognizer.minimumPressDuration = 0.001;
-    _addNodeButtonLongPressGestureRecognizer.delegate = self;
-    [self.addNodeButton addGestureRecognizer:_addNodeButtonLongPressGestureRecognizer];
-    
-    _notesDatabase            = [OsmNotesDatabase new];
-    _notesDatabase.mapData    = _editorLayer.mapData;
-    _notesViewDict            = [NSMutableDictionary new];
-    
-    // make help button have rounded corners
-    _helpButton.layer.cornerRadius = 10.0;
-    
-    // observe changes to aerial visibility so we can show/hide bing logo
-    [_aerialLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
-    [_editorLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
+
+	// set up action button
+	_editControl.hidden = YES;
+	_editControl.selected = NO;
+	_editControl.selectedSegmentIndex = UISegmentedControlNoSegment;
+	[_editControl setTitleTextAttributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] }
+									   forState:UIControlStateNormal];
+	_editControl.layer.zPosition = Z_TOOLBAR;
+
+	// long press for selecting from multiple objects
+	UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+	longPress.delegate = self;
+	[self addGestureRecognizer:longPress];
+
+	// two-finger rotation
+	UIRotationGestureRecognizer * rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGesture:)];
+	rotationGesture.delegate = self;
+	[self addGestureRecognizer:rotationGesture];
+
+	// long-press on + for adding nodes via taps
+	_addNodeButtonLongPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addNodeButtonLongPressHandler:)];
+	_addNodeButtonLongPressGestureRecognizer.minimumPressDuration = 0.001;
+	_addNodeButtonLongPressGestureRecognizer.delegate = self;
+	[self.addNodeButton addGestureRecognizer:_addNodeButtonLongPressGestureRecognizer];
+
+	_notesDatabase			= [OsmNotesDatabase new];
+	_notesDatabase.mapData	= _editorLayer.mapData;
+	_notesViewDict			= [NSMutableDictionary new];
+
+	// make help button have rounded corners
+	_helpButton.layer.cornerRadius = _helpButton.bounds.size.width / 2;
+
+	// observe changes to aerial visibility so we can show/hide bing logo
+	[_aerialLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
+	[_editorLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
 #if !TARGET_OS_IPHONE
     [self.window setAcceptsMouseMovedEvents:YES];
 #endif
