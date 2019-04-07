@@ -25,23 +25,23 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+	[super viewWillAppear:animated];
 
-    AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-    OsmBaseObject * selection = appDelegate.mapView.editorLayer.selectedPrimary;
-    self.selection = selection;
-    self.keyValueDict = [NSMutableDictionary new];
-    self.relationList = [NSMutableArray new];
-    if ( selection ) {
-        [selection.tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL *stop) {
-            [_keyValueDict setObject:obj forKey:key];
-        }];
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	OsmBaseObject * selection = appDelegate.mapView.editorLayer.selectedPrimary;
+	self.selection = selection;
+	self.relationList = [NSMutableArray new];
+	if ( selection && !self.keyValueDict ) {
+        self.keyValueDict = [NSMutableDictionary new];
+		[selection.tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL *stop) {
+			[_keyValueDict setObject:obj forKey:key];
+		}];
 
-        self.relationList = [selection.parentRelations mutableCopy];
-    }
+		self.relationList = [selection.parentRelations mutableCopy];
+	}
 
-    NSInteger tabIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"POITabIndex"];
-    self.selectedIndex = tabIndex;
+	NSInteger tabIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"POITabIndex"];
+	self.selectedIndex = tabIndex;
     
     [self updatePOIAttributesTabBarItemVisibilityWithSelectedObject:selection];
 }
