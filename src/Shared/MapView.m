@@ -72,7 +72,7 @@ static const CGFloat Z_FLASH            = 110;
 
 
 
-@interface MapView () <DirectionViewControllerDelegate>
+@interface MapView ()
 @property (strong,nonatomic) IBOutlet UIView	*	statusBarBackground;
 @end
 
@@ -3720,42 +3720,6 @@ static NSString * const DisplayLinkPanning    = @"Panning";
             // if they later try to drag this way ask them if they really wanted to
             _confirmDrag = (_editorLayer.selectedPrimary.modifyCount == 0);
         }
-    }
-}
-
-#pragma mark - DirectionViewControllerDelegate
-
-- (void)directionViewControllerDidUpdateTagWithKey:(NSString *)key value:(NSString *)value {
-    if (value.length == 0) {
-        // Ignore emmpty values - keep the current one.
-    } else if (_editorLayer.selectedPrimary == nil) {
-        // Without something selected, there's no need to update anything.
-    } else {
-        // Update the object's tags.
-        OsmBaseObject *object = _editorLayer.selectedPrimary;
-        NSMutableDictionary *tags = [object.tags mutableCopy];
-        [tags setObject:value forKey:key];
-        [_editorLayer.mapData setTags:tags forObject:object];
-        
-        NSString *messageWithPlaceholders = NSLocalizedString(@"'%@' updated",
-                                                              @"Message that is displayed when a tag was successfully updated");
-        [self flashMessage:[NSString stringWithFormat:messageWithPlaceholders, key]
-                  duration:1.0];
-    }
-}
-
-- (void)presentViewControllerForMeasuringHeight {
-    if ( self.gpsState == GPS_STATE_NONE ) {
-        NSString *errorMessage = NSLocalizedString(@"This action requires GPS to be turned on",nil);
-        
-        [self showAlert:errorMessage message:nil];
-    } else if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusDenied) {
-        NSString *title = NSLocalizedString(@"Unable to access the camera", "");
-        NSString *message = NSLocalizedString(@"In order to measure height, please enable camera access in the app's settings.", "");
-        
-        [self askUserToOpenSettingsWithAlertTitle:title message:message];
-    } else {
-        [self.viewController performSegueWithIdentifier:@"CalculateHeightSegue" sender:nil];
     }
 }
 
