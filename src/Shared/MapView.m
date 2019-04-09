@@ -3724,4 +3724,3 @@ static NSString * const DisplayLinkPanning    = @"Panning";
 }
 
 @end
-
