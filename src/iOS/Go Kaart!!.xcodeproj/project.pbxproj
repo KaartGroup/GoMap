@@ -493,21 +493,18 @@
 		02F9A4551BC8348C0013BFBD /* OSM-Logo256.png in Resources */ = {isa = PBXBuildFile; fileRef = 02F9A4541BC8348C0013BFBD /* OSM-Logo256.png */; };
 		02FFCE0B16A7360B001A5B8A /* NSMutableArray+PartialSort.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		64348CED225E7CD900ADE7FB /* GoMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CEC225E7CD900ADE7FB /* GoMapTests.swift */; };
-		64348CFB225E867800ADE7FB /* HeadingProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CF7225E867800ADE7FB /* HeadingProviderMock.swift */; };
-		64348CFC225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CF8225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift */; };
-		64348CFD225E867800ADE7FB /* CLHeadingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CF9225E867800ADE7FB /* CLHeadingMock.swift */; };
-		64348CFE225E867800ADE7FB /* MeasureDirectionViewModelTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CFA225E867800ADE7FB /* MeasureDirectionViewModelTestCase.swift */; };
-		6442666722540EDF00C0D545 /* Lock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6442666422540EDF00C0D545 /* Lock.swift */; };
-		6442666822540EDF00C0D545 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6442666522540EDF00C0D545 /* Disposable.swift */; };
-		6442666922540EDF00C0D545 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6442666622540EDF00C0D545 /* Observable.swift */; };
-		647F46CE2253EA4C00CEC482 /* MeasureDirectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647F46CD2253EA4C00CEC482 /* MeasureDirectionViewModel.swift */; };
-		647F46D12253F08200CEC482 /* HeadingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647F46D02253F08200CEC482 /* HeadingProvider.swift */; };
-		64D74BF32253DF49004FFD20 /* DirectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D74BF12253DF49004FFD20 /* DirectionViewController.swift */; };
-		64D74BF42253DF49004FFD20 /* DirectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64D74BF22253DF49004FFD20 /* DirectionViewController.xib */; };
+		64348D0B225EA24E00ADE7FB /* GoMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348D0A225EA24E00ADE7FB /* GoMapUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		64348CEF225E7CD900ADE7FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02ACBA2616713CCB00BB4414 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 02ACBA2E16713CCB00BB4414;
+			remoteInfo = "Go Map!!";
+		};
+		64348D0D225EA24E00ADE7FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 02ACBA2616713CCB00BB4414 /* Project object */;
 			proxyType = 1;
@@ -1096,17 +1093,9 @@
 		64348CEA225E7CD900ADE7FB /* GoMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64348CEC225E7CD900ADE7FB /* GoMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoMapTests.swift; sourceTree = "<group>"; };
 		64348CEE225E7CD900ADE7FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		64348CF7225E867800ADE7FB /* HeadingProviderMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeadingProviderMock.swift; sourceTree = "<group>"; };
-		64348CF8225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDirectionViewModelDelegateMock.swift; sourceTree = "<group>"; };
-		64348CF9225E867800ADE7FB /* CLHeadingMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLHeadingMock.swift; sourceTree = "<group>"; };
-		64348CFA225E867800ADE7FB /* MeasureDirectionViewModelTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDirectionViewModelTestCase.swift; sourceTree = "<group>"; };
-		6442666422540EDF00C0D545 /* Lock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lock.swift; sourceTree = "<group>"; };
-		6442666522540EDF00C0D545 /* Disposable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
-		6442666622540EDF00C0D545 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		647F46CD2253EA4C00CEC482 /* MeasureDirectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureDirectionViewModel.swift; sourceTree = "<group>"; };
-		647F46D02253F08200CEC482 /* HeadingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingProvider.swift; sourceTree = "<group>"; };
-		64D74BF12253DF49004FFD20 /* DirectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionViewController.swift; sourceTree = "<group>"; };
-		64D74BF22253DF49004FFD20 /* DirectionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DirectionViewController.xib; sourceTree = "<group>"; };
+		64348D08225EA24E00ADE7FB /* GoMapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		64348D0A225EA24E00ADE7FB /* GoMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoMapUITests.swift; sourceTree = "<group>"; };
+		64348D0C225EA24E00ADE7FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1133,6 +1122,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		64348CE7225E7CD900ADE7FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		64348D05225EA24E00ADE7FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1291,6 +1287,7 @@
 				02BACD22205A1DDB00C74A49 /* Go Map!!.entitlements */,
 				02ACBA3916713CCB00BB4414 /* Go Map! */,
 				64348CEB225E7CD900ADE7FB /* GoMapTests */,
+				64348D09225EA24E00ADE7FB /* GoMapUITests */,
 				02ACBA3216713CCB00BB4414 /* Frameworks */,
 				02ACBA3016713CCB00BB4414 /* Products */,
 			);
@@ -1301,6 +1298,7 @@
 			children = (
 				02ACBA2F16713CCB00BB4414 /* Go Map!!.app */,
 				64348CEA225E7CD900ADE7FB /* GoMapTests.xctest */,
+				64348D08225EA24E00ADE7FB /* GoMapUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1853,36 +1851,13 @@
 			path = GoMapTests;
 			sourceTree = "<group>";
 		};
-		64348CF6225E867800ADE7FB /* Mocks */ = {
+		64348D09225EA24E00ADE7FB /* GoMapUITests */ = {
 			isa = PBXGroup;
 			children = (
-				64348CF7225E867800ADE7FB /* HeadingProviderMock.swift */,
-				64348CF8225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift */,
-				64348CF9225E867800ADE7FB /* CLHeadingMock.swift */,
+				64348D0A225EA24E00ADE7FB /* GoMapUITests.swift */,
+				64348D0C225EA24E00ADE7FB /* Info.plist */,
 			);
-			path = Mocks;
-			sourceTree = "<group>";
-		};
-		6442666322540EDF00C0D545 /* Observable */ = {
-			isa = PBXGroup;
-			children = (
-				6442666422540EDF00C0D545 /* Lock.swift */,
-				6442666522540EDF00C0D545 /* Disposable.swift */,
-				6442666622540EDF00C0D545 /* Observable.swift */,
-			);
-			name = Observable;
-			path = ../Shared/Observable;
-			sourceTree = "<group>";
-		};
-		64D74BF02253DF39004FFD20 /* Direction */ = {
-			isa = PBXGroup;
-			children = (
-				647F46CD2253EA4C00CEC482 /* MeasureDirectionViewModel.swift */,
-				64D74BF12253DF49004FFD20 /* DirectionViewController.swift */,
-				64D74BF22253DF49004FFD20 /* DirectionViewController.xib */,
-				647F46D02253F08200CEC482 /* HeadingProvider.swift */,
-			);
-			path = Direction;
+			path = GoMapUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1923,6 +1898,24 @@
 			productReference = 64348CEA225E7CD900ADE7FB /* GoMapTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		64348D07225EA24E00ADE7FB /* GoMapUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 64348D0F225EA24E00ADE7FB /* Build configuration list for PBXNativeTarget "GoMapUITests" */;
+			buildPhases = (
+				64348D04225EA24E00ADE7FB /* Sources */,
+				64348D05225EA24E00ADE7FB /* Frameworks */,
+				64348D06225EA24E00ADE7FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				64348D0E225EA24E00ADE7FB /* PBXTargetDependency */,
+			);
+			name = GoMapUITests;
+			productName = GoMapUITests;
+			productReference = 64348D08225EA24E00ADE7FB /* GoMapUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1946,6 +1939,11 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 02ACBA2E16713CCB00BB4414;
 					};
+					64348D07225EA24E00ADE7FB = {
+						CreatedOnToolsVersion = 10.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 02ACBA2E16713CCB00BB4414;
+					};
 				};
 			};
 			buildConfigurationList = 02ACBA2916713CCB00BB4414 /* Build configuration list for PBXProject "Go Kaart!!" */;
@@ -1965,6 +1963,7 @@
 			targets = (
 				02ACBA2E16713CCB00BB4414 /* Go Map!! */,
 				64348CE9225E7CD900ADE7FB /* GoMapTests */,
+				64348D07225EA24E00ADE7FB /* GoMapUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -2386,6 +2385,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		64348D06225EA24E00ADE7FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2491,6 +2497,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		64348D04225EA24E00ADE7FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64348D0B225EA24E00ADE7FB /* GoMapUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2498,6 +2512,11 @@
 			isa = PBXTargetDependency;
 			target = 02ACBA2E16713CCB00BB4414 /* Go Map!! */;
 			targetProxy = 64348CEF225E7CD900ADE7FB /* PBXContainerItemProxy */;
+		};
+		64348D0E225EA24E00ADE7FB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 02ACBA2E16713CCB00BB4414 /* Go Map!! */;
+			targetProxy = 64348D0D225EA24E00ADE7FB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2758,6 +2777,75 @@
 			};
 			name = Release;
 		};
+		64348D10225EA24E00ADE7FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = GoMapUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Go Map!!";
+			};
+			name = Debug;
+		};
+		64348D11225EA24E00ADE7FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = GoMapUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Go Map!!";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2784,6 +2872,15 @@
 			buildConfigurations = (
 				64348CF1225E7CD900ADE7FB /* Debug */,
 				64348CF2225E7CD900ADE7FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		64348D0F225EA24E00ADE7FB /* Build configuration list for PBXNativeTarget "GoMapUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64348D10225EA24E00ADE7FB /* Debug */,
+				64348D11225EA24E00ADE7FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
