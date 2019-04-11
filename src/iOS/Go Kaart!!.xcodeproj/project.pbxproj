@@ -1851,6 +1851,37 @@
 			path = GoMapTests;
 			sourceTree = "<group>";
 		};
+		64348CF6225E867800ADE7FB /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				64348CF7225E867800ADE7FB /* HeadingProviderMock.swift */,
+				64348CF8225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift */,
+				64348CF9225E867800ADE7FB /* CLHeadingMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		6442666322540EDF00C0D545 /* Observable */ = {
+			isa = PBXGroup;
+			children = (
+				6442666422540EDF00C0D545 /* Lock.swift */,
+				6442666522540EDF00C0D545 /* Disposable.swift */,
+				6442666622540EDF00C0D545 /* Observable.swift */,
+			);
+			name = Observable;
+			path = ../Shared/Observable;
+			sourceTree = "<group>";
+		};
+		64D74BF02253DF39004FFD20 /* Direction */ = {
+			isa = PBXGroup;
+			children = (
+				647F46CD2253EA4C00CEC482 /* MeasureDirectionViewModel.swift */,
+				64D74BF12253DF49004FFD20 /* DirectionViewController.swift */,
+				64D74BF22253DF49004FFD20 /* DirectionViewController.xib */,
+				647F46D02253F08200CEC482 /* HeadingProvider.swift */,
+			);
+			path = Direction;
+		};
 		64348D09225EA24E00ADE7FB /* GoMapUITests */ = {
 			isa = PBXGroup;
 			children = (
