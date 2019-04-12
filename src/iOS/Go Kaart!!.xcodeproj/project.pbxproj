@@ -1921,7 +1921,7 @@
 				64348D00225E8D3F00ADE7FB /* OsmNode+Direction.swift */,
 			);
 			path = Direction;
-			sourceTree = "<unknown>";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
