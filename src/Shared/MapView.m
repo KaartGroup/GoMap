@@ -16,6 +16,7 @@
 #import "DisplayLink.h"
 #import "DLog.h"
 #import "EditorMapLayer.h"
+#import "EnhancedHwyEditorController.h"
 #import "FpsLabel.h"
 #import "GpxLayer.h"
 #import "HtmlAlertViewController.h"
@@ -413,6 +414,7 @@ const CGFloat kEditControlCornerRadius = 4;
     self.enableUnnamedRoadHalo    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableUnnamedRoadHalo"];
     self.enableGpxLogging        = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBreadCrumb"];
     self.enableTurnRestriction    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableTurnRestriction"];
+    self.enableEnhancedHwyEditor = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableEnhancedHwyEditor"];
     
     // get current location
     double scale        = [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.scale"];
@@ -515,6 +517,9 @@ const CGFloat kEditControlCornerRadius = 4;
     [[NSUserDefaults standardUserDefaults] setBool:self.enableUnnamedRoadHalo    forKey:@"mapViewEnableUnnamedRoadHalo"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableGpxLogging        forKey:@"mapViewEnableBreadCrumb"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableTurnRestriction    forKey:@"mapViewEnableTurnRestriction"];
+    [[NSUserDefaults standardUserDefaults]
+        setBool:self.enableEnhancedHwyEditor
+        forKey:@"mapViewEnableEnhancedHwyEditor"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableAutomaticCacheManagement    forKey:@"automaticCacheManagement"];
     
     [[NSUserDefaults standardUserDefaults] setObject:_countryCodeForLocation     forKey:@"countryCodeForLocation"];
@@ -1018,6 +1023,13 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
         _enableTurnRestriction = enableTurnRestriction;
         [_editorLayer.mapData clearCachedProperties];    // reset layers associated with objects
         [_editorLayer setNeedsLayout];
+    }
+}
+
+-(void)setEnableEnhancedHwyEditor:(BOOL)enableEnhancedHwyEditor
+{
+    if ( _enableEnhancedHwyEditor != enableEnhancedHwyEditor) {
+        _enableEnhancedHwyEditor = enableEnhancedHwyEditor;
     }
 }
 #pragma mark Coordinate Transforms
@@ -1953,6 +1965,37 @@ static NSString * const DisplayLinkHeading    = @"Heading";
 #pragma mark Key presses
 
 /**
+ Offers the option to either merge tags or replace them with the copied tags.
+ @param sender nil
+ */
+-(IBAction)paste:(id)sender
+{
+    NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
+    if ( copyPasteTags.count == 0 ) {
+        [self showAlert:NSLocalizedString(@"No tags to paste",nil) message:nil];
+        return;
+    }
+    
+    if ( _editorLayer.selectedPrimary.tags.count > 0 ) {
+        NSString * question = [NSString stringWithFormat:@"Pasting %lu tag(s)", copyPasteTags.count];
+        UIAlertController * alertPaste = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Paste",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
+        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
+        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Merge Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
+            [_editorLayer mergeTags:_editorLayer.selectedPrimary];
+            [self refreshPushpinText];
+        }]];
+        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Replace Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
+            [_editorLayer replaceTags:_editorLayer.selectedPrimary];
+            [self refreshPushpinText];
+        }]];
+        [self.viewController presentViewController:alertPaste animated:YES completion:nil];
+    } else {
+        [_editorLayer replaceTags:_editorLayer.selectedPrimary];
+        [self refreshPushpinText];
+    }
+}
+
+/**
  Offers the option to copy all tags, copy the name, or copy name and classification
  in the case of a highway
  @param sender nil
@@ -2071,51 +2114,51 @@ static NSString * const DisplayLinkHeading    = @"Heading";
 #pragma mark Edit Actions
 
 typedef enum {
-	// used by edit control:
-	ACTION_EDITTAGS,
-	ACTION_ADDNOTE,
-	ACTION_DELETE,
-	ACTION_MORE,
-	// used for action sheet edits:
-	ACTION_SPLIT,
-	ACTION_RECTANGULARIZE,
-	ACTION_STRAIGHTEN,
-	ACTION_REVERSE,
-	ACTION_DUPLICATE,
-	ACTION_ROTATE,
-	ACTION_JOIN,
-	ACTION_DISCONNECT,
-	ACTION_CIRCULARIZE,
-	ACTION_HEIGHT,
-	ACTION_COPYTAGS,
-	ACTION_PASTETAGS,
-	ACTION_RESTRICT,
-	ACTION_CREATE_RELATION
+    // used by edit control:
+    ACTION_EDITTAGS,
+    ACTION_ADDNOTE,
+    ACTION_DELETE,
+    ACTION_MORE,
+    // used for action sheet edits:
+    ACTION_SPLIT,
+    ACTION_RECTANGULARIZE,
+    ACTION_STRAIGHTEN,
+    ACTION_REVERSE,
+    ACTION_DUPLICATE,
+    ACTION_ROTATE,
+    ACTION_JOIN,
+    ACTION_DISCONNECT,
+    ACTION_CIRCULARIZE,
+    ACTION_HEIGHT,
+    ACTION_COPYTAGS,
+    ACTION_PASTETAGS,
+    ACTION_RESTRICT,
+    ACTION_CREATE_RELATION,
 } EDIT_ACTION;
 
 NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 {
-	switch (action) {
-		case ACTION_SPLIT:			return NSLocalizedString(@"Split",nil);
-		case ACTION_RECTANGULARIZE:	return NSLocalizedString(@"Make Rectangular",nil);
-		case ACTION_STRAIGHTEN:		return NSLocalizedString(@"Straighten",nil);
-		case ACTION_REVERSE:		return NSLocalizedString(@"Reverse",nil);
-		case ACTION_DUPLICATE:		return NSLocalizedString(@"Duplicate",nil);
-		case ACTION_ROTATE:			return NSLocalizedString(@"Rotate",nil);
-		case ACTION_CIRCULARIZE:	return NSLocalizedString(@"Make Circular",nil);
-		case ACTION_JOIN:			return NSLocalizedString(@"Join",nil);
-		case ACTION_DISCONNECT:		return NSLocalizedString(@"Disconnect",nil);
-		case ACTION_COPYTAGS:		return NSLocalizedString(@"Copy Tags",nil);
-		case ACTION_PASTETAGS:		return NSLocalizedString(@"Paste",nil);
-		case ACTION_EDITTAGS:		return NSLocalizedString(@"Tags", nil);
-		case ACTION_ADDNOTE:		return NSLocalizedString(@"Add Note", nil);
-		case ACTION_DELETE:			return NSLocalizedString(@"Delete",nil);
-		case ACTION_MORE:			return NSLocalizedString(@"More...",nil);
-		case ACTION_HEIGHT:			return NSLocalizedString(@"Measure Height", nil);
-		case ACTION_RESTRICT:		return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
-		case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
-	};
-	return nil;
+    switch (action) {
+        case ACTION_SPLIT:            return NSLocalizedString(@"Split",nil);
+        case ACTION_RECTANGULARIZE:    return NSLocalizedString(@"Make Rectangular",nil);
+        case ACTION_STRAIGHTEN:        return NSLocalizedString(@"Straighten",nil);
+        case ACTION_REVERSE:        return NSLocalizedString(@"Reverse",nil);
+        case ACTION_DUPLICATE:        return NSLocalizedString(@"Duplicate",nil);
+        case ACTION_ROTATE:            return NSLocalizedString(@"Rotate",nil);
+        case ACTION_CIRCULARIZE:    return NSLocalizedString(@"Make Circular",nil);
+        case ACTION_JOIN:            return NSLocalizedString(@"Join",nil);
+        case ACTION_DISCONNECT:        return NSLocalizedString(@"Disconnect",nil);
+        case ACTION_COPYTAGS:        return NSLocalizedString(@"Copy Tags",nil);
+        case ACTION_PASTETAGS:        return NSLocalizedString(@"Paste",nil);
+        case ACTION_EDITTAGS:        return NSLocalizedString(@"Tags", nil);
+        case ACTION_ADDNOTE:        return NSLocalizedString(@"Add Note", nil);
+        case ACTION_DELETE:            return NSLocalizedString(@"Delete",nil);
+        case ACTION_MORE:            return NSLocalizedString(@"More...",nil);
+        case ACTION_HEIGHT:            return NSLocalizedString(@"Measure Height", nil);
+        case ACTION_RESTRICT:        return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
+        case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
+    };
+    return nil;
 }
 
 - (void)updateEditControl
@@ -2129,17 +2172,17 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
         if ( _editorLayer.selectedPrimary == nil ) {
             // brand new node
             if ( _editorLayer.canPasteTags )
-                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS) ];
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
             else
                 self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
         } else {
             if ( _editorLayer.selectedPrimary.isRelation )
                 if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS), @(ACTION_RESTRICT) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
                 else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
                 else
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS),  @(ACTION_REPLACETAGS) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
                 else {
                     if (_editorLayer.selectedNode && split)
                         if(restriction)
@@ -2148,15 +2191,15 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
                             self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_DELETE), @(ACTION_SPLIT), @(ACTION_MORE)];
                         else
                             if (restriction)
-                                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
+                                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
                             else
                                 if (!_editorLayer.selectedWay.isClosed && _editorLayer.selectedWay.isOneWay)
                                     if ( [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", nil]] ||  [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", @"highway", nil]])
-                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
                                     else
-                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
                                 else
-                                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS),  @(ACTION_REPLACETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
+                                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
                 }
         }
         [_editControl removeAllSegments];
@@ -2206,107 +2249,107 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
             BOOL join             = parentWays.count > 1;
             //            BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
             
-			if ( disconnect )
-				[a addObject:@(ACTION_DISCONNECT)];
-			if ( split )
-				[a addObject:@(ACTION_SPLIT)];
-			if ( join )
-				[a addObject:@(ACTION_JOIN)];
-			[a addObject:@(ACTION_ROTATE)];
-			if ( restriction )
-				[a addObject:@(ACTION_RESTRICT)];
-			[a addObject:@(ACTION_HEIGHT)];
-			actionList = [NSArray arrayWithArray:a];
-		} else {
-			if ( _editorLayer.selectedWay.isClosed ) {
-				// polygon
-				actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE), @(ACTION_CREATE_RELATION) ];
-			} else {
-				// line
-				actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE), @(ACTION_CREATE_RELATION) ];
-			}
-		}
-	} else if ( _editorLayer.selectedNode ) {
-		// node
-		actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
-	} else if ( _editorLayer.selectedRelation ) {
-		// relation
-		if ( _editorLayer.selectedRelation.isMultipolygon ) {
-			actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
-		} else {
-			actionList = @[ @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
-		}
-	} else {
-		// nothing selected
-		return;
-	}
-	UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-	for ( NSNumber * value in actionList ) {
-		NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
-		[actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-			[self performEditAction:(EDIT_ACTION)value.integerValue];
-		}]];
-	}
-	[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-	[self.viewController presentViewController:actionSheet animated:YES completion:nil];
-
-	// compute location for action sheet to originate
-	CGRect button = self.editControl.bounds;
-	CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;	// hack because we can't get the frame for an individual segment
-	button.origin.x += button.size.width - segmentWidth;
-	button.size.width = segmentWidth;
-	actionSheet.popoverPresentationController.sourceView = self.editControl;
-	actionSheet.popoverPresentationController.sourceRect = button;
+            NSMutableArray * a = [NSMutableArray arrayWithObjects:@(ACTION_COPYTAGS), nil];
+            if ( disconnect )
+                [a addObject:@(ACTION_DISCONNECT)];
+            //            if ( split )
+            //                [a addObject:@(ACTION_SPLIT)];
+            if ( join )
+                [a addObject:@(ACTION_JOIN)];
+            [a addObject:@(ACTION_ROTATE)];
+            //            if ( restriction )
+            //                [a addObject:@(ACTION_RESTRICT)];
+            //            [a addObject:@(ACTION_HEIGHT)];
+            actionList = [NSArray arrayWithArray:a];
+        } else {
+            if ( _editorLayer.selectedWay.isClosed ) {
+                // polygon
+                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE) ];
+            } else {
+                // line
+                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE) ];
+            }
+        }
+    } else if ( _editorLayer.selectedNode ) {
+        // node
+        actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
+    } else if ( _editorLayer.selectedRelation ) {
+        // relation
+        if ( _editorLayer.selectedRelation.isMultipolygon ) {
+            actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
+        } else {
+            actionList = @[ @(ACTION_COPYTAGS) ];
+        }
+    } else {
+        // nothing selected
+        return;
+    }
+    UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    for ( NSNumber * value in actionList ) {
+        NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
+        [actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+            [self performEditAction: (EDIT_ACTION)value.integerValue];
+        }]];
+    }
+    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
+    [self.viewController presentViewController:actionSheet animated:YES completion:nil];
+    // compute location for action sheet to originate
+    CGRect button = self.editControl.bounds;
+    CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;    // hack because we can't get the frame for an individual segment
+    button.origin.x += button.size.width - segmentWidth;
+    button.size.width = segmentWidth;
+    actionSheet.popoverPresentationController.sourceView = self.editControl;
+    actionSheet.popoverPresentationController.sourceRect = button;
 }
 
 
 -(IBAction)editControlAction:(id)sender
 {
-	// get the selected button: has to be done before modifying the node/way selection
-	UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
-	NSInteger segment = segmentedControl.selectedSegmentIndex;
-
-	if ( segment < _editControlActions.count ) {
-		NSNumber * actionNum = _editControlActions[ segment ];
-		EDIT_ACTION action = (EDIT_ACTION)actionNum.integerValue;
-
-		// if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-		switch ( action ) {
-			case ACTION_RECTANGULARIZE:
-			case ACTION_STRAIGHTEN:
-			case ACTION_REVERSE:
-			case ACTION_DUPLICATE:
-			case ACTION_ROTATE:
-			case ACTION_CIRCULARIZE:
-			case ACTION_COPYTAGS:
-			case ACTION_PASTETAGS:
-			case ACTION_EDITTAGS:
-			case ACTION_CREATE_RELATION:
-				if ( self.editorLayer.selectedWay &&
-					self.editorLayer.selectedNode &&
-					self.editorLayer.selectedNode.tags.count == 0 &&
-					self.editorLayer.selectedWay.tags.count == 0 &&
-					!self.editorLayer.selectedWay.isMultipolygonMember )
-				{
-					// promote the selection to the way
-					self.editorLayer.selectedNode = nil;
-					[self refreshPushpinText];
-				}
-				break;
-			case ACTION_SPLIT:
-			case ACTION_JOIN:
-			case ACTION_DISCONNECT:
-			case ACTION_RESTRICT:
-			case ACTION_ADDNOTE:
-			case ACTION_DELETE:
-			case ACTION_MORE:
-			case ACTION_HEIGHT:
-				break;
-		}
-
-		[self performEditAction:action];
-	}
-	segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
+    // get the selected button: has to be done before modifying the node/way selection
+    UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
+    NSInteger segment = segmentedControl.selectedSegmentIndex;
+    
+    if ( segment < _editControlActions.count ) {
+        NSNumber * actionNum = _editControlActions[ segment ];
+        EDIT_ACTION action = (EDIT_ACTION)actionNum.integerValue;
+        
+        // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
+        switch ( action ) {
+            case ACTION_RECTANGULARIZE:
+            case ACTION_STRAIGHTEN:
+            case ACTION_REVERSE:
+            case ACTION_DUPLICATE:
+            case ACTION_ROTATE:
+            case ACTION_CIRCULARIZE:
+            case ACTION_COPYTAGS:
+            case ACTION_PASTETAGS:
+            case ACTION_EDITTAGS:
+            case ACTION_CREATE_RELATION:
+                if ( self.editorLayer.selectedWay &&
+                    self.editorLayer.selectedNode &&
+                    self.editorLayer.selectedNode.tags.count == 0 &&
+                    self.editorLayer.selectedWay.tags.count == 0 &&
+                    !self.editorLayer.selectedWay.isMultipolygonMember )
+                {
+                    // promote the selection to the way
+                    self.editorLayer.selectedNode = nil;
+                    [self refreshPushpinText];
+                }
+                break;
+            case ACTION_SPLIT:
+            case ACTION_JOIN:
+            case ACTION_DISCONNECT:
+            case ACTION_RESTRICT:
+            case ACTION_ADDNOTE:
+            case ACTION_DELETE:
+            case ACTION_MORE:
+            case ACTION_HEIGHT:
+                break;
+        }
+        
+        [self performEditAction:action];
+    }
+    segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
 }
 
 -(void)performEditAction:(EDIT_ACTION)action
@@ -2314,8 +2357,10 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	NSString * error = nil;
 	switch (action) {
 		case ACTION_COPYTAGS:
-			if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
-				error = NSLocalizedString(@"The object does contain any tags",nil);
+//            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
+//                error = NSLocalizedString(@"The object does contain any tags",nil);
+            [self copy:nil];
+            break;
 			break;
 		case ACTION_PASTETAGS:
 			if ( _editorLayer.selectedPrimary == nil ) {
@@ -2482,6 +2527,28 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
     [self.viewController performSegueWithIdentifier:@"poiSegue" sender:nil];
 }
 
+
+// Enhanced Highway Editor modal
+-(void)presentEnhancedHwyEditor:(CGPoint) point
+{
+    void (^showEnhancedHwyEditor)(void) = ^{
+        EnhancedHwyEditorController * myVc = [_viewController.storyboard instantiateViewControllerWithIdentifier:@"EnhancedHwyEditorController"];
+        myVc.parentViewCenter        = CGRectCenter(self.layer.bounds);
+        myVc.screenFromMapTransform = _screenFromMapTransform;
+        myVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [_viewController presentViewController:myVc animated:YES completion:nil];
+        
+        
+        // if GPS is running don't keep moving around
+        self.userOverrodeLocationPosition = YES;
+        
+        // scroll view so intersection stays visible
+        CGPoint delta = { 415 - point.x, 180 - point.y };
+        [self adjustOriginBy:delta];
+        
+    };
+    showEnhancedHwyEditor();
+}
 
 // Turn restriction panel
 -(void)restrictOptionSelected
@@ -3707,6 +3774,10 @@ static NSString * const DisplayLinkPanning    = @"Panning";
             _editorLayer.selectedNode = nil;
             _editorLayer.selectedWay = nil;
             _editorLayer.selectedRelation = nil;
+        }
+        
+        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay ) {
+            [self presentEnhancedHwyEditor: point];
         }
     }
     
