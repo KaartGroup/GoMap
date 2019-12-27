@@ -212,6 +212,9 @@ typedef enum {
 @property (assign,nonatomic)	BOOL							enableGpxLogging;
 @property (assign,nonatomic)	BOOL							enableTurnRestriction;
 @property (assign,nonatomic)	BOOL							enableAutomaticCacheManagement;
+@property
+    (assign, nonatomic) BOOL
+    enableEnhancedHwyEditor;
 
 @property (assign,nonatomic)	BOOL							automatedFramerateTestActive;
 
@@ -276,6 +279,8 @@ typedef enum {
 -(IBAction)undo:(id)sender;
 -(IBAction)redo:(id)sender;
 -(void)performEditAction:(EDIT_ACTION)action;
+
+-(IBAction)editControlAction:(id)sender;
 
 #if TARGET_OS_IPHONE
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)pan;

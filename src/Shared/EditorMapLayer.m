@@ -26,7 +26,7 @@
 #import "SpeechBalloonLayer.h"
 #import "RenderInfo.h"
 #import "VectorMath.h"
-#import "Go_Map__-Swift.h"
+#import "Go_Kaart__-Swift.h"
 
 #define FADE_INOUT			0
 #define SINGLE_SIDED_WALLS	1
@@ -3080,11 +3080,10 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 - (void)pasteTagsMerge:(OsmBaseObject *)object
 {
     // Merge tags
-	NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
-	NSDictionary * newTags = MergeTags(object.tags, copyPasteTags, YES);
-	[self.mapData setTags:newTags forObject:object];
-	[self setNeedsLayout];
-    return YES;
+    NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
+    NSDictionary * newTags = MergeTags(object.tags, copyPasteTags, YES);
+    [self.mapData setTags:newTags forObject:object];
+    [self setNeedsLayout];
 }
 - (void)pasteTagsReplace:(OsmBaseObject *)object
 {

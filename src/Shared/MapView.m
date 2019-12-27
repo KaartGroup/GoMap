@@ -16,6 +16,7 @@
 #import "DisplayLink.h"
 #import "DLog.h"
 #import "EditorMapLayer.h"
+#import "EnhancedHwyEditorController.h"
 #import "FpsLabel.h"
 #import "GpxLayer.h"
 #import "MapView.h"
@@ -800,6 +801,7 @@ const CGFloat kEditControlCornerRadius = 4;
     self.enableUnnamedRoadHalo    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableUnnamedRoadHalo"];
     self.enableGpxLogging        = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBreadCrumb"];
     self.enableTurnRestriction    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableTurnRestriction"];
+    self.enableEnhancedHwyEditor = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableEnhancedHwyEditor"];
     
     // get current location
     double scale        = [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.scale"];
@@ -936,6 +938,9 @@ const CGFloat kEditControlCornerRadius = 4;
     [[NSUserDefaults standardUserDefaults] setBool:self.enableUnnamedRoadHalo    forKey:@"mapViewEnableUnnamedRoadHalo"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableGpxLogging        forKey:@"mapViewEnableBreadCrumb"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableTurnRestriction    forKey:@"mapViewEnableTurnRestriction"];
+    [[NSUserDefaults standardUserDefaults]
+        setBool:self.enableEnhancedHwyEditor
+        forKey:@"mapViewEnableEnhancedHwyEditor"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableAutomaticCacheManagement    forKey:@"automaticCacheManagement"];
     
     [[NSUserDefaults standardUserDefaults] setObject:_countryCodeForLocation     forKey:@"countryCodeForLocation"];
@@ -1685,6 +1690,17 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		[_editorLayer setNeedsLayout];
 	}
 }
+<<<<<<< HEAD
+=======
+
+-(void)setEnableEnhancedHwyEditor:(BOOL)enableEnhancedHwyEditor
+{
+    if ( _enableEnhancedHwyEditor != enableEnhancedHwyEditor) {
+        _enableEnhancedHwyEditor = enableEnhancedHwyEditor;
+    }
+}
+#pragma mark Coordinate Transforms
+>>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 
 
 #pragma mark Coordinate Transforms
@@ -2998,6 +3014,9 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 
 /**
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
  Offers the option to either merge tags or replace them with the copied tags.
  @param sender nil
  */
@@ -3005,6 +3024,7 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 {
     NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
     if ( copyPasteTags.count == 0 ) {
+<<<<<<< HEAD
 		[self showAlert:NSLocalizedString(@"No tags to paste",nil) message:nil];
 		return;
     }
@@ -3027,6 +3047,32 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 		[self refreshPushpinText];
 	}
 =======
+=======
+        [self showAlert:NSLocalizedString(@"No tags to paste",nil) message:nil];
+        return;
+    }
+    
+    if ( _editorLayer.selectedPrimary.tags.count > 0 ) {
+        NSString * question = [NSString stringWithFormat:@"Pasting %lu tag(s)", copyPasteTags.count];
+        UIAlertController * alertPaste = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Paste",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
+        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
+        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Merge Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
+            [_editorLayer mergeTags:_editorLayer.selectedPrimary];
+            [self refreshPushpinText];
+        }]];
+        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Replace Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
+            [_editorLayer replaceTags:_editorLayer.selectedPrimary];
+            [self refreshPushpinText];
+        }]];
+        [self.viewController presentViewController:alertPaste animated:YES completion:nil];
+    } else {
+        [_editorLayer replaceTags:_editorLayer.selectedPrimary];
+        [self refreshPushpinText];
+    }
+}
+
+/**
+>>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
  Offers the option to copy all tags, copy the name, or copy name and classification
  in the case of a highway
  @param sender nil
@@ -3200,6 +3246,7 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 
 #pragma mark Edit Actions
 
+<<<<<<< HEAD
 NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 {
 	switch (action) {
@@ -3222,6 +3269,54 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 		case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", @"Edit action");
 	};
 	return nil;
+=======
+typedef enum {
+    // used by edit control:
+    ACTION_EDITTAGS,
+    ACTION_ADDNOTE,
+    ACTION_DELETE,
+    ACTION_MORE,
+    // used for action sheet edits:
+    ACTION_SPLIT,
+    ACTION_RECTANGULARIZE,
+    ACTION_STRAIGHTEN,
+    ACTION_REVERSE,
+    ACTION_DUPLICATE,
+    ACTION_ROTATE,
+    ACTION_JOIN,
+    ACTION_DISCONNECT,
+    ACTION_CIRCULARIZE,
+    ACTION_HEIGHT,
+    ACTION_COPYTAGS,
+    ACTION_PASTETAGS,
+    ACTION_RESTRICT,
+    ACTION_CREATE_RELATION,
+} EDIT_ACTION;
+
+NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
+{
+    switch (action) {
+        case ACTION_SPLIT:            return NSLocalizedString(@"Split",nil);
+        case ACTION_RECTANGULARIZE:    return NSLocalizedString(@"Make Rectangular",nil);
+        case ACTION_STRAIGHTEN:        return NSLocalizedString(@"Straighten",nil);
+        case ACTION_REVERSE:        return NSLocalizedString(@"Reverse",nil);
+        case ACTION_DUPLICATE:        return NSLocalizedString(@"Duplicate",nil);
+        case ACTION_ROTATE:            return NSLocalizedString(@"Rotate",nil);
+        case ACTION_CIRCULARIZE:    return NSLocalizedString(@"Make Circular",nil);
+        case ACTION_JOIN:            return NSLocalizedString(@"Join",nil);
+        case ACTION_DISCONNECT:        return NSLocalizedString(@"Disconnect",nil);
+        case ACTION_COPYTAGS:        return NSLocalizedString(@"Copy Tags",nil);
+        case ACTION_PASTETAGS:        return NSLocalizedString(@"Paste",nil);
+        case ACTION_EDITTAGS:        return NSLocalizedString(@"Tags", nil);
+        case ACTION_ADDNOTE:        return NSLocalizedString(@"Add Note", nil);
+        case ACTION_DELETE:            return NSLocalizedString(@"Delete",nil);
+        case ACTION_MORE:            return NSLocalizedString(@"More...",nil);
+        case ACTION_HEIGHT:            return NSLocalizedString(@"Measure Height", nil);
+        case ACTION_RESTRICT:        return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
+        case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
+    };
+    return nil;
+>>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 }
 
 - (void)updateEditControl
@@ -3271,17 +3366,17 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
         if ( _editorLayer.selectedPrimary == nil ) {
             // brand new node
             if ( _editorLayer.canPasteTags )
-                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS) ];
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
             else
                 self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
         } else {
             if ( _editorLayer.selectedPrimary.isRelation )
                 if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS), @(ACTION_RESTRICT) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
                 else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
                 else
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS),  @(ACTION_REPLACETAGS) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
                 else {
                     if (_editorLayer.selectedNode && split)
                         if(restriction)
@@ -3290,15 +3385,15 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
                             self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_DELETE), @(ACTION_SPLIT), @(ACTION_MORE)];
                         else
                             if (restriction)
-                                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REPLACETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
+                                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
                             else
                                 if (!_editorLayer.selectedWay.isClosed && _editorLayer.selectedWay.isOneWay)
                                     if ( [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", nil]] ||  [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", @"highway", nil]])
-                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
                                     else
-                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_REPLACETAGS), @(ACTION_MORE) ];
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
                                 else
-                                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS),  @(ACTION_REPLACETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
+                                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
                 }
         }
         [_editControl removeAllSegments];
@@ -3494,6 +3589,7 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
     button.size.width = segmentWidth;
     actionSheet.popoverPresentationController.sourceView = self.editControl;
     actionSheet.popoverPresentationController.sourceRect = button;
+<<<<<<< HEAD
     
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -3631,6 +3727,8 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
     //    actionSheet.popoverPresentationController.sourceView = self.editControl;
     //    actionSheet.popoverPresentationController.sourceRect = button;
 >>>>>>> eba9e17d... added replace tag edit options to main edit controls
+=======
+>>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 }
 
 
@@ -3665,7 +3763,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
             case ACTION_CIRCULARIZE:
             case ACTION_COPYTAGS:
             case ACTION_PASTETAGS:
-            case ACTION_REPLACETAGS:
             case ACTION_EDITTAGS:
             case ACTION_CREATE_RELATION:
                 if ( self.editorLayer.selectedWay &&
@@ -3735,8 +3832,15 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	NSString * error = nil;
 	switch (action) {
 		case ACTION_COPYTAGS:
+<<<<<<< HEAD
 			if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
 				error = NSLocalizedString(@"The object does not contain any tags",nil);
+=======
+//            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
+//                error = NSLocalizedString(@"The object does contain any tags",nil);
+            [self copy:nil];
+            break;
+>>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 			break;
 		case ACTION_PASTETAGS:
 			if ( _editorLayer.selectedPrimary == nil ) {
@@ -4096,6 +4200,28 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	[self.mainViewController performSegueWithIdentifier:@"poiSegue" sender:nil];
 }
 
+
+// Enhanced Highway Editor modal
+-(void)presentEnhancedHwyEditor:(CGPoint) point
+{
+    void (^showEnhancedHwyEditor)(void) = ^{
+        EnhancedHwyEditorController * myVc = [_viewController.storyboard instantiateViewControllerWithIdentifier:@"EnhancedHwyEditorController"];
+        myVc.parentViewCenter        = CGRectCenter(self.layer.bounds);
+        myVc.screenFromMapTransform = _screenFromMapTransform;
+        myVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [_viewController presentViewController:myVc animated:YES completion:nil];
+        
+        
+        // if GPS is running don't keep moving around
+        self.userOverrodeLocationPosition = YES;
+        
+        // scroll view so intersection stays visible
+        CGPoint delta = { 415 - point.x, 180 - point.y };
+        [self adjustOriginBy:delta];
+        
+    };
+    showEnhancedHwyEditor();
+}
 
 // Turn restriction panel
 -(void)restrictOptionSelected
@@ -6444,6 +6570,10 @@ static NSString * const DisplayLinkPanning	= @"Panning";
             _editorLayer.selectedNode = nil;
             _editorLayer.selectedWay = nil;
             _editorLayer.selectedRelation = nil;
+        }
+        
+        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay ) {
+            [self presentEnhancedHwyEditor: point];
         }
     }
     
