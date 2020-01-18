@@ -9,5 +9,4 @@
 #import "AppDelegate.h"
 #import "OsmMapData.h"
 #import "SettingsViewController.h"
-#import "GeoURLParser.h"
-#import "URLParserResult.h"
+#import "OsmNode.h"
