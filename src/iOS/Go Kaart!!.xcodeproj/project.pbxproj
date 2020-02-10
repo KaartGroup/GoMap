@@ -2030,7 +2030,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Bryce;
 				TargetAttributes = {
 					02ACBA2E16713CCB00BB4414 = {
@@ -2760,6 +2760,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2968,7 +2969,7 @@
 				02ACBA6016713CCB00BB4414 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		02ACBA6116713CCB00BB4414 /* Build configuration list for PBXNativeTarget "Go Kaart!!" */ = {
 			isa = XCConfigurationList;
@@ -2977,7 +2978,7 @@
 				02ACBA6316713CCB00BB4414 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		64348CF3225E7CD900ADE7FB /* Build configuration list for PBXNativeTarget "GoMapTests" */ = {
 			isa = XCConfigurationList;
@@ -2986,7 +2987,7 @@
 				64348CF2225E7CD900ADE7FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		64348D0F225EA24E00ADE7FB /* Build configuration list for PBXNativeTarget "GoMapUITests" */ = {
 			isa = XCConfigurationList;
@@ -2995,7 +2996,7 @@
 				64348D11225EA24E00ADE7FB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

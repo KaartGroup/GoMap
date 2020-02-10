@@ -315,8 +315,11 @@ const CGFloat kEditControlCornerRadius = 4;
 	_editControl.hidden = YES;
 	_editControl.selected = NO;
 	_editControl.selectedSegmentIndex = UISegmentedControlNoSegment;
-	[_editControl setTitleTextAttributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] }
-									   forState:UIControlStateNormal];
+    [_editControl setTitleTextAttributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+//                                            NSBackgroundColorAttributeName: [UIColor blackColor],
+                                            NSForegroundColorAttributeName: [UIColor whiteColor]
+    }									   forState:UIControlStateNormal];
+    
 	_editControl.layer.zPosition = Z_TOOLBAR;
     _editControl.layer.cornerRadius = kEditControlCornerRadius;
 
@@ -3776,7 +3779,7 @@ static NSString * const DisplayLinkPanning    = @"Panning";
             _editorLayer.selectedRelation = nil;
         }
         
-        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay ) {
+        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay.tags[@"highway"] ) {
             [self presentEnhancedHwyEditor: point];
         }
     }
