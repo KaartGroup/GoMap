@@ -14,7 +14,6 @@
 @class Buildings3DView;
 @class OsmMapData;
 @class OsmRenderInfo;
-@class MapCSS;
 @class MapView;
 @class OsmBaseObject;
 @class OsmNode;
@@ -35,8 +34,7 @@ extern const double MinIconSizeInPixels;
     CGSize                    _iconSize;
     double                    _highwayScale;
 
-    MapCSS                *    _mapCss;
-    NSMutableSet        *    _nameDrawSet;
+	NSMutableSet		*	_nameDrawSet;
 
     NSMutableArray        *    _shownObjects;
     NSMutableSet        *    _fadingOutSet;
@@ -100,7 +98,7 @@ extern const double MinIconSizeInPixels;
 - (BOOL)copyTags:(OsmBaseObject *)object;
 - (BOOL)copyName:(OsmBaseObject *)object;
 - (BOOL)copyNameAndClass:(OsmBaseObject *)object;
-- (BOOL)pasteTags:(OsmBaseObject *)object;
+- (BOOL)mergeTags:(OsmBaseObject *)object;
 - (BOOL)canPasteTags;
 - (BOOL)replaceTags:(OsmBaseObject *)object;
 
