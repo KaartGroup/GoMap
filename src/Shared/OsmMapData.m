@@ -170,10 +170,18 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 	[appDelegate.mapView save];	// this will also invalidate the timer
 }
 
-+(NSSet *)tagsToAutomaticallyStrip
+
+
+-(OSMRect)rootRect
+{
+	return _spatial.rootQuad.rect;
+}
+
+
++(NSSet<NSString *> *)tagsToAutomaticallyStrip
 {
 	static dispatch_once_t onceToken;
-	static NSSet * s_ignoreSet = nil;
+	static NSSet<NSString *> * s_ignoreSet = nil;
 	dispatch_once(&onceToken, ^{
 		s_ignoreSet = [NSSet setWithObjects:
 				@"tiger:upload_uuid", @"tiger:tlid", @"tiger:source", @"tiger:separated",
