@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <deployment version="2304" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,15 +17,17 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Changes:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ArV-4u-j7D">
-                                <rect key="frame" x="20" y="167" width="72.5" height="20.5"/>
+                                <rect key="frame" x="20" y="210.5" width="72.5" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5dY-nN-L0Q">
-                                <rect key="frame" x="141.5" y="159" width="37" height="37"/>
-                                <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </activityIndicatorView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" text="Source:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yZR-tZ-66S">
+                                <rect key="frame" x="20" y="172.5" width="59" height="21"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Lorem ipsum dolor sit er elit lamet," translatesAutoresizingMaskIntoConstraints="NO" id="Plh-7W-ceY">
                                 <rect key="frame" x="20" y="76" width="280" height="80"/>
                                 <constraints>
@@ -39,7 +41,7 @@
                                 </connections>
                             </textView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Lorem ipsum dolor sit er elit lamet," translatesAutoresizingMaskIntoConstraints="NO" id="BAY-7z-hwv">
-                                <rect key="frame" x="20" y="188.5" width="280" height="271.5"/>
+                                <rect key="frame" x="20" y="232" width="280" height="228"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
@@ -48,7 +50,7 @@
                                 </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rqu-ny-n3F">
-                                <rect key="frame" x="267" y="161" width="33" height="33"/>
+                                <rect key="frame" x="267" y="204.5" width="33" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <state key="normal" title="Mail">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -64,35 +66,49 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hcE-yO-3eH">
-                                <rect key="frame" x="227" y="161" width="32" height="33"/>
+                                <rect key="frame" x="227" y="204.5" width="32" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
                                     <action selector="editXml:" destination="JiF-ZR-a9h" eventType="touchUpInside" id="t0c-pQ-J4p"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5dY-nN-L0Q">
+                                <rect key="frame" x="141.5" y="202.5" width="37" height="37"/>
+                                <color key="color" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="survey, Bing, etc." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ps9-Hb-Vow">
+                                <rect key="frame" x="87" y="166" width="213" height="34"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="yid-is-wtA" firstAttribute="centerX" secondItem="5dM-Q8-dhs" secondAttribute="centerX" id="5hG-7u-g8m"/>
-                            <constraint firstItem="QPt-FF-gvf" firstAttribute="centerY" secondItem="vil-di-LsT" secondAttribute="centerY" id="5uC-1L-Vex"/>
-                            <constraint firstItem="APb-r0-HpA" firstAttribute="leading" secondItem="yid-is-wtA" secondAttribute="leading" constant="20" id="FoI-m2-LXL"/>
-                            <constraint firstItem="yid-is-wtA" firstAttribute="bottom" secondItem="2Ah-L8-Njz" secondAttribute="bottom" constant="20" id="JIi-jh-2M2"/>
-                            <constraint firstItem="5dM-Q8-dhs" firstAttribute="centerY" secondItem="Sh6-Y0-XmB" secondAttribute="centerY" id="KUE-1f-KN3"/>
-                            <constraint firstItem="Sh6-Y0-XmB" firstAttribute="top" secondItem="ZMj-dl-mn4" secondAttribute="bottom" constant="11" id="Kdk-9X-8c1"/>
-                            <constraint firstItem="QPt-FF-gvf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Sh6-Y0-XmB" secondAttribute="trailing" constant="6" id="NDk-zy-3DA"/>
-                            <constraint firstItem="ZMj-dl-mn4" firstAttribute="top" secondItem="APb-r0-HpA" secondAttribute="bottom" constant="3" id="Shi-Mv-5kY"/>
-                            <constraint firstItem="APb-r0-HpA" firstAttribute="top" secondItem="yid-is-wtA" secondAttribute="top" constant="8" id="VZZ-4e-5qm"/>
-                            <constraint firstItem="yid-is-wtA" firstAttribute="trailing" secondItem="vil-di-LsT" secondAttribute="trailing" constant="20" id="fgA-xu-ga7"/>
-                            <constraint firstItem="vil-di-LsT" firstAttribute="leading" secondItem="QPt-FF-gvf" secondAttribute="trailing" constant="8" symbolic="YES" id="gcB-Zf-mgr"/>
-                            <constraint firstItem="QPt-FF-gvf" firstAttribute="centerY" secondItem="Sh6-Y0-XmB" secondAttribute="centerY" id="hW6-aX-Hn3"/>
-                            <constraint firstItem="2Ah-L8-Njz" firstAttribute="top" secondItem="Sh6-Y0-XmB" secondAttribute="bottom" constant="1" id="hmr-Iw-6Ym"/>
-                            <constraint firstItem="Sh6-Y0-XmB" firstAttribute="leading" secondItem="yid-is-wtA" secondAttribute="leading" constant="20" id="iRb-Tm-Orw"/>
-                            <constraint firstItem="yid-is-wtA" firstAttribute="trailing" secondItem="ZMj-dl-mn4" secondAttribute="trailing" constant="20" id="jPG-S7-Ecw"/>
-                            <constraint firstItem="ZMj-dl-mn4" firstAttribute="leading" secondItem="yid-is-wtA" secondAttribute="leading" constant="20" id="kxV-8i-fQp"/>
-                            <constraint firstItem="2Ah-L8-Njz" firstAttribute="leading" secondItem="yid-is-wtA" secondAttribute="leading" constant="20" id="v8i-Vk-Gie"/>
-                            <constraint firstItem="yid-is-wtA" firstAttribute="trailing" secondItem="APb-r0-HpA" secondAttribute="trailing" constant="20" id="vFO-lR-jrr"/>
-                            <constraint firstItem="yid-is-wtA" firstAttribute="trailing" secondItem="2Ah-L8-Njz" secondAttribute="trailing" constant="20" id="wQL-pt-hUl"/>
+                            <constraint firstItem="ikj-u9-9Bn" firstAttribute="top" secondItem="INz-E8-qwF" secondAttribute="top" constant="8" id="0Q8-Tr-JWb"/>
+                            <constraint firstItem="INz-E8-qwF" firstAttribute="trailing" secondItem="Plh-7W-ceY" secondAttribute="trailing" constant="20" id="2T2-8i-5ha"/>
+                            <constraint firstItem="hcE-yO-3eH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ArV-4u-j7D" secondAttribute="trailing" constant="6" id="6hn-zr-Dgk"/>
+                            <constraint firstItem="Plh-7W-ceY" firstAttribute="top" secondItem="ikj-u9-9Bn" secondAttribute="bottom" constant="3" id="88j-Jc-KHo"/>
+                            <constraint firstItem="ikj-u9-9Bn" firstAttribute="leading" secondItem="INz-E8-qwF" secondAttribute="leading" constant="20" id="8t6-SN-3gb"/>
+                            <constraint firstItem="Plh-7W-ceY" firstAttribute="leading" secondItem="INz-E8-qwF" secondAttribute="leading" constant="20" id="EOT-P1-WgA"/>
+                            <constraint firstItem="hcE-yO-3eH" firstAttribute="centerY" secondItem="ArV-4u-j7D" secondAttribute="centerY" id="F6O-jM-uVV"/>
+                            <constraint firstItem="INz-E8-qwF" firstAttribute="bottom" secondItem="BAY-7z-hwv" secondAttribute="bottom" constant="20" id="J3o-wq-fUA"/>
+                            <constraint firstItem="ArV-4u-j7D" firstAttribute="leading" secondItem="INz-E8-qwF" secondAttribute="leading" constant="20" id="NnM-lh-Khs"/>
+                            <constraint firstItem="yZR-tZ-66S" firstAttribute="leading" secondItem="INz-E8-qwF" secondAttribute="leading" constant="20" id="RWR-Rc-AiT"/>
+                            <constraint firstItem="yZR-tZ-66S" firstAttribute="top" secondItem="Plh-7W-ceY" secondAttribute="bottom" constant="16.5" id="ce3-iT-y9l"/>
+                            <constraint firstItem="INz-E8-qwF" firstAttribute="trailing" secondItem="ps9-Hb-Vow" secondAttribute="trailing" constant="20" id="eVH-fL-AbL"/>
+                            <constraint firstItem="INz-E8-qwF" firstAttribute="centerX" secondItem="5dY-nN-L0Q" secondAttribute="centerX" id="h9Q-uE-hlJ"/>
+                            <constraint firstItem="ArV-4u-j7D" firstAttribute="top" secondItem="yZR-tZ-66S" secondAttribute="bottom" constant="17" id="h9b-C7-frq"/>
+                            <constraint firstItem="Rqu-ny-n3F" firstAttribute="leading" secondItem="hcE-yO-3eH" secondAttribute="trailing" constant="8" symbolic="YES" id="kJc-ia-hSI"/>
+                            <constraint firstItem="BAY-7z-hwv" firstAttribute="top" secondItem="ArV-4u-j7D" secondAttribute="bottom" constant="1" id="mmB-6B-FsM"/>
+                            <constraint firstItem="INz-E8-qwF" firstAttribute="trailing" secondItem="ikj-u9-9Bn" secondAttribute="trailing" constant="20" id="nYc-nI-dCx"/>
+                            <constraint firstItem="INz-E8-qwF" firstAttribute="trailing" secondItem="BAY-7z-hwv" secondAttribute="trailing" constant="20" id="nZG-oD-c05"/>
+                            <constraint firstItem="yZR-tZ-66S" firstAttribute="centerY" secondItem="ps9-Hb-Vow" secondAttribute="centerY" id="pjr-wU-fQT"/>
+                            <constraint firstItem="5dY-nN-L0Q" firstAttribute="centerY" secondItem="ArV-4u-j7D" secondAttribute="centerY" id="s3p-pv-EdG"/>
+                            <constraint firstItem="INz-E8-qwF" firstAttribute="trailing" secondItem="Rqu-ny-n3F" secondAttribute="trailing" constant="20" id="vyg-Jq-gsU"/>
+                            <constraint firstItem="BAY-7z-hwv" firstAttribute="leading" secondItem="INz-E8-qwF" secondAttribute="leading" constant="20" id="xzQ-5Q-cXb"/>
+                            <constraint firstItem="ps9-Hb-Vow" firstAttribute="leading" secondItem="yZR-tZ-66S" secondAttribute="trailing" constant="8" id="ySj-lc-PTS"/>
+                            <constraint firstItem="hcE-yO-3eH" firstAttribute="centerY" secondItem="Rqu-ny-n3F" secondAttribute="centerY" id="yeu-fG-kZO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="yid-is-wtA"/>
                     </view>
@@ -109,19 +125,20 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="_cancelButton" destination="6u9-vL-wOC" id="6PY-xt-HW5"/>
-                        <outlet property="_commentTextView" destination="ZMj-dl-mn4" id="UVr-Yq-d40"/>
-                        <outlet property="_commitButton" destination="obI-r2-tOo" id="GeV-hF-oVT"/>
-                        <outlet property="_editXmlButton" destination="QPt-FF-gvf" id="6MM-is-Ofc"/>
-                        <outlet property="_progressView" destination="5dM-Q8-dhs" id="Fus-wv-b9A"/>
-                        <outlet property="_sendMailButton" destination="vil-di-LsT" id="o9E-KJ-6HS"/>
-                        <outlet property="_xmlTextView" destination="2Ah-L8-Njz" id="NaF-Lb-44t"/>
-                        <segue destination="bhj-s0-pWf" kind="show" identifier="loginSegue" id="dks-8r-fMp"/>
+                        <outlet property="_cancelButton" destination="7h0-9d-GKW" id="BlW-gr-TNN"/>
+                        <outlet property="_commentTextView" destination="Plh-7W-ceY" id="22W-4p-EdY"/>
+                        <outlet property="_commitButton" destination="feW-AK-msn" id="hjt-Ym-rce"/>
+                        <outlet property="_editXmlButton" destination="hcE-yO-3eH" id="0cb-aV-rer"/>
+                        <outlet property="_progressView" destination="5dY-nN-L0Q" id="oUC-Wd-haC"/>
+                        <outlet property="_sendMailButton" destination="Rqu-ny-n3F" id="9Du-qC-2eb"/>
+                        <outlet property="_sourceTextField" destination="ps9-Hb-Vow" id="rqc-fs-juv"/>
+                        <outlet property="_xmlTextView" destination="BAY-7z-hwv" id="Pg3-i0-84f"/>
+                        <segue destination="39g-gA-9XG" kind="push" identifier="loginSegue" id="ffJ-Oy-uSs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L4v-xV-NLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="293" y="1819"/>
+            <point key="canvasLocation" x="-993.75" y="1018.75"/>
         </scene>
         <!--LoginViewController-->
         <scene sceneID="fqc-N9-WPq">
@@ -139,7 +156,7 @@
                 <navigationController storyboardIdentifier="UploadViewController" id="Dby-IV-exS" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="WxD-P4-h5V">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
