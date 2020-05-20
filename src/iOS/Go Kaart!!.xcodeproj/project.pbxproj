@@ -35,16 +35,9 @@
 		022A2A6E167D969700D7A5AC /* ClearCacheViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 022A2A6D167D969600D7A5AC /* ClearCacheViewController.m */; };
 		022B09A719BD3F7B0041687B /* QuadMapC.mm in Sources */ = {isa = PBXBuildFile; fileRef = 022B09A619BD3F7B0041687B /* QuadMapC.mm */; };
 		0230558B19B931B20041B151 /* CustomPresetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0230558A19B931B20041B151 /* CustomPresetController.m */; };
-<<<<<<< HEAD
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 		02354F782462526A00878A04 /* PersistentWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 02354F772462526A00878A04 /* PersistentWebCache.m */; };
 		02354F7A246349E100878A04 /* CurvedGlyphLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02354F79246349E100878A04 /* CurvedGlyphLayer.swift */; };
 		023B892B19C148790060CDB5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 023B892A19C148790060CDB5 /* Images.xcassets */; };
-=======
-		023D1720168A30C00011FABC /* BingLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 023D171F168A30C00011FABC /* BingLogo.png */; };
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
-=======
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 		023D1723168A36B10011FABC /* POIAttributesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 023D1722168A36B10011FABC /* POIAttributesViewController.m */; };
 		02401F361DE021EE00F32AF5 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02401F351DE021EE00F32AF5 /* ExternalAccessory.framework */; };
 		02401F391DE1369E00F32AF5 /* ExternalGPS.m in Sources */ = {isa = PBXBuildFile; fileRef = 02401F381DE1369E00F32AF5 /* ExternalGPS.m */; };
@@ -90,15 +83,8 @@
 		02ACBA3E16713CCB00BB4414 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA3C16713CCB00BB4414 /* InfoPlist.strings */; };
 		02ACBA4016713CCB00BB4414 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 02ACBA3F16713CCB00BB4414 /* main.m */; };
 		02ACBA4416713CCB00BB4414 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 02ACBA4316713CCB00BB4414 /* AppDelegate.m */; };
-<<<<<<< HEAD
 		02ACBA4D16713CCB00BB4414 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA4B16713CCB00BB4414 /* MainStoryboard.storyboard */; };
 		02ACBA5316713CCB00BB4414 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02ACBA5216713CCB00BB4414 /* MainViewController.m */; };
-=======
-		02ACBA4616713CCB00BB4414 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA4516713CCB00BB4414 /* Default.png */; };
-		02ACBA4816713CCB00BB4414 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA4716713CCB00BB4414 /* Default@2x.png */; };
-		02ACBA4A16713CCB00BB4414 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA4916713CCB00BB4414 /* Default-568h@2x.png */; };
-		02ACBA5316713CCB00BB4414 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02ACBA5216713CCB00BB4414 /* MapViewController.m */; };
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
 		02ACBA5A16713CCB00BB4414 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02ACBA5916713CCB00BB4414 /* SettingsViewController.m */; };
 		02ACBBC116713F2B00BB4414 /* changeset.xsl in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA7016713F2A00BB4414 /* changeset.xsl */; };
 		02ACBBC316713F2B00BB4414 /* DownloadThreadPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 02ACBA7416713F2A00BB4414 /* DownloadThreadPool.m */; };
@@ -137,34 +123,15 @@
 		02E626701997168800565D62 /* KeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E6266F1997168800565D62 /* KeyChain.m */; };
 		02E6267219973A0700565D62 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02E6267119973A0700565D62 /* Security.framework */; };
 		02E8436519B39FAD0044AC1D /* OsmNotesDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E8436419B39FAD0044AC1D /* OsmNotesDatabase.m */; };
-<<<<<<< HEAD
 		02ED19811BBF119C00A57CF4 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ED19801BBF119C00A57CF4 /* Launch Screen.storyboard */; };
-=======
-		02E8436F19B407C40044AC1D /* WebPageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 02E8436E19B407C40044AC1D /* WebPageView.xib */; };
-		02E8437C19B4DE510044AC1D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 02E8437E19B4DE510044AC1D /* Localizable.strings */; };
->>>>>>> 3e18952b... Added Kaart's styles
 		02EDCC081683EC2D007F9934 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02EDCC071683EC2D007F9934 /* CFNetwork.framework */; };
 		02F04AD21BC4D3B50044FD95 /* GpxConfigureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F04AD11BC4D3B50044FD95 /* GpxConfigureViewController.m */; };
 		02F373F916822C2C004614D4 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F373F816822C2C004614D4 /* UploadViewController.m */; };
 		02F8F4341696004B002A0820 /* NominatimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F8F4331696004B002A0820 /* NominatimViewController.m */; };
 		02FFCE0B16A7360B001A5B8A /* NSMutableArray+PartialSort.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 		3E49F4B224DFA64800A347BB /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E49F4B124DFA64800A347BB /* RulerView.m */; };
 		64305F7223E7224E00232BB9 /* LocationURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 64305F7123E7224E00232BB9 /* LocationURLParser.m */; };
 		64305F7423E723B200232BB9 /* LocationURLParserTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64305F7323E723B200232BB9 /* LocationURLParserTestCase.swift */; };
-=======
-		26D1047E22BBEA4800E2B493 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26D1047D22BBEA4800E2B493 /* Images.xcassets */; };
-=======
-		0E19F60C240D704300339457 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E19F608240D704300339457 /* MainStoryboard_iPad.storyboard */; };
-		0E19F60D240D704300339457 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E19F60A240D704300339457 /* MainStoryboard.storyboard */; };
-		0ECB35FF240973590063B61B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0ECB35FE240973590063B61B /* Images.xcassets */; };
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
-		26D1048022BBEB7800E2B493 /* TagInfo_Kaart.xml in Resources */ = {isa = PBXBuildFile; fileRef = 26D1047F22BBEB7800E2B493 /* TagInfo_Kaart.xml */; };
-		26D1048B22BC40AD00E2B493 /* EnhancedHwyEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 26D1048A22BC40AD00E2B493 /* EnhancedHwyEditorController.m */; };
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 		64348CED225E7CD900ADE7FB /* GoMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CEC225E7CD900ADE7FB /* GoMapTests.swift */; };
 		64348CFB225E867800ADE7FB /* HeadingProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CF7225E867800ADE7FB /* HeadingProviderMock.swift */; };
 		64348CFC225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64348CF8225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift */; };
@@ -184,33 +151,15 @@
 		6463E3CB23F948FE00E4F6ED /* GeekbenchScoreProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6463E3CA23F948FE00E4F6ED /* GeekbenchScoreProvider.m */; };
 		647F46CE2253EA4C00CEC482 /* MeasureDirectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647F46CD2253EA4C00CEC482 /* MeasureDirectionViewModel.swift */; };
 		647F46D12253F08200CEC482 /* HeadingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 647F46D02253F08200CEC482 /* HeadingProvider.swift */; };
-<<<<<<< HEAD
 		64981F1F22667D7700178476 /* ContactUsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64981F1E22667D7700178476 /* ContactUsViewController.swift */; };
 		64C072FA226227D500598078 /* PresetKeyTagCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C072F9226227D500598078 /* PresetKeyTagCase.swift */; };
-=======
-		64981F1F22667D7700178476 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64981F1E22667D7700178476 /* SettingsViewController.swift */; };
-		64C072FA226227D500598078 /* CommonTagKeyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C072F9226227D500598078 /* CommonTagKeyTestCase.swift */; };
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 		64C072FE22622B9C00598078 /* Require.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64C072FD22622B9C00598078 /* Require.swift */; };
-		64C968452261ED3100351C0C /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64C968442261ED3100351C0C /* Media.xcassets */; };
 		64D74BF32253DF49004FFD20 /* DirectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D74BF12253DF49004FFD20 /* DirectionViewController.swift */; };
 		64D74BF42253DF49004FFD20 /* DirectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64D74BF22253DF49004FFD20 /* DirectionViewController.xib */; };
 		64E21EB322651620004605D7 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21EB222651620004605D7 /* LoginViewController.swift */; };
 		64E21EB522651C06004605D7 /* OSMMapDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21EB422651C06004605D7 /* OSMMapDataTestCase.swift */; };
 		64E21EB822651F2D004605D7 /* XCTestCase+UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21EB722651F2D004605D7 /* XCTestCase+UserDefaults.swift */; };
 		64F59A50240915840093DCDB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F59A4F240915840093DCDB /* MainViewController.swift */; };
-=======
-=======
-		262A4909216CF34800E794E1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 262A4908216CF34800E794E1 /* Launch Screen.storyboard */; };
-		262A490B216CF42F00E794E1 /* TagInfo_Kaart.xml in Resources */ = {isa = PBXBuildFile; fileRef = 262A490A216CF42F00E794E1 /* TagInfo_Kaart.xml */; };
->>>>>>> 3e18952b... Added Kaart's styles
-		26350648216BF445002D3471 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26350647216BF445002D3471 /* Images.xcassets */; };
-		26350652216C0CAC002D3471 /* marioKaart72.png in Resources */ = {isa = PBXBuildFile; fileRef = 2635064D216C0CAB002D3471 /* marioKaart72.png */; };
-		26350653216C0CAC002D3471 /* marioKaart144.png in Resources */ = {isa = PBXBuildFile; fileRef = 2635064E216C0CAB002D3471 /* marioKaart144.png */; };
-		26350654216C0CAC002D3471 /* marioKaart256.png in Resources */ = {isa = PBXBuildFile; fileRef = 2635064F216C0CAC002D3471 /* marioKaart256.png */; };
-		26350655216C0CAC002D3471 /* marioKaart114.png in Resources */ = {isa = PBXBuildFile; fileRef = 26350650216C0CAC002D3471 /* marioKaart114.png */; };
-		26350656216C0CAC002D3471 /* marioKaart57.png in Resources */ = {isa = PBXBuildFile; fileRef = 26350651216C0CAC002D3471 /* marioKaart57.png */; };
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -292,16 +241,9 @@
 		022B09A619BD3F7B0041687B /* QuadMapC.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = QuadMapC.mm; path = ../Shared/QuadMapC.mm; sourceTree = "<group>"; };
 		0230558919B931A50041B151 /* CustomPresetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CustomPresetController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0230558A19B931B20041B151 /* CustomPresetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CustomPresetController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-<<<<<<< HEAD
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 		02354F772462526A00878A04 /* PersistentWebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersistentWebCache.m; path = ../Shared/PersistentWebCache.m; sourceTree = "<group>"; };
 		02354F79246349E100878A04 /* CurvedGlyphLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CurvedGlyphLayer.swift; path = ../Shared/CurvedGlyphLayer.swift; sourceTree = "<group>"; };
 		023B892A19C148790060CDB5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ../Images.xcassets; sourceTree = "<group>"; };
-=======
-		023D171F168A30C00011FABC /* BingLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BingLogo.png; sourceTree = "<group>"; };
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
-=======
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 		023D1721168A36B00011FABC /* POIAttributesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POIAttributesViewController.h; sourceTree = "<group>"; };
 		023D1722168A36B10011FABC /* POIAttributesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POIAttributesViewController.m; sourceTree = "<group>"; };
 		02401F351DE021EE00F32AF5 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
@@ -384,15 +326,9 @@
 		02A194AE19C69701002338DA /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = Database.h; path = ../Shared/Database.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		02A194AF19C69701002338DA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = Database.m; path = ../Shared/Database.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		02A194B119C6A432002338DA /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 		02A41837256A2026005BF1AB /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Height.strings; sourceTree = "<group>"; };
 		02A41838256A2026005BF1AB /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Changeset.strings; sourceTree = "<group>"; };
 		02ACBA2F16713CCB00BB4414 /* Go Map!!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Map!!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-=======
-		02A8613C20A95C16008C465F /* NetworkStatus.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NetworkStatus.m; path = ../Shared/NetworkStatus.m; sourceTree = "<group>"; };
-		02A8613E20A95C2B008C465F /* NetworkStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkStatus.h; path = ../Shared/NetworkStatus.h; sourceTree = "<group>"; };
-		02ACBA2F16713CCB00BB4414 /* Go Kaart!!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Kaart!!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 		02ACBA3316713CCB00BB4414 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		02ACBA3516713CCB00BB4414 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		02ACBA3716713CCB00BB4414 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -521,16 +457,10 @@
 		02E6267119973A0700565D62 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		02E8436019B2F4A20044AC1D /* Go Map!!-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Go Map!!-Bridging-Header.h"; sourceTree = "<group>"; };
 		02E8436319B39FAD0044AC1D /* OsmNotesDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = OsmNotesDatabase.h; path = ../Shared/OsmNotesDatabase.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-<<<<<<< HEAD
 		02E8436419B39FAD0044AC1D /* OsmNotesDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = OsmNotesDatabase.m; path = ../Shared/OsmNotesDatabase.m; sourceTree = "<group>"; };
 		02EC2EA225902E8D00B7B4B9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
 		02EC2EA325902E8D00B7B4B9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/POI.strings"; sourceTree = "<group>"; };
 		02ED19801BBF119C00A57CF4 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-=======
-		02E8436419B39FAD0044AC1D /* OsmNotesDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = OsmNotesDatabase.m; path = ../Shared/OsmNotesDatabase.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		02E8436E19B407C40044AC1D /* WebPageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebPageView.xib; sourceTree = "<group>"; };
-		02E8438219B4DF960044AC1D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
->>>>>>> 3e18952b... Added Kaart's styles
 		02EDCC071683EC2D007F9934 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		02F04AD01BC4D3B50044FD95 /* GpxConfigureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GpxConfigureViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		02F04AD11BC4D3B50044FD95 /* GpxConfigureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GpxConfigureViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -578,25 +508,10 @@
 		02F8F4331696004B002A0820 /* NominatimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NominatimViewController.m; sourceTree = "<group>"; };
 		02FFCE0916A7360B001A5B8A /* NSMutableArray+PartialSort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+PartialSort.h"; path = "../Shared/NSMutableArray+PartialSort.h"; sourceTree = "<group>"; };
 		02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSMutableArray+PartialSort.mm"; path = "../Shared/NSMutableArray+PartialSort.mm"; sourceTree = "<group>"; };
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 		3E49F4B124DFA64800A347BB /* RulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RulerView.m; path = ../Shared/RulerView.m; sourceTree = "<group>"; };
 		64305F7023E7224E00232BB9 /* LocationURLParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationURLParser.h; sourceTree = "<group>"; };
 		64305F7123E7224E00232BB9 /* LocationURLParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationURLParser.m; sourceTree = "<group>"; };
 		64305F7323E723B200232BB9 /* LocationURLParserTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationURLParserTestCase.swift; sourceTree = "<group>"; };
-=======
-		26D1047D22BBEA4800E2B493 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "Go Kaart!!/Images.xcassets"; sourceTree = "<group>"; };
-=======
-		0E19F609240D704300339457 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		0E19F60B240D704300339457 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		0ECB35FE240973590063B61B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		0EE76D60240F21BB00A0AA4D /* EnhancedHwyEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorController.h; sourceTree = "<group>"; };
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
-		26D1047F22BBEB7800E2B493 /* TagInfo_Kaart.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TagInfo_Kaart.xml; path = ../Shared/TagInfo_Kaart.xml; sourceTree = "<group>"; };
-		26D1048A22BC40AD00E2B493 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 		64348CEA225E7CD900ADE7FB /* GoMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GoMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64348CEC225E7CD900ADE7FB /* GoMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoMapTests.swift; sourceTree = "<group>"; };
 		64348CEE225E7CD900ADE7FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -626,33 +541,15 @@
 		6463E3CA23F948FE00E4F6ED /* GeekbenchScoreProvider.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GeekbenchScoreProvider.m; sourceTree = "<group>"; };
 		647F46CD2253EA4C00CEC482 /* MeasureDirectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureDirectionViewModel.swift; sourceTree = "<group>"; };
 		647F46D02253F08200CEC482 /* HeadingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadingProvider.swift; sourceTree = "<group>"; };
-<<<<<<< HEAD
 		64981F1E22667D7700178476 /* ContactUsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsViewController.swift; sourceTree = "<group>"; };
 		64C072F9226227D500598078 /* PresetKeyTagCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetKeyTagCase.swift; sourceTree = "<group>"; };
-=======
-		64981F1E22667D7700178476 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		64C072F9226227D500598078 /* CommonTagKeyTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonTagKeyTestCase.swift; sourceTree = "<group>"; };
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 		64C072FD22622B9C00598078 /* Require.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Require.swift; sourceTree = "<group>"; };
-		64C968442261ED3100351C0C /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		64D74BF12253DF49004FFD20 /* DirectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionViewController.swift; sourceTree = "<group>"; };
 		64D74BF22253DF49004FFD20 /* DirectionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DirectionViewController.xib; sourceTree = "<group>"; };
 		64E21EB222651620004605D7 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		64E21EB422651C06004605D7 /* OSMMapDataTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSMMapDataTestCase.swift; sourceTree = "<group>"; };
 		64E21EB722651F2D004605D7 /* XCTestCase+UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+UserDefaults.swift"; sourceTree = "<group>"; };
 		64F59A4F240915840093DCDB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-=======
-=======
-		262A4908216CF34800E794E1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		262A490A216CF42F00E794E1 /* TagInfo_Kaart.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TagInfo_Kaart.xml; path = ../Shared/TagInfo_Kaart.xml; sourceTree = "<group>"; };
->>>>>>> 3e18952b... Added Kaart's styles
-		26350647216BF445002D3471 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		2635064D216C0CAB002D3471 /* marioKaart72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart72.png; sourceTree = "<group>"; };
-		2635064E216C0CAB002D3471 /* marioKaart144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart144.png; sourceTree = "<group>"; };
-		2635064F216C0CAC002D3471 /* marioKaart256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart256.png; sourceTree = "<group>"; };
-		26350650216C0CAC002D3471 /* marioKaart114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart114.png; sourceTree = "<group>"; };
-		26350651216C0CAC002D3471 /* marioKaart57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marioKaart57.png; sourceTree = "<group>"; };
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -763,7 +660,6 @@
 		02ACBA2416713CCB00BB4414 = {
 			isa = PBXGroup;
 			children = (
-				0ECB35FE240973590063B61B /* Images.xcassets */,
 				02BACD22205A1DDB00C74A49 /* Go Map!!.entitlements */,
 				024E6D2E24CBBCE500E1E2A3 /* apple-app-site-association */,
 				02ACBA3916713CCB00BB4414 /* Go Map! */,
@@ -777,17 +673,9 @@
 		02ACBA3016713CCB00BB4414 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 				02ACBA2F16713CCB00BB4414 /* Go Map!!.app */,
-=======
-				02ACBA2F16713CCB00BB4414 /* Go Kaart!!.app */,
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 				64348CEA225E7CD900ADE7FB /* GoMapTests.xctest */,
 				64348D08225EA24E00ADE7FB /* GoMapUITests.xctest */,
-=======
-				02ACBA2F16713CCB00BB4414 /* Go Kaart!!.app */,
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -856,28 +744,12 @@
 				02BC04E924C6767100BFA5EF /* Height */,
 				027EDC5D206F3EED00D349D6 /* KissXML */,
 				02B69D0E1BF5A66B002605A3 /* LanguageTableViewController.h */,
+				2635064B216C0BEF002D3471 /* Launch Screen.storyboard */,
 				02B69D0F1BF5A66B002605A3 /* LanguageTableViewController.m */,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-				262A4908216CF34800E794E1 /* Launch Screen.storyboard */,
-=======
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
-				02E8437E19B4DE510044AC1D /* Localizable.strings */,
->>>>>>> 3e18952b... Added Kaart's styles
 				029043A11682797A00BE3480 /* LoginViewController.h */,
 				029043A21682797A00BE3480 /* LoginViewController.m */,
-<<<<<<< HEAD
 				02ACBA5116713CCB00BB4414 /* MainViewController.h */,
 				02ACBA5216713CCB00BB4414 /* MainViewController.m */,
-=======
-				0E19F608240D704300339457 /* MainStoryboard_iPad.storyboard */,
-				0E19F60A240D704300339457 /* MainStoryboard.storyboard */,
-				02ACBA5116713CCB00BB4414 /* MapViewController.h */,
-				02ACBA5216713CCB00BB4414 /* MapViewController.m */,
-				022ABC9F20C1AACF002D4977 /* MultilineTableViewCell.h */,
-				022ABCA020C1AACF002D4977 /* MultilineTableViewCell.m */,
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
 				02BED98C168BF87100357B94 /* NearbyMappersViewController.h */,
 				02BED98D168BF87200357B94 /* NearbyMappersViewController.m */,
 				02F8F4321696004B002A0820 /* NominatimViewController.h */,
@@ -909,8 +781,6 @@
 				02ACBA3A16713CCB00BB4414 /* Supporting Files */,
 				028C51E525CB7A23004A88F7 /* TristateButton.swift */,
 				02BF745220793F0A0028ED6A /* TurnRestrictController.h */,
-				0EE76D60240F21BB00A0AA4D /* EnhancedHwyEditorController.h */,
-				26D1048A22BC40AD00E2B493 /* EnhancedHwyEditorController.m */,
 				02BF745320793F0A0028ED6A /* TurnRestrictController.m */,
 				647C150D24268DB7008A9366 /* Upload */,
 				64305F6C23E71F5700232BB9 /* URLParsing */,
@@ -927,21 +797,11 @@
 				02B6BE9B245D19B8004E4DAC /* EsriPlaceholderImage.jpg */,
 				02ACBA3B16713CCB00BB4414 /* Go Map!!-Info.plist */,
 				02ACBA4116713CCB00BB4414 /* Go Map!!-Prefix.pch */,
+				26350647216BF445002D3471 /* Images.xcassets */,
 				02ACBA3C16713CCB00BB4414 /* InfoPlist.strings */,
 				02C3194C250EAED500C5D200 /* Localizable.strings */,
 				02ACBA3F16713CCB00BB4414 /* main.m */,
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 				02AFBF1F245774DC00BE43F4 /* OSM-Logo256.png */,
-=======
-				027FEA3520B13B8000901E9F /* Maki Icons.xcassets */,
-				025A1CFA1690B96E002B60CB /* OSM-Logo57.png */,
-				027A469A1673B251000BE55C /* OSM-Logo72.png */,
-				025A1CFB1690B96E002B60CB /* OSM-Logo114.png */,
-				027A469D1673B257000BE55C /* OSM-Logo144.png */,
-				02F9A4541BC8348C0013BFBD /* OSM-Logo256.png */,
-				022B504716857E5F00E6619A /* OSMiOS.entitlements */,
-				027FEA3720B1ECDA00901E9F /* iD SVG POI.xcassets */,
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1019,18 +879,6 @@
 				02ACBBB716713F2A00BB4414 /* SpeechBalloonLayer.m */,
 				02C4255116796B5800761C54 /* SpeechBalloonView.h */,
 				02C4255216796B5800761C54 /* SpeechBalloonView.m */,
-<<<<<<< HEAD
-=======
-				02ACBD2216717D6F00BB4414 /* TagInfo.h */,
-				02ACBD2316717D7000BB4414 /* TagInfo.m */,
-				02ACBBBA16713F2A00BB4414 /* TagInfo.menu.xml */,
-				26D1047F22BBEB7800E2B493 /* TagInfo_Kaart.xml */,
-				02ACBBBB16713F2A00BB4414 /* TagInfo.xml */,
-<<<<<<< HEAD
-				262A490A216CF42F00E794E1 /* TagInfo_Kaart.xml */,
->>>>>>> 3e18952b... Added Kaart's styles
-=======
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 				025F1CF21BCD9B070097D7FE /* TapAndDragGesture.h */,
 				025F1CF31BCD9B070097D7FE /* TapAndDragGesture.m */,
 				02BF744F20793EE10028ED6A /* TurnRestrictHwyView.h */,
@@ -1201,9 +1049,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		02ACBA2E16713CCB00BB4414 /* Go Kaart!! */ = {
+		02ACBA2E16713CCB00BB4414 /* Go Map!! */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 02ACBA6116713CCB00BB4414 /* Build configuration list for PBXNativeTarget "Go Kaart!!" */;
+			buildConfigurationList = 02ACBA6116713CCB00BB4414 /* Build configuration list for PBXNativeTarget "Go Map!!" */;
 			buildPhases = (
 				02ACBA2B16713CCB00BB4414 /* Sources */,
 				02ACBA2C16713CCB00BB4414 /* Frameworks */,
@@ -1213,7 +1061,7 @@
 			);
 			dependencies = (
 			);
-			name = "Go Kaart!!";
+			name = "Go Map!!";
 			productName = OSMiOS;
 			productReference = 02ACBA2F16713CCB00BB4414 /* Go Kaart!!.app */;
 			productType = "com.apple.product-type.application";
@@ -1261,11 +1109,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-<<<<<<< HEAD
 				LastUpgradeCheck = 1250;
-=======
-				LastUpgradeCheck = 1130;
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
 				ORGANIZATIONNAME = Bryce;
 				TargetAttributes = {
 					02ACBA2E16713CCB00BB4414 = {
@@ -1316,17 +1160,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-<<<<<<< HEAD
-<<<<<<< HEAD
 				02ACBA2E16713CCB00BB4414 /* Go Map!! */,
-=======
-				02ACBA2E16713CCB00BB4414 /* Go Kaart!! */,
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 				64348CE9225E7CD900ADE7FB /* GoMapTests */,
 				64348D07225EA24E00ADE7FB /* GoMapUITests */,
-=======
-				02ACBA2E16713CCB00BB4414 /* Go Kaart!! */,
->>>>>>> c07be430... Updated target to Go Kaart!!
 			);
 		};
 /* End PBXProject section */
@@ -1339,21 +1175,11 @@
 				029A17C8257AB8A70035C6ED /* POI-Icons.xcassets in Resources */,
 				02ACBA3E16713CCB00BB4414 /* InfoPlist.strings in Resources */,
 				028F504719BA2F460093C423 /* presets in Resources */,
-<<<<<<< HEAD
 				02AFBF20245774DC00BE43F4 /* OSM-Logo256.png in Resources */,
 				02AFBF242458C1E800BE43F4 /* BingPlaceholderImage.png in Resources */,
 				02BE6190245D1F9D00E92662 /* EsriPlaceholderImage.jpg in Resources */,
 				02ACBA4D16713CCB00BB4414 /* MainStoryboard.storyboard in Resources */,
-=======
-				02ACBA4816713CCB00BB4414 /* Default@2x.png in Resources */,
-				02DAB7D71BFA4BBC00360AED /* 723-location-arrow-toolbar-selected@3x.png in Resources */,
-				02ACBA4A16713CCB00BB4414 /* Default-568h@2x.png in Resources */,
-				02E8437C19B4DE510044AC1D /* Localizable.strings in Resources */,
-				02ACBBBF16713F2B00BB4414 /* BingPlaceholderImage.png in Resources */,
-				02ACBBC016713F2B00BB4414 /* BlueBall.png in Resources */,
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
 				02ACBBC116713F2B00BB4414 /* changeset.xsl in Resources */,
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 				0291D83724427AFA00F793BE /* Display.storyboard in Resources */,
 				027AB4FA250E9C8000C404CD /* Settings.storyboard in Resources */,
 				64D74BF42253DF49004FFD20 /* DirectionViewController.xib in Resources */,
@@ -1378,398 +1204,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-=======
-				02072AE81BD5E99B00F1CAB4 /* 709-plus-toolbar@3x.png in Resources */,
-				02ACBBCE16713F2B00BB4414 /* accommodation_alpinehut.p.64.png in Resources */,
-				02ACBBCF16713F2B00BB4414 /* accommodation_bed_and_breakfast.p.64.png in Resources */,
-				02ACBBD016713F2B00BB4414 /* accommodation_bed_and_breakfast2.p.64.png in Resources */,
-				02ACBBD116713F2B00BB4414 /* accommodation_camping.p.64.png in Resources */,
-				02ACBBD216713F2B00BB4414 /* accommodation_caravan_park.p.64.png in Resources */,
-				02ACBBD316713F2B00BB4414 /* accommodation_chalet.p.64.png in Resources */,
-				02ACBBD416713F2B00BB4414 /* accommodation_chalet2.p.64.png in Resources */,
-				02ACBBD516713F2B00BB4414 /* accommodation_hostel.p.64.png in Resources */,
-				02ACBBD616713F2B00BB4414 /* accommodation_hotel.p.64.png in Resources */,
-				02ACBBD716713F2B00BB4414 /* accommodation_hotel2.p.64.png in Resources */,
-				02ACBBD816713F2B00BB4414 /* accommodation_motel.p.64.png in Resources */,
-				02ACBBD916713F2B00BB4414 /* accommodation_shelter.p.64.png in Resources */,
-				02ACBBDA16713F2B00BB4414 /* accommodation_shelter2.p.64.png in Resources */,
-				02ACBBDB16713F2B00BB4414 /* accommodation_youth_hostel.p.64.png in Resources */,
-				02ACBBDC16713F2B00BB4414 /* amenity_bench.p.64.png in Resources */,
-				02ACBBDD16713F2B00BB4414 /* amenity_court.p.64.png in Resources */,
-				02ACBBDE16713F2B00BB4414 /* amenity_firestation.p.64.png in Resources */,
-				02ACBBDF16713F2B00BB4414 /* amenity_firestation2.p.64.png in Resources */,
-				02ACBBE016713F2B00BB4414 /* amenity_firestation3.p.64.png in Resources */,
-				02ACBBE116713F2B00BB4414 /* amenity_fountain.p.64.png in Resources */,
-				02ACBBE216713F2B00BB4414 /* amenity_fountain2.p.64.png in Resources */,
-				02ACBBE316713F2B00BB4414 /* amenity_library.p.64.png in Resources */,
-				02ACBBE416713F2B00BB4414 /* amenity_library2.p.64.png in Resources */,
-				02ACBBE516713F2B00BB4414 /* amenity_playground.p.64.png in Resources */,
-				02ACBBE616713F2B00BB4414 /* amenity_police.p.64.png in Resources */,
-				02ACBBE716713F2B00BB4414 /* amenity_police2.p.64.png in Resources */,
-				02ACBBE816713F2B00BB4414 /* amenity_post_box.p.64.png in Resources */,
-				02ACBBE916713F2B00BB4414 /* amenity_post_office.p.64.png in Resources */,
-				02ACBBEA16713F2B00BB4414 /* amenity_prison.p.64.png in Resources */,
-				02ACBBEB16713F2B00BB4414 /* amenity_public_building.p.64.png in Resources */,
-				02ACBBEC16713F2B00BB4414 /* amenity_public_building2.p.64.png in Resources */,
-				02ACBBED16713F2B00BB4414 /* amenity_recycling.p.64.png in Resources */,
-				02ACBBEE16713F2B00BB4414 /* amenity_survey_point.p.64.png in Resources */,
-				02ACBBEF16713F2B00BB4414 /* amenity_telephone.p.64.png in Resources */,
-				02ACBBF016713F2B00BB4414 /* amenity_toilets.p.64.png in Resources */,
-				02072ACC1BD4546F00F1CAB4 /* 710-folder.png in Resources */,
-				02ACBBF116713F2B00BB4414 /* amenity_toilets_disabled.p.64.png in Resources */,
-				02ACBBF216713F2B00BB4414 /* amenity_toilets_men.p.64.png in Resources */,
-				0ECB35FF240973590063B61B /* Images.xcassets in Resources */,
-				02ACBBF316713F2B00BB4414 /* amenity_toilets_women.p.64.png in Resources */,
-				02ACBBF416713F2B00BB4414 /* amenity_town_hall.p.64.png in Resources */,
-				02ACBBF516713F2B00BB4414 /* amenity_town_hall2.p.64.png in Resources */,
-				02ACBBF616713F2B00BB4414 /* amenity_waste_bin.p.64.png in Resources */,
-				02ACBBF716713F2B00BB4414 /* barrier_blocks.p.64.png in Resources */,
-				02ACBBF816713F2B00BB4414 /* barrier_bollard.p.64.png in Resources */,
-				02ACBBF916713F2B00BB4414 /* barrier_cattle_grid.p.64.png in Resources */,
-				02ACBBFA16713F2B00BB4414 /* barrier_cycle_barrier.p.64.png in Resources */,
-				0E19F60C240D704300339457 /* MainStoryboard_iPad.storyboard in Resources */,
-				02ACBBFB16713F2B00BB4414 /* barrier_entrance.p.64.png in Resources */,
-				02ACBBFC16713F2B00BB4414 /* barrier_exit.p.64.png in Resources */,
-				02ACBBFD16713F2B00BB4414 /* barrier_gate.p.64.png in Resources */,
-				02ACBBFE16713F2B00BB4414 /* barrier_kissing_gate.p.64.png in Resources */,
-				02ACBBFF16713F2B00BB4414 /* barrier_lift_gate.p.64.png in Resources */,
-				02ACBC0016713F2B00BB4414 /* barrier_steps.p.64.png in Resources */,
-				02072AB01BD446F500F1CAB4 /* 852-map-toolbar@3x.png in Resources */,
-				02ACBC0116713F2B00BB4414 /* barrier_stile.p.64.png in Resources */,
-				02ACBC0216713F2B00BB4414 /* barrier_toll_booth.p.64.png in Resources */,
-				02ACBC0316713F2B00BB4414 /* education_college.p.64.png in Resources */,
-				02ACBC0416713F2B00BB4414 /* education_college_vocational.p.64.png in Resources */,
-				02ACBC0516713F2B00BB4414 /* education_nursery.p.64.png in Resources */,
-				02ACBC0616713F2B00BB4414 /* education_nursery2.p.64.png in Resources */,
-				02ACBC0716713F2B00BB4414 /* education_nursery3.p.64.png in Resources */,
-				02072AD21BD454E800F1CAB4 /* 751-eye-toolbar.png in Resources */,
-				02ACBC0816713F2B00BB4414 /* education_school.p.64.png in Resources */,
-				26D1048022BBEB7800E2B493 /* TagInfo_Kaart.xml in Resources */,
-				02ACBC0916713F2B00BB4414 /* education_school_primary.p.64.png in Resources */,
-				0E19F60D240D704300339457 /* MainStoryboard.storyboard in Resources */,
-				02ACBC0A16713F2B00BB4414 /* education_school_secondary.p.64.png in Resources */,
-				02ACBC0B16713F2B00BB4414 /* education_university.p.64.png in Resources */,
-				02ACBC0C16713F2B00BB4414 /* food_bar.p.64.png in Resources */,
-				02ACBC0D16713F2B00BB4414 /* food_biergarten.p.64.png in Resources */,
-				02ACBC0E16713F2B00BB4414 /* food_cafe.p.64.png in Resources */,
-				02ACBC0F16713F2B00BB4414 /* food_drinkingtap.p.64.png in Resources */,
-				02ACBC1016713F2B00BB4414 /* food_fastfood.p.64.png in Resources */,
-				02ACBC1116713F2B00BB4414 /* food_fastfood2.p.64.png in Resources */,
-				02ACBC1216713F2B00BB4414 /* food_fastfood_pizza.p.64.png in Resources */,
-				02ACBC1316713F2B00BB4414 /* food_ice_cream.p.64.png in Resources */,
-				02ACBC1416713F2B00BB4414 /* food_pizza.p.64.png in Resources */,
-				02072ABB1BD4497500F1CAB4 /* 732-cloud-upload-toolbar@2x.png in Resources */,
-				02ACBC1516713F2B00BB4414 /* food_pub.p.64.png in Resources */,
-				02ACBC1616713F2B00BB4414 /* food_restaurant.p.64.png in Resources */,
-				02ACBC1716713F2B00BB4414 /* health_dentist.p.64.png in Resources */,
-				02ACBC1816713F2B00BB4414 /* health_doctors.p.64.png in Resources */,
-				02ACBC1916713F2B00BB4414 /* health_doctors2.p.64.png in Resources */,
-				02ACBC1A16713F2B00BB4414 /* health_hospital.p.64.png in Resources */,
-				02ACBC1B16713F2B00BB4414 /* health_hospital_emergency.p.64.png in Resources */,
-				02ACBC1C16713F2B00BB4414 /* health_hospital_emergency2.p.64.png in Resources */,
-				02ACBC1D16713F2B00BB4414 /* health_opticians.p.64.png in Resources */,
-				02ACBC1E16713F2B00BB4414 /* health_pharmacy.p.64.png in Resources */,
-				02ACBC1F16713F2B00BB4414 /* health_pharmacy_dispencing.p.64.png in Resources */,
-				02ACBC2016713F2B00BB4414 /* health_veterinary.p.64.png in Resources */,
-				02ACBC2116713F2B00BB4414 /* landuse_coniferous.p.64.png in Resources */,
-				02DAB7D51BFA4BBC00360AED /* 723-location-arrow-toolbar-selected.png in Resources */,
-				02ACBC2216713F2B00BB4414 /* landuse_coniferous_and_deciduous.p.64.png in Resources */,
-				02ACBC2316713F2B00BB4414 /* landuse_deciduous.p.64.png in Resources */,
-				02ACBC2416713F2B00BB4414 /* landuse_grass.p.64.png in Resources */,
-				02ACBC2516713F2B00BB4414 /* landuse_hills.p.64.png in Resources */,
-				02ACBC2616713F2B00BB4414 /* landuse_quary.p.64.png in Resources */,
-				02ACBC2716713F2B00BB4414 /* landuse_scrub.p.64.png in Resources */,
-				02ACBC2816713F2B00BB4414 /* landuse_swamp.p.64.png in Resources */,
-				02ACBC2916713F2B00BB4414 /* money_atm.p.64.png in Resources */,
-				02ACBC2A16713F2B00BB4414 /* money_atm2.p.64.png in Resources */,
-				02ACBC2B16713F2B00BB4414 /* money_bank.p.64.png in Resources */,
-				02ACBC2C16713F2B00BB4414 /* money_bank2.p.64.png in Resources */,
-				02ACBC2D16713F2B00BB4414 /* money_currency_exchange.p.64.png in Resources */,
-				02ACBC2E16713F2B00BB4414 /* place_of_worship_bahai.p.64.png in Resources */,
-				02ACBC2F16713F2B00BB4414 /* place_of_worship_bahai3.p.64.png in Resources */,
-				02ACBC3016713F2B00BB4414 /* place_of_worship_buddhist.p.64.png in Resources */,
-				02ACBC3116713F2B00BB4414 /* place_of_worship_buddhist3.p.64.png in Resources */,
-				02ACBC3216713F2B00BB4414 /* place_of_worship_christian.p.64.png in Resources */,
-				02ACBC3316713F2B00BB4414 /* place_of_worship_christian3.p.64.png in Resources */,
-				02ACBC3416713F2B00BB4414 /* place_of_worship_hindu.p.64.png in Resources */,
-				02ACBC3516713F2B00BB4414 /* place_of_worship_hindu3.p.64.png in Resources */,
-				02ACBC3616713F2B00BB4414 /* place_of_worship_islamic.p.64.png in Resources */,
-				02ACBC3716713F2B00BB4414 /* place_of_worship_islamic3.p.64.png in Resources */,
-				02ACBC3816713F2B00BB4414 /* place_of_worship_jain.p.64.png in Resources */,
-				02072AA91BD4465F00F1CAB4 /* 702-share@2x.png in Resources */,
-				02ACBC3916713F2B00BB4414 /* place_of_worship_jain3.p.64.png in Resources */,
-				02ACBC3A16713F2B00BB4414 /* place_of_worship_jewish.p.64.png in Resources */,
-				02ACBC3B16713F2B00BB4414 /* place_of_worship_jewish3.p.64.png in Resources */,
-				02072AE71BD5E99B00F1CAB4 /* 709-plus-toolbar@2x.png in Resources */,
-				02ACBC3C16713F2B00BB4414 /* place_of_worship_shinto.p.64.png in Resources */,
-				02ACBC3D16713F2B00BB4414 /* place_of_worship_shinto3.p.64.png in Resources */,
-				02ACBC3E16713F2B00BB4414 /* place_of_worship_sikh.p.64.png in Resources */,
-				02072AB61BD4494300F1CAB4 /* 845-location-target-toolbar@3x.png in Resources */,
-				02ACBC3F16713F2B00BB4414 /* place_of_worship_sikh3.p.64.png in Resources */,
-				02ACBC4016713F2B00BB4414 /* place_of_worship_unknown.p.64.png in Resources */,
-				02ACBC4116713F2B00BB4414 /* place_of_worship_unknown3.p.64.png in Resources */,
-				02ACBC4216713F2B00BB4414 /* poi_boundary_administrative.p.64.png in Resources */,
-				02ACBC4316713F2B00BB4414 /* poi_cave.p.64.png in Resources */,
-				02ACBC4416713F2B00BB4414 /* poi_crane.p.64.png in Resources */,
-				02ACBC4516713F2B00BB4414 /* poi_embassy.p.64.png in Resources */,
-				02ACBC4616713F2B00BB4414 /* poi_embassy2.p.64.png in Resources */,
-				02ACBC4716713F2B00BB4414 /* poi_military_bunker.p.64.png in Resources */,
-				02ACBC4816713F2B00BB4414 /* poi_mine.p.64.png in Resources */,
-				02ACBC4916713F2B00BB4414 /* poi_mine_abandoned.p.64.png in Resources */,
-				02ACBC4A16713F2B00BB4414 /* poi_mountain_pass.p.64.png in Resources */,
-				02072AA81BD4465F00F1CAB4 /* 702-share.png in Resources */,
-				02ACBC4B16713F2B00BB4414 /* poi_peak.p.64.png in Resources */,
-				02ACBC4C16713F2B00BB4414 /* poi_peak2.p.64.png in Resources */,
-				02ACBC4D16713F2B00BB4414 /* poi_place_city.p.64.png in Resources */,
-				02ACBC4E16713F2B00BB4414 /* poi_place_hamlet.p.64.png in Resources */,
-				02ACBC4F16713F2B00BB4414 /* poi_place_suburb.p.64.png in Resources */,
-				02ACBC5016713F2B00BB4414 /* poi_place_town.p.64.png in Resources */,
-				02ACBC5116713F2B00BB4414 /* poi_place_village.p.64.png in Resources */,
-				02072AC71BD452F200F1CAB4 /* 982-food-toolbar@2x.png in Resources */,
-				02ACBC5216713F2B00BB4414 /* poi_point_of_interest.p.64.png in Resources */,
-				02ACBC5316713F2B00BB4414 /* poi_tower_communications.p.64.png in Resources */,
-				02ACBC5416713F2B00BB4414 /* poi_tower_lookout.p.64.png in Resources */,
-				02ACBC5516713F2B00BB4414 /* poi_tower_power.p.64.png in Resources */,
-				02BCC5A2206AEDDE00B4478B /* compass.png in Resources */,
-				02DAB7DD1BFA4C3B00360AED /* 723-location-arrow-toolbar@3x.png in Resources */,
-				02ACBC5616713F2B00BB4414 /* poi_tower_water.p.64.png in Resources */,
-				02ACBC5716713F2B00BB4414 /* power_station_coal.p.64.png in Resources */,
-				02ACBC5816713F2B00BB4414 /* power_station_gas.p.64.png in Resources */,
-				02ACBC5916713F2B00BB4414 /* power_station_solar.p.64.png in Resources */,
-				02ACBC5A16713F2B00BB4414 /* power_station_water.p.64.png in Resources */,
-				02ACBC5B16713F2B00BB4414 /* power_station_wind.p.64.png in Resources */,
-				02072AD41BD454E800F1CAB4 /* 751-eye-toolbar@3x.png in Resources */,
-				02ACBC5C16713F2B00BB4414 /* power_substation.p.64.png in Resources */,
-				02ACBC5D16713F2B00BB4414 /* power_tower_high.p.64.png in Resources */,
-				02ACBC5E16713F2B00BB4414 /* power_tower_high2.p.64.png in Resources */,
-				02ACBC5F16713F2B00BB4414 /* power_tower_low.p.64.png in Resources */,
-				02E8436F19B407C40044AC1D /* WebPageView.xib in Resources */,
-				02ACBC6016713F2B00BB4414 /* power_transformer.p.64.png in Resources */,
-				02ACBC6116713F2B00BB4414 /* shopping_alcohol.p.64.png in Resources */,
-				02ACBC6216713F2B00BB4414 /* shopping_bakery.p.64.png in Resources */,
-				02072AAF1BD446F500F1CAB4 /* 852-map-toolbar@2x.png in Resources */,
-				02ACBC6316713F2B00BB4414 /* shopping_bicycle.p.64.png in Resources */,
-				02ACBC6416713F2B00BB4414 /* shopping_book.p.64.png in Resources */,
-				02ACBC6516713F2B00BB4414 /* shopping_butcher.p.64.png in Resources */,
-				02ACBC6616713F2B00BB4414 /* shopping_butcher2.p.64.png in Resources */,
-				02ACBC6716713F2B00BB4414 /* shopping_car.p.64.png in Resources */,
-				02ACBC6816713F2B00BB4414 /* shopping_car_repair.p.64.png in Resources */,
-				02ACBC6916713F2B00BB4414 /* shopping_clothes.p.64.png in Resources */,
-				02ACBC6A16713F2B00BB4414 /* shopping_computer.p.64.png in Resources */,
-				02072ABA1BD4497500F1CAB4 /* 732-cloud-upload-toolbar.png in Resources */,
-				02ACBC6B16713F2B00BB4414 /* shopping_confectionery.p.64.png in Resources */,
-				02ACBC6C16713F2B00BB4414 /* shopping_convenience.p.64.png in Resources */,
-				02ACBC6D16713F2B00BB4414 /* shopping_copyshop.p.64.png in Resources */,
-				02F9A4551BC8348C0013BFBD /* OSM-Logo256.png in Resources */,
-				02ACBC6E16713F2B00BB4414 /* shopping_department_store.p.64.png in Resources */,
-				02ACBC6F16713F2B00BB4414 /* shopping_diy.p.64.png in Resources */,
-				02ACBC7016713F2B00BB4414 /* shopping_estateagent.p.64.png in Resources */,
-				02ACBC7116713F2B00BB4414 /* shopping_estateagent2.p.64.png in Resources */,
-				02ACBC7216713F2B00BB4414 /* shopping_estateagent3.p.64.png in Resources */,
-				02072ACD1BD4546F00F1CAB4 /* 710-folder@2x.png in Resources */,
-				02ACBC7316713F2B00BB4414 /* shopping_fish.p.64.png in Resources */,
-				02ACBC7416713F2B00BB4414 /* shopping_florist.p.64.png in Resources */,
-				02ACBC7516713F2B00BB4414 /* shopping_garden_centre.p.64.png in Resources */,
-				02ACBC7616713F2B00BB4414 /* shopping_gift.p.64.png in Resources */,
-				02ACBC7716713F2B00BB4414 /* shopping_greengrocer.p.64.png in Resources */,
-				02ACBC7816713F2B00BB4414 /* shopping_hairdresser.p.64.png in Resources */,
-				02ACBC7916713F2B00BB4414 /* shopping_hearing_aids.p.64.png in Resources */,
-				02ACBC7A16713F2B00BB4414 /* shopping_hifi.p.64.png in Resources */,
-				02ACBC7B16713F2B00BB4414 /* shopping_jewelry.p.64.png in Resources */,
-				02ACBC7C16713F2B00BB4414 /* shopping_jewelry2.p.64.png in Resources */,
-				02ACBC7D16713F2B00BB4414 /* shopping_kiosk.p.64.png in Resources */,
-				02ACBC7E16713F2B00BB4414 /* shopping_laundrette.p.64.png in Resources */,
-				02ACBC7F16713F2B00BB4414 /* shopping_marketplace.p.64.png in Resources */,
-				02ACBC8016713F2B00BB4414 /* shopping_mobile_phone.p.64.png in Resources */,
-				02ACBC8116713F2B00BB4414 /* shopping_motorcycle.p.64.png in Resources */,
-				02ACBC8216713F2B00BB4414 /* shopping_music.p.64.png in Resources */,
-				02ACBC8316713F2B00BB4414 /* shopping_newspaper.p.64.png in Resources */,
-				02ACBC8416713F2B00BB4414 /* shopping_pet.p.64.png in Resources */,
-				02ACBC8516713F2B00BB4414 /* shopping_pet2.p.64.png in Resources */,
-				02ACBC8616713F2B00BB4414 /* shopping_photo.p.64.png in Resources */,
-				02ACBC8716713F2B00BB4414 /* shopping_supermarket.p.64.png in Resources */,
-				02ACBC8816713F2B00BB4414 /* shopping_tackle.p.64.png in Resources */,
-				02DAB7DC1BFA4C3B00360AED /* 723-location-arrow-toolbar@2x.png in Resources */,
-				02ACBC8916713F2B00BB4414 /* shopping_tobacco.p.64.png in Resources */,
-				02ACBC8A16713F2B00BB4414 /* shopping_toys.p.64.png in Resources */,
-				02072ACE1BD4546F00F1CAB4 /* 710-folder@3x.png in Resources */,
-				02ACBC8B16713F2B00BB4414 /* shopping_vending_machine.p.64.png in Resources */,
-				02ACBC8C16713F2B00BB4414 /* shopping_video_rental.p.64.png in Resources */,
-				02072AB51BD4494300F1CAB4 /* 845-location-target-toolbar@2x.png in Resources */,
-				02ACBC8D16713F2B00BB4414 /* sport_archery.p.64.png in Resources */,
-				02ACBC8E16713F2B00BB4414 /* sport_baseball.p.64.png in Resources */,
-				02ACBC8F16713F2B00BB4414 /* sport_canoe.p.64.png in Resources */,
-				02072AC01BD44B2800F1CAB4 /* 1200-file-type-settings-toolbar.png in Resources */,
-				02072AE61BD5E99B00F1CAB4 /* 709-plus-toolbar.png in Resources */,
-				02ACBC9016713F2B00BB4414 /* sport_cricket.p.64.png in Resources */,
-				02ACBC9116713F2B00BB4414 /* sport_diving.p.64.png in Resources */,
-				02ACBC9216713F2B00BB4414 /* sport_golf.p.64.png in Resources */,
-				02ACBC9316713F2B00BB4414 /* sport_gym.p.64.png in Resources */,
-				02ACBC9416713F2B00BB4414 /* sport_gymnasium.p.64.png in Resources */,
-				02ACBC9516713F2B00BB4414 /* sport_gymnasium2.p.64.png in Resources */,
-				02ACBC9616713F2B00BB4414 /* sport_hillclimbing.p.64.png in Resources */,
-				02ACBC9716713F2B00BB4414 /* sport_horse_racing.p.64.png in Resources */,
-				02ACBC9816713F2B00BB4414 /* sport_iceskating.p.64.png in Resources */,
-				02ACBC9916713F2B00BB4414 /* sport_jetski.p.64.png in Resources */,
-				02ACBC9A16713F2B00BB4414 /* sport_leisure_centre.p.64.png in Resources */,
-				027FEA3820B1ECDA00901E9F /* iD SVG POI.xcassets in Resources */,
-				02ACBC9B16713F2B00BB4414 /* sport_minature_golf.p.64.png in Resources */,
-				02072AC11BD44B2800F1CAB4 /* 1200-file-type-settings-toolbar@2x.png in Resources */,
-				02ACBC9C16713F2B00BB4414 /* sport_motorracing.p.64.png in Resources */,
-				02ACBC9D16713F2B00BB4414 /* sport_playground.p.64.png in Resources */,
-				02ACBC9E16713F2B00BB4414 /* sport_sailing.p.64.png in Resources */,
-				02ACBC9F16713F2B00BB4414 /* sport_shooting.p.64.png in Resources */,
-				02ACBCA016713F2B00BB4414 /* sport_skiing_crosscountry.p.64.png in Resources */,
-				02ACBCA116713F2B00BB4414 /* sport_skiing_downhill.p.64.png in Resources */,
-				02ACBCA216713F2B00BB4414 /* sport_snooker.p.64.png in Resources */,
-				02ACBCA316713F2B00BB4414 /* sport_soccer.p.64.png in Resources */,
-				02ACBCA416713F2B00BB4414 /* sport_stadium.p.64.png in Resources */,
-				02ACBCA516713F2B00BB4414 /* sport_swimming_indoor.p.64.png in Resources */,
-				02ACBCA616713F2B00BB4414 /* sport_swimming_outdoor.p.64.png in Resources */,
-				02ACBCA716713F2B00BB4414 /* sport_tennis.p.64.png in Resources */,
-				02ACBCA816713F2B00BB4414 /* sport_windsurfing.p.64.png in Resources */,
-				02ACBCA916713F2B00BB4414 /* tourist_archaeological.p.64.png in Resources */,
-				02ACBCAA16713F2B00BB4414 /* tourist_archaeological2.p.64.png in Resources */,
-				02ACBCAB16713F2B00BB4414 /* tourist_art_gallery.p.64.png in Resources */,
-				02ACBCAC16713F2B00BB4414 /* tourist_art_gallery2.p.64.png in Resources */,
-				02ACBCAD16713F2B00BB4414 /* tourist_attraction.p.64.png in Resources */,
-				02ACBCAE16713F2B00BB4414 /* tourist_battlefield.p.64.png in Resources */,
-				02ACBCAF16713F2B00BB4414 /* tourist_beach.p.64.png in Resources */,
-				02ACBCB016713F2B00BB4414 /* tourist_casino.p.64.png in Resources */,
-<<<<<<< HEAD
-=======
-				64C968452261ED3100351C0C /* Media.xcassets in Resources */,
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
-				02ACBCB116713F2B00BB4414 /* tourist_castle.p.64.png in Resources */,
-				02ACBCB216713F2B00BB4414 /* tourist_castle2.p.64.png in Resources */,
-				02ACBCB316713F2B00BB4414 /* tourist_cinema.p.64.png in Resources */,
-				02ACBCB416713F2B00BB4414 /* tourist_cinema2.p.64.png in Resources */,
-				02ACBCB516713F2B00BB4414 /* tourist_clock.p.64.png in Resources */,
-				02ACBCB616713F2B00BB4414 /* tourist_fountain.p.64.png in Resources */,
-				02ACBCB716713F2B00BB4414 /* tourist_guidepost.p.64.png in Resources */,
-				02ACBCB816713F2B00BB4414 /* tourist_information.p.64.png in Resources */,
-				02ACBCB916713F2B00BB4414 /* tourist_map.p.64.png in Resources */,
-				02ACBCBA16713F2B00BB4414 /* tourist_memorial.p.64.png in Resources */,
-				02ACBCBB16713F2B00BB4414 /* tourist_monument.p.64.png in Resources */,
-				02ACBCBC16713F2B00BB4414 /* tourist_museum.p.64.png in Resources */,
-				02ACBCBD16713F2B00BB4414 /* tourist_picnic.p.64.png in Resources */,
-				02ACBCBE16713F2B00BB4414 /* tourist_ruin.p.64.png in Resources */,
-				02ACBCBF16713F2B00BB4414 /* tourist_steam_train.p.64.png in Resources */,
-				02ACBCC016713F2B00BB4414 /* tourist_theatre.p.64.png in Resources */,
-				02ACBCC116713F2B00BB4414 /* tourist_theme_park.p.64.png in Resources */,
-				02ACBCC216713F2B00BB4414 /* tourist_view_point.p.64.png in Resources */,
-				02ACBCC316713F2B00BB4414 /* tourist_waterwheel.p.64.png in Resources */,
-				02ACBCC416713F2B00BB4414 /* tourist_wayside_cross.p.64.png in Resources */,
-				02ACBCC516713F2B00BB4414 /* tourist_wayside_shrine.p.64.png in Resources */,
-				02ACBCC616713F2B00BB4414 /* tourist_windmill.p.64.png in Resources */,
-				02ACBCC716713F2B00BB4414 /* tourist_wreck.p.64.png in Resources */,
-				02ACBCC816713F2B00BB4414 /* tourist_zoo.p.64.png in Resources */,
-				02ACBCC916713F2B00BB4414 /* transport_aerodrome.p.64.png in Resources */,
-				02ACBCCA16713F2B00BB4414 /* transport_aerodrome2.p.64.png in Resources */,
-				02ACBCCB16713F2B00BB4414 /* transport_airport.p.64.png in Resources */,
-				02072AAE1BD446F500F1CAB4 /* 852-map-toolbar.png in Resources */,
-				02ACBCCC16713F2B00BB4414 /* transport_airport2.p.64.png in Resources */,
-				02ACBCCD16713F2B00BB4414 /* transport_airport_gate.p.64.png in Resources */,
-				02ACBCCE16713F2B00BB4414 /* transport_airport_terminal.p.64.png in Resources */,
-				02ACBCCF16713F2B00BB4414 /* transport_bus_station.p.64.png in Resources */,
-				02072AB41BD4494300F1CAB4 /* 845-location-target-toolbar.png in Resources */,
-				02ACBCD016713F2B00BB4414 /* transport_bus_stop.p.64.png in Resources */,
-				02ACBCD116713F2B00BB4414 /* transport_bus_stop2.p.64.png in Resources */,
-				02ACBCD216713F2B00BB4414 /* transport_car_share.p.64.png in Resources */,
-				02ACBCD316713F2B00BB4414 /* transport_emergency_phone.p.64.png in Resources */,
-				02ACBCD416713F2B00BB4414 /* transport_ford.p.64.png in Resources */,
-				02ACBCD516713F2B00BB4414 /* transport_fuel.p.64.png in Resources */,
-				02ACBCD616713F2B00BB4414 /* transport_fuel_lpg.p.64.png in Resources */,
-				02ACBCD716713F2B00BB4414 /* transport_helicopter.p.64.png in Resources */,
-				02ACBCD816713F2B00BB4414 /* transport_helicopter_pad.p.64.png in Resources */,
-				02ACBCD916713F2B00BB4414 /* transport_lighthouse.p.64.png in Resources */,
-				02ACBCDA16713F2B00BB4414 /* transport_marina.p.64.png in Resources */,
-				02ACBCDB16713F2B00BB4414 /* transport_miniroundabout_anticlockwise.p.64.png in Resources */,
-				02ACBCDC16713F2B00BB4414 /* transport_miniroundabout_clockwise.p.64.png in Resources */,
-				02ACBCDD16713F2B00BB4414 /* transport_parking.p.64.png in Resources */,
-				02ACBCDE16713F2B00BB4414 /* transport_parking_bicycle.p.64.png in Resources */,
-				02ACBCDF16713F2B00BB4414 /* transport_parking_car.p.64.png in Resources */,
-				02ACBCE016713F2B00BB4414 /* transport_parking_car_paid.p.64.png in Resources */,
-				027AD5D019F5797400120654 /* poi in Resources */,
-				02ACBCE116713F2B00BB4414 /* transport_parking_disabled.p.64.png in Resources */,
-				02ACBCE216713F2B00BB4414 /* transport_parking_private.p.64.png in Resources */,
-				02ACBCE316713F2B00BB4414 /* transport_parking_private2.p.64.png in Resources */,
-				02ACBCE416713F2B00BB4414 /* transport_parking_private3.p.64.png in Resources */,
-				02ACBCE516713F2B00BB4414 /* transport_port.p.64.png in Resources */,
-				02ACBCE616713F2B00BB4414 /* transport_rental_bicycle.p.64.png in Resources */,
-				02ACBCE716713F2B00BB4414 /* transport_rental_car.p.64.png in Resources */,
-				02072ABC1BD4497500F1CAB4 /* 732-cloud-upload-toolbar@3x.png in Resources */,
-				02ACBCE816713F2B00BB4414 /* transport_roundabout_anticlockwise.p.64.png in Resources */,
-				02ACBCE916713F2B00BB4414 /* transport_roundabout_clockwise.p.64.png in Resources */,
-				02ACBCEA16713F2B00BB4414 /* transport_slipway.p.64.png in Resources */,
-				02ACBCEB16713F2B00BB4414 /* transport_speedbump.p.64.png in Resources */,
-				02ACBCEC16713F2B00BB4414 /* transport_subway.p.64.png in Resources */,
-				02ACBCED16713F2B00BB4414 /* transport_taxi_rank.p.64.png in Resources */,
-				02ACBCEE16713F2B00BB4414 /* transport_traffic_lights.p.64.png in Resources */,
-				02ACBCEF16713F2B00BB4414 /* transport_train_station.p.64.png in Resources */,
-				02ACBCF016713F2B00BB4414 /* transport_train_station2.p.64.png in Resources */,
-				027FEA3620B13B8000901E9F /* Maki Icons.xcassets in Resources */,
-				02072AAA1BD4465F00F1CAB4 /* 702-share@3x.png in Resources */,
-				02130E85196CF58500498297 /* MenuIcon.png in Resources */,
-				02ACBCF116713F2B00BB4414 /* transport_tram_stop.p.64.png in Resources */,
-				02ACBCF216713F2B00BB4414 /* transport_turning_circle.p.64.png in Resources */,
-				02ACBCF316713F2B00BB4414 /* transport_walking.p.64.png in Resources */,
-				02ACBCF416713F2B00BB4414 /* transport_zebra_crossing.p.64.png in Resources */,
-				02ACBCF516713F2B00BB4414 /* water_dam.p.64.png in Resources */,
-				02DAB7D61BFA4BBC00360AED /* 723-location-arrow-toolbar-selected@2x.png in Resources */,
-				02ACBCF616713F2B00BB4414 /* water_tower.p.64.png in Resources */,
-				02072AC21BD44B2800F1CAB4 /* 1200-file-type-settings-toolbar@3x.png in Resources */,
-				02ACBCF716713F2B00BB4414 /* water_weir.p.64.png in Resources */,
-				02072AD31BD454E800F1CAB4 /* 751-eye-toolbar@2x.png in Resources */,
-				02ACBCFC16713F2B00BB4414 /* TagInfo.menu.xml in Resources */,
-				02ACBCFD16713F2B00BB4414 /* TagInfo.xml in Resources */,
-				027A469B1673B251000BE55C /* OSM-Logo72.png in Resources */,
-				027A469E1673B257000BE55C /* OSM-Logo144.png in Resources */,
-				02205F3B1674550D00D57D23 /* ArrowBlack.png in Resources */,
-				0242331316750C81008A3B6A /* ArrowBlue.png in Resources */,
-				0296876B1680D57800B8FF2C /* bullseye.png in Resources */,
-				0296876E1680D5D400B8FF2C /* redo32.png in Resources */,
-				0296876F1680D5D400B8FF2C /* undo32.png in Resources */,
-				02912D46168504AC00A541BC /* move.png in Resources */,
-				02912D4D16852AEC00A541BC /* question.png in Resources */,
-				023D1720168A30C00011FABC /* BingLogo.png in Resources */,
-				02072AC81BD452F200F1CAB4 /* 982-food-toolbar@3x.png in Resources */,
-				025A1CFC1690B96E002B60CB /* OSM-Logo57.png in Resources */,
-				025A1CFD1690B96E002B60CB /* OSM-Logo114.png in Resources */,
-				02C19B371699EA7A00F75E3C /* bing_rgb.png in Resources */,
-				02072AC61BD452F200F1CAB4 /* 982-food-toolbar.png in Resources */,
-				020CD975169D4B5A00BF3AAF /* Default-Portrait~ipad.png in Resources */,
-				020CD977169D4B7300BF3AAF /* Default-Portrait@2x~ipad.png in Resources */,
-				020CD979169D4B7900BF3AAF /* Default-Landscape@2x~ipad.png in Resources */,
-				020CD97B169D4BC900BF3AAF /* Default-Landscape~ipad.png in Resources */,
-				0284FDB216A0B7DA002C46A9 /* tree.p.64.png in Resources */,
-				0284FDB416A0BB67002C46A9 /* shrub.p.64.png in Resources */,
-				0266D3A516C02D9200AD9A83 /* seamark_anchor_berth.p.64.png in Resources */,
-				0266D3A616C02D9200AD9A83 /* seamark_anchorage.p.64.png in Resources */,
-				0266D3A716C02D9200AD9A83 /* seamark_beacon_cardinal.p.64.png in Resources */,
-				0266D3A816C02D9200AD9A83 /* seamark_beacon_isolated.p.64.png in Resources */,
-				0266D3A916C02D9200AD9A83 /* seamark_beacon_lateral.p.64.png in Resources */,
-				0266D3AA16C02D9200AD9A83 /* seamark_beacon_safe_water.p.64.png in Resources */,
-				0266D3AB16C02D9200AD9A83 /* seamark_beacon_special_purpose.p.64.png in Resources */,
-				0266D3AC16C02D9200AD9A83 /* seamark_buoy_cardinal.p.64.png in Resources */,
-				0266D3AD16C02D9200AD9A83 /* seamark_buoy_isolated_danger.png in Resources */,
-				0266D3AE16C02D9200AD9A83 /* seamark_buoy_lateral.p.64.png in Resources */,
-				0266D3AF16C02D9200AD9A83 /* seamark_buoy_safe_water.p.64.png in Resources */,
-				0266D3B016C02D9200AD9A83 /* seamark_buoy_special_purpose.p.64.png in Resources */,
-				0266D3B116C02D9200AD9A83 /* seamark_fog_signal.p.64.png in Resources */,
-				02DAB7DB1BFA4C3B00360AED /* 723-location-arrow-toolbar.png in Resources */,
-				0266D3B216C02D9200AD9A83 /* seamark_light_float.p.64.png in Resources */,
-				0266D3B316C02D9200AD9A83 /* seamark_light_major.p.64.png in Resources */,
-				0266D3B416C02D9200AD9A83 /* seamark_light_minor.p.64.png in Resources */,
-				0266D3B516C02D9200AD9A83 /* seamark_light_vessel.p.64.png in Resources */,
-				0266D3B616C02D9200AD9A83 /* seamark_radar_station.p.64.png in Resources */,
-				0266D3B716C02D9200AD9A83 /* seamark_signal_station.p.64.png in Resources */,
-				0266D3B816C02D9200AD9A83 /* seamark_wreck.png in Resources */,
-				0266D3BA16C03D7400AD9A83 /* seamark_notice.p.64.png in Resources */,
-				021E5D6B16C0507B00B7A02A /* transport_stop.p.64.png in Resources */,
-				0228444716DD339300A1C051 /* redo32@2x.png in Resources */,
-				0228444816DD339300A1C051 /* undo32@2x.png in Resources */,
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1809,7 +1243,6 @@
 				025F1CF41BCD9B070097D7FE /* TapAndDragGesture.m in Sources */,
 				024B4CA219BBE67400BBA60B /* CustomPresetListViewController.m in Sources */,
 				021BFCEA1BDF3F9E00CE255A /* VoiceAnnouncement.m in Sources */,
-				26D1048B22BC40AD00E2B493 /* EnhancedHwyEditorController.m in Sources */,
 				027EDC72206F3EED00D349D6 /* DDXMLNode.m in Sources */,
 				02ACBD2416717D7000BB4414 /* RenderInfo.m in Sources */,
 				0225A36A19B63F0D008B63BA /* DisplayViewController.m in Sources */,
@@ -1818,13 +1251,8 @@
 				0223DB531675D53200D6F825 /* POIFeaturePickerViewController.m in Sources */,
 				6453777323D391CC00656A1C /* OsmMember.m in Sources */,
 				6442666922540EDF00C0D545 /* Observable.swift in Sources */,
-<<<<<<< HEAD
 				0223DB5716765C9000D6F825 /* POIFeaturePresetsViewController.m in Sources */,
 				0205460616766808004A2A23 /* POIPresetValuePickerController.m in Sources */,
-=======
-				0223DB5716765C9000D6F825 /* POICommonTagsViewController.m in Sources */,
-				0205460616766808004A2A23 /* POIPresetViewController.m in Sources */,
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 				021B30C81973AA4400B36EFF /* OsmMapData+Edit.m in Sources */,
 				02C4255316796B5800761C54 /* SpeechBalloonView.m in Sources */,
 				021D4E4B194E0BCB002154B3 /* FpsLabel.m in Sources */,
@@ -1930,12 +1358,12 @@
 /* Begin PBXTargetDependency section */
 		64348CF0225E7CD900ADE7FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 02ACBA2E16713CCB00BB4414 /* Go Kaart!! */;
+			target = 02ACBA2E16713CCB00BB4414 /* Go Map!! */;
 			targetProxy = 64348CEF225E7CD900ADE7FB /* PBXContainerItemProxy */;
 		};
 		64348D0E225EA24E00ADE7FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 02ACBA2E16713CCB00BB4414 /* Go Kaart!! */;
+			target = 02ACBA2E16713CCB00BB4414 /* Go Map!! */;
 			targetProxy = 64348D0D225EA24E00ADE7FB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2076,10 +1504,9 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		02E8437E19B4DE510044AC1D /* Localizable.strings */ = {
+		02ACBA4B16713CCB00BB4414 /* MainStoryboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-<<<<<<< HEAD
 				027AB507250E9D0600C404CD /* Base */,
 				02C31951250EB08600C5D200 /* ja */,
 				02C3195D250EB3DC00C5D200 /* ru */,
@@ -2095,14 +1522,10 @@
 				0229297F26321B7E0000CEF0 /* ain */,
 				027F332526321B8F00872143 /* it */,
 				02CFEEC926321BBE002BFE83 /* vi */,
-=======
-				02E8438219B4DF960044AC1D /* Base */,
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
 			);
-			name = Localizable.strings;
+			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
 		02C3194C250EAED500C5D200 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2122,22 +1545,8 @@
 				02C0249D26321BBA006AB031 /* si */,
 				02CFEEC826321BBE002BFE83 /* vi */,
 				02153B082643723000A3ED79 /* nl */,
-=======
-		0E19F608240D704300339457 /* MainStoryboard_iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0E19F609240D704300339457 /* Base */,
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
 			);
-			name = MainStoryboard_iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		0E19F60A240D704300339457 /* MainStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0E19F60B240D704300339457 /* Base */,
-			);
-			name = MainStoryboard.storyboard;
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -2249,11 +1658,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-<<<<<<< HEAD
 				TARGETED_DEVICE_FAMILY = "1,2,6";
-=======
-				TARGETED_DEVICE_FAMILY = "1,2";
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2267,40 +1672,21 @@
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 				CURRENT_PROJECT_VERSION = 2210;
 				DEVELOPMENT_TEAM = MKTTC6734C;
 				DISPLAY_NAME = "Go Map!! Debug";
-=======
-				DEVELOPMENT_TEAM = 2STHX823T6;
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
-=======
-=======
-				DEFINES_MODULE = YES;
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
-				DEVELOPMENT_TEAM = 2STHX823T6;
-				DISPLAY_NAME = "Go Kaart!! Debug";
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Map!!-Prefix.pch";
 				INFOPLIST_FILE = "Go Map!!-Info.plist";
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 				MARKETING_VERSION = 2.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMap;
 				PRODUCT_NAME = "Go Map!!";
-=======
-				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
-				PRODUCT_NAME = "Go Kaart!!";
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 				PROVISIONING_PROFILE = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
@@ -2316,39 +1702,20 @@
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 				CURRENT_PROJECT_VERSION = 2210;
 				DEVELOPMENT_TEAM = MKTTC6734C;
 				DISPLAY_NAME = "Go Map!!";
-=======
-				DEVELOPMENT_TEAM = 2STHX823T6;
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
-=======
-=======
-				DEFINES_MODULE = YES;
->>>>>>> aa895ee6... Lane Stepper pushed to lanestepper
-				DEVELOPMENT_TEAM = 2STHX823T6;
-				DISPLAY_NAME = "Go Kaart!!";
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Map!!-Prefix.pch";
 				INFOPLIST_FILE = "Go Map!!-Info.plist";
 				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-<<<<<<< HEAD:src/iOS/Go Map!!.xcodeproj/project.pbxproj
 				MARKETING_VERSION = 2.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMap;
 				PRODUCT_NAME = "Go Map!!";
-=======
-				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
-				PRODUCT_NAME = "Go Kaart!!";
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways:src/iOS/Go Kaart!!.xcodeproj/project.pbxproj
 				PROVISIONING_PROFILE = "";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				WRAPPER_EXTENSION = app;
@@ -2513,7 +1880,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		02ACBA6116713CCB00BB4414 /* Build configuration list for PBXNativeTarget "Go Kaart!!" */ = {
+		02ACBA6116713CCB00BB4414 /* Build configuration list for PBXNativeTarget "Go Map!!" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				02ACBA6216713CCB00BB4414 /* Debug */,
