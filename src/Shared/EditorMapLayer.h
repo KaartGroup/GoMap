@@ -29,6 +29,7 @@ extern const double MinIconSizeInPixels;
 
 @interface EditorMapLayer : CALayer<NSCoding>
 {
+<<<<<<< HEAD
 	CGSize									_iconSize;
 	double									_highwayScale;
 	NSMutableArray<OsmBaseObject *>		*	_shownObjects;
@@ -36,6 +37,26 @@ extern const double MinIconSizeInPixels;
 	NSMutableArray<CALayer *>			*	_highlightLayers;
 	BOOL									_isPerformingLayout;
 	CATransformLayer					*	_baseLayer;
+=======
+    CGSize                    _iconSize;
+    double                    _highwayScale;
+
+	NSMutableArray<OsmBaseObject *>		*	_shownObjects;
+	NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
+
+<<<<<<< HEAD
+    NSMutableArray        *    _shownObjects;
+    NSMutableSet        *    _fadingOutSet;
+
+    NSMutableArray        *    _highlightLayers;
+=======
+	NSMutableArray<CALayer *>		*	_highlightLayers;
+>>>>>>> master
+
+    BOOL                    _isPerformingLayout;
+
+    CATransformLayer    *    _baseLayer;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 @property (assign,nonatomic)	BOOL			enableObjectFilters;	// turn all filters on/on

@@ -60,8 +60,13 @@
 	NSMutableArray<AerialService *>	*	_recentlyUsed;
 }
 
+<<<<<<< HEAD
 @property (nonatomic) 	AerialService				*	currentAerial;
 @property (readonly) 	NSDate						*	lastDownloadDate;
+=======
+@property (nonatomic) 	AerialService	*	currentAerial;
+@property (readonly) 	NSDate			*	lastDownloadDate;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 -(void)load;
 -(void)save;

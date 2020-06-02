@@ -10,7 +10,11 @@
 
 @class OsmMapData;
 
+<<<<<<< HEAD
 @interface UploadViewController : UIViewController <UITextViewDelegate,MFMailComposeViewControllerDelegate>
+=======
+@interface UploadViewController : UIViewController <UITextViewDelegate,MFMailComposeViewControllerDelegate,UIAlertViewDelegate>
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	OsmMapData							*	_mapData;
 	IBOutlet UIView						*	_commentContainerView;

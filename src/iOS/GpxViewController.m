@@ -378,7 +378,11 @@
 					[self presentViewController:success animated:YES completion:nil];
 
 					// mark track as uploaded in UI
+<<<<<<< HEAD
 					GpxLayer * gpxLayer = AppDelegate.shared.mapView.gpxLayer;
+=======
+					GpxLayer * gpxLayer = [AppDelegate getAppDelegate].mapView.gpxLayer;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 					[gpxLayer markTrackUploaded:track];
 					[self.tableView reloadData];
 

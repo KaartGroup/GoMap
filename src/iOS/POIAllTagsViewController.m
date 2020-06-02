@@ -10,6 +10,10 @@
 
 #import "AppDelegate.h"
 #import "AutocompleteTextField.h"
+<<<<<<< HEAD
+=======
+#import "CommonPresetList.h"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "EditorMapLayer.h"
 #import "HeightViewController.h"
 #import "MapView.h"
@@ -19,7 +23,10 @@
 #import "POITabBarController.h"
 #import "PushPinView.h"
 #import "RenderInfo.h"
+<<<<<<< HEAD
 #import "WikiPage.h"
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 
 #define EDIT_RELATIONS 0
@@ -200,6 +207,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
+<<<<<<< HEAD
 	POITabBarController * tabController = (id)self.tabBarController;
 	if ( tabController.selection == nil ) {
 		TextPairTableCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -224,6 +232,14 @@
 	return @[];
 }
 
+=======
+	if ( _tags.count == 0 && _members.count == 0 ) {
+		// if there are no tags then start editing the first one
+		[self addTagCellAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	}
+}
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -274,6 +290,7 @@
 	}
 }
 
+<<<<<<< HEAD
 #pragma mark Accessory buttons
 
 -(UIView *)getAssociatedColorForCell:(TextPairTableCell *)cell
@@ -503,11 +520,28 @@
 	}];
 }
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if ( indexPath.section == 0 ) {
 
 		// Tags
+<<<<<<< HEAD
+=======
+		if ( indexPath.row == _tags.count ) {
+			// Add new tag
+			AddNewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+			[cell.button removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+			[cell.button addTarget:self action:@selector(addTagCell:) forControlEvents:UIControlEventTouchUpInside];
+			return cell;
+		}
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		TextPairTableCell * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
 		NSArray * kv = _tags[ indexPath.row ];
 		// assign text contents of fields
@@ -543,10 +577,20 @@
 	} else {
 
 		// Members
+<<<<<<< HEAD
 		OsmMember	* member = _members[ indexPath.row ];
 		BOOL		isResolved = [member.ref isKindOfClass:[OsmBaseObject class]];
 		TextPairTableCell *cell = isResolved ? [tableView dequeueReusableCellWithIdentifier:@"RelationCell" forIndexPath:indexPath]
 											 :  [tableView dequeueReusableCellWithIdentifier:@"MemberCell" forIndexPath:indexPath];
+=======
+		if ( indexPath.row == _members.count ) {
+			AddNewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+			[cell.button removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+			[cell.button addTarget:self action:@selector(addTagCell:) forControlEvents:UIControlEventTouchUpInside];
+			return cell;
+		}
+		TextPairTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MemberCell" forIndexPath:indexPath];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #if EDIT_RELATIONS
 		cell.text1.enabled = YES;
 		cell.text2.enabled = YES;
@@ -589,7 +633,11 @@
 	return dict;
 }
 
+<<<<<<< HEAD
 #pragma mark Tab key
+=======
+#pragma mark Cell editing
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 - (NSArray *)keyCommands
 {
@@ -605,6 +653,11 @@
 	TextPairTableCell * cell = (id)sender;
 	while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
 		cell = (id)cell.superview;
+<<<<<<< HEAD
+=======
+	TextPairTableCell * pair = (id)cell;
+	BOOL isValue = textField == pair.text2;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 	[sender resignFirstResponder];
 	[self updateWithRecomendationsForFeature:YES];
@@ -627,6 +680,7 @@
 		if ( isValue ) {
 			// get list of values for current key
 			NSString * key = kv[0];
+<<<<<<< HEAD
 			if ( [PresetsDatabase.shared eligibleForAutocomplete:key] ) {
 				NSSet * set = [PresetsDatabase.shared allTagValuesForKey:key];
 				AppDelegate * appDelegate = AppDelegate.shared;
@@ -638,6 +692,17 @@
 		} else {
 			// get list of keys
 			NSSet * set = [PresetsDatabase.shared allTagKeys];
+=======
+			NSSet * set = [CommonPresetList allTagValuesForKey:key];
+			AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+			NSMutableSet<NSString *> * values = [appDelegate.mapView.editorLayer.mapData tagValuesForKey:key];
+			[values addObjectsFromArray:[set allObjects]];
+			NSArray * list = [values allObjects];
+			[(AutocompleteTextField *)textField setCompletions:list];
+		} else {
+			// get list of keys
+			NSSet * set = [CommonPresetList allTagKeys];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			NSArray * list = [set allObjects];
 			textField.autocompleteStrings = list;
 		}
@@ -749,6 +814,55 @@
 	}
 }
 
+-(void)textFieldEditingDidEnd:(UITextField *)textField
+{
+	UITableViewCell * cell = (id)textField.superview;
+	while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
+		cell = (id)cell.superview;
+	TextPairTableCell * pair = (id)cell;
+	BOOL isValue = textField == pair.text2;
+
+	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+	if ( indexPath.section == 0 ) {
+		if ( isValue ) {
+			NSMutableArray<NSString *> * kv = _tags[ indexPath.row ];
+			if ( [kv[0] hasPrefix:@"wikipedia"] ) {
+				// if the value is for wikipedia then convert the a URL to the correct format
+				// format is https://en.wikipedia.org/wiki/Nova_Scotia
+				NSScanner * scanner = [NSScanner scannerWithString:kv[1]];
+				NSString *languageCode, *pageName;
+				if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
+					[scanner scanUpToString:@"." intoString:&languageCode] &&
+					([scanner scanString:@".m" intoString:nil] || YES) &&
+					[scanner scanString:@".wikipedia.org/wiki/" intoString:nil] &&
+					[scanner scanUpToString:@"/" intoString:&pageName] &&
+					[scanner isAtEnd] &&
+					languageCode.length == 2 &&
+					pageName.length > 0 )
+				{
+					kv[1] = [NSString stringWithFormat:@"%@:%@",languageCode,pageName];
+					pair.text2.text = kv[1];
+				}
+			} else if ( [kv[0] hasPrefix:@"wikidata"] ) {
+				// https://www.wikidata.org/wiki/Q90000000
+				NSScanner * scanner = [NSScanner scannerWithString:kv[1]];
+				NSString *pageName;
+				if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
+					([scanner scanString:@"www.wikidata.org/wiki/" intoString:nil] || [scanner scanString:@"m.wikidata.org/wiki/" intoString:nil]) &&
+					[scanner scanUpToString:@"/" intoString:&pageName] &&
+					[scanner isAtEnd] &&
+					pageName.length > 0 )
+				{
+					kv[1] = pageName;
+					pair.text2.text = kv[1];
+				}
+			}
+		} else {
+			// editing key
+		}
+	}
+}
+
 - (IBAction)textFieldChanged:(UITextField *)textField
 {
 	UITableViewCell * cell = (id)textField.superview;
@@ -780,6 +894,7 @@
 	}
 }
 
+<<<<<<< HEAD
 -(void)tabToNext:(BOOL)forward
 {
 	TextPairTableCell * pair = (id)_currentTextField.superview;
@@ -835,6 +950,8 @@
 	return YES;
 }
 
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
 	const int MAX_LENGTH = 255;
@@ -846,9 +963,13 @@
     return newLength <= MAX_LENGTH || returnKey;
 }
 
+<<<<<<< HEAD
 #pragma mark - Table view delegate
 
 - (IBAction)toggleTableRowEditing:(id)sender
+=======
+- (IBAction)toggleEditing:(id)sender
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	POITabBarController * tabController = (id)self.tabBarController;
 
@@ -906,6 +1027,36 @@
 	}
 }
 
+<<<<<<< HEAD
+=======
+#pragma mark - Table view delegate
+
+- (void)addTagCellAtIndexPath:(NSIndexPath *)indexPath
+{
+	if ( indexPath.section == 0 ) {
+		[_tags addObject:[NSMutableArray arrayWithObjects:@"",@"",nil]];
+	} else if ( indexPath.section == 2 ) {
+		[_members addObject:[NSMutableArray arrayWithObjects:@"",@"",nil]];
+	} else {
+		return;
+	}
+	[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+
+	// set new cell to show keyboard
+	TextPairTableCell * newCell = (id)[self.tableView cellForRowAtIndexPath:indexPath];
+	[newCell.text1 becomeFirstResponder];
+}
+
+- (void)addTagCell:(id)sender
+{
+	UITableViewCell * cell = sender;	// starts out as UIButton
+	while ( cell && ![cell isKindOfClass:[UITableViewCell class]] )
+		cell = (id)[cell superview];
+	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+	[self addTagCellAtIndexPath:indexPath];
+}
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 -(IBAction)cancel:(id)sender
 {
     [self.view endEditing:YES];

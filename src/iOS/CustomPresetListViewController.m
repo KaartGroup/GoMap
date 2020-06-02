@@ -6,6 +6,10 @@
 //  Copyright (c) 2014 Bryce Cogswell. All rights reserved.
 //
 
+<<<<<<< HEAD
+=======
+#import "CommonPresetList.h"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "CustomPresetController.h"
 #import "CustomPresetListViewController.h"
 

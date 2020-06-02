@@ -17,9 +17,15 @@
 	_pickerView.delegate = self;
 }
 
+<<<<<<< HEAD
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+=======
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 	[_pickerView selectRow:_expirationValue.integerValue inComponent:0 animated:NO];
 }

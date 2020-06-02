@@ -26,6 +26,11 @@
 @class QuadMap;
 @class QuadMapC;
 @class OsmUserStatistics;
+<<<<<<< HEAD
+=======
+
+BOOL IsOsmBooleanFalse( NSString * value );
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 extern NSString * OSM_API_URL;	//	@"http://api.openstreetmap.org/"
 
@@ -125,8 +130,12 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
 -(NSMutableSet<NSString *> *)tagValuesForKey:(NSString *)key;
 
 // editing
+<<<<<<< HEAD
 @property (class,readonly) NSSet<NSString *> * tagsToAutomaticallyStrip;
 
+=======
++(NSSet<NSString *> *)tagsToAutomaticallyStrip;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 -(OsmNode *)createNodeAtLocation:(CLLocationCoordinate2D)loc;
 -(OsmWay *)createWay;
 -(OsmRelation *)createRelation;
@@ -135,9 +144,13 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
 -(void)setLongitude:(double)longitude latitude:(double)latitude forNode:(OsmNode *)node;
 -(void)setTags:(NSDictionary<NSString *, NSString *> *)dict forObject:(OsmBaseObject *)object;
 
+<<<<<<< HEAD
 // download data
 - (void)updateWithBox:(OSMRect)box progressDelegate:(MapView *)mapView completion:(void(^)(BOOL partial,NSError * error))completion;
 - (void)cancelCurrentDownloads;
+=======
+- (void)updateWithBox:(OSMRect)box mapView:(MapView *)mapView completion:(void(^)(BOOL partial,NSError * error))completion;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 // upload changeset
 - (NSAttributedString *)changesetAsAttributedString;
@@ -149,7 +162,10 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
 +(NSString *)encodeBase64:(NSString *)plainText;
 
 -(NSArray<OsmUserStatistics *> *)userStatisticsForRegion:(OSMRect)rect;
+<<<<<<< HEAD
 
 -(void)consistencyCheck;
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 @end

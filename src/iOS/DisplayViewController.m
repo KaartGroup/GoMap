@@ -62,6 +62,7 @@ static const NSInteger CACHE_SECTION			= 3;
 	// becoming visible the first time
 	self.navigationController.navigationBarHidden = NO;
 
+<<<<<<< HEAD
 	_notesSwitch.on				= (mapView.viewOverlayMask & VIEW_OVERLAY_NOTES) != 0;
 	_gpsTraceSwitch.on			= !mapView.gpsTraceLayer.hidden;
 
@@ -74,6 +75,10 @@ static const NSInteger CACHE_SECTION			= 3;
 
 	[self setButtonLayoutTitle];
 }
+=======
+		_notesSwitch.on				= (mapView.viewOverlayMask & VIEW_OVERLAY_NOTES) != 0;
+		_gpsTraceSwitch.on			= !mapView.gpsTraceLayer.hidden;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 -(IBAction)chooseAddButtonPosition:(id)sender
 {
@@ -91,6 +96,7 @@ static const NSInteger CACHE_SECTION			= 3;
 	[self presentViewController:alert animated:YES completion:nil];
 }
 
+<<<<<<< HEAD
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// place a checkmark next to currently selected display
@@ -115,6 +121,33 @@ static const NSInteger CACHE_SECTION			= 3;
 	}
 }
 
+=======
+	}
+}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// place a checkmark next to currently selected display
+	if ( indexPath.section == BACKGROUND_SECTION ) {
+		MapView * mapView = [AppDelegate getAppDelegate].mapView;
+		if ( indexPath.row == mapView.viewState ) {
+			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+		}
+	}
+
+	// set the name of the aerial provider
+	if ( indexPath.section == BACKGROUND_SECTION && indexPath.row == 2 ) {
+		if ( [cell isKindOfClass:[CustomBackgroundCell class]] ) {
+			AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+			AerialList * aerials = appDelegate.mapView.customAerials;
+			CustomBackgroundCell * custom = (id)cell;
+			[custom.button setTitle:aerials.currentAerial.name forState:UIControlStateNormal];
+			[custom.button sizeToFit];
+		}
+	}
+}
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 - (void)applyChanges
 {
 	MapView * mapView = AppDelegate.shared.mapView;
@@ -150,10 +183,13 @@ static const NSInteger CACHE_SECTION			= 3;
 	[self applyChanges];
 }
 
+<<<<<<< HEAD
 - (IBAction)onDone:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

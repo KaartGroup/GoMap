@@ -1181,6 +1181,33 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 
 
 - (NSData *)gzippedData:(NSData *)input
+<<<<<<< HEAD
+=======
+{
+	const int CHUNK = 65536;
+	z_stream stream = { 0 };
+    stream.avail_in = (uint)input.length;
+    stream.next_in = (unsigned char *)input.bytes;
+    if ( deflateInit2(&stream, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 31, 8, Z_DEFAULT_STRATEGY) != Z_OK )
+		return nil;
+	NSMutableData *output = [NSMutableData dataWithLength:CHUNK];
+	while ( stream.avail_out == 0 ) {
+		if ( stream.total_out >= output.length ) {
+			output.length += CHUNK;
+		}
+		stream.next_out = (uint8_t *)output.mutableBytes + stream.total_out;
+		stream.avail_out = (uInt)(output.length - stream.total_out);
+		deflate(&stream, Z_FINISH);
+	}
+	deflateEnd(&stream);
+	output.length = stream.total_out;
+
+    return output;
+}
+
+
+-(void)putRequest:(NSString *)url method:(NSString *)method xml:(NSXMLDocument *)xml completion:(void(^)(NSData * data,NSString * error))completion
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	const int CHUNK = 65536;
 	z_stream stream = { 0 };
@@ -1779,11 +1806,19 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
     }
 
 	NSString * wayName = [way attributeForName:@"id"].stringValue;
+<<<<<<< HEAD
     [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tWay ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:wayName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"w" stringByAppendingString:wayName] }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d nodes)\n",nil),nodeCount]
+=======
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tWay " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:wayName
+																   attributes:@{ NSFontAttributeName : font,
+																				 NSLinkAttributeName : [@"w" stringByAppendingString:wayName] }]];
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d nodes)\n",nodeCount]
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 
 	for ( NSXMLElement * tag in way.children ) {
@@ -1817,11 +1852,19 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
     }
 
 	NSString * relationName = [relation attributeForName:@"id"].stringValue;
+<<<<<<< HEAD
     [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tRelation ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:relationName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"r" stringByAppendingString:relationName] }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d members)\n",nil),memberCount]
+=======
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tRelation " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:relationName
+																   attributes:@{ NSFontAttributeName : font,
+																				 NSLinkAttributeName : [@"r" stringByAppendingString:relationName] }]];
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d members)\n",memberCount]
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 
 	for ( NSXMLElement * tag in relation.children ) {
@@ -2458,9 +2501,16 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		// merge info from SQL database
 		Database * db = [Database new];
 		@try {
+<<<<<<< HEAD
 			NSMutableDictionary<NSNumber *, OsmNode *> * newNodes			= [db querySqliteNodes];
 			NSAssert(newNodes,nil);
 			NSMutableDictionary<NSNumber *, OsmWay *> * newWays				= [db querySqliteWays];
+=======
+			Database * db = [Database new];
+			NSMutableDictionary<NSNumber *, OsmNode *> * newNodes		= [db querySqliteNodes];
+			NSAssert(newNodes,nil);
+			NSMutableDictionary<NSNumber *, OsmWay *> * newWays		= [db querySqliteWays];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			NSAssert(newWays,nil);
 			NSMutableDictionary<NSNumber *, OsmRelation *> * newRelations	= [db querySqliteRelations];
 			NSAssert(newRelations,nil);

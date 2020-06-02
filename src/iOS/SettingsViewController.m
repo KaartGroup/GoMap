@@ -9,6 +9,10 @@
 #import "AppDelegate.h"
 #import "AerialList.h"
 #import "AerialListViewController.h"
+<<<<<<< HEAD
+=======
+#import "CommonPresetList.h"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "EditorMapLayer.h"
 #import "OsmMapData.h"
 #import "MapView.h"
@@ -63,11 +67,14 @@
 {
 }
 
+<<<<<<< HEAD
 - (IBAction)onDone:(id)sender
 {
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];

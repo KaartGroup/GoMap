@@ -37,7 +37,11 @@
 {
 	[super viewDidAppear:animated];
 	if ( _mappers.count == 0 ) {
+<<<<<<< HEAD
 		UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Data",@"Alert title")
+=======
+		UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Data",nil)
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 																		message:NSLocalizedString(@"Ensure the editor view is visible and displays objects in the local area",nil)
 																 preferredStyle:UIAlertControllerStyleAlert];
 		[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

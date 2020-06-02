@@ -69,7 +69,11 @@ static NSString * TMS_PROJECTION_NAME = @"(TMS)";
 																roundUp:YES
 															  startDate:nil
 																endDate:nil
+<<<<<<< HEAD
 																wmsProjection:projection
+=======
+																wmsProjection:nil
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 																polygon:NULL
 											   				attribString:nil
 												 			attribIcon:nil

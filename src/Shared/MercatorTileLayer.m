@@ -339,12 +339,16 @@ static OSMPoint TileToWMSCoords(NSInteger tx,NSInteger ty,NSInteger z,NSString *
 		[url replaceOccurrencesOfString:@"{-y}"	withString:negY options:0 range:NSMakeRange(0,url.length)];
 		[url replaceOccurrencesOfString:@"{z}" 	withString:z options:0 range:NSMakeRange(0,url.length)];
 	}
+<<<<<<< HEAD
 	// retina screen
 	NSString * retina = UIScreen.mainScreen.scale > 1 ? @"@2x" : @"";
 	[url replaceOccurrencesOfString:@"{@2x}" withString:retina options:0 range:NSMakeRange(0,url.length)];
 
 	NSString * urlString = [url stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
 	return [NSURL URLWithString:urlString];
+=======
+	return [url stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 -(BOOL)fetchTileForTileX:(int32_t)tileX tileY:(int32_t)tileY

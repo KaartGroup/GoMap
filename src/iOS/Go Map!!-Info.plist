@@ -42,10 +42,17 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<string>$(MARKETING_VERSION)</string>
 =======
 	<string>1.6.3</string>
 >>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
+=======
+	<string>1.6.3</string>
+=======
+	<string>$(MARKETING_VERSION)</string>
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -67,6 +74,7 @@
 	<key>CFBundleVersion</key>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
@@ -76,6 +84,12 @@
 =======
 	<string>1.6.3.2</string>
 >>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
+=======
+	<string>1.6.3.2</string>
+=======
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSRequiresIPhoneOS</key>

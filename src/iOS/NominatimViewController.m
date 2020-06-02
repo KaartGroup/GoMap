@@ -10,6 +10,10 @@
 #import "AppDelegate.h"
 #import "BingMapsGeometry.h"
 #import "MapView.h"
+<<<<<<< HEAD
+=======
+#import "MapViewController.h"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "NominatimViewController.h"
 
 @interface NominatimViewController() <UITableViewDelegate>
@@ -53,6 +57,7 @@
 	return _searchBar.text.length ? _resultsArray.count : _historyArray.count;
 }
 
+<<<<<<< HEAD
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
 	return [UIView new];
@@ -66,6 +71,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewAutomaticDimension;
+=======
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewAutomaticDimension;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -87,6 +100,7 @@
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
+<<<<<<< HEAD
 - (void)jumpToLat:(double)lat lon:(double)lon
 {
 	AppDelegate * appDelegate = AppDelegate.shared;
@@ -104,6 +118,8 @@
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -125,6 +141,7 @@
 	lat1 = (lat1+lat2)/2;
 	lon1 = (lon1+lon2)/2;
 
+<<<<<<< HEAD
 	[self jumpToLat:lat1 lon:lon1];
 }
 
@@ -186,6 +203,21 @@
 	while ( a.count > 20 )
 		[a removeLastObject];
 	_historyArray = a;
+=======
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	double metersPerDegree = MetersPerDegree( lat1 );
+	double minMeters = 50;
+	double widthDegrees = minMeters / metersPerDegree;
+
+	// disable GPS
+	while ( appDelegate.mapView.gpsState != GPS_STATE_NONE ) {
+		[appDelegate.mapView.viewController toggleLocation:self];
+	}
+
+	[appDelegate.mapView setTransformForLatitude:lat1 longitude:lon1 width:widthDegrees];
+
+	[self dismissViewControllerAnimated:YES completion:nil];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 #pragma mark Search bar delegate
@@ -204,14 +236,21 @@
 	if ( string.length == 0 ) {
 		// no search
 		[_searchBar performSelector:@selector(resignFirstResponder) withObject:nil afterDelay:0.1];
+<<<<<<< HEAD
 	} else if ( [self containsLatLon:string] ) {
 		return;
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	} else {
 		// searching
 		[_activityIndicator startAnimating];
 
 		NSString * text = [string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+<<<<<<< HEAD
 		NSString * url = [NSString stringWithFormat:@"https://nominatim.openstreetmap.org/search?q=%@&format=json&limit=50",text];
+=======
+		NSString * url = [NSString stringWithFormat:@"https://nominatim.openstreetmap.org/search?q=%@&format=json",text];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				
@@ -239,7 +278,16 @@
 					[_tableView reloadData];
 					
 					if ( _resultsArray.count > 0 ) {
+<<<<<<< HEAD
 						[self updateHistoryWithString:string];
+=======
+						NSMutableArray * a = _historyArray ? [_historyArray mutableCopy] : [NSMutableArray new];
+						[a removeObject:string];
+						[a insertObject:string atIndex:0];
+						while ( a.count > 20 )
+							[a removeLastObject];
+						_historyArray = a;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 					}
 					
 				} else {

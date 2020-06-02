@@ -55,7 +55,11 @@
                                 @"iPhone3,1" :    @206,                // iPhone 4
                                 @"iPhone2,1" :    @150,                // iPhone 3GS
 
+<<<<<<< HEAD
                                 @"iPod5,1"   :    @410,                // iPod Touch (Fifth Generation)
+=======
+                                @"iPod4,1"   :    @410,                // iPod Touch (Fifth Generation)
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
                                 @"iPod4,1"   :    @209,                // iPod Touch (Fourth Generation)
                             };
         NSString * value = [dict objectForKey:name];

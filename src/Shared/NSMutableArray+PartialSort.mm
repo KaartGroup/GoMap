@@ -10,7 +10,11 @@
 #import <algorithm>
 
 #import "NSMutableArray+PartialSort.h"
+<<<<<<< HEAD
 #import "RenderInfo.h"
+=======
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 
 @implementation NSMutableArray (PartialSort)

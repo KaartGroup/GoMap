@@ -6,11 +6,22 @@
 //  Copyright (c) 2012 Bryce Cogswell. All rights reserved.
 //
 
+<<<<<<< HEAD
+=======
+#import <CoreText/CoreText.h>
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "NSMutableArray+PartialSort.h"
 
 #import "iosapi.h"
 #import "AppDelegate.h"
 #import "BingMapsGeometry.h"
+<<<<<<< HEAD
+=======
+#import "Buildings3DView.h"
+#import "CommonPresetList.h"
+#import "CurvedTextLayer.h"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "DLog.h"
 #import "EditorMapLayer.h"
 #if TARGET_OS_IPHONE
@@ -26,7 +37,12 @@
 #import "SpeechBalloonLayer.h"
 #import "RenderInfo.h"
 #import "VectorMath.h"
+<<<<<<< HEAD
 #import "Go_Kaart__-Swift.h"
+=======
+#import "Go_Map__-Swift.h"
+#import "GeekbenchScoreProvider.h"
+>>>>>>> master
 
 #define FADE_INOUT			0
 #define SINGLE_SIDED_WALLS	1
@@ -61,12 +77,75 @@ static const CGFloat NodeHighlightRadius = 6.0;
 
 -(id)initWithMapView:(MapView *)mapView
 {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    self = [super init];
+    if ( self ) {
+        _mapView = mapView;
+
+        AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+
+        self.whiteText = YES;
+
+        _fadingOutSet = [NSMutableSet new];
+
+        // observe changes to geometry
+        [_mapView addObserver:self forKeyPath:@"screenFromMapTransform" options:0 context:NULL];
+
+        [OsmMapData setEditorMapLayerForArchive:self];
+        
+        NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+        [defaults registerDefaults:@{
+            @"editor.enableObjectFilters" : @NO,
+            @"editor.showLevel" : @NO,
+            @"editor.showLevelRange" : @"",
+            @"editor.showPoints" : @YES,
+            @"editor.showTrafficRoads" : @YES,
+            @"editor.showServiceRoads" : @YES,
+            @"editor.showPaths" : @YES,
+            @"editor.showBuildings" : @YES,
+            @"editor.showLanduse" : @YES,
+            @"editor.showBoundaries" : @YES,
+            @"editor.showWater" : @YES,
+            @"editor.showRail" : @YES,
+            @"editor.showPower" : @YES,
+            @"editor.showPastFuture" : @YES,
+            @"editor.showOthers" : @YES,
+           }];
+        
+        
+        _enableObjectFilters    = [defaults boolForKey:@"editor.enableObjectFilters"];
+        _showLevel                = [defaults boolForKey:@"editor.showLevel"];
+        _showLevelRange         = [defaults objectForKey:@"editor.showLevelRange"];
+        _showPoints                = [defaults boolForKey:@"editor.showPoints"];
+        _showTrafficRoads        = [defaults boolForKey:@"editor.showTrafficRoads"];
+        _showServiceRoads        = [defaults boolForKey:@"editor.showServiceRoads"];
+        _showPaths                 = [defaults boolForKey:@"editor.showPaths"];
+        _showBuildings             = [defaults boolForKey:@"editor.showBuildings"];
+        _showLanduse             = [defaults boolForKey:@"editor.showLanduse"];
+        _showBoundaries         = [defaults boolForKey:@"editor.showBoundaries"];
+        _showWater                 = [defaults boolForKey:@"editor.showWater"];
+        _showRail                 = [defaults boolForKey:@"editor.showRail"];
+        _showPower                 = [defaults boolForKey:@"editor.showPower"];
+        _showPastFuture         = [defaults boolForKey:@"editor.showPastFuture"];
+        _showOthers             = [defaults boolForKey:@"editor.showOthers"];
+
+        CFTimeInterval t = CACurrentMediaTime();
+        _mapData = [[OsmMapData alloc] initWithCachedData];
+        t = CACurrentMediaTime() - t;
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	self = [super init];
 	if ( self ) {
 		_mapView = mapView;
         _geekbenchScoreProvider = [[GeekbenchScoreProvider alloc] init];
 
+<<<<<<< HEAD
 		AppDelegate * appDelegate = AppDelegate.shared;
+=======
+		AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 		self.whiteText = YES;
 
@@ -116,6 +195,10 @@ static const CGFloat NodeHighlightRadius = 6.0;
 		CFTimeInterval t = CACurrentMediaTime();
 		_mapData = [[OsmMapData alloc] initWithCachedData];
 		t = CACurrentMediaTime() - t;
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #if TARGET_OS_IPHONE
 		if ( _mapData && mapView.enableAutomaticCacheManagement ) {
 			[_mapData discardStaleData];
@@ -696,6 +779,39 @@ static NSInteger ClipLineToRect( OSMPoint p1, OSMPoint p2, OSMRect rect, OSMPoin
 
 -(CAShapeLayer *)getOceanLayer:(NSArray<OsmBaseObject *> *)objectList
 {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    // get all coastline ways
+    NSMutableArray * outerSegments = [NSMutableArray new];
+    NSMutableArray * innerSegments = [NSMutableArray new];
+    for ( id obj in objectList ) {
+        OsmBaseObject * object = obj;
+        if ( object.isWay.isClosed && [object.tags[@"natural"] isEqualToString:@"water"] ) {
+            continue;    // lakes are not a concern of this function
+        }
+        if ( object.isCoastline ) {
+            if ( object.isWay ) {
+                [outerSegments addObject:object];
+            } else if ( object.isRelation ) {
+                for ( OsmMember * mem in object.isRelation.members ) {
+                    if ( [mem.ref isKindOfClass:[OsmWay class]] ) {
+                        if ( [mem.role isEqualToString:@"outer"] ) {
+                            [outerSegments addObject:mem.ref];
+                        } else if ( [mem.role isEqualToString:@"inner"] ) {
+                            [innerSegments addObject:mem.ref];
+                        } else {
+                            // skip
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if ( outerSegments.count == 0 )
+        return nil;
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	// get all coastline ways
 	NSMutableArray * outerSegments = [NSMutableArray new];
 	NSMutableArray * innerSegments = [NSMutableArray new];
@@ -723,6 +839,10 @@ static NSInteger ClipLineToRect( OSMPoint p1, OSMPoint p2, OSMRect rect, OSMPoin
 	}
 	if ( outerSegments.count == 0 )
 		return nil;
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 	// connect ways together forming congiguous runs
 	outerSegments = [self joinConnectedWays:outerSegments];
@@ -935,6 +1055,7 @@ static NSInteger ClipLineToRect( OSMPoint p1, OSMPoint p2, OSMRect rect, OSMPoin
 
 #pragma mark Common Drawing
 
+<<<<<<< HEAD
 UIImage * ImageScaledToSize( UIImage * image, CGFloat iconSize )
 {
 	if ( image == nil )
@@ -949,12 +1070,81 @@ UIImage * ImageScaledToSize( UIImage * image, CGFloat iconSize )
 		size.width /= ratio;
 	UIGraphicsBeginImageContext( size );
 	[image drawInRect:CGRectMake(0,0,size.width,size.height)];
+=======
+UIImage * IconScaledForDisplay(UIImage *icon)
+{
+<<<<<<< HEAD
+    static double score = 0;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        struct utsname systemInfo = { 0 };
+        uname(&systemInfo);
+        NSString * name = [[NSString alloc] initWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+        NSDictionary * dict = @{
+                                @"x86_64"    :    @4000,                // Simulator
+                                @"i386"      :    @4000,                // Simulator
+
+                                @"iPad5,4"     :    @0,                    // iPad Air 2
+                                @"iPad4,5"   :    @2493,                // iPad Mini (2nd Generation iPad Mini - Cellular)
+                                @"iPad4,4"   :    @2493,                // iPad Mini (2nd Generation iPad Mini - Wifi)
+                                @"iPad4,2"   :    @2664,                // iPad Air 5th Generation iPad (iPad Air) - Cellular
+                                @"iPad4,1"   :    @2664,                // iPad Air 5th Generation iPad (iPad Air) - Wifi
+                                @"iPad3,6"   :    @1402,                // iPad 4 (4th Generation)
+                                @"iPad3,5"   :    @1402,                // iPad 4 (4th Generation)
+                                @"iPad3,4"   :    @1402,                // iPad 4 (4th Generation)
+                                @"iPad3,3"   :    @492,                // iPad 3 (3rd Generation)
+                                @"iPad3,2"   :    @492,                // iPad 3 (3rd Generation)
+                                @"iPad3,1"   :    @492,                // iPad 3 (3rd Generation)
+                                @"iPad2,7"   :    @490,                // iPad Mini (Original)
+                                @"iPad2,6"   :    @490,                // iPad Mini (Original)
+                                @"iPad2,5"   :    @490,                // iPad Mini (Original)
+                                @"iPad2,4"   :    @492,                // iPad 2
+                                @"iPad2,3"   :    @492,                // iPad 2
+                                @"iPad2,2"   :    @492,                // iPad 2
+                                @"iPad2,1"   :    @492,                // iPad 2
+
+                                @"iPhone7,2" :    @2855,                // iPhone 6+
+                                @"iPhone7,1" :    @2879,                // iPhone 6
+                                @"iPhone6,2" :    @2523,                // iPhone 5s (model A1457, A1518, A1528 (China), A1530 | Global)
+                                @"iPhone6,1" :    @2523,                // iPhone 5s model A1433, A1533 | GSM)
+                                @"iPhone5,4" :    @1240,                // iPhone 5c (model A1507, A1516, A1526 (China), A1529 | Global)
+                                @"iPhone5,3" :    @1240,                // iPhone 5c (model A1456, A1532 | GSM)
+                                @"iPhone5,2" :    @1274,                // iPhone 5 (model A1429, everything else)
+                                @"iPhone5,1" :    @1274,                // iPhone 5 (model A1428, AT&T/Canada)
+                                @"iPhone4,1" :    @405,                // iPhone 4S
+                                @"iPhone3,1" :    @206,                // iPhone 4
+                                @"iPhone2,1" :    @150,                // iPhone 3GS
+
+                                @"iPod4,1"   :    @410,                // iPod Touch (Fifth Generation)
+                                @"iPod4,1"   :    @209,                // iPod Touch (Fourth Generation)
+                            };
+        NSString * value = [dict objectForKey:name];
+        if ( [value isKindOfClass:[NSNumber class]] ) {
+            score = value.doubleValue;
+        }
+        if ( score == 0 ) {
+            score = 2500;
+        }
+    });
+    return score;
+=======
+extern const double MinIconSizeInPixels;
+#if TARGET_OS_IPHONE
+	CGFloat uiScaling = [[UIScreen mainScreen] scale];
+	UIGraphicsBeginImageContext( CGSizeMake(uiScaling*MinIconSizeInPixels,uiScaling*MinIconSizeInPixels) );
+	[icon drawInRect:CGRectMake(0,0,uiScaling*MinIconSizeInPixels,uiScaling*MinIconSizeInPixels)];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	UIImage * newIcon = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
 	return newIcon;
 #else
+<<<<<<< HEAD
 	NSSize newSize = { size, size };
 	NSImage * smallImage = [[NSImage alloc] initWithSize: newSize];
+=======
+	NSSize newSize = { MinIconSizeInPixels, MinIconSizeInPixels };
+	NSImage *smallImage = [[NSImage alloc] initWithSize: newSize];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	[smallImage lockFocus];
 	[_icon setSize:newSize];
 	[[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
@@ -962,12 +1152,18 @@ UIImage * ImageScaledToSize( UIImage * image, CGFloat iconSize )
 	[smallImage unlockFocus];
 	return smallImage;
 #endif
+<<<<<<< HEAD
 }
 
 UIImage * IconScaledForDisplay( UIImage *icon )
 {
 	return ImageScaledToSize( icon, MinIconSizeInPixels );
 }
+=======
+>>>>>>> master
+}
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 -(CGPathRef)pathForWay:(OsmWay *)way CF_RETURNS_RETAINED
 {
@@ -989,6 +1185,7 @@ UIImage * IconScaledForDisplay( UIImage *icon )
 
 -(NSInteger)zoomLevel
 {
+<<<<<<< HEAD
 	return (NSInteger)floor( _mapView.zoom );
 }
 
@@ -1022,6 +1219,98 @@ UIImage * IconScaledForDisplay( UIImage *icon )
 		return stopColor;
 	}
 	return nil;
+=======
+    return (NSInteger)floor( log2( OSMTransformScaleX(_mapView.screenFromMapTransform) ) );
+}
+
+
+<<<<<<< HEAD
+typedef struct RGBAColor {
+    CGFloat    red;
+    CGFloat    green;
+    CGFloat    blue;
+    CGFloat    alpha;
+} RGBAColor;
+=======
+typedef struct RGBColor {
+	CGFloat	red;
+	CGFloat	green;
+	CGFloat	blue;
+	BOOL	hasColor;
+} RGBColor;
+>>>>>>> master
+
+
+
+-(RGBColor)defaultColorForObject:(OsmBaseObject *)object
+{
+<<<<<<< HEAD
+    RGBAColor c;
+    c.alpha = 1.0;
+    if ( object.tags[@"shop"] ) {
+        c.red = 0xAC/255.0;
+        c.green = 0x39/255.0;
+        c.blue = 0xAC/255.0;
+    } else if ( object.tags[@"amenity"] || object.tags[@"building"] || object.tags[@"leisure"] ) {
+        c.red = 0x73/255.0;
+        c.green = 0x4A/255.0;
+        c.blue = 0x08/255.0;
+    } else if ( object.tags[@"tourism"] || object.tags[@"transport"] ) {
+        c.red = 0x00/255.0;
+        c.green = 0x92/255.0;
+        c.blue = 0xDA/255.0;
+    } else if ( object.tags[@"medical"] ) {
+        c.red = 0xDA/255.0;
+        c.green = 0x00/255.0;
+        c.blue = 0x92/255.0;
+    } else if ( object.tags[@"name"] ) {
+        // blue for generic interesting nodes
+        c.red = 0;
+        c.green = 0;
+        c.blue = 1;
+    } else {
+        // gray for untagged nodes
+        c.alpha = 0.0;
+        c.red = c.green = c.blue = 0.5;
+    }
+    return c;
+=======
+	RGBColor c;
+	c.hasColor = YES;
+	if ( object.tags[@"shop"] ) {
+		c.red = 0xAC/255.0;
+		c.green = 0x39/255.0;
+		c.blue = 0xAC/255.0;
+    } else if ([object.tags[@"natural"] isEqualToString:@"tree"]) {
+        /// #127A38
+        c.red = 18/255.0;
+        c.green = 122/255.0;
+        c.blue = 56/255.0;
+	} else if ( object.tags[@"amenity"] || object.tags[@"building"] || object.tags[@"leisure"] ) {
+		c.red = 0x73/255.0;
+		c.green = 0x4A/255.0;
+		c.blue = 0x08/255.0;
+	} else if ( object.tags[@"tourism"] || object.tags[@"transport"] ) {
+		c.red = 0x00/255.0;
+		c.green = 0x92/255.0;
+		c.blue = 0xDA/255.0;
+	} else if ( object.tags[@"medical"] ) {
+		c.red = 0xDA/255.0;
+		c.green = 0x00/255.0;
+		c.blue = 0x92/255.0;
+	} else if ( object.tags[@"name"] ) {
+		// blue for generic interesting nodes
+		c.red = 0;
+		c.green = 0;
+		c.blue = 1;
+	} else {
+		// black/gray for non-catagorized objects
+		c.hasColor = NO;
+		c.red = c.green = c.blue = 0.0;
+	}
+	return c;
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 static NSString * HouseNumberForObjectTags( NSDictionary * tags )
@@ -1143,6 +1432,25 @@ static NSString * HouseNumberForObjectTags( NSDictionary * tags )
 #pragma mark CAShapeLayer drawing
 
 #define ZSCALE 0.001
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+const static CGFloat Z_BASE                = -1;
+const static CGFloat Z_OCEAN            = Z_BASE + 1 * ZSCALE;
+const static CGFloat Z_AREA                = Z_BASE + 2 * ZSCALE;
+const static CGFloat Z_HALO                = Z_BASE + 2.5 * ZSCALE;
+const static CGFloat Z_CASING            = Z_BASE + 3 * ZSCALE;
+const static CGFloat Z_LINE                = Z_BASE + 4 * ZSCALE;
+const static CGFloat Z_NODE                = Z_BASE + 5 * ZSCALE;
+const static CGFloat Z_TURN             = Z_BASE + 5.5 * ZSCALE;    // higher than street signals, etc
+const static CGFloat Z_TEXT                = Z_BASE + 6 * ZSCALE;
+const static CGFloat Z_BUILDING_WALL    = Z_BASE + 7 * ZSCALE;
+const static CGFloat Z_BUILDING_ROOF    = Z_BASE + 8 * ZSCALE;
+const static CGFloat Z_HIGHLIGHT_WAY    = Z_BASE + 9 * ZSCALE;
+const static CGFloat Z_HIGHLIGHT_NODE    = Z_BASE + 10 * ZSCALE;
+const static CGFloat Z_ARROWS            = Z_BASE + 11 * ZSCALE;
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 const static CGFloat Z_BASE				= -1;
 const static CGFloat Z_OCEAN			= Z_BASE + 1 * ZSCALE;
 const static CGFloat Z_AREA				= Z_BASE + 2 * ZSCALE;
@@ -1150,6 +1458,7 @@ const static CGFloat Z_HALO				= Z_BASE + 3 * ZSCALE;
 const static CGFloat Z_CASING			= Z_BASE + 4 * ZSCALE;
 const static CGFloat Z_LINE				= Z_BASE + 5 * ZSCALE;
 const static CGFloat Z_TEXT				= Z_BASE + 6 * ZSCALE;
+<<<<<<< HEAD
 const static CGFloat Z_ARROW			= Z_BASE + 7 * ZSCALE;
 const static CGFloat Z_NODE				= Z_BASE + 8 * ZSCALE;
 const static CGFloat Z_TURN             = Z_BASE + 9 * ZSCALE;	// higher than street signals, etc
@@ -1160,6 +1469,16 @@ const static CGFloat Z_HIGHLIGHT_NODE	= Z_BASE + 13 * ZSCALE;
 const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 
 
+=======
+const static CGFloat Z_NODE				= Z_BASE + 7 * ZSCALE;
+const static CGFloat Z_TURN             = Z_BASE + 8 * ZSCALE;	// higher than street signals, etc
+const static CGFloat Z_BUILDING_WALL	= Z_BASE + 9 * ZSCALE;
+const static CGFloat Z_BUILDING_ROOF	= Z_BASE + 10 * ZSCALE;
+const static CGFloat Z_HIGHLIGHT_WAY	= Z_BASE + 11 * ZSCALE;
+const static CGFloat Z_HIGHLIGHT_NODE	= Z_BASE + 12 * ZSCALE;
+const static CGFloat Z_ARROWS			= Z_BASE + 13 * ZSCALE;
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 
 -(CALayer *)buildingWallLayerForPoint:(OSMPoint)p1 point:(OSMPoint)p2 height:(double)height hue:(double)hue
@@ -1211,13 +1530,19 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
     if ( object.shapeLayers )
         return object.shapeLayers;
 
+<<<<<<< HEAD
     TagInfo * tagInfo = object.tagInfo;
     NSMutableArray * layers = [NSMutableArray new];
+=======
+	RenderInfo * tagInfo = object.tagInfo;
+	NSMutableArray * layers = [NSMutableArray new];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
     if ( object.isNode ) {
 
         OSMPoint pt = MapPointForLatitudeLongitude( object.isNode.lat, object.isNode.lon );
 
+<<<<<<< HEAD
         // first use TagInfo database
         UIImage * icon = tagInfo.scaledIcon;
         if ( icon == nil ) {
@@ -1468,11 +1793,16 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 
 				{
 					CAShapeLayerWithProperties * layer = [CAShapeLayerWithProperties new];
+=======
+				{
+					CAShapeLayer * layer = [CAShapeLayer new];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 					layer.anchorPoint	= CGPointMake(0, 0);
 					layer.position		= CGPointFromOSMPoint( refPoint );
 					layer.path			= path;
 					layer.strokeColor	= UIColor.blackColor.CGColor;
 					layer.fillColor		= nil;
+<<<<<<< HEAD
 					layer.lineWidth		= (1+renderInfo.lineWidth)*_highwayScale;
 					layer.lineCap		= DEFAULT_LINECAP;
 					layer.lineJoin		= DEFAULT_LINEJOIN;
@@ -1486,6 +1816,23 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 					}
 					NSString * tunnel = object.tags[@"tunnel"];
 					if ( tunnel && ![OsmTags IsOsmBooleanFalse:tunnel] ) {
+=======
+					layer.lineWidth		= (1+tagInfo.lineWidth)*_highwayScale;
+					layer.lineCap		= DEFAULT_LINECAP;
+					layer.lineJoin		= DEFAULT_LINEJOIN;
+					layer.zPosition		= Z_CASING;
+					LayerProperties * props = [LayerProperties new];
+					[layer setValue:props forKey:@"properties"];
+					props->position = refPoint;
+					props->lineWidth = layer.lineWidth;
+					NSString * bridge = object.tags[@"bridge"];
+					if ( bridge && !IsOsmBooleanFalse(bridge) ) {
+						props->lineWidth += 4;
+					}
+					NSString * tunnel = object.tags[@"tunnel"];
+					if ( tunnel && !IsOsmBooleanFalse(tunnel) ) {
+						// props->lineDashes = @[@(6), @(3)];					// doesn't work because dashes get rounded off due to path scaling
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 						props->lineWidth += 2;
 						layer.strokeColor = UIColor.brownColor.CGColor;
 					}
@@ -1494,6 +1841,7 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 				}
 
 				// provide a halo for streets that don't have a name
+<<<<<<< HEAD
 				if ( _mapView.enableUnnamedRoadHalo && object.isWay.needsNoNameHighlight ) {
 					// it lacks a name
 					CAShapeLayerWithProperties * haloLayer = [CAShapeLayerWithProperties new];
@@ -1511,6 +1859,49 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 					haloProps->lineWidth = haloLayer.lineWidth;
 
 					[layers addObject:haloLayer];
+=======
+				if ( _mapView.enableUnnamedRoadHalo ) {
+					if ( object.tags[@"name"] == nil && ![object.tags[@"noname"] isEqualToString:@"yes"] ) {
+						// it lacks a name
+						static NSDictionary * highwayTypes = nil;
+						enum { USES_NAME = 1, USES_REF = 2 };
+						if ( highwayTypes == nil )
+							highwayTypes = @{ @"motorway":@(USES_REF),
+											  @"trunk":@(USES_REF),
+											  @"primary":@(USES_REF),
+											  @"secondary":@(USES_REF),
+											  @"tertiary":@(USES_NAME),
+											  @"unclassified":@(USES_NAME),
+											  @"residential":@(USES_NAME),
+											  @"road":@(USES_NAME),
+											  @"living_street":@(USES_NAME) };
+						NSString * highway = object.tags[@"highway"];
+						if ( highway ) {
+							// it is a highway
+							NSInteger uses = [highwayTypes[highway] integerValue];
+							if ( uses ) {
+								if ( (uses & USES_REF) ? object.tags[@"ref"] == nil : YES ) {
+									CAShapeLayer * haloLayer = [CAShapeLayer new];
+									haloLayer.anchorPoint	= CGPointMake(0, 0);
+									haloLayer.position		= CGPointFromOSMPoint( refPoint );
+									haloLayer.path			= path;
+									haloLayer.strokeColor	= UIColor.redColor.CGColor;
+									haloLayer.fillColor		= nil;
+									haloLayer.lineWidth		= (2+tagInfo.lineWidth)*_highwayScale;
+									haloLayer.lineCap		= DEFAULT_LINECAP;
+									haloLayer.lineJoin		= DEFAULT_LINEJOIN;
+									haloLayer.zPosition		= Z_HALO;
+									LayerProperties * haloProps = [LayerProperties new];
+									[haloLayer setValue:haloProps forKey:@"properties"];
+									haloProps->position = refPoint;
+									haloProps->lineWidth = haloLayer.lineWidth;
+
+									[layers addObject:haloLayer];
+								}
+							}
+						}
+					}
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 				}
 
 				CGPathRelease(path);
@@ -1524,7 +1915,11 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 		CGPathRef path = [object linePathForObjectWithRefPoint:&refPoint];
 
 		if ( path ) {
+<<<<<<< HEAD
 			CGFloat lineWidth = renderInfo.lineWidth*_highwayScale;
+=======
+			CGFloat lineWidth = tagInfo.lineWidth*_highwayScale;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			if ( lineWidth == 0 )
 				lineWidth = 1;
 
@@ -1534,7 +1929,11 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 			layer.bounds		= CGRectMake( 0, 0, bbox.size.width, bbox.size.height );
 			layer.position		= CGPointFromOSMPoint( refPoint );
 			layer.path			= path;
+<<<<<<< HEAD
 			layer.strokeColor	= (renderInfo.lineColor ?: UIColor.blackColor).CGColor;
+=======
+			layer.strokeColor	= (tagInfo.lineColor ?: UIColor.blackColor).CGColor;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			layer.fillColor		= nil;
 			layer.lineWidth		= lineWidth;
 			layer.lineCap		= DEFAULT_LINECAP;
@@ -1550,15 +1949,45 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 		}
 	}
 
+<<<<<<< HEAD
 	// Area
 	if ( object.isWay.isArea || object.isRelation.isMultipolygon ) {
 		if ( renderInfo.areaColor && !object.isCoastline ) {
 
+=======
+<<<<<<< HEAD
+    // Area
+    if ( object.isWay.isArea || object.isRelation.isMultipolygon ) {
+        if ( tagInfo.areaColor && !object.isCoastline ) {
+
+            OSMPoint refPoint;
+            CGPathRef path = [object shapePathForObjectWithRefPoint:&refPoint];
+            if ( path ) {
+                // draw
+                RGBAColor    fillColor;
+                [tagInfo.areaColor getRed:&fillColor.red green:&fillColor.green blue:&fillColor.blue alpha:&fillColor.alpha];
+                fillColor.alpha = object.tags[@"landuse"] ? 0.15 : 0.25;
+                CAShapeLayer * layer = [CAShapeLayer new];
+                layer.anchorPoint    = CGPointMake(0,0);
+                layer.path            = path;
+                layer.position        = CGPointFromOSMPoint(refPoint);
+                layer.fillColor        = [UIColor colorWithRed:fillColor.red green:fillColor.green blue:fillColor.blue alpha:fillColor.alpha].CGColor;
+                layer.lineCap        = DEFAULT_LINECAP;
+                layer.lineJoin        = DEFAULT_LINEJOIN;
+                layer.zPosition        = Z_AREA;
+                LayerProperties * props = [LayerProperties new];
+                [layer setValue:props forKey:@"properties"];
+                props->position = refPoint;
+
+                [layers addObject:layer];
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			OSMPoint refPoint;
 			CGPathRef path = [object shapePathForObjectWithRefPoint:&refPoint];
 			if ( path ) {
 				// draw
 				CGFloat alpha = object.tags[@"landuse"] ? 0.15 : 0.25;
+<<<<<<< HEAD
 				CAShapeLayerWithProperties * layer = [CAShapeLayerWithProperties new];
 				layer.anchorPoint	= CGPointMake(0,0);
 				layer.path			= path;
@@ -1571,6 +2000,22 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 				props->position = refPoint;
 
 				[layers addObject:layer];
+=======
+				CAShapeLayer * layer = [CAShapeLayer new];
+				layer.anchorPoint	= CGPointMake(0,0);
+				layer.path			= path;
+				layer.position		= CGPointFromOSMPoint(refPoint);
+				layer.fillColor		= [tagInfo.areaColor colorWithAlphaComponent:alpha].CGColor;
+				layer.lineCap		= DEFAULT_LINECAP;
+				layer.lineJoin		= DEFAULT_LINEJOIN;
+				layer.zPosition		= Z_AREA;
+				LayerProperties * props = [LayerProperties new];
+				[layer setValue:props forKey:@"properties"];
+				props->position = refPoint;
+
+				[layers addObject:layer];
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 
 #if SHOW_3D
@@ -1863,6 +2308,7 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
     return layers;
 }
 
+<<<<<<< HEAD
 
 - (CALayer<LayerPropertiesProviding> *)directionShapeLayerForNode:(OsmNode *)node withDirection:(NSRange)direction
 {
@@ -1962,6 +2408,131 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
                     }
                 }
             }
+=======
+- (UIImage *)genericIcon
+{
+	// use the "marker" icon
+	static dispatch_once_t onceToken;
+	static UIImage * markerIcon = nil;
+	dispatch_once(&onceToken, ^{
+		markerIcon = [UIImage imageNamed:@"maki-marker"];
+		markerIcon = IconScaledForDisplay( markerIcon );
+	});
+	return markerIcon;
+}
+
+/**
+ Determines the `CALayer` instances required to present the given `node` on the map.
+ 
+ @param node The `OsmNode` instance to get the layers for.
+ @return A list of `CALayer` instances that are used to represent the given `node` on the map.
+ */
+- (NSArray<CALayer *> *)shapeLayersForForNode:(OsmNode *)node
+{
+    NSMutableArray<CALayer *> *layers = [NSMutableArray array];
+    
+    NSArray<CALayer *> *directionLayers = [self directionShapeLayersWithNode:node];
+    if (directionLayers) {
+		[layers addObjectsFromArray:directionLayers];
+    }
+
+    OSMPoint pt = MapPointForLatitudeLongitude( node.lat, node.lon );
+    
+    // fetch icon
+    NSString * featureName = [CommonPresetList featureNameForObjectDict:node.tags geometry:node.geometryName];
+    CommonPresetFeature * feature = [CommonPresetFeature commonPresetFeatureWithName:featureName];
+	UIImage * icon = feature.icon;
+	if ( icon == nil ) {
+		if ( node.tags[@"amenity"] || node.tags[@"name"] )
+			icon = [self genericIcon];
+	}
+    if ( icon ) {
+        /// White circle as the background
+        CALayer *backgroundLayer = [CALayer new];
+        backgroundLayer.bounds          = CGRectMake(0, 0, MinIconSizeInPixels, MinIconSizeInPixels);
+		backgroundLayer.backgroundColor	= UIColor.whiteColor.CGColor;
+		backgroundLayer.cornerRadius    = MinIconSizeInPixels / 2;
+        backgroundLayer.masksToBounds   = YES;
+        backgroundLayer.anchorPoint 	= CGPointZero;
+        backgroundLayer.borderColor 	= UIColor.darkGrayColor.CGColor;
+		backgroundLayer.borderWidth 	= 1.0;
+		backgroundLayer.opaque			= YES;
+
+        /// The actual icon image serves as a `mask` for the icon's color layer, allowing for "tinting" of the icons.
+        CALayer *iconMaskLayer = [CALayer new];
+        CGFloat padding = 4;
+        iconMaskLayer.frame            	= CGRectMake(padding, padding, MinIconSizeInPixels - padding * 2, MinIconSizeInPixels - padding * 2);
+        iconMaskLayer.contents        	= (id)icon.CGImage;
+        
+        CALayer *iconLayer = [CALayer new];
+        iconLayer.bounds            = CGRectMake(0, 0, MinIconSizeInPixels, MinIconSizeInPixels);
+        RGBColor iconColor 			= [self defaultColorForObject:node];
+        iconLayer.backgroundColor   = [UIColor colorWithRed:iconColor.red
+													  green:iconColor.green
+													   blue:iconColor.blue
+													  alpha:1.0].CGColor;
+        iconLayer.mask = iconMaskLayer;
+		iconLayer.anchorPoint = CGPointZero;
+		iconLayer.opaque = YES;
+
+        CALayer * layer = [CALayer new];
+        [layer addSublayer:backgroundLayer];
+        [layer addSublayer:iconLayer];
+        layer.bounds        	= CGRectMake(0, 0, MinIconSizeInPixels, MinIconSizeInPixels);
+        layer.anchorPoint    	= CGPointMake(0.5, 0.5);
+        layer.position        	= CGPointMake(pt.x,pt.y);
+        layer.zPosition        	= Z_NODE;
+		layer.opaque			= YES;
+
+        LayerProperties * props = [LayerProperties new];
+        [layer setValue:props forKey:@"properties"];
+        props->position = pt;
+        [layers addObject:layer];
+        
+    } else {
+        
+        // draw generic box
+        RGBColor color = [self defaultColorForObject:node];
+		NSString * houseNumber = color.hasColor ? nil : DrawNodeAsHouseNumber( node.tags );
+		if ( houseNumber ) {
+            
+            CALayer * layer = [CurvedTextLayer.shared layerWithString:houseNumber whiteOnBlock:self.whiteText];
+            layer.anchorPoint	= CGPointMake(0.5, 0.5);
+            layer.position      = CGPointMake(pt.x, pt.y);
+            layer.zPosition     = Z_TEXT;
+			LayerProperties * props = [LayerProperties new];
+            [layer setValue:props forKey:@"properties"];
+            props->position = pt;
+            
+            [layers addObject:layer];
+            
+        } else {
+            
+            // generic box
+            CAShapeLayer * layer = [CAShapeLayer new];
+            CGRect rect = CGRectMake(round(MinIconSizeInPixels/4), round(MinIconSizeInPixels/4),
+                                     round(MinIconSizeInPixels/2), round(MinIconSizeInPixels/2));
+            CGPathRef path        	= CGPathCreateWithRect( rect, NULL );
+            layer.path            	= path;
+            layer.frame         	= CGRectMake(-MinIconSizeInPixels/2, -MinIconSizeInPixels/2,
+												  MinIconSizeInPixels, MinIconSizeInPixels);
+            layer.position          = CGPointMake(pt.x,pt.y);
+            layer.strokeColor       = [UIColor colorWithRed:color.red green:color.green blue:color.blue alpha:1.0].CGColor;
+            layer.fillColor         = nil;
+            layer.lineWidth         = 2.0;
+			layer.backgroundColor	= UIColor.whiteColor.CGColor;
+			layer.borderColor		= UIColor.darkGrayColor.CGColor;
+			layer.borderWidth		= 1.0;
+			layer.cornerRadius      = MinIconSizeInPixels/2;
+            layer.zPosition         = Z_NODE;
+            
+            LayerProperties * props = [LayerProperties new];
+            [layer setValue:props forKey:@"properties"];
+            props->position = pt;
+            
+            [layers addObject:layer];
+            CGPathRelease(path);
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
         }
     }
 
@@ -1987,9 +2558,8 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 	return [self directionShapeLayerForNode:node withDirection:NSMakeRange(direction,0)];
 }
 
-/**
- Determines the `CALayer` instance required to draw the direction of the given `node`.
 
+<<<<<<< HEAD
  @param node The node to get the layer for.
  @return A `CALayer` instance for rendering the given node's direction.
  */
@@ -2045,6 +2615,156 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 	return nil;
 }
 
+=======
+- (CALayer *)directionShapeLayerForNode:(OsmNode *)node withDirection:(NSRange)direction
+{
+	CGFloat heading = direction.location - 90.0;
+	if ( direction.length )
+		heading += direction.length/2;
+
+    CAShapeLayer *layer = [CAShapeLayer layer];
+
+    layer.fillColor = [UIColor colorWithWhite:0.2 alpha:0.5].CGColor;
+	layer.strokeColor = [UIColor colorWithWhite:1.0 alpha:0.5].CGColor;
+	layer.lineWidth = 1.0;
+
+    layer.zPosition = Z_NODE;
+
+    OSMPoint pt = MapPointForLatitudeLongitude(node.lat, node.lon);
+
+    double screenAngle = OSMTransformRotation(self.mapView.screenFromMapTransform);
+    layer.affineTransform = CGAffineTransformMakeRotation(screenAngle);
+
+    CGFloat radius = 30.0;
+	CGFloat fieldOfViewRadius = direction.length ?: 55;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path,
+                 NULL,
+                 0.0,
+                 0.0,
+                 radius,
+                 radiansFromDegrees(heading - fieldOfViewRadius / 2),
+                 radiansFromDegrees(heading + fieldOfViewRadius / 2),
+                 NO);
+    CGPathAddLineToPoint(path, NULL, 0, 0);
+    CGPathCloseSubpath(path);
+    layer.path = path;
+    CGPathRelease(path);
+
+    LayerProperties *layerProperties = [LayerProperties new];
+    layerProperties->position = pt;
+    [layer setValue:@"direction" forKey:@"key"];
+    [layer setValue:layerProperties forKey:@"properties"];
+
+    return layer;
+}
+
+-(CALayer *)directionLayerForNodeInWay:(OsmWay *)way node:(OsmNode *)node facing:(NSInteger)second
+{
+	if ( second < 0 || second >= way.nodes.count )
+		return nil;
+	OsmNode * nextNode = way.nodes[second];
+	// compute angle to next node
+	OSMPoint p1 = MapPointForLatitudeLongitude(node.lat, node.lon);
+	OSMPoint p2 = MapPointForLatitudeLongitude(nextNode.lat, nextNode.lon);
+	double angle = atan2(p2.y-p1.y,p2.x-p1.x);
+	NSInteger direction = 90 + (int)round(angle * 180/M_PI);	// convert to north-facing clockwise direction
+	return [self directionShapeLayerForNode:node withDirection:NSMakeRange(direction,0)];
+}
+
+/**
+ Determines the `CALayer` instance required to draw the direction of the given `node`.
+
+ @param node The node to get the layer for.
+ @return A `CALayer` instance for rendering the given node's direction.
+ */
+- (NSArray<CALayer *> *)directionShapeLayersWithNode:(OsmNode *)node
+{
+    NSRange direction = node.direction;
+	if (direction.location != NSNotFound) {
+		return @[ [self directionShapeLayerForNode:node withDirection:direction] ];
+	}
+
+	NSString * value = node.tags[@"traffic_signals:direction"];
+	if ( value && [node.tags[@"highway"] isEqualToString:@"traffic_signals"] ) {
+		enum { IS_NONE, IS_FORWARD, IS_BACKWARD, IS_BOTH, IS_ALL } isDirection =
+			[value isEqualToString:@"forward"] ? IS_FORWARD :
+			[value isEqualToString:@"backward"] ? IS_BACKWARD :
+			[value isEqualToString:@"both"] ? IS_BOTH :
+			[value isEqualToString:@"all"] ? IS_ALL :
+			IS_NONE;
+		if ( isDirection != IS_NONE ) {
+			NSArray<OsmWay *> * wayList = [self.mapData waysContainingNode:node];	// this is expensive, only do if necessary
+			wayList = [wayList filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmWay * way, NSDictionary<NSString *,id> * _Nullable bindings) {
+				return way.tags[@"highway"] != nil;
+			}]];
+			if ( wayList.count > 0 ) {
+				if ( wayList.count > 1 && isDirection != IS_ALL )
+					return nil;	// the direction isn't well defined
+				NSMutableArray * list = [NSMutableArray arrayWithCapacity:2*wayList.count];	// sized for worst case
+				for ( OsmWay * way in wayList ) {
+					NSInteger pos = [way.nodes indexOfObject:node];
+					if ( isDirection != IS_BACKWARD ) {
+						CALayer * layer = [self directionLayerForNodeInWay:way node:node facing:pos+1];
+						if ( layer )
+							[list addObject:layer];
+					}
+					if ( isDirection != IS_FORWARD ) {
+						CALayer * layer = [self directionLayerForNodeInWay:way node:node facing:pos-1];
+						if ( layer )
+							[list addObject:layer];
+					}
+				}
+				return list;;
+			}
+		}
+	}
+	return nil;
+}
+
+
+-(NSMutableArray<CALayer *> *)getShapeLayersForHighlights
+{
+<<<<<<< HEAD
+    double                geekScore    = [self geekbenchScore];
+    NSInteger            nameLimit    = 5 + (geekScore - 500) / 200;    // 500 -> 5, 2500 -> 10
+    NSMutableSet    *    nameSet        = [NSMutableSet new];
+    NSMutableArray    *    layers        = [NSMutableArray new];
+    UIColor            *    relationColor = [UIColor colorWithRed:66/255.0 green:188/255.0 blue:244/255.0 alpha:1.0];
+    
+    // highlighting
+    NSMutableSet * highlights = [NSMutableSet new];
+    if ( _selectedNode ) {
+        [highlights addObject:_selectedNode];
+    }
+    if ( _selectedWay ) {
+        [highlights addObject:_selectedWay];
+    }
+    if ( _selectedRelation ) {
+        NSSet * members = [_selectedRelation allMemberObjects];
+        [highlights unionSet:members];
+    }
+=======
+	double				geekScore	= [self.geekbenchScoreProvider geekbenchScore];
+	NSInteger			nameLimit	= 5 + (geekScore - 500) / 200;	// 500 -> 5, 2500 -> 10
+	NSMutableSet	*	nameSet		= [NSMutableSet new];
+	NSMutableArray	*	layers		= [NSMutableArray new];
+	UIColor			*	relationColor = [UIColor colorWithRed:66/255.0 green:188/255.0 blue:244/255.0 alpha:1.0];
+	
+	// highlighting
+	NSMutableSet * highlights = [NSMutableSet new];
+	if ( _selectedNode ) {
+		[highlights addObject:_selectedNode];
+	}
+	if ( _selectedWay ) {
+		[highlights addObject:_selectedWay];
+	}
+	if ( _selectedRelation ) {
+		NSSet * members = [_selectedRelation allMemberObjects];
+		[highlights unionSet:members];
+	}
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 -(NSMutableArray<CALayer *> *)getShapeLayersForHighlights
 {
@@ -2171,6 +2891,35 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 			CGPathRef path		= CGPathCreateWithRect( rect, NULL );
 			layer.path			= path;
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            layer.anchorPoint    = CGPointMake(0, 0);
+            layer.position        = CGPointMake(pt.x,pt.y);
+            layer.strokeColor    = selected ? UIColor.greenColor.CGColor : UIColor.whiteColor.CGColor;
+            layer.fillColor        = UIColor.clearColor.CGColor;
+            layer.lineWidth        = 2.0;
+=======
+			// draw square around selected node
+			OsmNode * node = (id)object;
+			CGPoint pt = [_mapView screenPointForLatitude:node.lat longitude:node.lon birdsEye:NO];
+>>>>>>> master
+
+            CGPathRef shadowPath = CGPathCreateWithRect( CGRectInset( rect, -3, -3), NULL);
+            layer.shadowPath    = shadowPath;
+            layer.shadowColor    = UIColor.blackColor.CGColor;
+            layer.shadowRadius    = 0.0;
+            layer.shadowOffset    = CGSizeMake(0,0);
+            layer.shadowOpacity    = 0.25;
+
+<<<<<<< HEAD
+            layer.zPosition        = Z_HIGHLIGHT_NODE;
+            [layers addObject:layer];
+            CGPathRelease(path);
+            CGPathRelease(shadowPath);
+#endif
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			layer.anchorPoint	= CGPointMake(0, 0);
 			layer.position		= CGPointMake(pt.x,pt.y);
 			layer.strokeColor	= selected ? UIColor.greenColor.CGColor : UIColor.whiteColor.CGColor;
@@ -2180,6 +2929,10 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 			layer.zPosition		= Z_HIGHLIGHT_NODE;
 			[layers addObject:layer];
 			CGPathRelease(path);
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		}
 	}
 
@@ -2263,6 +3016,88 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
  */
 - (BOOL)shouldRasterizeStreetNames {
     return [self.geekbenchScoreProvider geekbenchScore] < 2500;
+<<<<<<< HEAD
+=======
+}
+
+-(void)resetDisplayLayers
+{
+    // need to refresh all text objects
+    [_mapData enumerateObjectsUsingBlock:^(OsmBaseObject *obj) {
+        obj.shapeLayers = nil;
+    }];
+    _baseLayer.sublayers = nil;
+    [self setNeedsLayout];
+}
+
+#pragma mark Select objects and draw
+
+<<<<<<< HEAD
+static BOOL inline ShouldDisplayNodeInWay( NSDictionary * tags )
+{
+    NSInteger tagCount = tags.count;
+    if ( tagCount == 0 )
+        return NO;
+    if ( [tags objectForKey:@"source"] )
+        --tagCount;
+    return tagCount > 0;
+}
+
+
+-(NSMutableArray *)getVisibleObjects
+{
+    OSMRect box = [_mapView screenLongitudeLatitude];
+    NSMutableArray * a = [NSMutableArray arrayWithCapacity:_mapData.wayCount];
+    [_mapData enumerateObjectsInRegion:box block:^(OsmBaseObject *obj) {
+        TRISTATE show = obj.isShown;
+        if ( show == TRISTATE_UNKNOWN ) {
+            if ( !obj.deleted ) {
+                if ( obj.isNode ) {
+                    if ( ((OsmNode *)obj).wayCount == 0 || ShouldDisplayNodeInWay( obj.tags ) ) {
+                        show = TRISTATE_YES;
+                    }
+                } else if ( obj.isWay ) {
+                    show = TRISTATE_YES;
+                } else if ( obj.isRelation ) {
+                    show = TRISTATE_YES;
+                }
+            }
+            obj.isShown = show == TRISTATE_YES ? TRISTATE_YES : TRISTATE_NO;
+        }
+        if ( show == TRISTATE_YES ) {
+            [a addObject:obj];
+        }
+    }];
+    return a;
+=======
+
+-(NSMutableArray *)getVisibleObjects
+{
+	OSMRect box = [_mapView screenLongitudeLatitude];
+	NSMutableArray * a = [NSMutableArray arrayWithCapacity:_mapData.wayCount];
+	[_mapData enumerateObjectsInRegion:box block:^(OsmBaseObject *obj) {
+		TRISTATE show = obj.isShown;
+		if ( show == TRISTATE_UNKNOWN ) {
+			if ( !obj.deleted ) {
+				if ( obj.isNode ) {
+					if ( ((OsmNode *)obj).wayCount == 0 || [obj hasInterestingTags] ) {
+						show = TRISTATE_YES;
+					}
+				} else if ( obj.isWay ) {
+					show = TRISTATE_YES;
+				} else if ( obj.isRelation ) {
+					show = TRISTATE_YES;
+				}
+			}
+			obj.isShown = show == TRISTATE_YES ? TRISTATE_YES : TRISTATE_NO;
+		}
+		if ( show == TRISTATE_YES ) {
+			[a addObject:obj];
+		}
+	}];
+	return a;
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 -(void)resetDisplayLayers
@@ -2309,6 +3144,7 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 - (void)filterObjects:(NSMutableArray *)objects
 {
 #if TARGET_OS_IPHONE
+<<<<<<< HEAD
 	BOOL (^predLevel)(OsmBaseObject *) = nil;
 
 	if ( _showLevel ) {
@@ -2489,11 +3325,384 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 		return ok;
 	};
 
+=======
+<<<<<<< HEAD
+    BOOL (^predLevel)(OsmBaseObject *) = nil;
+
+    if ( _showLevel ) {
+        // set level predicate dynamically since it depends on the the text range
+        NSArray * levelFilter = [FilterObjectsViewController levelsForString:self.showLevelRange];
+        if ( levelFilter.count ) {
+            predLevel = ^BOOL(OsmBaseObject * object) {
+                NSString * objectLevel = object.tags[ @"level" ];
+                if ( objectLevel == nil )
+                    return YES;
+                NSArray * floorSet = nil;
+                double floor = 0.0;
+                if ( [objectLevel containsString:@";"] ) {
+                    floorSet = [objectLevel componentsSeparatedByString:@";"];
+                } else {
+                    floor = [objectLevel doubleValue];
+                }
+                for ( NSArray * filterRange in levelFilter ) {
+                    if ( filterRange.count == 1 ) {
+                        // filter is a single floor
+                        double filterValue = [filterRange[0] doubleValue];
+                        if ( floorSet ) {
+                            // object spans multiple floors
+                            for ( NSString * s in floorSet ) {
+                                double f = [s doubleValue];
+                                if ( f == filterValue ) {
+                                    return YES;
+                                }
+                            }
+                        } else {
+                            if ( floor == filterValue ) {
+                                return YES;
+                            }
+                        }
+                    } else if ( filterRange.count == 2 ) {
+                        // filter is a range
+                        double filterLow = [filterRange[0] doubleValue];
+                        double filterHigh = [filterRange[1] doubleValue];
+                        if ( floorSet ) {
+                            // object spans multiple floors
+                            for ( NSString * s in floorSet ) {
+                                double f = [s doubleValue];
+                                if ( f >= filterLow && f <= filterHigh ) {
+                                    return YES;
+                                }
+                            }
+                        } else {
+                            // object is a single value
+                            if ( floor >= filterLow && floor <= filterHigh ) {
+                                return YES;
+                            }
+                        }
+                    } else {
+                        assert(NO);
+                    }
+                }
+                return NO;
+            };
+        }
+    }
+    
+    static NSDictionary *traffic_roads, *service_roads, *paths, *past_futures, *parking_buildings, *natural_water, *landuse_water;
+    if ( traffic_roads == nil ) {
+        traffic_roads = @{
+             @"motorway": @YES,
+             @"motorway_link": @YES,
+             @"trunk": @YES,
+             @"trunk_link": @YES,
+             @"primary": @YES,
+             @"primary_link": @YES,
+             @"secondary": @YES,
+             @"secondary_link": @YES,
+             @"tertiary": @YES,
+             @"tertiary_link": @YES,
+             @"residential": @YES,
+             @"unclassified": @YES,
+             @"living_street": @YES
+             };
+        service_roads = @{
+             @"service": @YES,
+             @"road": @YES,
+             @"track": @YES
+             };
+        paths = @{
+              @"path": @YES,
+              @"footway": @YES,
+              @"cycleway": @YES,
+              @"bridleway": @YES,
+              @"steps": @YES,
+              @"pedestrian": @YES,
+              @"corridor": @YES
+              };
+        past_futures = @{
+                @"proposed": @YES,
+                @"construction": @YES,
+                @"abandoned": @YES,
+                @"dismantled": @YES,
+                @"disused": @YES,
+                @"razed": @YES,
+                @"demolished": @YES,
+                @"obliterated": @YES
+                };
+        parking_buildings = @{
+               @"multi-storey" : @YES,
+               @"sheds" : @YES,
+               @"carports" : @YES,
+               @"garage_boxes" : @YES
+               };
+        natural_water = @{
+              @"water" : @YES,
+              @"coastline" : @YES,
+              @"bay" : @YES
+              };
+        landuse_water = @{
+              @"pond": @YES,
+              @"basin" : @YES,
+              @"reservoir" : @YES,
+              @"salt_pond" : @YES
+              };
+    }
+    static BOOL (^predPoints)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        return object.isNode != nil;
+    };
+    static BOOL (^predTrafficRoads)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        return object.isWay && traffic_roads[ object.tags[@"highway"] ];
+    };
+    static BOOL (^predServiceRoads)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        return object.isWay && service_roads[ object.tags[@"highway"] ];
+    };
+    static BOOL (^predPaths)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        return object.isWay && paths[ object.tags[@"highway"] ];
+    };
+    static BOOL (^predBuildings)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        NSString * v;
+        return object.tags[ @"building:part" ] ||
+        ((v = object.tags[@"building"]) && ![v isEqualToString:@"no"]) ||
+        [object.tags[@"amenity"] isEqualToString:@"shelter"] ||
+        parking_buildings[ object.tags[@"parking"] ];
+    };
+    static BOOL (^predWater)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        return object.tags[@"waterway"] ||
+                natural_water[ object.tags[@"natural"] ] ||
+                landuse_water[ object.tags[@"landuse"] ];
+
+    };
+    static BOOL (^predLanduse)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        return (object.isWay.isArea || object.isRelation.isMultipolygon) && !predBuildings(object) && !predWater(object);
+    };
+    static BOOL (^predBoundaries)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        if ( object.tags[ @"boundary" ] ) {
+            NSString * highway = object.tags[ @"highway" ];
+            return !( traffic_roads[highway] || service_roads[highway] || paths[highway] );
+        }
+        return NO;
+    };
+    static BOOL (^predRail)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        if ( object.tags[ @"railway" ] || [object.tags[ @"landuse" ] isEqualToString:@"railway"] ) {
+            NSString * highway = object.tags[ @"highway" ];
+            return !( traffic_roads[highway] || service_roads[highway] || paths[highway] );
+        }
+        return NO;
+    };
+    static BOOL (^predPower)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        return object.tags[ @"power" ] != nil;
+    };
+    static BOOL (^predPastFuture)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+        // contains a past/future tag, but not in active use as a road/path/cycleway/etc..
+        NSString * highway = object.tags[ @"highway" ];
+        if ( traffic_roads[highway] || service_roads[highway] || paths[highway] )
+            return NO;
+        __block BOOL ok = NO;
+        [object.tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL * stop) {
+            if ( past_futures[ key ] || past_futures[value] ) {
+                *stop = YES;
+                ok = YES;
+            }
+        }];
+        return ok;
+    };
+
+    NSPredicate * predicate = [NSPredicate predicateWithBlock:^BOOL(OsmBaseObject * object, NSDictionary<NSString *,id> * _Nullable bindings) {
+        if ( predLevel && !predLevel(object) ) {
+            return NO;
+        }
+        BOOL matchAny = NO;
+=======
+	BOOL (^predLevel)(OsmBaseObject *) = nil;
+
+	if ( _showLevel ) {
+		// set level predicate dynamically since it depends on the the text range
+		NSArray * levelFilter = [FilterObjectsViewController levelsForString:self.showLevelRange];
+		if ( levelFilter.count ) {
+			predLevel = ^BOOL(OsmBaseObject * object) {
+				NSString * objectLevel = object.tags[ @"level" ];
+				if ( objectLevel == nil )
+					return YES;
+				NSArray * floorSet = nil;
+				double floor = 0.0;
+				if ( [objectLevel containsString:@";"] ) {
+					floorSet = [objectLevel componentsSeparatedByString:@";"];
+				} else {
+					floor = [objectLevel doubleValue];
+				}
+				for ( NSArray * filterRange in levelFilter ) {
+					if ( filterRange.count == 1 ) {
+						// filter is a single floor
+						double filterValue = [filterRange[0] doubleValue];
+						if ( floorSet ) {
+							// object spans multiple floors
+							for ( NSString * s in floorSet ) {
+								double f = [s doubleValue];
+								if ( f == filterValue ) {
+									return YES;
+								}
+							}
+						} else {
+							if ( floor == filterValue ) {
+								return YES;
+							}
+						}
+					} else if ( filterRange.count == 2 ) {
+						// filter is a range
+						double filterLow = [filterRange[0] doubleValue];
+						double filterHigh = [filterRange[1] doubleValue];
+						if ( floorSet ) {
+							// object spans multiple floors
+							for ( NSString * s in floorSet ) {
+								double f = [s doubleValue];
+								if ( f >= filterLow && f <= filterHigh ) {
+									return YES;
+								}
+							}
+						} else {
+							// object is a single value
+							if ( floor >= filterLow && floor <= filterHigh ) {
+								return YES;
+							}
+						}
+					} else {
+						assert(NO);
+					}
+				}
+				return NO;
+			};
+		}
+	}
+	
+	static NSDictionary *traffic_roads, *service_roads, *paths, *past_futures, *parking_buildings, *natural_water, *landuse_water;
+	if ( traffic_roads == nil ) {
+		traffic_roads = @{
+			 @"motorway": @YES,
+			 @"motorway_link": @YES,
+			 @"trunk": @YES,
+			 @"trunk_link": @YES,
+			 @"primary": @YES,
+			 @"primary_link": @YES,
+			 @"secondary": @YES,
+			 @"secondary_link": @YES,
+			 @"tertiary": @YES,
+			 @"tertiary_link": @YES,
+			 @"residential": @YES,
+			 @"unclassified": @YES,
+			 @"living_street": @YES
+			 };
+		service_roads = @{
+			 @"service": @YES,
+			 @"road": @YES,
+			 @"track": @YES
+			 };
+		paths = @{
+			  @"path": @YES,
+			  @"footway": @YES,
+			  @"cycleway": @YES,
+			  @"bridleway": @YES,
+			  @"steps": @YES,
+			  @"pedestrian": @YES,
+			  @"corridor": @YES
+			  };
+		past_futures = @{
+				@"proposed": @YES,
+				@"construction": @YES,
+				@"abandoned": @YES,
+				@"dismantled": @YES,
+				@"disused": @YES,
+				@"razed": @YES,
+				@"demolished": @YES,
+				@"obliterated": @YES
+				};
+		parking_buildings = @{
+			   @"multi-storey" : @YES,
+			   @"sheds" : @YES,
+			   @"carports" : @YES,
+			   @"garage_boxes" : @YES
+			   };
+		natural_water = @{
+			  @"water" : @YES,
+			  @"coastline" : @YES,
+			  @"bay" : @YES
+			  };
+		landuse_water = @{
+			  @"pond": @YES,
+			  @"basin" : @YES,
+			  @"reservoir" : @YES,
+			  @"salt_pond" : @YES
+			  };
+	}
+	static BOOL (^predPoints)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		return object.isNode != nil;
+	};
+	static BOOL (^predTrafficRoads)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		return object.isWay && traffic_roads[ object.tags[@"highway"] ];
+	};
+	static BOOL (^predServiceRoads)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		return object.isWay && service_roads[ object.tags[@"highway"] ];
+	};
+	static BOOL (^predPaths)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		return object.isWay && paths[ object.tags[@"highway"] ];
+	};
+	static BOOL (^predBuildings)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		NSString * v;
+		return object.tags[ @"building:part" ] ||
+				((v = object.tags[@"building"]) && ![v isEqualToString:@"no"]) ||
+				[object.tags[@"amenity"] isEqualToString:@"shelter"] ||
+				parking_buildings[ object.tags[@"parking"] ];
+	};
+	static BOOL (^predWater)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		return object.tags[@"waterway"] ||
+				natural_water[ object.tags[@"natural"] ] ||
+				landuse_water[ object.tags[@"landuse"] ];
+
+	};
+	static BOOL (^predLanduse)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		return (object.isWay.isArea || object.isRelation.isMultipolygon) && !predBuildings(object) && !predWater(object);
+	};
+	static BOOL (^predBoundaries)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		if ( object.tags[ @"boundary" ] ) {
+			NSString * highway = object.tags[ @"highway" ];
+			return !( traffic_roads[highway] || service_roads[highway] || paths[highway] );
+		}
+		return NO;
+	};
+	static BOOL (^predRail)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		if ( object.tags[ @"railway" ] || [object.tags[ @"landuse" ] isEqualToString:@"railway"] ) {
+			NSString * highway = object.tags[ @"highway" ];
+			return !( traffic_roads[highway] || service_roads[highway] || paths[highway] );
+		}
+		return NO;
+	};
+	static BOOL (^predPower)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		return object.tags[ @"power" ] != nil;
+	};
+	static BOOL (^predPastFuture)(OsmBaseObject *) = ^BOOL(OsmBaseObject * object) {
+		// contains a past/future tag, but not in active use as a road/path/cycleway/etc..
+		NSString * highway = object.tags[ @"highway" ];
+		if ( traffic_roads[highway] || service_roads[highway] || paths[highway] )
+			return NO;
+		__block BOOL ok = NO;
+		[object.tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL * stop) {
+			if ( past_futures[ key ] || past_futures[value] ) {
+				*stop = YES;
+				ok = YES;
+			}
+		}];
+		return ok;
+	};
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	NSPredicate * predicate = [NSPredicate predicateWithBlock:^BOOL(OsmBaseObject * object, NSDictionary<NSString *,id> * _Nullable bindings) {
 		if ( predLevel && !predLevel(object) ) {
 			return NO;
 		}
 		BOOL matchAny = NO;
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #define MATCH(name)\
 		if ( _show##name || _showOthers ) { \
 			BOOL match = pred##name(object); \
@@ -2513,6 +3722,38 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 		MATCH(Power);
 		MATCH(Water);
 #undef MATCH
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        if ( _showOthers && !matchAny ) {
+            if ( object.isWay && object.parentRelations.count == 1 && ((OsmRelation *)object.parentRelations.lastObject).isMultipolygon ) {
+                return NO;    // follow parent filter instead
+            }
+            return YES;
+        }
+        return NO;
+    }];
+    
+    // filter everything
+    [objects filterUsingPredicate:predicate];
+    
+    // if we are showing relations we need to ensure the members are visible too
+    NSMutableSet * add = [NSMutableSet new];
+    for ( OsmBaseObject * obj in objects ) {
+        if ( obj.isRelation.isMultipolygon ) {
+            NSSet * set = [obj.isRelation allMemberObjects];
+            for ( OsmBaseObject * o in set ) {
+                if ( o.isWay ) {
+                    [add addObject:o];
+                }
+            }
+        }
+    }
+    for ( OsmBaseObject * o in add ) {
+        [objects addObject:o];
+    }
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		if ( _showOthers && !matchAny ) {
 			if ( object.isWay && object.parentRelations.count == 1 && ((OsmRelation *)object.parentRelations.lastObject).isMultipolygon ) {
 				return NO;	// follow parent filter instead
@@ -2541,7 +3782,11 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 		if ( obj.isWay && obj.parentRelations.count > 0 && !obj.hasInterestingTags ) {
 			BOOL hidden = YES;
 			for ( OsmRelation * parent in obj.parentRelations ) {
+<<<<<<< HEAD
 				if ( !(parent.isMultipolygon || parent.isBoundary) || [objects containsObject:parent] ) {
+=======
+				if ( !parent.isMultipolygon || [objects containsObject:parent] ) {
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 					hidden = NO;
 					break;
 				}
@@ -2557,21 +3802,72 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 	for ( OsmBaseObject * o in add ) {
 		[objects addObject:o];
 	}
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #endif
 }
 
 - (NSMutableArray<OsmBaseObject *> *)getObjectsToDisplay
 {
 #if TARGET_OS_IPHONE
+<<<<<<< HEAD
 	double geekScore = [self.geekbenchScoreProvider geekbenchScore];
 #if 1 || DEBUG
 	NSInteger objectLimit = 50 + (geekScore - 500) / 40;	// 500 -> 50, 2500 -> 10
 	objectLimit *= 3;
+=======
+<<<<<<< HEAD
+    double geekScore = [self geekbenchScore];
+    NSInteger objectLimit = 50 + (geekScore - 500) / 40;    // 500 -> 50, 2500 -> 100;
+=======
+	double geekScore = [self.geekbenchScoreProvider geekbenchScore];
+	NSInteger objectLimit = 50 + (geekScore - 500) / 40;	// 500 -> 50, 2500 -> 100;
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #else
 	NSInteger minObj = 50;	// score = 500
 	NSInteger maxObj = 300;	// score = 2500
 	NSInteger objectLimit = minObj + (maxObj-minObj)*(geekScore - 500)/2000;
 #endif
+<<<<<<< HEAD
+=======
+    objectLimit *= 3;
+
+    double metersPerPixel = [_mapView metersPerPixel];
+    if ( metersPerPixel < 0.05 ) {
+        // we're zoomed in very far, so show everything
+        objectLimit = 1000000;
+    }
+
+    // get objects in visible rect
+    NSMutableArray * objects = [self getVisibleObjects];
+
+<<<<<<< HEAD
+    if ( self.enableObjectFilters ) {
+        [self filterObjects:objects];
+    }
+    
+    // get taginfo for objects
+    for ( OsmBaseObject * object in objects ) {
+        if ( object.tagInfo == nil ) {
+            object.tagInfo = [[TagInfoDatabase sharedTagInfoDatabase] tagInfoForObject:object];
+        }
+        
+        if ( object->renderPriorityCached == 0 ) {
+            if ( object.modifyCount ) {
+                object->renderPriorityCached = 1000000;
+            } else {
+                object->renderPriorityCached = [object.tagInfo renderSize:object];
+            }
+        }
+    }
+
+    // sort from big to small objects
+#if 0
+    [objects partialSortK:2*objectLimit+1 compare:VisibleSizeLessStrict];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #else
 	NSInteger objectLimit = 500;
 #endif
@@ -2579,6 +3875,7 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 	// get objects in visible rect
 	NSMutableArray * objects = [self getVisibleObjects];
 
+<<<<<<< HEAD
 	_atVisibleObjectLimit = objects.count >= objectLimit;	// we want this to reflect the unfiltered count
 
 	if ( self.enableObjectFilters ) {
@@ -2598,12 +3895,130 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 	// sort from big to small objects, and remove excess objects
 	[objects countSortOsmObjectVisibleSizeWithLargest:objectLimit];
 
+=======
+    // adjust the list of objects so that we get all or none of the same type
+    if ( objects.count > objectLimit ) {
+        // We have more objects available than we want to display. If some of the objects are the same size as the last visible object then include those too.
+        NSInteger lastIndex = objectLimit;
+        OsmBaseObject * last = objects[ objectLimit-1 ];
+        NSInteger lastRenderPriority = last->renderPriorityCached;
+        for ( NSInteger i = objectLimit, e = MIN(objects.count,2*objectLimit); i < e; ++i ) {
+            OsmBaseObject * o = objects[ i ];
+            if ( o->renderPriorityCached == lastRenderPriority ) {
+                lastIndex++;
+            } else {
+                break;
+            }
+        }
+        if ( lastIndex >= 2*objectLimit ) {
+            // we doubled the number of objects, so back off instead
+            NSInteger removeCount = 0;
+            for ( NSInteger i = objectLimit-1; i >= 0; --i ) {
+                OsmBaseObject * o = objects[ i ];
+                if ( o->renderPriorityCached == lastRenderPriority ) {
+                    ++removeCount;
+                } else {
+                    break;
+                }
+            }
+            if ( removeCount < objectLimit ) {
+                lastIndex = objectLimit - removeCount;
+            }
+        }
+        // DLog( @"added %ld same", (long)lastIndex - objectLimit);
+        objectLimit = lastIndex;
+=======
+	if ( self.enableObjectFilters ) {
+		[self filterObjects:objects];
+	}
+	
+	// get taginfo for objects
+	for ( OsmBaseObject * object in objects ) {
+		if ( object.tagInfo == nil ) {
+			object.tagInfo = [[RenderInfoDatabase sharedRenderInfoDatabase] renderInfoForObject:object];
+		}
+		
+		if ( object->renderPriorityCached == 0 ) {
+			if ( object.modifyCount ) {
+				object->renderPriorityCached = 1000000;
+			} else {
+				object->renderPriorityCached = [object.tagInfo renderPriority:object];
+			}
+		}
+	}
+
+	// sort from big to small objects
+	[objects partialSortOsmObjectVisibleSize:2*objectLimit+1];
+
+	// adjust the list of objects so that we get all or none of the same type
+	if ( objects.count > objectLimit ) {
+		// We have more objects available than we want to display. If some of the objects are the same size as the last visible object then include those too.
+		NSInteger lastIndex = objectLimit;
+		OsmBaseObject * last = objects[ objectLimit-1 ];
+		NSInteger lastRenderPriority = last->renderPriorityCached;
+		for ( NSInteger i = objectLimit, e = MIN(objects.count,2*objectLimit); i < e; ++i ) {
+			OsmBaseObject * o = objects[ i ];
+			if ( o->renderPriorityCached == lastRenderPriority ) {
+				lastIndex++;
+			} else {
+				break;
+			}
+		}
+		if ( lastIndex >= 2*objectLimit ) {
+			// we doubled the number of objects, so back off instead
+			NSInteger removeCount = 0;
+			for ( NSInteger i = objectLimit-1; i >= 0; --i ) {
+				OsmBaseObject * o = objects[ i ];
+				if ( o->renderPriorityCached == lastRenderPriority ) {
+					++removeCount;
+				} else {
+					break;
+				}
+			}
+			if ( removeCount < objectLimit ) {
+				lastIndex = objectLimit - removeCount;
+			}
+		}
+		objectLimit = lastIndex;
+>>>>>>> master
+
+        // remove unwanted objects
+        NSIndexSet * range = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(objectLimit,objects.count-objectLimit)];
+        [objects removeObjectsAtIndexes:range];
+    }
+
+<<<<<<< HEAD
+#if 0
+    for ( OsmBaseObject * o in objects ) {
+        NSLog(@"%ld -> %@\n", (long)o->renderPriorityCached, o );
+    }
+#endif
+
+    // sometimes there are way too many address nodes that clog up the view, so limit those items specifically
+    objectLimit = objects.count;
+    NSInteger addressCount = 0;
+    while ( addressCount < objectLimit ) {
+        OsmBaseObject * obj = objects[objectLimit-addressCount-1];
+        if ( ![obj.tagInfo isAddressPoint] )
+            break;
+        ++addressCount;
+    }
+    if ( addressCount > 50 ) {
+        NSIndexSet * range = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(objectLimit-addressCount,addressCount)];
+        [objects removeObjectsAtIndexes:range];
+    }
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	// sometimes there are way too many address nodes that clog up the view, so limit those items specifically
 	objectLimit = objects.count;
 	NSInteger addressCount = 0;
 	while ( addressCount < objectLimit ) {
 		OsmBaseObject * obj = objects[objectLimit-addressCount-1];
+<<<<<<< HEAD
 		if ( ![obj.renderInfo isAddressPoint] )
+=======
+		if ( ![obj.tagInfo isAddressPoint] )
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			break;
 		++addressCount;
 	}
@@ -2611,6 +4026,10 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 		NSIndexSet * range = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(objectLimit-addressCount,addressCount)];
 		[objects removeObjectsAtIndexes:range];
 	}
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 	return objects;
 }
@@ -2627,11 +4046,31 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 		_baseLayer.sublayerTransform	= CATransform3DIdentity;
 	}
 
+<<<<<<< HEAD
 	NSArray<OsmBaseObject *> * previousObjects = _shownObjects;
+=======
+<<<<<<< HEAD
+    NSArray * previousObjects = _shownObjects;
+=======
+	NSArray<OsmBaseObject *> * previousObjects = _shownObjects;
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 	_shownObjects = [self getObjectsToDisplay];
 	[_shownObjects addObjectsFromArray:_fadingOutSet.allObjects];
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    // remove layers no longer visible
+    NSMutableSet * removals = [NSMutableSet setWithArray:previousObjects];
+    for ( OsmBaseObject * object in _shownObjects ) {
+        [removals removeObject:object];
+    }
+    // use fade when removing objects
+    if ( removals.count ) {
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	// remove layers no longer visible
 	NSMutableSet<OsmBaseObject *> * removals = [NSMutableSet setWithArray:previousObjects];
 	for ( OsmBaseObject * object in _shownObjects ) {
@@ -2639,6 +4078,10 @@ const static CGFloat Z_HIGHLIGHT_ARROW	= Z_BASE + 14 * ZSCALE;
 	}
 	// use fade when removing objects
 	if ( removals.count ) {
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #if FADE_INOUT
 		[CATransaction begin];
 		[CATransaction setAnimationDuration:1.0];
@@ -2870,6 +4313,86 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 }
 
 // distance is in units of the hit test radius (WayHitTestRadius)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
++ (void)osmHitTestEnumerate:(CGPoint)point radius:(CGFloat)radius mapView:(MapView *)mapView objects:(NSArray *)objects testNodes:(BOOL)testNodes
+                 ignoreList:(NSArray *)ignoreList block:(void(^)(OsmBaseObject * obj,CGFloat dist,NSInteger segment))block
+{
+    CLLocationCoordinate2D location = [mapView longitudeLatitudeForScreenPoint:point birdsEye:YES];
+    OSMRect viewCoord = [mapView screenLongitudeLatitude];
+    OSMSize pixelsPerDegree = { mapView.bounds.size.width / viewCoord.size.width, mapView.bounds.size.height / viewCoord.size.height };
+
+    OSMSize maxDegrees = { radius / pixelsPerDegree.width, radius / pixelsPerDegree.height };
+    const double NODE_BIAS = 0.5;    // make nodes appear closer so they can be selected
+
+    NSMutableSet * relations = [NSMutableSet new];
+    for ( OsmBaseObject * object in objects ) {
+        if ( object.deleted )
+            continue;
+        if ( object.isNode ) {
+            OsmNode * node = (id)object;
+            if ( ![ignoreList containsObject:node] ) {
+                if ( testNodes || node.wayCount == 0 ) {
+                    CGFloat dist = [self osmHitTestNode:node location:location maxDegrees:maxDegrees];
+                    dist *= NODE_BIAS;
+                    if ( dist <= 1.0 ) {
+                        block( node, dist, 0 );
+                        [relations addObjectsFromArray:node.parentRelations];
+                    }
+                }
+            }
+        } else if ( object.isWay ) {
+            OsmWay * way = (id)object;
+            if ( ![ignoreList containsObject:way] ) {
+                NSInteger seg = 0;
+                CGFloat dist = [self osmHitTestWay:way location:location maxDegrees:maxDegrees segment:&seg];
+                if ( dist <= 1.0 ) {
+                    block( way, dist, seg );
+                    [relations addObjectsFromArray:way.parentRelations];
+                }
+            }
+            if ( testNodes ) {
+                for ( OsmNode * node in way.nodes ) {
+                    if ( [ignoreList containsObject:node] )
+                        continue;
+                    CGFloat dist = [self osmHitTestNode:node location:location maxDegrees:maxDegrees];
+                    dist *= NODE_BIAS;
+                    if ( dist < 1.0 ) {
+                        block( node, dist, 0 );
+                        [relations addObjectsFromArray:node.parentRelations];
+                    }
+                }
+            }
+        } else if ( object.isRelation.isMultipolygon ) {
+            OsmRelation * relation = (id)object;
+            if ( ![ignoreList containsObject:relation] ) {
+                CGFloat bestDist = 10000.0;
+                for ( OsmMember * member in relation.members ) {
+                    OsmWay * way = member.ref;
+                    if ( [way isKindOfClass:[OsmWay class]] ) {
+                        if ( ![ignoreList containsObject:way] ) {
+                            if ( [member.role isEqualToString:@"inner"] || [member.role isEqualToString:@"outer"] ) {
+                                NSInteger seg = 0;
+                                CGFloat dist = [self osmHitTestWay:way location:location maxDegrees:maxDegrees segment:&seg];
+                                if ( dist < bestDist )
+                                    bestDist = dist;
+                            }
+                        }
+                    }
+                }
+                if ( bestDist <= 1.0 ) {
+                    block( relation, bestDist, 0 );
+                }
+            }
+        }
+    }
+    for ( OsmRelation * relation in relations ) {
+        // for non-multipolygon relations, like turn restrictions
+        block( relation, 1.0, 0 );
+    }
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 + (void)osmHitTestEnumerate:(CGPoint)point
 					 radius:(CGFloat)radius
 					mapView:(MapView *)mapView
@@ -2951,11 +4474,64 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 		// for non-multipolygon relations, like turn restrictions
 		block( relation, 1.0, 0 );
 	}
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 // default hit test when clicking on the map, or drag-connecting
 - (OsmBaseObject *)osmHitTest:(CGPoint)point radius:(CGFloat)radius isDragConnect:(BOOL)isDragConnect ignoreList:(NSArray<OsmBaseObject *> *)ignoreList segment:(NSInteger *)pSegment
 {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    if ( self.hidden )
+        return nil;
+
+    __block CGFloat bestDist = 1000000;
+    NSMutableDictionary * best = [NSMutableDictionary new];
+    [EditorMapLayer osmHitTestEnumerate:point radius:radius mapView:_mapView objects:_shownObjects testNodes:testNodes ignoreList:ignoreList block:^(OsmBaseObject *obj, CGFloat dist, NSInteger segment) {
+        if ( dist < bestDist ) {
+            bestDist = dist;
+            [best removeAllObjects];
+            best[obj] = @(segment);
+        } else if ( dist == bestDist ) {
+            best[obj] = @(segment);
+        }
+    }];
+    if ( bestDist > 1.0 )
+        return nil;
+
+    OsmBaseObject * pick = nil;
+    if ( best.count > 1 ) {
+        if ( pick == nil && self.selectedRelation ) {
+            // pick a way that is a member of the relation if possible
+            for ( OsmMember * member in self.selectedRelation.members ) {
+                if ( best[member.ref] ) {
+                    pick = member.ref;
+                    break;
+                }
+            }
+        }
+        if ( pick == nil && self.selectedPrimary == nil ) {
+            // nothing currently selected, so prefer relations
+            for ( OsmBaseObject * obj in best ) {
+                if ( obj.isRelation ) {
+                    pick = obj;
+                    break;
+                }
+            }
+        }
+    }
+    if ( pick == nil ) {
+        pick = [[best keyEnumerator] nextObject];
+    }
+    if ( pSegment )
+        *pSegment = [best[pick] integerValue];
+    return pick;
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	if ( self.hidden )
 		return nil;
 
@@ -3011,11 +4587,33 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 	if ( pSegment )
 		*pSegment = [best[pick] integerValue];
 	return pick;
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 // return all nearby objects
 - (NSArray<OsmBaseObject *> *)osmHitTestMultiple:(CGPoint)point radius:(CGFloat)radius
 {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    NSMutableSet * objectSet = [NSMutableSet new];
+    [EditorMapLayer osmHitTestEnumerate:point radius:radius mapView:self.mapView objects:_shownObjects testNodes:YES ignoreList:nil block:^(OsmBaseObject *obj, CGFloat dist, NSInteger segment) {
+        [objectSet addObject:obj];
+    }];
+    NSMutableArray * objectList = [objectSet.allObjects mutableCopy];
+    [objectList sortUsingComparator:^NSComparisonResult(OsmBaseObject * o1, OsmBaseObject * o2) {
+        int diff = (o1.isRelation?2:o1.isWay?1:0) - (o2.isRelation?2:o2.isWay?1:0);
+        if ( diff )
+            return -diff;
+        int64_t diff2 = o1.ident.longLongValue - o2.ident.longLongValue;
+        return diff2 < 0 ? NSOrderedAscending : diff2 > 0 ? NSOrderedDescending : NSOrderedSame;
+    }];
+    return objectList;
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	NSMutableSet<OsmBaseObject *> * objectSet = [NSMutableSet new];
 	[EditorMapLayer osmHitTestEnumerate:point radius:radius mapView:self.mapView objects:_shownObjects testNodes:YES ignoreList:nil block:^(OsmBaseObject *obj, CGFloat dist, NSInteger segment) {
 		[objectSet addObject:obj];
@@ -3029,6 +4627,10 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 		return diff2 < 0 ? NSOrderedAscending : diff2 > 0 ? NSOrderedDescending : NSOrderedSame;
 	}];
 	return objectList;
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 // drill down to a node in the currently selected way
@@ -3150,6 +4752,26 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 {
 	if ( _selectedNode ) {
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        // delete node from selected way
+        EditAction action;
+        if ( _selectedWay ) {
+            action = [_mapData canDeleteNode:_selectedNode fromWay:_selectedWay error:error];
+        } else {
+            action = [_mapData canDeleteNode:_selectedNode error:error];
+        }
+        if ( action ) {
+            return ^{
+                // deselect node after we've removed it from ways
+                action();
+                [self setSelectedNode:nil];
+                [self setNeedsLayout];
+            };
+        }
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		// delete node from selected way
 		EditAction action;
 		if ( _selectedWay ) {
@@ -3168,6 +4790,10 @@ inline static CGFloat HitTestLineSegment(CLLocationCoordinate2D point, OSMSize m
 				[self setNeedsLayout];
 			};
 		}
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 	} else if ( _selectedWay ) {
 

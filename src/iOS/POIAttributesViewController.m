@@ -69,6 +69,7 @@ enum {
 {
 	OsmBaseObject * object = AppDelegate.shared.mapView.editorLayer.selectedPrimary;
 
+<<<<<<< HEAD
 	if ( section == SECTION_METADATA ) {
 		return 6;
 	}
@@ -82,6 +83,16 @@ enum {
 			return object.isWay.nodes.count;	// all nodes
 		}
 	}
+=======
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
+	if ( object.isNode )
+		return 1;	// longitude/latitude
+	if ( object.isWay )
+		return object.isWay.nodes.count;	// all nodes
+	if ( object.isRelation )
+		return 0;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	return 0;
 }
 
@@ -131,6 +142,7 @@ enum {
 	} else if ( object.isNode ) {
 		if ( indexPath.section == SECTION_NODE_LATLON ) {
 			OsmNode * node = object.isNode;
+<<<<<<< HEAD
 			cell.title.text = NSLocalizedString(@"Lat/Lon",@"coordinates");
 			cell.value.text = [NSString stringWithFormat:@"%f,%f", node.lat, node.lon];
 		}
@@ -143,6 +155,16 @@ enum {
 										: [NSString stringWithFormat:NSLocalizedString(@"%.1f meters, %ld nodes",@"way length if < 10m"), len, nodes];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		} else if ( indexPath.section == SECTION_WAY_NODES ) {
+=======
+			switch ( indexPath.row ) {
+				case 0:
+					cell.title.text = NSLocalizedString(@"Lat/Lon",nil);
+					cell.value.text = [NSString stringWithFormat:@"%f,%f", node.lat, node.lon];
+				default:
+					break;
+			}
+		} else if ( object.isWay ) {
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			OsmWay * way = object.isWay;
 			OsmNode * node = way.nodes[ indexPath.row ];
 			cell.title.text = NSLocalizedString(@"Node",nil);
@@ -175,7 +197,12 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+<<<<<<< HEAD
 	OsmBaseObject * object = AppDelegate.shared.mapView.editorLayer.selectedPrimary;
+=======
+    AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+    OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
     if ( object == nil ) {
         return;
     }

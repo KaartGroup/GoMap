@@ -175,7 +175,11 @@
 	if ( cell == _sendMailCell ) {
 
 		if ( [MFMailComposeViewController canSendMail] ) {
+<<<<<<< HEAD
 			AppDelegate * appDelegate = AppDelegate.shared;
+=======
+			AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			MFMailComposeViewController * mail = [[MFMailComposeViewController alloc] init];
 			mail.mailComposeDelegate = self;
 			[mail setSubject:[NSString stringWithFormat:@"%@ %@ feedback", appDelegate.appName, appDelegate.appVersion]];
@@ -188,7 +192,11 @@
 			[mail setMessageBody:body isHTML:NO];
 			[self.navigationController presentViewController:mail animated:YES completion:nil];
 		} else {
+<<<<<<< HEAD
 			UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Cannot compose message",@"e-mail message")
+=======
+			UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Cannot compose message",nil)
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 																			message:NSLocalizedString(@"Mail delivery is not available on this device",nil)
 																	 preferredStyle:UIAlertControllerStyleAlert];
 			[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
@@ -201,12 +209,15 @@
 		UIViewController * viewController = [[SFSafariViewController alloc] initWithURL:url];
 		[self presentViewController:viewController animated:YES completion:nil];
 
+<<<<<<< HEAD
 	} else if ( cell == _weblateCell ) {
 
 		NSURL * url = [NSURL URLWithString:@"https://hosted.weblate.org/projects/go-map/app/"];
 		UIViewController * viewController = [[SFSafariViewController alloc] initWithURL:url];
 		[self presentViewController:viewController animated:YES completion:nil];
 
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
     } else if (cell == _testFlightCell) {
 
         [self openTestFlightURL];

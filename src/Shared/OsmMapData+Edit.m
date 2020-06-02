@@ -1120,11 +1120,14 @@ static NSInteger splitArea(NSArray * nodes, NSInteger idxA)
 	}
 
 	OsmWay * otherWay = otherWays.firstObject;
+<<<<<<< HEAD
 	if ( otherWay.nodes.count + selectedWay.nodes.count > 2000 ) {
 		*error = NSLocalizedString(@"Max nodes after joining is 2000",nil);
 		return nil;
 	}
 
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	NSMutableSet * relations = [NSMutableSet setWithArray:selectedWay.parentRelations];
 	[relations intersectSet:[NSSet setWithArray:otherWay.parentRelations]];
 	for ( OsmRelation * relation in relations ) {

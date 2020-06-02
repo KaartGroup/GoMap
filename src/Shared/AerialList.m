@@ -27,6 +27,7 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 
 @implementation AerialService
 
+<<<<<<< HEAD
 @synthesize placeholderImage = _placeholderImage;
 
 +(NSArray<NSString *> *)supportedProjections
@@ -60,6 +61,14 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			   attribString:(NSString *)attribString
 				 attribIcon:(UIImage *)attribIcon
 				  attribUrl:(NSString *)attribUrl
+=======
+-(instancetype)initWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url
+					maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
+				  startDate:(NSString *)startDate
+					endDate:(NSString *)endDate
+			  wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon
+			   attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	self = [super init];
 	if ( self ) {
@@ -83,6 +92,7 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	return self;
 }
 
+<<<<<<< HEAD
 +(instancetype)aerialWithName:(NSString *)name
 				   identifier:(NSString *)identifier
 						  url:(NSString *)url
@@ -108,6 +118,16 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 								  attribString:attribString
 									attribIcon:attribIcon
 									 attribUrl:attribUrl];
+=======
++(instancetype)aerialWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url
+					  maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
+					startDate:(NSString *)startDate
+					  endDate:(NSString *)endDate
+				wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon
+				 attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl
+{
+	return [[AerialService alloc] initWithName:name identifier:identifier url:url maxZoom:maxZoom roundUp:roundUp startDate:startDate endDate:endDate wmsProjection:projection polygon:polygon attribString:attribString attribIcon:attribIcon attribUrl:attribUrl];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 -(BOOL)isBingAerial
@@ -215,8 +235,13 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		NSString * url = @"eZ5AGZGcRQyKahl/+UTyIm+vENuJECB4Hvu4ytCzjBoCBDeRMbsOkaQ7zD5rUAYfRDaQwnQRiqE4lj0KYTenPe1d1spljlcYgvYRsqjEtYp6AhCoBPO4Rz6d0Z9enlPqPj7KCvxyOcB8A/+3HkYjpMGMEcvA6oeSX9I0RH/PS9mdAZEC5TmU3odUJQ0hNzczrKtUDmNujrTNfFVHhZZWPLEVZUC9cE94VF/AJkoIigdmXooJ+5UcPtH/uzc6NbOb";
+<<<<<<< HEAD
 		service = [AerialService aerialWithName:@"Maxar Standard Aerial"
 								  identifier:MAXAR_STANDARD_IDENTIFIER
+=======
+		service = [AerialService aerialWithName:MAXAR_STANDARD_IDENTIFIER
+								  identifier:@"Maxar-Standard"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 										 url:[aes decryptString:url]
 									 maxZoom:21
 									 roundUp:YES
@@ -319,7 +344,10 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			  @"url" 		: _url,
 			  @"zoom" 		: @(_maxZoom),
 			  @"roundUp" 	: @(_roundZoomUp),
+<<<<<<< HEAD
 			  @"projection"	: _wmsProjection ?: @""
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			  };
 }
 -(instancetype)initWithDictionary:(NSDictionary *)dict
@@ -345,7 +373,11 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 					  roundUp:[dict[@"roundUp"] boolValue]
 					startDate:nil
 					  endDate:nil
+<<<<<<< HEAD
 				wmsProjection:projection
+=======
+				   wmsProjection:nil
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 					  polygon:NULL
 				 attribString:nil
 				   attribIcon:nil
@@ -537,6 +569,7 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 				continue;
 			}
 			NSString * 	identifier			= properties[@"id"];
+<<<<<<< HEAD
 			NSString *  category			= properties[@"category"];
 			if ( categories[category] == nil ) {
 				if ( [identifier isEqualToString:@"OpenTopoMap"] ) {
@@ -546,6 +579,13 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 					continue;
 				}
 			}
+=======
+			if ( identifier.length == 0 || blacklist[identifier] )
+				continue;
+			NSString *  category			= properties[@"category"];
+			if ( category && ![category isEqualToString:@"photo"] )
+				continue;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			NSString *	startDateString		= properties[@"start_date"];
 			NSString *	endDateString		= properties[@"end_date"];
 			NSDate 	 *  endDate   = [AerialService dateFromString:endDateString];
@@ -559,11 +599,29 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			NSString * 	attribString 		= properties[@"attribution"][@"text"];
 			NSString * 	attribUrl 			= properties[@"attribution"][@"url"];
 			NSInteger	overlay				= [properties[@"overlay"] integerValue];
+<<<<<<< HEAD
 			NSNumber * supported = supportedTypes[ type ];
 			if ( supported == nil ) {
 				NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
 				continue;
 			} else if ( supported.boolValue == NO ) {
+=======
+			NSArray  * 	polygonPoints 		= nil;
+			BOOL		isMultiPolygon		= NO;	// a GeoJSON multipolygon, which has an extra layer of nesting
+			if ( isGeoJSON ) {
+				NSDictionary * 	geometry = entry[@"geometry"];
+				if ( [geometry isKindOfClass:[NSDictionary class]] ) {
+					polygonPoints = geometry[@"coordinates"];
+					isMultiPolygon = [geometry[@"type"] isEqualToString:@"MultiPolygon"];
+				}
+			} else {
+				polygonPoints = properties[@"extent"][@"polygon"];
+			}
+
+			if ( !([type isEqualToString:@"tms"] || [type isEqualToString:@"wms"]) ) {
+				if ( ![knownUnsupported containsObject:type] )
+					NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 				continue;
 			}
 			if ( overlay ) {

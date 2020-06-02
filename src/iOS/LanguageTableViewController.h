@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+<<<<<<< HEAD
+=======
+#import "CommonPresetList.h"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 @interface LanguageTableViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate>
 {

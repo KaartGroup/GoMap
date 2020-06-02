@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "AutocompleteTextField.h"
+<<<<<<< HEAD
 #import "DLog.h"
 #import "EditorMapLayer.h"
 #import "HeightViewController.h"
@@ -15,6 +16,15 @@
 #import "OsmMapData.h"
 #import "POIFeaturePresetsViewController.h"
 #import "POIPresetValuePickerController.h"
+=======
+#import "CommonPresetList.h"
+#import "DLog.h"
+#import "EditorMapLayer.h"
+#import "MapView.h"
+#import "OsmMapData.h"
+#import "POIFeaturePresetsViewController.h"
+#import "POIPresetValuesViewController.h"
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "POITabBarController.h"
 #import "POIFeaturePickerViewController.h"
 #import "RenderInfo.h"
@@ -23,12 +33,23 @@
 @interface FeaturePresetCell : UITableViewCell
 @property (assign,nonatomic)	IBOutlet	UILabel						*	nameLabel;
 @property (assign,nonatomic)	IBOutlet	AutocompleteTextField		*	valueField;
+<<<<<<< HEAD
 @property (strong,nonatomic)				PresetKey					*	presetKey;
+=======
+@property (strong,nonatomic)				CommonPresetKey				*	presetKeyInfo;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 @end
 
 @implementation FeaturePresetCell
 @end
 
+<<<<<<< HEAD
+=======
+@interface POIFeaturePresetsViewController() <DirectionViewControllerDelegate>
+
+@end
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 @implementation POIFeaturePresetsViewController
 
 
@@ -42,11 +63,42 @@
 	self.tableView.estimatedRowHeight = 44.0; // or could use UITableViewAutomaticDimension;
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 
+<<<<<<< HEAD
+=======
+	_tags = [CommonPresetList sharedList];
+
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	if ( _drillDownGroup ) {
 		self.navigationItem.leftItemsSupplementBackButton = YES;
 		self.navigationItem.leftBarButtonItem = nil;
 		self.navigationItem.title = _drillDownGroup.name;
 	}
+<<<<<<< HEAD
+=======
+
+	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	[center addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:nil];
+	[center addObserver:self selector:@selector(keyboardDidHide) name:UIKeyboardWillHideNotification object:nil];
+}
+
+-(void)dealloc
+{
+	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	[center removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+	[center removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+}
+
+-(void)keyboardDidShow
+{
+	_keyboardShowing = YES;
+}
+-(void)keyboardDidHide
+{
+	_keyboardShowing = NO;
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self updatePresets];
+	});
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 -(void)updatePresets
@@ -54,9 +106,12 @@
 	POITabBarController * tabController = (id)self.tabBarController;
 
 	_saveButton.enabled = [tabController isTagDictChanged];
+<<<<<<< HEAD
 	if (@available(iOS 13.0, *)) {
 		self.tabBarController.modalInPresentation = _saveButton.enabled;
 	}
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 	if ( _drillDownGroup == nil ) {
 
@@ -65,15 +120,22 @@
 		NSString * geometry = object ? [object geometryName] : GEOMETRY_NODE;
 
 		// update most recent feature
+<<<<<<< HEAD
 		PresetFeature * feature = _selectedFeature ?: [PresetsDatabase.shared matchObjectTagsToFeature:dict
 																				   geometry:geometry
 																				  includeNSI:YES];
 		if ( feature ) {
+=======
+		NSString * featureName = _selectedFeature ? _selectedFeature.featureName : [CommonPresetList featureNameForObjectDict:dict geometry:geometry];
+		if ( featureName ) {
+			CommonPresetFeature * feature = [CommonPresetFeature commonPresetFeatureWithName:featureName];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			[POIFeaturePickerViewController loadMostRecentForGeometry:geometry];
 			[POIFeaturePickerViewController updateMostRecentArrayWithSelection:feature geometry:geometry];
 		}
 
 		__weak POIFeaturePresetsViewController * weakSelf = self;
+<<<<<<< HEAD
 
 		_allPresets = [[PresetsForFeature alloc] initWithFeature:feature objectTags:dict geometry:geometry update:^{
 				// this may complete much later, even after we've been dismissed
@@ -83,6 +145,17 @@
 					[mySelf.tableView reloadData];
 				}
 			}];
+=======
+		__weak CommonPresetList * weakTags = _tags;
+		[_tags setPresetsForFeature:featureName tags:dict geometry:geometry update:^{
+			// this may complete much later, even after we've been dismissed
+			POIFeaturePresetsViewController * mySelf = weakSelf;
+			if ( mySelf && !mySelf->_keyboardShowing ) {
+				[weakTags setPresetsForFeature:featureName tags:dict geometry:geometry update:nil];
+				[mySelf.tableView reloadData];
+			}
+		}];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	}
 
 	[self.tableView reloadData];
@@ -107,8 +180,12 @@
 	_childPushed = YES;
 }
 
+<<<<<<< HEAD
 - (void)viewDidAppear:(BOOL)animated
 {
+=======
+- (void)viewDidAppear:(BOOL)animated {
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
     [super viewDidAppear:animated];
     
     if (![self isMovingToParentViewController]) {
@@ -122,21 +199,30 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSIndexPath * index = [NSIndexPath indexPathForRow:1 inSection:0];
                     FeaturePresetCell * cell = [self.tableView cellForRowAtIndexPath:index];
+<<<<<<< HEAD
                     if ( cell && [cell.presetKey.tagKey isEqualToString:@"name"] ) {
+=======
+                    if ( cell && [cell.presetKeyInfo.tagKey isEqualToString:@"name"] ) {
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
                         [cell.valueField becomeFirstResponder];
                     }
                 });
             }
+<<<<<<< HEAD
 		} else if ( !_childPushed &&
 				   tabController.selection.ident.longLongValue <= 0 &&
 				   tabController.keyValueDict.count == 0 )
 		{
+=======
+		} else if ( !_childPushed && tabController.keyValueDict.count == 0 ) {
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			// if we're being displayed for a newly created node then go straight to the Type picker
 			[self performSegueWithIdentifier:@"POITypeSegue" sender:nil];
 		}
 	}
 }
 
+<<<<<<< HEAD
 -(void)typeViewController:(POIFeaturePickerViewController *)typeViewController didChangeFeatureTo:(PresetFeature *)newFeature
 {
 	_selectedFeature = newFeature;
@@ -150,10 +236,23 @@
 	NSMutableDictionary * removeTags = [oldFeature.removeTags mutableCopy];
 	[removeTags removeObjectsForKeys:newFeature.addTags.allKeys];
 	[removeTags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
+=======
+-(void)typeViewController:(POIFeaturePickerViewController *)typeViewController didChangeFeatureTo:(CommonPresetFeature *)feature
+{
+	_selectedFeature = feature;
+	POITabBarController * tabController = (id) self.tabBarController;
+	NSString * geometry = tabController.selection ? [tabController.selection geometryName] : GEOMETRY_NODE;
+	NSString * oldFeatureName = [CommonPresetList featureNameForObjectDict:tabController.keyValueDict geometry:geometry];
+	CommonPresetFeature * oldFeature = [CommonPresetFeature commonPresetFeatureWithName:oldFeatureName];
+
+	// remove previous feature tags
+	[oldFeature.removeTags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		[tabController setFeatureKey:key value:nil];
 	}];
 
 	// add new feature tags
+<<<<<<< HEAD
 	[newFeature.addTags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
 		if ( [value isEqualToString:@"*"] ) {
 			if ( tabController.keyValueDict[key] == nil ) {
@@ -168,11 +267,46 @@
 
 	// add default values of new feature fields
 	NSDictionary * defaults = [newFeature defaultValuesForGeometry:geometry];
+=======
+	NSDictionary * defaults = [feature defaultValuesForGeometry:geometry];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	[defaults enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
 		if ( tabController.keyValueDict[key] == nil ) {
 			[tabController setFeatureKey:key value:value];
 		}
 	}];
+<<<<<<< HEAD
+=======
+	NSDictionary * addTags = feature.addTags;
+	[addTags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
+		if ( [value isEqualToString:@"*"] )
+			value = @"yes";
+		[tabController setFeatureKey:key value:value];
+	}];
+}
+
+- (NSString *)featureKeyForDict:(NSDictionary *)dict
+{
+	for ( NSString * tag in [OsmBaseObject featureKeys] ) {
+		NSString * value = dict[ tag ];
+		if ( value.length ) {
+			return tag;
+		}
+	}
+	return nil;
+}
+- (NSString *)featureStringForDict:(NSDictionary *)dict
+{
+	NSString * key = [self featureKeyForDict:dict];
+	NSString * value = dict[ key ];
+	if ( value.length ) {
+		NSString * text = [NSString stringWithFormat:@"%@ (%@)", value, key];
+		text = [text stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+		text = text.capitalizedString;
+		return text;
+	}
+	return nil;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 #pragma mark - Table view data source
@@ -180,18 +314,30 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+<<<<<<< HEAD
 	return _drillDownGroup ? 1 : _allPresets.sectionCount + 1;
+=======
+	return _drillDownGroup ? 1 : _tags.sectionCount + 1;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	if ( _drillDownGroup )
 		return _drillDownGroup.name;
+<<<<<<< HEAD
 	if ( section == _allPresets.sectionCount )
 		return nil;
 	if ( section > _allPresets.sectionCount )
 		return nil;
 	PresetGroup * group = [_allPresets groupAtIndex:section];
+=======
+	if ( section == _tags.sectionCount )
+		return nil;
+	if ( section > _tags.sectionCount )
+		return nil;
+	CommonPresetGroup * group = [_tags groupAtIndex:section];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	return group.name;
 }
 
@@ -199,22 +345,35 @@
 {
 	if ( _drillDownGroup )
 		return _drillDownGroup.presetKeys.count;
+<<<<<<< HEAD
 	if ( section == _allPresets.sectionCount )
 		return 1;
 	if ( section > _allPresets.sectionCount )
 		return 0;
 	return [_allPresets tagsInSection:section];
+=======
+	if ( section == _tags.sectionCount )
+		return 1;
+	if ( section > _tags.sectionCount )
+		return 0;
+	return [_tags tagsInSection:section];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if ( _drillDownGroup == nil ) {
+<<<<<<< HEAD
 		if ( indexPath.section == _allPresets.sectionCount ) {
+=======
+		if ( indexPath.section == _tags.sectionCount ) {
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CustomizePresets" forIndexPath:indexPath];
 			return cell;
 		}
 	}
 
+<<<<<<< HEAD
 	POITabBarController	* tabController = (id)self.tabBarController;
 	NSDictionary * keyValueDict = tabController.keyValueDict;
 
@@ -226,21 +385,37 @@
 		NSString * cellName = key.length == 0 ? @"CommonTagType"
 							: [key isEqualToString:@"name"] ? @"CommonTagName"
 							: @"CommonTagSingle";
+=======
+	id rowObject = _drillDownGroup ? _drillDownGroup.presetKeys[ indexPath.row ] : [_tags tagAtIndexPath:indexPath];
+	if ( [rowObject isKindOfClass:[CommonPresetKey class]] ) {
+
+		CommonPresetKey 	* presetKey	= rowObject;
+		NSString * key = presetKey.tagKey;
+		NSString * cellName = key == nil || [key isEqualToString:@"name"] ? @"CommonTagType" : @"CommonTagSingle";
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 		FeaturePresetCell * cell = [tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath];
 		cell.nameLabel.text = presetKey.name;
 		cell.valueField.placeholder = presetKey.placeholder;
 		cell.valueField.delegate = self;
+<<<<<<< HEAD
 		cell.presetKey = presetKey;
 
 		cell.valueField.keyboardType = presetKey.keyboardType;
 		cell.valueField.autocapitalizationType = presetKey.autocapitalizationType;
 
+=======
+		cell.presetKeyInfo = presetKey;
+
+		cell.valueField.keyboardType = presetKey.keyboardType;
+		cell.valueField.autocapitalizationType = presetKey.autocapitalizationType;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		[cell.valueField removeTarget:self action:NULL forControlEvents:UIControlEventAllEvents];
 		[cell.valueField addTarget:self action:@selector(textFieldReturn:)			forControlEvents:UIControlEventEditingDidEndOnExit];
 		[cell.valueField addTarget:self action:@selector(textFieldChanged:)			forControlEvents:UIControlEventEditingChanged];
 		[cell.valueField addTarget:self action:@selector(textFieldEditingDidBegin:)	forControlEvents:UIControlEventEditingDidBegin];
 		[cell.valueField addTarget:self action:@selector(textFieldDidEndEditing:)	forControlEvents:UIControlEventEditingDidEnd];
+<<<<<<< HEAD
 
 		cell.valueField.rightView 	 = nil;
 
@@ -299,6 +474,32 @@
 			// Regular cell
 			NSString * value = keyValueDict[ presetKey.tagKey ];
 			value = [presetKey prettyNameForTagValue:value];
+=======
+        
+        if ([self canUseDirectionViewControllerToMeasureValueForTagWithKey:presetKey.tagKey]) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else if (presetKey.presetList.count > 0) {
+            // The user can select from a list of presets.
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+
+		POITabBarController	* tabController = (id)self.tabBarController;
+		NSDictionary * objectDict = tabController.keyValueDict;
+
+		if ( _drillDownGroup == nil && indexPath.section == 0 && indexPath.row == 0 ) {
+			// Type cell
+			NSString * text = [_tags featureName];
+			if ( text == nil )
+				text = [self featureStringForDict:objectDict];
+			cell.valueField.text = text;
+			cell.valueField.enabled = NO;
+		} else {
+			// Regular cell
+			NSString * value = objectDict[ presetKey.tagKey ];
+			value = [CommonPresetList friendlyValueNameForKey:presetKey.tagKey value:value geometry:nil];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			cell.valueField.text = value;
 			cell.valueField.enabled = YES;
 		}
@@ -308,6 +509,7 @@
 	} else {
 
 		// drill down cell
+<<<<<<< HEAD
 		PresetGroup * drillDownGroup = rowObject;
 		FeaturePresetCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CommonTagSingle" forIndexPath:indexPath];
 		cell.nameLabel.text = drillDownGroup.name;
@@ -316,6 +518,12 @@
 		cell.valueField.enabled = NO;
 		cell.valueField.rightView = nil;
 		cell.presetKey = (id)drillDownGroup;
+=======
+		CommonPresetGroup * drillDownGroup = rowObject;
+		FeaturePresetCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CommonTagDrillDown" forIndexPath:indexPath];
+		cell.nameLabel.text = drillDownGroup.name;
+		cell.presetKeyInfo = (id)drillDownGroup;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		return cell;
@@ -330,13 +538,20 @@
     
     // This workaround is necessary because `tableView:cellForRowAtIndexPath:`
     // currently sets `cell.commonPreset` to an instance of `CommonPresetGroup` by casting it to `id`.
+<<<<<<< HEAD
     PresetKey *presetKey = nil;
     if ([cell.presetKey isKindOfClass:[PresetKey class]]) {
         presetKey = cell.presetKey;
+=======
+    CommonPresetKey *presetKey = nil;
+    if ([cell.presetKeyInfo isKindOfClass:[CommonPresetKey class]]) {
+        presetKey = cell.presetKeyInfo;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
     }
 
 	if ( _drillDownGroup == nil && indexPath.section == 0 && indexPath.row == 0 ) {
 		[self performSegueWithIdentifier:@"POITypeSegue" sender:cell];
+<<<<<<< HEAD
 	} else if ( [cell.presetKey isKindOfClass:[PresetGroup class]] ) {
 		// special case for drill down
 		PresetGroup * group = (id)cell.presetKey;
@@ -350,6 +565,17 @@
 		[self measureHeightForKey:cell.presetKey.tagKey];
 	} else if ([self canRecognizeOpeningHoursForKey:presetKey]) {
 		[self recognizeOpeningHoursForKey:cell.presetKey.tagKey];
+=======
+    } else if ([self canUseDirectionViewControllerToMeasureValueForTagWithKey:presetKey.tagKey]) {
+        [self presentDirectionViewControllerForTagWithKey:cell.presetKeyInfo.tagKey
+                                                    value:cell.valueField.text];
+	} else if ( [cell.presetKeyInfo isKindOfClass:[CommonPresetGroup class]] ) {
+		// special case for drill down
+		CommonPresetGroup * group = (id)cell.presetKeyInfo;
+		POIFeaturePresetsViewController * sub = [self.storyboard instantiateViewControllerWithIdentifier:@"PoiCommonTagsViewController"];
+		sub.drillDownGroup = group;
+		[self.navigationController pushViewController:sub animated:YES];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	} else {
 		[self performSegueWithIdentifier:@"POIPresetSegue" sender:cell];
 	}
@@ -357,11 +583,19 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 	FeaturePresetCell * cell = sender;
+<<<<<<< HEAD
 	if ( [segue.destinationViewController isKindOfClass:[POIPresetValuePickerController class]] ) {
 		POIPresetValuePickerController * preset = segue.destinationViewController;
 		preset.tag = cell.presetKey.tagKey;
 		preset.valueDefinitions = cell.presetKey.presetList;
 		preset.navigationItem.title = cell.presetKey.name;
+=======
+	if ( [segue.destinationViewController isKindOfClass:[POIPresetValuesViewController class]] ) {
+		POIPresetValuesViewController * preset = segue.destinationViewController;
+		preset.tag = cell.presetKeyInfo.tagKey;
+		preset.valueDefinitions = cell.presetKeyInfo.presetList;
+		preset.navigationItem.title = cell.presetKeyInfo.name;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	} else if ( [segue.destinationViewController isKindOfClass:[POIFeaturePickerViewController class]] ) {
 		POIFeaturePickerViewController * dest = (id)segue.destinationViewController;
 		dest.delegate = self;
@@ -409,12 +643,17 @@
 	return cell;
 }
 
+<<<<<<< HEAD
 - (IBAction)textFieldEditingDidBegin:(AutocompleteTextField *)textField
+=======
+- (IBAction)textFieldEditingDidBegin:(UITextField *)textField
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	if ( [textField isKindOfClass:[AutocompleteTextField class]] ) {
 
 		// get list of values for current key
 		FeaturePresetCell * cell = [self cellForTextField:textField];
+<<<<<<< HEAD
 		NSString * key = cell.presetKey.tagKey;
 		if ( key == nil )
 			return;	// should never happen
@@ -428,19 +667,35 @@
 		}
 	}
 	_isEditing = YES;
+=======
+		NSString * key = cell.presetKeyInfo.tagKey;
+		if ( key == nil )
+			return;	// should never happen
+		NSSet * set = [CommonPresetList allTagValuesForKey:key];
+		AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+		NSMutableSet<NSString *> * values = [appDelegate.mapView.editorLayer.mapData tagValuesForKey:key];
+		[values addObjectsFromArray:[set allObjects]];
+		NSArray * list = [values allObjects];
+		[(AutocompleteTextField *)textField setCompletions:list];
+	}
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 - (IBAction)textFieldChanged:(UITextField *)textField
 {
 	_saveButton.enabled = YES;
+<<<<<<< HEAD
 	if (@available(iOS 13.0, *)) {
 		self.tabBarController.modalInPresentation = _saveButton.enabled;
 	}
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 - (IBAction)textFieldDidEndEditing:(UITextField *)textField
 {
 	FeaturePresetCell * cell = [self cellForTextField:textField];
+<<<<<<< HEAD
 	NSString * key = cell.presetKey.tagKey;
 	if ( key == nil )
 		return;	// should never happen
@@ -460,6 +715,17 @@
 			[tri setSelectionForString:textField.text];
 		}
 	}
+=======
+	NSString * key = cell.presetKeyInfo.tagKey;
+	if ( key == nil )
+		return;	// should never happen
+	NSString * value = textField.text;
+	value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+	textField.text = value;
+
+    [self updateTagWithValue:value forKey:key];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 - (void)updateTagWithValue:(NSString *)value forKey:(NSString *)key {
@@ -472,9 +738,12 @@
     }
     
     _saveButton.enabled = [tabController isTagDictChanged];
+<<<<<<< HEAD
 	if (@available(iOS 13.0, *)) {
 		self.tabBarController.modalInPresentation = _saveButton.enabled;
 	}
+=======
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -494,6 +763,7 @@
  @param key The key of the tag that should be measured.
  @return YES if the key can be measured using the `DirectionViewController`, NO if not.
  */
+<<<<<<< HEAD
 - (BOOL)canMeasureDirectionForKey:(PresetKey *)key
 {
 	if ( key.presetList.count > 0 )
@@ -561,6 +831,26 @@
 		[self.navigationController pushViewController:vc animated:YES];
 	}
 #endif
+=======
+- (BOOL)canUseDirectionViewControllerToMeasureValueForTagWithKey:(NSString *)key {
+    NSArray<NSString *> *keys = @[@"direction", @"camera:direction"];
+    
+    return [keys containsObject:key];
+}
+
+- (void)presentDirectionViewControllerForTagWithKey:(NSString *)key value:(NSString *)value {
+    DirectionViewController *directionViewController = [[DirectionViewController alloc] initWithKey:key
+                                                                                              value:value];
+    directionViewController.delegate = self;
+    
+    [self.navigationController pushViewController:directionViewController animated:YES];
+}
+
+#pragma mark - <DirectionViewControllerDelegate>
+
+- (void)directionViewControllerDidUpdateTagWithKey:(NSString *)key value:(NSString *)value {
+    [self updateTagWithValue:value forKey:key];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 @end

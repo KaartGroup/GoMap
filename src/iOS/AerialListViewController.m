@@ -125,9 +125,15 @@
 
 	NSString * dateDetail = nil;
 	if ( aerial.startDate && aerial.endDate && ![aerial.startDate isEqualToString:aerial.endDate] )
+<<<<<<< HEAD
 		dateDetail = [NSString stringWithFormat:NSLocalizedString(@"vintage %@ - %@",@"Years aerial imagery was created"), aerial.startDate, aerial.endDate];
 	else if ( aerial.startDate || aerial.endDate ) {
 		dateDetail = [NSString stringWithFormat:NSLocalizedString(@"vintage %@",@"Year aerial imagery was created"), aerial.startDate ?: aerial.endDate];
+=======
+		dateDetail = [NSString stringWithFormat:@"vintage %@ - %@", aerial.startDate, aerial.endDate];
+	else if ( aerial.startDate || aerial.endDate ) {
+		dateDetail = [NSString stringWithFormat:@"vintage %@", aerial.startDate ?: aerial.endDate];
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	}
 	NSString * details = dateDetail ?: urlDetail;
 

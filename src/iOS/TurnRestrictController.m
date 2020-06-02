@@ -64,7 +64,11 @@
 	_viewWithTitle.layer.cornerRadius 	= 3;
 
 	// get highways that contain selection
+<<<<<<< HEAD
 	OsmMapData * mapData = AppDelegate.shared.mapView.editorLayer.mapData;
+=======
+	OsmMapData * mapData = [AppDelegate getAppDelegate].mapView.editorLayer.mapData;
+>>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	NSArray<OsmWay *> * parentWays = [mapData waysContainingNode:_centralNode];
 	parentWays = [parentWays filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmWay * way, NSDictionary *bindings) {
 		return way.tags[@"highway"] != nil;
