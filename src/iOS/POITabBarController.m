@@ -10,7 +10,8 @@
 #import "EditorMapLayer.h"
 #import "MapView.h"
 #import "OsmMapData.h"
-#import "POIFeaturePresetsViewController.h"
+#import "OsmObjects.h"
+#import "POICommonTagsViewController.h"
 #import "POITabBarController.h"
 #import "POIAttributesViewController.h"
 
@@ -72,42 +73,41 @@
 
 - (void)setFeatureKey:(NSString *)key value:(NSString *)value
 {
-    if ( value ) {
-        [_keyValueDict setObject:value forKey:key];
-    } else {
-        [_keyValueDict removeObjectForKey:key];
-    }
+	if ( value ) {
+		[_keyValueDict setObject:value forKey:key];
+	} else {
+		[_keyValueDict removeObjectForKey:key];
+	}
 }
 
 - (void)commitChanges
 {
-    AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-    [appDelegate.mapView setTagsForCurrentObject:self.keyValueDict];
-    [appDelegate.mapView updateEditControl];
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	[appDelegate.mapView setTagsForCurrentObject:self.keyValueDict];
 }
 
 - (BOOL)isTagDictChanged:(NSDictionary *)newDictionary
 {
-    AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
 
-    NSDictionary * tags = appDelegate.mapView.editorLayer.selectedPrimary.tags;
-    if ( tags.count == 0 )
-        return newDictionary.count != 0;
+	NSDictionary * tags = appDelegate.mapView.editorLayer.selectedPrimary.tags;
+	if ( tags.count == 0 )
+		return newDictionary.count != 0;
 
-    return ![newDictionary isEqual:tags];
+	return ![newDictionary isEqual:tags];
 }
 
 - (BOOL)isTagDictChanged
 {
-    return [self isTagDictChanged:self.keyValueDict];
+	return [self isTagDictChanged:self.keyValueDict];
 }
 
 
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    NSInteger tabIndex = [tabBar.items indexOfObject:item];
-    [[NSUserDefaults standardUserDefaults] setInteger:tabIndex forKey:@"POITabIndex"];
+	NSInteger tabIndex = [tabBar.items indexOfObject:item];
+	[[NSUserDefaults standardUserDefaults] setInteger:tabIndex forKey:@"POITabIndex"];
 }
 
 
