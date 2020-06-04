@@ -34,10 +34,12 @@ extern const double MinIconSizeInPixels;
 	CGSize					_iconSize;
 	double					_highwayScale;
 
-	NSMutableArray<OsmBaseObject *>		*	_shownObjects;
-	NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
+	NSMutableSet		*	_nameDrawSet;
 
-	NSMutableArray<CALayer *>		*	_highlightLayers;
+	NSMutableArray		*	_shownObjects;
+	NSMutableSet		*	_fadingOutSet;
+
+	NSMutableArray		*	_highlightLayers;
 
 	BOOL					_isPerformingLayout;
 
@@ -73,8 +75,8 @@ extern const double MinIconSizeInPixels;
 - (id)initWithMapView:(MapView *)mapView;
 - (void)didReceiveMemoryWarning;
 
-- (OsmBaseObject *)osmHitTest:(CGPoint)point radius:(CGFloat)radius isDragConnect:(BOOL)isDragConnect ignoreList:(NSArray<OsmBaseObject *> *)ignoreList segment:(NSInteger *)segment;
-- (NSArray<OsmBaseObject *> *)osmHitTestMultiple:(CGPoint)point radius:(CGFloat)radius ;
+- (OsmBaseObject *)osmHitTest:(CGPoint)point radius:(CGFloat)radius testNodes:(BOOL)testNodes ignoreList:(NSArray *)ignoreList segment:(NSInteger *)segment;
+- (NSArray *)osmHitTestMultiple:(CGPoint)point radius:(CGFloat)radius ;
 - (OsmNode *)osmHitTestNodeInSelectedWay:(CGPoint)point radius:(CGFloat)radius ;
 
 - (void)updateMapLocation;
@@ -86,7 +88,7 @@ extern const double MinIconSizeInPixels;
 -(OsmWay *)createWayWithNode:(OsmNode *)node;
 
 -(void)adjustNode:(OsmNode *)node byDistance:(CGPoint)delta;
--(OsmBaseObject *)duplicateObject:(OsmBaseObject *)object withOffset:(OSMPoint)offset;
+-(OsmBaseObject *)duplicateObject:(OsmBaseObject *)object;
 
 // these are similar to OsmMapData methods but also update selections and refresh the layout
 -(EditActionWithNode)canAddNodeToWay:(OsmWay *)way atIndex:(NSInteger)index error:(NSString **)error;

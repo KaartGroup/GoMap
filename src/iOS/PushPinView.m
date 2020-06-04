@@ -14,7 +14,7 @@
 @implementation PushPinView
 
 @synthesize arrowPoint = _arrowPoint;
-@synthesize placeholderLayer = _placeholderLayer;
+@synthesize placeholderImage = _placeholderImage;
 @synthesize labelOnBottom = _labelOnBottom;
 
 - (id)init
@@ -90,9 +90,14 @@
 	[self setNeedsLayout];
 }
 
--(CALayer *)placeholderLayer
+-(UIImage *)placeholderImage
 {
-	return _placeholderLayer;
+	return _placeholderImage;
+}
+-(void)setPlaceholderImage:(UIImage *)placeholderImage
+{
+	_placeholderImage = placeholderImage;
+	_placeholderLayer.contents = (id)_placeholderImage.CGImage;
 }
 
 -(BOOL)labelOnBottom
@@ -222,7 +227,7 @@
 		rc = CGRectUnion( rc, buttonRect );
 	}
 
-	_placeholderLayer.frame = CGRectInset( CGRectMake(viewRect.size.width/2, _labelOnBottom ? topGap : viewRect.size.height, 0, 0), -12, -12);
+	_placeholderLayer.frame = CGRectInset( CGRectMake(viewRect.size.width/2, _labelOnBottom ? topGap : viewRect.size.height, 0, 0), -10, -10);
 
 	if ( _labelOnBottom ) {
 		self.frame = CGRectMake( _arrowPoint.x - viewRect.size.width/2, _arrowPoint.y - topGap, rc.size.width, rc.size.height);

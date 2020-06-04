@@ -21,10 +21,10 @@
 	IBOutlet UIBarButtonItem *	_redoButton;
 }
 
-@property (assign,nonatomic) IBOutlet MapView			*	_Nonnull mapView;
-@property (assign,nonatomic) IBOutlet UIBarButtonItem 	* 	_Nonnull locationButton;
+@property (assign,nonatomic) IBOutlet MapView		*	mapView;
+@property (assign,nonatomic) IBOutlet UIBarButtonItem * locationButton;
 
--(IBAction)toggleLocation:(_Nullable id)sender;
+-(IBAction)toggleLocation:(id)sender;
 -(void)setGpsState:(GPS_STATE)state;
 
 - (void)updateUndoRedoButtonState;
