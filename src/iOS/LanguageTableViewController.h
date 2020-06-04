@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #import "CommonPresetList.h"
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+#import "CommonTagList.h"
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 
 @interface LanguageTableViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate>
 {

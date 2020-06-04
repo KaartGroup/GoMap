@@ -3,8 +3,13 @@
 //
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #import "CommonPresetList.h"
+=======
+#import "OsmObjects.h"
+#import "CommonTagList.h"
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 #import "LoginViewController.h"
 #import "KeyChain.h"
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
@@ -17,6 +22,7 @@
 #import "LoginViewController.h"
 #import "MainViewController.h"
 #import "OsmMapData.h"
+<<<<<<< HEAD
 <<<<<<< HEAD
 #import "OsmMember.h"
 #import "OsmNode.h"
@@ -36,3 +42,6 @@ UIImage * IconScaledForDisplay(UIImage *icon);
 #import "URLParserResult.h"
 #import "MapViewController.h"
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+#import "SettingsViewController.h"
+>>>>>>> c5a8eed4... Revert "Lanestepper"

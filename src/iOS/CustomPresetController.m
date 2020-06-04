@@ -7,11 +7,15 @@
 //
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #import "CommonPresetList.h"
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+#import "CommonTagList.h"
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 #import "CustomPresetController.h"
-#import "POIFeaturePresetsViewController.h"
+#import "POICommonTagsViewController.h"
 
 @interface CustomPresetController ()
 @end
@@ -35,10 +39,14 @@
 		if ( idx >= _customPreset.presetList.count )
 			break;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		PresetValue * preset = _customPreset.presetList[ idx ];
 =======
 		CommonPresetValue * preset = _customPreset.presetList[ idx ];
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+		CommonTagValue * preset = _customPreset.presetList[ idx ];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 		textField.text = preset.tagValue;
 		++idx;
 	}
@@ -59,10 +67,14 @@
 		NSString * value = [field.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if ( value.length ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			PresetValue * preset = [[PresetValue alloc] initWithName:nil details:nil tagValue:value];
 =======
 			CommonPresetValue * preset = [CommonPresetValue presetWithName:nil details:nil tagValue:value];
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+			CommonTagValue * preset = [CommonTagValue presetWithName:nil details:nil tagValue:value];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 			[presets addObject:preset];
 		}
 	}
@@ -70,10 +82,14 @@
 	UITextAutocapitalizationType capitalize = UITextAutocapitalizationTypeNone;
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	_customPreset = [[PresetKeyUserDefined alloc] initWithAppliesToKey:appliesToKey appliesToValue:appliesToVal
 														  name:name tagKey:key placeholder:nil keyboard:keyboard capitalize:capitalize presets:presets];
 =======
 	_customPreset = [[CustomPreset alloc] initWithName:name featureKey:key defaultValue:nil placeholder:nil keyboard:keyboard capitalize:capitalize presets:presets];
+=======
+	_customPreset = [[CustomPreset alloc] initWithName:name tagKey:key defaultValue:nil placeholder:nil keyboard:keyboard capitalize:capitalize presets:presets];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	_customPreset.appliesToKey = appliesToKey;
 	_customPreset.appliesToValue = appliesToVal;
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added

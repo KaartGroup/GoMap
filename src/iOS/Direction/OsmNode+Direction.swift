@@ -10,6 +10,7 @@ import Foundation
 
 extension OsmNode {
 <<<<<<< HEAD
+<<<<<<< HEAD
     static let cardinalDictionary: [String: Float] = [
         "north": 0,
         "N": 0,
@@ -74,18 +75,30 @@ extension OsmNode {
                 return direction
             }
 =======
+=======
+    
+    /// The direction in which the node is facing.
+    /// Since Objective-C is not able to work with optionals, the direction is `NSNotFound`
+    /// if the node does not have a direction value instead of being `nil`.
+    @objc var direction: Int {
+>>>>>>> c5a8eed4... Revert "Lanestepper"
         get {
             let keys = ["direction", "camera:direction"]
             for directionKey in keys {
                 if
                     let value = tags?[directionKey],
-                    let direction = direction(from: value) {
+                    let valueAsString = value as? String,
+                    let direction = direction(from: valueAsString) {
                     return direction
                 }
             }
             
+<<<<<<< HEAD
             return NSMakeRange(NSNotFound,0)
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+            return NSNotFound
+>>>>>>> c5a8eed4... Revert "Lanestepper"
         }
 
         return NSMakeRange(NSNotFound, 0)
@@ -114,6 +127,7 @@ extension OsmNode {
         }
 =======
     
+<<<<<<< HEAD
     private func direction(from string: String) -> NSRange? {
 		if let direction = Float(string) ?? cardinalDirectionToDegree.dict[string] {
 			return NSMakeRange(Int(direction),0)
@@ -133,6 +147,25 @@ extension OsmNode {
 		}
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
+=======
+    private func direction(from string: String) -> Int? {
+        if let direction = Int(string) {
+            return direction
+        }
+        
+        let cardinalDirectionToDegree: [String: Int] = ["N": 0,
+                                                        "NE": 45,
+                                                        "E": 90,
+                                                        "SE": 135,
+                                                        "S": 180,
+                                                        "SW": 225,
+                                                        "W": 270,
+                                                        "NW": 315]
+        if let direction = cardinalDirectionToDegree[string] {
+            return direction
+        }
+        
+>>>>>>> c5a8eed4... Revert "Lanestepper"
         return nil
     }
 }

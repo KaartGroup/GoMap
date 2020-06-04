@@ -11,28 +11,36 @@
 #import "AppDelegate.h"
 #import "AutocompleteTextField.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #import "CommonPresetList.h"
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+#import "CommonTagList.h"
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 #import "EditorMapLayer.h"
 #import "HeightViewController.h"
 #import "MapView.h"
 #import "OsmMapData.h"
-#import "OsmMember.h"
+#import "OsmObjects.h"
 #import "POIAllTagsViewController.h"
 #import "POITabBarController.h"
 #import "PushPinView.h"
+<<<<<<< HEAD
 #import "RenderInfo.h"
 <<<<<<< HEAD
 #import "WikiPage.h"
 =======
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+#import "TagInfo.h"
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 
 
 #define EDIT_RELATIONS 0
 
 
-@implementation TextPairTableCell
+@implementation TextPair
 
 - (void)willTransitionToState:(UITableViewCellStateMask)state
 {
@@ -204,6 +212,7 @@
 	[super viewWillDisappear:animated];
 }
 
+<<<<<<< HEAD
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
@@ -240,6 +249,8 @@
 }
 
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -290,6 +301,7 @@
 	}
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 #pragma mark Accessory buttons
 
@@ -526,6 +538,13 @@
 
 >>>>>>> master
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+-(void)textFieldEditingDidEnd:(id)sender
+{
+}
+
+
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if ( indexPath.section == 0 ) {
@@ -541,8 +560,12 @@
 			return cell;
 		}
 
+<<<<<<< HEAD
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		TextPairTableCell * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
+=======
+		TextPair * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 		NSArray * kv = _tags[ indexPath.row ];
 		// assign text contents of fields
 		cell.text1.enabled = YES;
@@ -556,6 +579,12 @@
 		cell.text1.didSelectAutocomplete = ^{ [weakCell.text2 becomeFirstResponder]; };
 		cell.text2.didSelectAutocomplete = ^{ [weakCell.text2 resignFirstResponder]; };
 
+#if 0
+		if ( [kv[0] length] == 0 && [kv[1] length] == 0 ) {
+			// empty key/value so set keyboard focus to it
+			[cell.text1 becomeFirstResponder];
+		}
+#endif
 		return cell;
 
 	} else if ( indexPath.section == 1 ) {
@@ -565,7 +594,7 @@
 			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
 			return cell;
 		}
-		TextPairTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RelationCell" forIndexPath:indexPath];
+		TextPair *cell = [tableView dequeueReusableCellWithIdentifier:@"RelationCell" forIndexPath:indexPath];
 		cell.text1.enabled = NO;
 		cell.text2.enabled = NO;
 		OsmRelation	* relation = _relations[ indexPath.row ];
@@ -589,8 +618,12 @@
 			[cell.button addTarget:self action:@selector(addTagCell:) forControlEvents:UIControlEventTouchUpInside];
 			return cell;
 		}
+<<<<<<< HEAD
 		TextPairTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MemberCell" forIndexPath:indexPath];
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+		TextPair *cell = [tableView dequeueReusableCellWithIdentifier:@"MemberCell" forIndexPath:indexPath];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 #if EDIT_RELATIONS
 		cell.text1.enabled = YES;
 		cell.text2.enabled = YES;
@@ -600,7 +633,7 @@
 #endif
 		if ( [member isKindOfClass:[OsmMember class]] ) {
 			OsmBaseObject * ref = member.ref;
-			NSString * memberName = [ref isKindOfClass:[OsmBaseObject class]] ? ref.friendlyDescriptionWithDetails : [NSString stringWithFormat:@"%@ %@",member.type, member.ref];
+			NSString * memberName = [ref isKindOfClass:[OsmBaseObject class]] ? ref.friendlyDescription : [NSString stringWithFormat:@"%@ %@",member.type, member.ref];
 			cell.text1.text = member.role;
 			cell.text2.text = memberName;
 		} else {
@@ -634,10 +667,13 @@
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #pragma mark Tab key
 =======
 #pragma mark Cell editing
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 
 - (NSArray *)keyCommands
 {
@@ -654,8 +690,12 @@
 	while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
 		cell = (id)cell.superview;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	TextPairTableCell * pair = (id)cell;
+=======
+	TextPair * pair = (id)cell;
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	BOOL isValue = textField == pair.text2;
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
@@ -681,6 +721,7 @@
 			// get list of values for current key
 			NSString * key = kv[0];
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if ( [PresetsDatabase.shared eligibleForAutocomplete:key] ) {
 				NSSet * set = [PresetsDatabase.shared allTagValuesForKey:key];
 				AppDelegate * appDelegate = AppDelegate.shared;
@@ -694,15 +735,22 @@
 			NSSet * set = [PresetsDatabase.shared allTagKeys];
 =======
 			NSSet * set = [CommonPresetList allTagValuesForKey:key];
+=======
+			NSSet * set = [CommonTagList allTagValuesForKey:key];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 			AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-			NSMutableSet<NSString *> * values = [appDelegate.mapView.editorLayer.mapData tagValuesForKey:key];
+			NSMutableSet * values = [appDelegate.mapView.editorLayer.mapData tagValuesForKey:key];
 			[values addObjectsFromArray:[set allObjects]];
 			NSArray * list = [values allObjects];
 			[(AutocompleteTextField *)textField setCompletions:list];
 		} else {
 			// get list of keys
+<<<<<<< HEAD
 			NSSet * set = [CommonPresetList allTagKeys];
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+			NSSet * set = [CommonTagList allTagKeys];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 			NSArray * list = [set allObjects];
 			textField.autocompleteStrings = list;
 		}
@@ -814,55 +862,6 @@
 	}
 }
 
--(void)textFieldEditingDidEnd:(UITextField *)textField
-{
-	UITableViewCell * cell = (id)textField.superview;
-	while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
-		cell = (id)cell.superview;
-	TextPairTableCell * pair = (id)cell;
-	BOOL isValue = textField == pair.text2;
-
-	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-	if ( indexPath.section == 0 ) {
-		if ( isValue ) {
-			NSMutableArray<NSString *> * kv = _tags[ indexPath.row ];
-			if ( [kv[0] hasPrefix:@"wikipedia"] ) {
-				// if the value is for wikipedia then convert the a URL to the correct format
-				// format is https://en.wikipedia.org/wiki/Nova_Scotia
-				NSScanner * scanner = [NSScanner scannerWithString:kv[1]];
-				NSString *languageCode, *pageName;
-				if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
-					[scanner scanUpToString:@"." intoString:&languageCode] &&
-					([scanner scanString:@".m" intoString:nil] || YES) &&
-					[scanner scanString:@".wikipedia.org/wiki/" intoString:nil] &&
-					[scanner scanUpToString:@"/" intoString:&pageName] &&
-					[scanner isAtEnd] &&
-					languageCode.length == 2 &&
-					pageName.length > 0 )
-				{
-					kv[1] = [NSString stringWithFormat:@"%@:%@",languageCode,pageName];
-					pair.text2.text = kv[1];
-				}
-			} else if ( [kv[0] hasPrefix:@"wikidata"] ) {
-				// https://www.wikidata.org/wiki/Q90000000
-				NSScanner * scanner = [NSScanner scannerWithString:kv[1]];
-				NSString *pageName;
-				if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
-					([scanner scanString:@"www.wikidata.org/wiki/" intoString:nil] || [scanner scanString:@"m.wikidata.org/wiki/" intoString:nil]) &&
-					[scanner scanUpToString:@"/" intoString:&pageName] &&
-					[scanner isAtEnd] &&
-					pageName.length > 0 )
-				{
-					kv[1] = pageName;
-					pair.text2.text = kv[1];
-				}
-			}
-		} else {
-			// editing key
-		}
-	}
-}
-
 - (IBAction)textFieldChanged:(UITextField *)textField
 {
 	UITableViewCell * cell = (id)textField.superview;
@@ -874,7 +873,7 @@
 
 	if ( indexPath.section == 0 ) {
 		// edited tags
-		TextPairTableCell * pair = (id)cell;
+		TextPair * pair = (id)cell;
 		NSMutableArray * kv = _tags[ indexPath.row ];
 		BOOL isValue = textField == pair.text2;
 
@@ -894,6 +893,7 @@
 	}
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 -(void)tabToNext:(BOOL)forward
 {
@@ -968,6 +968,8 @@
 
 - (IBAction)toggleTableRowEditing:(id)sender
 =======
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 - (IBAction)toggleEditing:(id)sender
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
@@ -1031,8 +1033,12 @@
 =======
 #pragma mark - Table view delegate
 
-- (void)addTagCellAtIndexPath:(NSIndexPath *)indexPath
+- (void)addTagCell:(id)sender
 {
+	UITableViewCell * cell = sender;	// starts out as UIButton
+	while ( cell && ![cell isKindOfClass:[UITableViewCell class]] )
+		cell = (id)[cell superview];
+	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
 	if ( indexPath.section == 0 ) {
 		[_tags addObject:[NSMutableArray arrayWithObjects:@"",@"",nil]];
 	} else if ( indexPath.section == 2 ) {
@@ -1043,10 +1049,11 @@
 	[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
 
 	// set new cell to show keyboard
-	TextPairTableCell * newCell = (id)[self.tableView cellForRowAtIndexPath:indexPath];
+	TextPair * newCell = (id)[self.tableView cellForRowAtIndexPath:indexPath];
 	[newCell.text1 becomeFirstResponder];
 }
 
+<<<<<<< HEAD
 - (void)addTagCell:(id)sender
 {
 	UITableViewCell * cell = sender;	// starts out as UIButton
@@ -1057,6 +1064,8 @@
 }
 
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 -(IBAction)cancel:(id)sender
 {
     [self.view endEditing:YES];

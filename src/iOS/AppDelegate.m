@@ -20,9 +20,13 @@
 #import "MainViewController.h"
 =======
 #import "MapViewController.h"
+<<<<<<< HEAD
 #import "URLParserResult.h"
 #import "GeoURLParser.h"
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 
 @implementation AppDelegate
 
@@ -45,6 +49,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+<<<<<<< HEAD
 #if 0	// This code sets the screen size as mandated for Mac App Store screen shots
 	CGSize size = { 640 * (1440.0/752) * (1440.0/1337) * (1440.0/1431), 640 * (900.0/752) * (900.0/877) * (900.0/898) + 1 };
 	for ( UIWindowScene * scene in UIApplication.sharedApplication.connectedScenes ) {
@@ -55,6 +60,10 @@
 
 	NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
+=======
+	NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
+
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	// save the app version so we can detect upgrades
 	NSString * prevVersion = [defaults objectForKey:@"appVersion"];
 	if ( ![prevVersion isEqualToString:self.appVersion] ) {
@@ -69,6 +78,7 @@
 
 	[self removePlaintextCredentialsFromUserDefaults];
 
+<<<<<<< HEAD
 	// self.externalGPS = [[ExternalGPS alloc] init];
 
 	NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
@@ -87,6 +97,19 @@
 		return [self application:application openURL:url options:@{}];
 	}
 	return NO;
+=======
+	[DownloadThreadPool setUserAgent:[NSString stringWithFormat:@"%@/%@", self.appName, self.appVersion]];
+
+	// self.externalGPS = [[ExternalGPS alloc] init];
+
+	NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+	if ( url ) {
+		// somebody handed us a URL to open
+		return [self application:application openURL:url options:@{}];
+	}
+
+	return YES;
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 /**
@@ -99,6 +122,7 @@
 
 -(void)setMapLocation:(MapLocation *)location
 {
+<<<<<<< HEAD
 <<<<<<< HEAD
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -122,12 +146,14 @@
         }
     });
 =======
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		double metersPerDegree = MetersPerDegree( lat );
 		double minMeters = 50;
-		double widthDegrees = minMeters / metersPerDegree;
+		double widthDegrees = widthDegrees = minMeters / metersPerDegree;
 		if ( zoom != 0 ) {
 			widthDegrees = 360.0 / pow(2,zoom);
 		}
@@ -136,12 +162,16 @@
 			self.mapView.viewState = view;
 		}
 	});
+<<<<<<< HEAD
 >>>>>>> master
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
 {
+<<<<<<< HEAD
 <<<<<<< HEAD
 	if ( url.isFileURL && [url.pathExtension isEqualToString:@"gpx"] ) {
 		// Load GPX
@@ -263,6 +293,26 @@
                         zoom:parserResult.zoom
                         view:parserResult.viewState];
     }
+=======
+	if ( [url.absoluteString hasPrefix:@"geo:"] ) {
+		// geo:47.75538,-122.15979?z=18
+		double lat = 0, lon = 0, zoom = 0;
+		NSScanner * scanner = [NSScanner scannerWithString:url.absoluteString];
+		[scanner scanString:@"geo:" intoString:NULL];
+		[scanner scanDouble:&lat];
+		[scanner scanString:@"," intoString:NULL];
+		[scanner scanDouble:&lon];
+		while ( [scanner scanString:@";" intoString:NULL] ) {
+			NSMutableCharacterSet * nonSemicolon = [[NSCharacterSet characterSetWithCharactersInString:@";"] mutableCopy];
+			[nonSemicolon invert];
+			[scanner scanCharactersFromSet:nonSemicolon intoString:NULL];
+		}
+		if ( [scanner scanString:@"?" intoString:NULL] && [scanner scanString:@"z=" intoString:NULL] ) {
+			[scanner scanDouble:&zoom];
+		}
+		[self setMapLatitude:lat longitude:lon zoom:zoom view:MAPVIEW_NONE];
+	}
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	// open to longitude/latitude
 	if ( [url.absoluteString hasPrefix:@"gomaposm://?"] ) {
@@ -370,8 +420,11 @@
 		return YES;
 	}
 	return NO;
+<<<<<<< HEAD
 >>>>>>> master
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (NSString *)appName
@@ -399,8 +452,13 @@
 	// set app badge if edits are pending
 	NSInteger pendingEdits = [self.mapView.editorLayer.mapData modificationCount];
 	if ( pendingEdits ) {
+<<<<<<< HEAD
 		[UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:UNAuthorizationOptionBadge completionHandler:^(BOOL granted, NSError * _Nullable error) {
 		}];
+=======
+		UIUserNotificationSettings * settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge categories:nil];
+		[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	}
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:pendingEdits];
 	
@@ -430,6 +488,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+<<<<<<< HEAD
 }
 
 + (void)askUserToAllowLocationAccess:(UIViewController *)parentVC
@@ -466,6 +525,8 @@
 	if (openSettingsURL) {
 		[[UIApplication sharedApplication] openURL:openSettingsURL options:@{} completionHandler:nil];
 	}
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 @end

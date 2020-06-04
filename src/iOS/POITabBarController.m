@@ -10,7 +10,8 @@
 #import "EditorMapLayer.h"
 #import "MapView.h"
 #import "OsmMapData.h"
-#import "POIFeaturePresetsViewController.h"
+#import "OsmObjects.h"
+#import "POICommonTagsViewController.h"
 #import "POITabBarController.h"
 #import "POIAttributesViewController.h"
 
@@ -26,7 +27,11 @@
 {
 	[super viewWillAppear:animated];
 
+<<<<<<< HEAD
 	AppDelegate * appDelegate = AppDelegate.shared;
+=======
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	OsmBaseObject * selection = appDelegate.mapView.editorLayer.selectedPrimary;
 	self.selection = selection;
 	self.keyValueDict = [NSMutableDictionary new];
@@ -41,8 +46,12 @@
 
 	NSInteger tabIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"POITabIndex"];
 	self.selectedIndex = tabIndex;
+<<<<<<< HEAD
 
 	// hide attributes tab on new objects
+=======
+    
+>>>>>>> c5a8eed4... Revert "Lanestepper"
     [self updatePOIAttributesTabBarItemVisibilityWithSelectedObject:selection];
 }
 
@@ -96,14 +105,23 @@
 
 - (void)commitChanges
 {
+<<<<<<< HEAD
 	AppDelegate * appDelegate = AppDelegate.shared;
 	[appDelegate.mapView setTagsForCurrentObject:self.keyValueDict];
     [appDelegate.mapView updateEditControl];
+=======
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	[appDelegate.mapView setTagsForCurrentObject:self.keyValueDict];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (BOOL)isTagDictChanged:(NSDictionary *)newDictionary
 {
+<<<<<<< HEAD
 	AppDelegate * appDelegate = AppDelegate.shared;
+=======
+	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	NSDictionary * tags = appDelegate.mapView.editorLayer.selectedPrimary.tags;
 	if ( tags.count == 0 )

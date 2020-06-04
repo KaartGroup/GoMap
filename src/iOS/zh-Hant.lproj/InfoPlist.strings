@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Bundle display name */
 "CFBundleDisplayName" = "Go Map!!";
 
@@ -21,4 +22,7 @@
 
 /* Privacy - Location When In Use Usage Description */
 "NSLocationWhenInUseUsageDescription" = "您的定位動態將會顯示在地圖上。";
+=======
+/* Localized versions of Info.plist keys */
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 

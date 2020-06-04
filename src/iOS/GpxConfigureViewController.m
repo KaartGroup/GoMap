@@ -15,6 +15,7 @@
 {
     [super viewDidLoad];
 	_pickerView.delegate = self;
+<<<<<<< HEAD
 }
 
 <<<<<<< HEAD
@@ -26,6 +27,8 @@
 {
 	[super viewDidAppear:animated];
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	[_pickerView selectRow:_expirationValue.integerValue inComponent:0 animated:NO];
 }

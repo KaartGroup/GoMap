@@ -70,22 +70,9 @@
 		return NSLocalizedString(@"Standard imagery",nil);
 	if ( section == SECTION_USER )
 		return NSLocalizedString(@"User-defined imagery",nil);
-	if ( section == SECTION_EXTERNAL ) {
-		return NSLocalizedString(@"Additional imagery",nil);
-	}
+	if ( section == SECTION_EXTERNAL )
+		return NSLocalizedString(@"Additional imagery sources",nil);
 	return nil;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
-	if ( section == SECTION_EXTERNAL ) {
-		NSDateFormatter * dateFormatter = [NSDateFormatter new];
-		dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-		dateFormatter.timeStyle = NSDateFormatterNoStyle;
-		NSString * date = [dateFormatter stringFromDate:_aerials.lastDownloadDate];
-		return [NSString stringWithFormat:NSLocalizedString(@"Last updated %@",nil),date];
-	}
-	return nil;;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -115,6 +102,7 @@
 	if ( aerial == _aerials.currentAerial ) {
 		title = [@"\u2714 " stringByAppendingString:title];	// add checkmark
 	}
+<<<<<<< HEAD
 
 	// get details
 	NSString * urlDetail = aerial.isMaxar ? nil : aerial.url;
@@ -137,9 +125,15 @@
 	}
 	NSString * details = dateDetail ?: urlDetail;
 
+=======
+	NSString * detail = aerial.url;
+	if ( [detail hasPrefix:@"https://"] )
+		detail = [detail substringFromIndex:8];
+	else if ( [detail hasPrefix:@"http://"] )
+		detail = [detail substringFromIndex:7];
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	cell.textLabel.text = title;
-	cell.detailTextLabel.text = details;
-
+	cell.detailTextLabel.text = detail;
 	return cell;
 }
 
@@ -231,7 +225,7 @@
 				editRow = indexPath;
 			}
 			c.name = service.name;
-			c.url = service.isMaxar ? nil : service.url;
+			c.url = service.url;
 			c.zoom = @(service.maxZoom);
 			c.projection = service.wmsProjection;
 		}

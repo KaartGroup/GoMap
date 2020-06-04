@@ -9,9 +9,13 @@
 #import "AppDelegate.h"
 #import "MapView.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #import "CommonPresetList.h"
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+#import "CommonTagList.h"
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 #import "LanguageTableViewController.h"
 
 
@@ -93,10 +97,14 @@
 	[self.tableView reloadData];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	[PresetsDatabase reload];	// reset tags
 	[AppDelegate.shared.mapView refreshPushpinText];
 =======
 	[CommonPresetList initialize];	// reset tags
+=======
+	[CommonTagList initialize];	// reset tags
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	[[AppDelegate getAppDelegate].mapView refreshPushpinText];
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }

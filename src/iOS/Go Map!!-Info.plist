@@ -43,6 +43,7 @@
 	<key>CFBundleShortVersionString</key>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<string>$(MARKETING_VERSION)</string>
 =======
 	<string>1.6.3</string>
@@ -53,6 +54,9 @@
 	<string>$(MARKETING_VERSION)</string>
 >>>>>>> master
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+	<string>1.6.2</string>
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -75,6 +79,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
@@ -90,12 +95,15 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 >>>>>>> master
 >>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
+=======
+	<string>1.6.2</string>
+>>>>>>> c5a8eed4... Revert "Lanestepper"
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
+	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -124,7 +132,7 @@
 	<key>UIInterfaceOrientation</key>
 	<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	<key>UILaunchStoryboardName</key>
-	<string>MainStoryboard</string>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard</string>
 	<key>UIMainStoryboardFile~ipad</key>

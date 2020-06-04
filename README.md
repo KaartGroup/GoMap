@@ -5,11 +5,6 @@ Go Map!! is an iPhone/iPad editor for adding cartographic information to [OpenSt
 
 [![Download on the App Store badge][2]][3]
 
-## Join our TestFlight beta!
-
-Do you want to help testing pre-releases of Go Map!!?
-[Become a TestFlight tester][4] today! 🚀
-
 ## Source code structure
 
 * iOS - Code specific to the iOS app

@@ -12,6 +12,9 @@
 	#import <UIKit/UIKit.h>
 	#import <Foundation/Foundation.h>
     #import <CoreLocation/CoreLocation.h>
+<<<<<<< HEAD
 	#import <AVFoundation/AVFoundation.h>
+=======
+>>>>>>> c5a8eed4... Revert "Lanestepper"
     #import "Go_Map__-Swift.h"
 #endif
