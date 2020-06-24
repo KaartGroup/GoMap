@@ -285,62 +285,61 @@ static OSMPoint TileToWMSCoords(NSInteger tx,NSInteger ty,NSInteger z,NSString *
 
 -(NSURL *)urlForZoom:(int32_t)zoom tileX:(int32_t)tileX tileY:(int32_t)tileY
 {
-    NSMutableString * url = [self.aerialService.url mutableCopy];
+	NSMutableString * url = [self.aerialService.url mutableCopy];
 
-    // handle switch in URL
-    NSRange start = [url rangeOfString:@"{switch:"];
-    if ( start.location != NSNotFound ) {
-        NSRange subs = { start.location+start.length, url.length-start.location-start.length };
-        NSRange end = [url rangeOfString:@"}" options:0 range:subs];
-        if ( end.location != NSNotFound ) {
-            subs.length = end.location - subs.location;
-            NSString * subdomains = [url substringWithRange:subs];
-            NSArray * a = [subdomains componentsSeparatedByString:@","];
-            if ( a.count ) {
-                NSString * t = [a objectAtIndex:(tileX+tileY) % a.count];
-                start.length = end.location - start.location + 1;
-                [url replaceCharactersInRange:start withString:t];
-            }
-        }
-    }
+	// handle switch in URL
+	NSRange start = [url rangeOfString:@"{switch:"];
+	if ( start.location != NSNotFound ) {
+		NSRange subs = { start.location+start.length, url.length-start.location-start.length };
+		NSRange end = [url rangeOfString:@"}" options:0 range:subs];
+		if ( end.location != NSNotFound ) {
+			subs.length = end.location - subs.location;
+			NSString * subdomains = [url substringWithRange:subs];
+			NSArray * a = [subdomains componentsSeparatedByString:@","];
+			if ( a.count ) {
+				NSString * t = [a objectAtIndex:(tileX+tileY) % a.count];
+				start.length = end.location - start.location + 1;
+				[url replaceCharactersInRange:start withString:t];
+			}
+		}
+	}
 
-    NSString * projection = self.aerialService.wmsProjection;
-    if ( projection ) {
-        // WMS
-        OSMPoint minXmaxY = TileToWMSCoords( tileX, tileY, zoom, projection );
-        OSMPoint maxXminY = TileToWMSCoords( tileX+1, tileY+1, zoom, projection );
-        NSString * bbox;
-        if ( [projection isEqualToString:@"EPSG:4326"] && [[url lowercaseString] containsString:@"crs={proj}"] ) {
-            // reverse lat/lon for EPSG:4326 when WMS version is 1.3 (WMS 1.1 uses srs=epsg:4326 instead
-            bbox = [NSString stringWithFormat:@"%f,%f,%f,%f",maxXminY.y,minXmaxY.x,minXmaxY.y,maxXminY.x];    // lat,lon
-        } else {
-            bbox = [NSString stringWithFormat:@"%f,%f,%f,%f",minXmaxY.x,maxXminY.y,maxXminY.x,minXmaxY.y];    // lon,lat
-        }
-        [url replaceOccurrencesOfString:@"{width}"    withString:@"256" options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{height}" withString:@"256" options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{proj}"     withString:projection options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{bbox}"     withString:bbox options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{wkid}"     withString:[projection stringByReplacingOccurrencesOfString:@"EPSG:" withString:@""] options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{w}"         withString:@(minXmaxY.x).stringValue options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{s}"         withString:@(maxXminY.y).stringValue options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{n}"         withString:@(maxXminY.x).stringValue options:0 range:NSMakeRange(0, url.length)];
-        [url replaceOccurrencesOfString:@"{e}"         withString:@(minXmaxY.y).stringValue options:0 range:NSMakeRange(0, url.length)];
+	NSString * projection = self.aerialService.wmsProjection;
+	if ( projection ) {
+		// WMS
+		OSMPoint minXmaxY = TileToWMSCoords( tileX, tileY, zoom, projection );
+		OSMPoint maxXminY = TileToWMSCoords( tileX+1, tileY+1, zoom, projection );
+		NSString * bbox;
+		if ( [projection isEqualToString:@"EPSG:4326"] && [[url lowercaseString] containsString:@"crs={proj}"] ) {
+			// reverse lat/lon for EPSG:4326 when WMS version is 1.3 (WMS 1.1 uses srs=epsg:4326 instead
+			bbox = [NSString stringWithFormat:@"%f,%f,%f,%f",maxXminY.y,minXmaxY.x,minXmaxY.y,maxXminY.x];	// lat,lon
+		} else {
+			bbox = [NSString stringWithFormat:@"%f,%f,%f,%f",minXmaxY.x,maxXminY.y,maxXminY.x,minXmaxY.y];	// lon,lat
+		}
+		[url replaceOccurrencesOfString:@"{width}"	withString:@"256" options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{height}" withString:@"256" options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{proj}" 	withString:projection options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{bbox}" 	withString:bbox options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{wkid}" 	withString:[projection stringByReplacingOccurrencesOfString:@"EPSG:" withString:@""] options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{w}" 		withString:@(minXmaxY.x).stringValue options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{s}" 		withString:@(maxXminY.y).stringValue options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{n}" 		withString:@(maxXminY.x).stringValue options:0 range:NSMakeRange(0, url.length)];
+		[url replaceOccurrencesOfString:@"{e}" 		withString:@(minXmaxY.y).stringValue options:0 range:NSMakeRange(0, url.length)];
 
-    } else {
-        // TMS
-        NSString * u = [self quadKeyForZoom:zoom tileX:tileX tileY:tileY];
-        NSString * x = [NSString stringWithFormat:@"%d",tileX];
-        NSString * y = [NSString stringWithFormat:@"%d",tileY];
-        NSString * negY = [NSString stringWithFormat:@"%d",(1<<zoom)-tileY-1];
-        NSString * z = [NSString stringWithFormat:@"%d",zoom];
-        [url replaceOccurrencesOfString:@"{u}" withString:u options:0 range:NSMakeRange(0,url.length)];
-        [url replaceOccurrencesOfString:@"{x}" withString:x options:0 range:NSMakeRange(0,url.length)];
-        [url replaceOccurrencesOfString:@"{y}" withString:y options:0 range:NSMakeRange(0,url.length)];
-        [url replaceOccurrencesOfString:@"{-y}" withString:negY options:0 range:NSMakeRange(0,url.length)];
-        [url replaceOccurrencesOfString:@"{z}" withString:z options:0 range:NSMakeRange(0,url.length)];
-    }
-    NSString * urlString = [url stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
-    return [NSURL URLWithString:urlString];
+	} else {
+		// TMS
+		NSString * u = [self quadKeyForZoom:zoom tileX:tileX tileY:tileY];
+		NSString * x = [NSString stringWithFormat:@"%d",tileX];
+		NSString * y = [NSString stringWithFormat:@"%d",tileY];
+		NSString * negY = [NSString stringWithFormat:@"%d",(1<<zoom)-tileY-1];
+		NSString * z = [NSString stringWithFormat:@"%d",zoom];
+		[url replaceOccurrencesOfString:@"{u}" withString:u options:0 range:NSMakeRange(0,url.length)];
+		[url replaceOccurrencesOfString:@"{x}" withString:x options:0 range:NSMakeRange(0,url.length)];
+		[url replaceOccurrencesOfString:@"{y}" withString:y options:0 range:NSMakeRange(0,url.length)];
+		[url replaceOccurrencesOfString:@"{-y}" withString:negY options:0 range:NSMakeRange(0,url.length)];
+		[url replaceOccurrencesOfString:@"{z}" withString:z options:0 range:NSMakeRange(0,url.length)];
+	}
+	return [url stringByAddingPercentEncodingWithAllowedCharacters:NSCharacterSet.URLQueryAllowedCharacterSet];
 }
 
 -(BOOL)fetchTileForTileX:(int32_t)tileX tileY:(int32_t)tileY
@@ -564,43 +563,43 @@ static OSMPoint TileToWMSCoords(NSInteger tx,NSInteger ty,NSInteger z,NSString *
 // Used for bulk downloading tiles for offline use
 -(NSMutableArray *)allTilesIntersectingVisibleRect
 {
-    NSArray * currentTiles = _webCache.allKeys;
-    NSSet * currentSet = [NSSet setWithArray:currentTiles];
+	NSArray * currentTiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_tileCacheDirectory error:NULL];
+	NSSet * currentSet = [NSSet setWithArray:currentTiles];
 
-    OSMRect    rect            = [_mapView boundingMapRectForScreen];
-    int32_t    minZoomLevel    = [self zoomLevel];
+	OSMRect	rect			= [_mapView boundingMapRectForScreen];
+	int32_t	minZoomLevel	= self.aerialService.roundZoomUp ? (int32_t)ceil(log2(OSMTransformScaleX(_mapView.screenFromMapTransform)))
+															 : (int32_t)floor(log2(OSMTransformScaleX(_mapView.screenFromMapTransform)));
+	if ( minZoomLevel < 1 ) {
+		minZoomLevel = 1;
+	}
+	if ( minZoomLevel > 31 )	minZoomLevel = 31;	// shouldn't be necessary, except to shup up the Xcode analyzer
 
-    if ( minZoomLevel < 1 ) {
-        minZoomLevel = 1;
-    }
-    if ( minZoomLevel > 31 )    minZoomLevel = 31;    // shouldn't be necessary, except to shup up the Xcode analyzer
+	int32_t maxZoomLevel = self.aerialService.maxZoom;
+	if ( maxZoomLevel > minZoomLevel + 2 )
+		maxZoomLevel = minZoomLevel + 2;
+	if ( maxZoomLevel > 31 )	maxZoomLevel = 31;	// shouldn't be necessary, except to shup up the Xcode analyzer
 
-    int32_t maxZoomLevel = self.aerialService.maxZoom;
-    if ( maxZoomLevel > minZoomLevel + 2 )
-        maxZoomLevel = minZoomLevel + 2;
-    if ( maxZoomLevel > 31 )    maxZoomLevel = 31;    // shouldn't be necessary, except to shup up the Xcode analyzer
+	NSMutableArray * neededTiles = [NSMutableArray new];
+	for ( int32_t zoomLevel = minZoomLevel; zoomLevel <= maxZoomLevel; ++zoomLevel ) {
+		double zoom = (1 << zoomLevel) / 256.0;
+		int32_t tileNorth	= floor( rect.origin.y * zoom );
+		int32_t tileWest	= floor( rect.origin.x * zoom );
+		int32_t tileSouth	= ceil( (rect.origin.y + rect.size.height) * zoom );
+		int32_t tileEast	= ceil( (rect.origin.x + rect.size.width ) * zoom );
 
-    NSMutableArray * neededTiles = [NSMutableArray new];
-    for ( int32_t zoomLevel = minZoomLevel; zoomLevel <= maxZoomLevel; ++zoomLevel ) {
-        double zoom = (1 << zoomLevel) / 256.0;
-        int32_t tileNorth    = floor( rect.origin.y * zoom );
-        int32_t tileWest    = floor( rect.origin.x * zoom );
-        int32_t tileSouth    = ceil( (rect.origin.y + rect.size.height) * zoom );
-        int32_t tileEast    = ceil( (rect.origin.x + rect.size.width ) * zoom );
-
-        for ( int32_t tileX = tileWest; tileX < tileEast; ++tileX ) {
-            for ( int32_t tileY = tileNorth; tileY < tileSouth; ++tileY ) {
-                NSString * cacheKey = [self quadKeyForZoom:zoomLevel tileX:tileX tileY:tileY];
-                NSString * file = [cacheKey stringByAppendingString:@".jpg"];
-                if ( [currentSet containsObject:file] ) {
-                    // already have it
-                } else {
-                    [neededTiles addObject:cacheKey];
-                }
-            }
-        }
-    }
-    return neededTiles;
+		for ( int32_t tileX = tileWest; tileX < tileEast; ++tileX ) {
+			for ( int32_t tileY = tileNorth; tileY < tileSouth; ++tileY ) {
+				NSString * cacheKey = [self quadKeyForZoom:zoomLevel tileX:tileX tileY:tileY];
+				NSString * file = [cacheKey stringByAppendingString:@".jpg"];
+				if ( [currentSet containsObject:file] ) {
+					// already have it
+				} else {
+					[neededTiles addObject:cacheKey];
+				}
+			}
+		}
+	}
+	return neededTiles;
 }
 
 -(void)setTransform:(CATransform3D)transform

@@ -83,7 +83,6 @@
 {
 	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
 	[appDelegate.mapView setTagsForCurrentObject:self.keyValueDict];
-    [appDelegate.mapView updateEditControl];
 }
 
 - (BOOL)isTagDictChanged:(NSDictionary *)newDictionary

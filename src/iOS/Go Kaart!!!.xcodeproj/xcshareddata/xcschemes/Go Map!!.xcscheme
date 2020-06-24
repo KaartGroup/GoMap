@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "02ACBA2E16713CCB00BB4414"
-               BuildableName = "Go Kaart!!.app"
+               BuildableName = "Go Kaart!! Debug.app"
                BlueprintName = "Go Kaart!!"
                ReferencedContainer = "container:Go Kaart!!!.xcodeproj">
             </BuildableReference>
@@ -65,7 +65,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "02ACBA2E16713CCB00BB4414"
-            BuildableName = "Go Kaart!!.app"
+            BuildableName = "Go Kaart!! Debug.app"
             BlueprintName = "Go Kaart!!"
             ReferencedContainer = "container:Go Kaart!!!.xcodeproj">
          </BuildableReference>
@@ -82,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "02ACBA2E16713CCB00BB4414"
-            BuildableName = "Go Kaart!!.app"
+            BuildableName = "Go Kaart!! Debug.app"
             BlueprintName = "Go Kaart!!"
             ReferencedContainer = "container:Go Kaart!!!.xcodeproj">
          </BuildableReference>

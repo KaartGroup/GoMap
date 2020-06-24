@@ -113,7 +113,6 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
 -(int32_t)relationCount;
 
 -(NSArray<OsmWay *> *)waysContainingNode:(OsmNode *)node;
--(NSArray *)objectsContainingObject:(OsmBaseObject *)object;
 
 -(OsmNode *)nodeForRef:(NSNumber *)ref;
 -(OsmWay *)wayForRef:(NSNumber *)ref;
@@ -136,8 +135,6 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
 
 -(void)setLongitude:(double)longitude latitude:(double)latitude forNode:(OsmNode *)node;
 -(void)setTags:(NSDictionary<NSString *, NSString *> *)dict forObject:(OsmBaseObject *)object;
--(void)registerUndoWithTarget:(id)target selector:(SEL)selector objects:(NSArray *)objects;
-
 
 - (void)updateWithBox:(OSMRect)box mapView:(MapView *)mapView completion:(void(^)(BOOL partial,NSError * error))completion;
 
@@ -151,6 +148,5 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
 +(NSString *)encodeBase64:(NSString *)plainText;
 
 -(NSArray<OsmUserStatistics *> *)userStatisticsForRegion:(OSMRect)rect;
--(OSMRect)rootRect;
 
 @end

@@ -323,7 +323,6 @@ static TagInfo * g_DefaultRender = nil;
         tagType.key                = [tag attributeForName:@"key"].stringValue;
         tagType.value            = [tag attributeForName:@"value"].stringValue;
         tagType.friendlyName    = [tag attributeForName:@"name"].stringValue;
-        tagType.friendlyName    = [tag attributeForName:@"alt name"].stringValue;
         tagType.summary            = [tag attributeForName:@"description"].stringValue;
         tagType.type            = [tag attributeForName:@"type"].stringValue;
         tagType.belongsTo        = [tag attributeForName:@"belongsTo"].stringValue;
@@ -531,7 +530,7 @@ static TagInfo * g_DefaultRender = nil;
             @"addr:state",
             @"addr:housename",
             @"addr:interpolation",
-            @"alt name",
+            @"alt_name",
             @"area",
             @"bicycle",
             @"bridge",

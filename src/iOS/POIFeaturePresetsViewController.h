@@ -7,21 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CommonPresetList.h"
 #import "POIFeaturePickerViewController.h"
-#import "PresetsDatabase.h"
 
 @class OsmBaseObject;
-@class PresetsDatabase;
+@class CommonPresetList;
 
 @interface POIFeaturePresetsViewController : UITableViewController<UITextFieldDelegate,POITypeViewControllerDelegate>
 {
-	PresetsForFeature			*	_presets;
+	CommonPresetList			*	_tags;
 	IBOutlet UIBarButtonItem	*	_saveButton;
-	PresetFeature				*	_selectedFeature;	// the feature selected by the user, not derived from tags (e.g. Address)
+	BOOL							_keyboardShowing;
+	CommonPresetFeature			*	_selectedFeature;	// the feature selected by the user, not derived from tags (e.g. Address)
 	BOOL							_childPushed;
-	BOOL							_isEditing;
 }
-@property (nonatomic) 	PresetGroup	*	drillDownGroup;
+@property (nonatomic) 	CommonPresetGroup	*	drillDownGroup;
 
 - (IBAction)textFieldReturn:(id)sender;
 

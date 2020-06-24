@@ -1242,8 +1242,7 @@ BOOL IsOsmBooleanTrue( NSString * value )
 	// Always start with Type and Name
 	PresetKey * typeTag = [PresetKey presetKeyWithName:@"Type" featureKey:nil defaultValue:nil placeholder:@"" keyboard:UIKeyboardTypeDefault capitalize:UITextAutocapitalizationTypeNone presets:@[@"",@""]];
 	PresetKey * nameTag = [PresetKey presetKeyWithName:g_jsonFieldsDict[@"name"][@"label"] featureKey:@"name" defaultValue:nil placeholder:g_jsonFieldsDict[@"name"][@"placeholder"] keyboard:UIKeyboardTypeDefault capitalize:UITextAutocapitalizationTypeWords presets:nil];
-    PresetKey * altNameTag = [PresetKey presetKeyWithName:@"Alt Name" featureKey:@"Alt name" defaultValue:nil placeholder:@""keyboard:UIKeyboardTypeDefault capitalize:UITextAutocapitalizationTypeWords presets:nil];
-	PresetGroup * typeGroup = [PresetGroup presetGroupWithName:@"Type" tags:@[ typeTag, nameTag, altNameTag ] ];
+	PresetGroup * typeGroup = [PresetGroup presetGroupWithName:@"Type" tags:@[ typeTag, nameTag ] ];
 	_sectionList = [NSMutableArray arrayWithArray:@[ typeGroup ]];
 
 	// Add user-defined presets

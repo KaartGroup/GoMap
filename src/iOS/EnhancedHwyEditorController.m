@@ -17,8 +17,7 @@
 #import "OsmNotesDatabase.h"
 #import "OsmMapData.h"
 #import "OsmMapData+Edit.h"
-#import "OsmRelation.h" // changed from OsmObjects
-#import "TagInfo.h"
+#import "OsmRelation.h"
 
 typedef enum {
     EMPTY = -2,
@@ -26,11 +25,19 @@ typedef enum {
     NONE = 0,
     FORWARD = 1
 } ONEWAY_STATES;
+typedef enum {
+    EMPTY_LANE = 0,
+    PLUS_CLICKED = +1,
+    NO_LANES = -2,
+    MINUS_CLICKED = -1,
+} LANE_COUNT;
+
 @interface EnhancedHwyEditorController ()
 {
     NSMutableArray        *    _parentWays;
     NSMutableArray        *    _highwayViewArray; //    Array of EnhancedHwyEditorView to Store number of ways
     
+    //    NSArray                * _laneCount;
     EnhancedHwyEditorView    *    _selectedFromHwy;
     UIButton            *   _uTurnButton;
     OsmRelation         *   _currentUTurnRelation;
@@ -40,6 +47,7 @@ typedef enum {
     
     OsmWay              *   _selectedWay;
     ONEWAY_STATES         _onewayState;
+    LANE_COUNT           _laneCountState;
     
     MapView             *   _mapView;
     EditorMapLayer      *   _editorLayer;
@@ -75,16 +83,15 @@ typedef enum {
         if ( [tag hasPrefix:@"name"] ){
             [nameTags addObject:[NSMutableArray arrayWithObjects:tag, value, nil]];
         }
-        
-        if(![_keyValueDict objectForKey:@"lanes"]) {
-            _laneCount = laneStepper.value;
+        if(![_keyValueDict objectForKey:@"lanes"]){
+            _laneCount = 0;
         } else {
             _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
             _stepper.value = _laneCount;
         }
     }];
     //RIGHT HERE
-    if ( nameTags.count > 0 ) {
+    if ( nameTags.count > 0 ){
         _nameTags = [[nameTags sortedArrayUsingComparator:^NSComparisonResult(NSArray * obj1,NSArray * obj2) {
             return [obj1[0] compare:obj2[0]];
         }] mutableCopy];
@@ -121,12 +128,17 @@ typedef enum {
     
     //lanecount for stepper
     if (![_keyValueDict objectForKey:@"lanes"]){
-        _laneCount = 0;
+        _laneCount = EMPTY_LANE;
+        NSLog(@"LANES = TRUE");
     } else {
-        _laneCount = _selectedWay.isModified;
+        _laneCount = (LANE_COUNT)_selectedWay.isModified;
+        NSLog(@"LANES = FALSE");
     }
+    NSLog(@"LANESTEPPER: %f", _stepper.value);
+    //[txtValue setText:[NSString stringWithFormat:@"%f", [laneStepper value]]];
     [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
     [tagTable reloadData];
+    saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -183,7 +195,8 @@ typedef enum {
     [sender resignFirstResponder];
 }
 
-- (IBAction)textFieldEditingDidBegin:(UITextField *)textField {
+- (IBAction)textFieldEditingDidBegin:(UITextField *)textField
+{
     UITableViewCell * cell = (id)textField.superview;
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
@@ -315,7 +328,7 @@ typedef enum {
 - (IBAction)onewayPressed {
     NSMutableArray * onewayTag;
     NSInteger * index = 0;
-    for ( NSMutableArray * kv in _tags ){
+    for ( NSMutableArray * kv in _tags ) {
         if ( [kv[0] isEqualToString:@"oneway"] )
             onewayTag = kv;
         index++;
@@ -368,21 +381,20 @@ typedef enum {
 }
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
-    NSInteger  value =  (int)sender.value;
+    NSInteger value =  (int)sender.value;
+    NSLog(@"LANE STEPPER VALUE: %li", (long)value);
     [_editorLayer setNeedsLayout];
     NSMutableArray * laneTag;
     NSInteger * index = 0;
-    for ( NSMutableArray * kv in _tags ){
+    for ( NSMutableArray * kv in _tags ) {
         if ( [kv[0] isEqualToString:@"lanes"] )
             laneTag = kv;
         index++;
     }
-    NSString* laneString = [NSString stringWithFormat:@"%li", (long)value];
-    laneTag[1] = laneString;
-    [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-    [_editorLayer setNeedsLayout];
-    if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
-        [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+    laneTag[1] = @(value);
+    NSLog(@"LaneTag value: %@", laneTag );
+    if ( ![self isTagDictChanged:[self keyValueDictionary]] ){
+        [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
         saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
     }
 }
@@ -394,6 +406,7 @@ typedef enum {
 - (IBAction)done {
     [self dismissViewControllerAnimated:true completion:nil];
     [self saveState];
+    
     [self commitChanges];
 }
 

@@ -6,14 +6,13 @@
 //  Copyright © 2020 Bryce. All rights reserved.
 //
 
-#import "GeoURIParser.h"
-#import "MapView.h"
+#import "GeoURLParser.h"
+#import "URLParserResult.h"
 
+@implementation GeoURLParser
 
-@implementation GeoURIParser
-
-- (MapLocation *)parseURL:(NSURL *)url
-{
+- (URLParserResult *)parseURL:(NSURL *)url {
+    URLParserResult *parserResult;
     if ( [url.absoluteString hasPrefix:@"geo:"] ) {
         // geo:47.75538,-122.15979?z=18
         double lat = 0, lon = 0, zoom = 0;
@@ -37,14 +36,13 @@
             [scanner scanDouble:&zoom];
         }
         
-		MapLocation * parserResult = [MapLocation new];
-		parserResult.longitude = lon;
-		parserResult.latitude  = lat;
-		parserResult.zoom      = zoom;
-		parserResult.viewState = MAPVIEW_NONE;
-		return parserResult;
-	}
-	return nil;
+        parserResult = [[URLParserResult alloc] initWithLongitude:lon
+                                                         latitude:lat
+                                                             zoom:zoom
+                                                        viewState:MAPVIEW_NONE];
+    }
+    
+    return parserResult;
 }
 
 @end

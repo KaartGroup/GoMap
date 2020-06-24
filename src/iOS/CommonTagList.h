@@ -158,5 +158,4 @@ typedef int UITextAutocapitalizationType;
 -(void)addPreset:(CustomPreset *)preset atIndex:(NSInteger)index;
 -(void)removePresetAtIndex:(NSInteger)index;
 @end
-
 */

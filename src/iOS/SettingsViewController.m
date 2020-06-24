@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "AerialList.h"
 #import "AerialListViewController.h"
+#import "CommonPresetList.h"
 #import "EditorMapLayer.h"
 #import "OsmMapData.h"
 #import "MapView.h"
@@ -63,11 +64,6 @@
 
 -(void)accessoryDidConnect:(id)sender
 {
-}
-
-- (IBAction)onDone:(id)sender
-{
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -8,32 +8,30 @@
 
 #import <UIKit/UIKit.h>
 
-@class PresetCategory;
-@class PresetFeature;
+@class CommonPresetCategory;
+@class CommonPresetFeature;
 @class POIFeaturePickerViewController;
 
 @protocol POITypeViewControllerDelegate <NSObject>
--(void)typeViewController:(POIFeaturePickerViewController *)typeViewController didChangeFeatureTo:(PresetFeature *)feature;
+-(void)typeViewController:(POIFeaturePickerViewController *)typeViewController didChangeFeatureTo:(CommonPresetFeature *)feature;
 @end
 
 @interface POIFeaturePickerViewController : UITableViewController <UISearchBarDelegate, UIAlertViewDelegate>
 {
-	NSArray					*	_featureList;
+	NSArray					*	_typeArray;
 	NSArray					*	_searchArrayRecent;
 	NSArray					*	_searchArrayAll;
 	IBOutlet UISearchBar    *	_searchBar;
 	BOOL						_isTopLevel;
 }
-@property (strong,nonatomic) PresetCategory				*	parentCategory;
+@property (strong,nonatomic) CommonPresetCategory					*	parentCategory;
 @property (assign,nonatomic) id<POITypeViewControllerDelegate>		delegate;
 
-@property (strong,nonatomic) CommonPresetCategory				*	parentCategory;
-
-@property (strong,nonatomic) CommonPresetCategory					*	parentCategory;
 -(IBAction)back:(id)sender;
+-(IBAction)configure:(id)sender;
 
 
 +(void)loadMostRecentForGeometry:(NSString *)geometry;
-+(void)updateMostRecentArrayWithSelection:(PresetFeature *)feature geometry:(NSString *)geometry;
++(void)updateMostRecentArrayWithSelection:(CommonPresetFeature *)feature geometry:(NSString *)geometry;
 
 @end

@@ -119,7 +119,7 @@
 		02F373F916822C2C004614D4 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F373F816822C2C004614D4 /* UploadViewController.m */; };
 		02F8F4341696004B002A0820 /* NominatimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F8F4331696004B002A0820 /* NominatimViewController.m */; };
 		02FFCE0B16A7360B001A5B8A /* NSMutableArray+PartialSort.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		0E11092424B67741000CC3FC /* Kaart Final Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11092324B67741000CC3FC /* Kaart Final Logo.png */; };
+		0ED6153F24A1108E001AD42C /* CommonTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED6153E24A1108E001AD42C /* CommonTagList.m */; };
 		0EF9944D249D644E004E82C1 /* EnhancedHwyEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */; };
 		0EF99450249D68DE004E82C1 /* TagInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9944F249D68DE004E82C1 /* TagInfo.m */; };
 		64305F7223E7224E00232BB9 /* LocationURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 64305F7123E7224E00232BB9 /* LocationURLParser.m */; };
@@ -284,7 +284,7 @@
 		02A194AF19C69701002338DA /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = Database.m; path = ../Shared/Database.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		02A194B119C6A432002338DA /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		02A229E724454838000DA9F4 /* Changeset.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Changeset.storyboard; sourceTree = "<group>"; };
-		02ACBA2F16713CCB00BB4414 /* Go Kaart!!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Kaart!!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		02ACBA2F16713CCB00BB4414 /* Go Kaart!! Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Go Kaart!! Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		02ACBA3316713CCB00BB4414 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		02ACBA3516713CCB00BB4414 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		02ACBA3716713CCB00BB4414 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -375,7 +375,8 @@
 		02F8F4331696004B002A0820 /* NominatimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NominatimViewController.m; sourceTree = "<group>"; };
 		02FFCE0916A7360B001A5B8A /* NSMutableArray+PartialSort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+PartialSort.h"; path = "../Shared/NSMutableArray+PartialSort.h"; sourceTree = "<group>"; };
 		02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSMutableArray+PartialSort.mm"; path = "../Shared/NSMutableArray+PartialSort.mm"; sourceTree = "<group>"; };
-		0E11092324B67741000CC3FC /* Kaart Final Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Kaart Final Logo.png"; path = "../../../Kaart Final Logo.png"; sourceTree = "<group>"; };
+		0ED6153D24A11047001AD42C /* CommonTagList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonTagList.h; sourceTree = "<group>"; };
+		0ED6153E24A1108E001AD42C /* CommonTagList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonTagList.m; sourceTree = "<group>"; };
 		0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
 		0EF9944E249D6463004E82C1 /* EnhancedHwyEditorController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorController.h; sourceTree = "<group>"; };
 		0EF9944F249D68DE004E82C1 /* TagInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TagInfo.m; sourceTree = "<group>"; };
@@ -548,7 +549,7 @@
 		02ACBA3016713CCB00BB4414 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				02ACBA2F16713CCB00BB4414 /* Go Kaart!!.app */,
+				02ACBA2F16713CCB00BB4414 /* Go Kaart!! Debug.app */,
 				64348CEA225E7CD900ADE7FB /* GoMapTests.xctest */,
 				64348D08225EA24E00ADE7FB /* GoMapUITests.xctest */,
 			);
@@ -657,8 +658,8 @@
 				02ACBA3A16713CCB00BB4414 /* Supporting Files */,
 				02BF745220793F0A0028ED6A /* TurnRestrictController.h */,
 				02BF745320793F0A0028ED6A /* TurnRestrictController.m */,
-				0EF99452249D6D9C004E82C1 /* EnhancedHwyEditorView.h */,
 				0EF9944E249D6463004E82C1 /* EnhancedHwyEditorController.h */,
+				0EF99452249D6D9C004E82C1 /* EnhancedHwyEditorView.h */,
 				0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */,
 				647C150D24268DB7008A9366 /* Upload */,
 				64305F6C23E71F5700232BB9 /* URLParsing */,
@@ -677,7 +678,6 @@
 				02ACBA3C16713CCB00BB4414 /* InfoPlist.strings */,
 				02ACBA3F16713CCB00BB4414 /* main.m */,
 				02AFBF1F245774DC00BE43F4 /* OSM-Logo256.png */,
-				0E11092324B67741000CC3FC /* Kaart Final Logo.png */,
 				024AB08E240C8721004A3B5B /* POI Icons */,
 			);
 			name = "Supporting Files";
@@ -694,6 +694,8 @@
 				022ABCA220C3750A002D4977 /* Buildings3DView.h */,
 				022ABCA320C3750A002D4977 /* Buildings3DView.m */,
 				02ACBA7016713F2A00BB4414 /* changeset.xsl */,
+				0ED6153D24A11047001AD42C /* CommonTagList.h */,
+				0ED6153E24A1108E001AD42C /* CommonTagList.m */,
 				02D5B5F2248F154D00FEE448 /* Colors.swift */,
 				02354F79246349E100878A04 /* CurvedGlyphLayer.swift */,
 				0216636C2470AFAB00B0B0F6 /* CurvedTextLayer.swift */,
@@ -917,7 +919,7 @@
 			);
 			name = "Go Kaart!!";
 			productName = OSMiOS;
-			productReference = 02ACBA2F16713CCB00BB4414 /* Go Kaart!!.app */;
+			productReference = 02ACBA2F16713CCB00BB4414 /* Go Kaart!! Debug.app */;
 			productType = "com.apple.product-type.application";
 		};
 		64348CE9225E7CD900ADE7FB /* GoMapTests */ = {
@@ -963,7 +965,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Bryce;
 				TargetAttributes = {
 					02ACBA2E16713CCB00BB4414 = {
@@ -1026,7 +1028,6 @@
 				02ED19811BBF119C00A57CF4 /* Launch Screen.storyboard in Resources */,
 				02A229E824454838000DA9F4 /* Changeset.storyboard in Resources */,
 				0291D83C24428CBB00F793BE /* POI.storyboard in Resources */,
-				0E11092424B67741000CC3FC /* Kaart Final Logo.png in Resources */,
 				024AB08D240C86FF004A3B5B /* Font Awesome Icons.xcassets in Resources */,
 				027FEA3620B13B8000901E9F /* Maki Icons.xcassets in Resources */,
 				024AB090240C9202004A3B5B /* TNP Icons.xcassets in Resources */,
@@ -1097,6 +1098,7 @@
 				021B30C81973AA4400B36EFF /* OsmMapData+Edit.m in Sources */,
 				02C4255316796B5800761C54 /* SpeechBalloonView.m in Sources */,
 				021D4E4B194E0BCB002154B3 /* FpsLabel.m in Sources */,
+				0ED6153F24A1108E001AD42C /* CommonTagList.m in Sources */,
 				64305F7223E7224E00232BB9 /* LocationURLParser.m in Sources */,
 				02A077D2167A77A400686261 /* POIAllTagsViewController.m in Sources */,
 				024C323D1DEEA97100AD62AB /* AdvancedSettingsViewController.m in Sources */,
@@ -1249,7 +1251,6 @@
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1277,7 +1278,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1327,7 +1328,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
@@ -1350,17 +1351,17 @@
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.6.4.6;
+				CURRENT_PROJECT_VERSION = 1791;
 				DEVELOPMENT_TEAM = 2STHX823T6;
 				DISPLAY_NAME = "Go Map!! Debug";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Map!!-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Go Map!!-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6.4;
+				MARKETING_VERSION = 1.7.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
-				PRODUCT_NAME = "Go Kaart!!";
+				PRODUCT_NAME = "Go Kaart!! Debug";
 				PROVISIONING_PROFILE = "";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
@@ -1380,17 +1381,17 @@
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.6.4.6;
+				CURRENT_PROJECT_VERSION = 1791;
 				DEVELOPMENT_TEAM = 2STHX823T6;
 				DISPLAY_NAME = "Go Map!!";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Go Map!!-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Go Map!!-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.6.4;
+				MARKETING_VERSION = 1.7.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
-				PRODUCT_NAME = "Go Kaart!!";
+				PRODUCT_NAME = "Go Kaart!! Debug";
 				PROVISIONING_PROFILE = "";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
@@ -1423,7 +1424,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1433,7 +1434,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Go Kaart!! Debug.app/Go Kaart!! Debug";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Go Map!!.app/Go Map!!";
 			};
 			name = Debug;
 		};
@@ -1463,7 +1464,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1472,7 +1473,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Go Kaart!! Debug.app/Go Kaart!! Debug";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Go Map!!.app/Go Map!!";
 			};
 			name = Release;
 		};
@@ -1498,7 +1499,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1536,7 +1537,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

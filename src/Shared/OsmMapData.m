@@ -171,13 +171,6 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 }
 
 
-
--(OSMRect)rootRect
-{
-	return _spatial.rootQuad.rect;
-}
-
-
 +(NSSet<NSString *> *)tagsToAutomaticallyStrip
 {
 	static dispatch_once_t onceToken;
@@ -1222,7 +1215,6 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		data = [self gzippedData:data];
 		[request setHTTPBody:data];
 		[request setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-        [request setValue:@"application/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 		[request setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
 	}
 	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
@@ -1787,11 +1779,11 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
     }
 
 	NSString * wayName = [way attributeForName:@"id"].stringValue;
-    [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tWay ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tWay " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:wayName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"w" stringByAppendingString:wayName] }]];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d nodes)\n",nil),nodeCount]
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d nodes)\n",nodeCount]
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 
 	for ( NSXMLElement * tag in way.children ) {
@@ -1825,11 +1817,11 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
     }
 
 	NSString * relationName = [relation attributeForName:@"id"].stringValue;
-    [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tRelation ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tRelation " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:relationName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"r" stringByAppendingString:relationName] }]];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d members)\n",nil),memberCount]
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d members)\n",memberCount]
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 
 	for ( NSXMLElement * tag in relation.children ) {

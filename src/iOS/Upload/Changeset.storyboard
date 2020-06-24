@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment version="2304" identifier="iOS"/>
@@ -9,7 +9,7 @@
     </dependencies>
     <scenes>
         <!--Upload-->
-        <scene sceneID="NgG-JA-TiT">
+        <scene sceneID="lne-Ek-nNV">
             <objects>
                 <viewController id="cxn-YY-uLs" customClass="UploadViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Hf4-uP-AC4">
@@ -34,7 +34,7 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                 <connections>
-                                    <outlet property="delegate" destination="JiF-ZR-a9h" id="M6P-JY-ZWU"/>
+                                    <outlet property="delegate" destination="cxn-YY-uLs" id="7NR-Ly-ZJ9"/>
                                 </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rqu-ny-n3F">
@@ -44,7 +44,7 @@
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="sendMail:" destination="JiF-ZR-a9h" eventType="touchUpInside" id="e3V-ea-0b0"/>
+                                    <action selector="sendMail:" destination="cxn-YY-uLs" eventType="touchUpInside" id="4HH-De-HWJ"/>
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Changeset comment:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ikj-u9-9Bn">
@@ -58,7 +58,7 @@
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
-                                    <action selector="editXml:" destination="JiF-ZR-a9h" eventType="touchUpInside" id="t0c-pQ-J4p"/>
+                                    <action selector="editXml:" destination="cxn-YY-uLs" eventType="touchUpInside" id="YKD-um-EvR"/>
                                 </connections>
                             </button>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="5dY-nN-L0Q">
@@ -86,10 +86,10 @@
                                         </connections>
                                     </textView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z9w-hf-uCn">
-                                        <rect key="frame" x="253" y="5" width="22" height="22"/>
+                                        <rect key="frame" x="260" y="5" width="15" height="15"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="22" id="tTn-1z-IQm"/>
-                                            <constraint firstAttribute="height" constant="22" id="zUN-SZ-l0V"/>
+                                            <constraint firstAttribute="width" constant="15" id="tTn-1z-IQm"/>
+                                            <constraint firstAttribute="height" constant="15" id="zUN-SZ-l0V"/>
                                         </constraints>
                                         <state key="normal" image="UITextFieldClearButtonPressed.png"/>
                                         <connections>
@@ -135,17 +135,17 @@
                             <constraint firstItem="ps9-Hb-Vow" firstAttribute="leading" secondItem="yZR-tZ-66S" secondAttribute="trailing" constant="8" id="ySj-lc-PTS"/>
                             <constraint firstItem="hcE-yO-3eH" firstAttribute="centerY" secondItem="Rqu-ny-n3F" secondAttribute="centerY" id="yeu-fG-kZO"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="yid-is-wtA"/>
+                        <viewLayoutGuide key="safeArea" id="INz-E8-qwF"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Upload" id="ihI-RK-rwh">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="6u9-vL-wOC">
+                    <navigationItem key="navigationItem" title="Upload" id="Mdj-M0-0mZ">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="7h0-9d-GKW">
                             <connections>
-                                <action selector="cancel:" destination="JiF-ZR-a9h" id="7UG-NL-Pp9"/>
+                                <action selector="cancel:" destination="cxn-YY-uLs" id="tjb-Ta-Rxp"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Commit" style="done" id="obI-r2-tOo">
+                        <barButtonItem key="rightBarButtonItem" title="Commit" style="done" id="feW-AK-msn">
                             <connections>
-                                <action selector="commit:" destination="JiF-ZR-a9h" id="ebr-Zq-pv5"/>
+                                <action selector="commit:" destination="cxn-YY-uLs" id="XEP-OF-rII"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -163,15 +163,15 @@
                         <segue destination="39g-gA-9XG" kind="push" identifier="loginSegue" id="ffJ-Oy-uSs"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="L4v-xV-NLc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Snp-b2-Szm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-993.75" y="1018.75"/>
         </scene>
         <!--LoginViewController-->
-        <scene sceneID="fqc-N9-WPq">
+        <scene sceneID="rse-76-Gi6">
             <objects>
-                <viewControllerPlaceholder storyboardName="MainStoryboard" referencedIdentifier="LoginViewController" id="bhj-s0-pWf" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="cwI-VL-ubp"/>
+                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="LoginViewController" id="39g-gA-9XG" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="XO5-RK-lsU"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aSy-j3-594" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
