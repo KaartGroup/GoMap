@@ -49,7 +49,6 @@
 	}
 }
 
-
 #pragma mark - Table view data source
 
 -(NSArray *)aerialListForSection:(NSInteger)section
@@ -125,9 +124,9 @@
 
 	NSString * dateDetail = nil;
 	if ( aerial.startDate && aerial.endDate && ![aerial.startDate isEqualToString:aerial.endDate] )
-		dateDetail = [NSString stringWithFormat:@"vintage %@ - %@", aerial.startDate, aerial.endDate];
+		dateDetail = [NSString stringWithFormat:NSLocalizedString(@"vintage %@ - %@",nil), aerial.startDate, aerial.endDate];
 	else if ( aerial.startDate || aerial.endDate ) {
-		dateDetail = [NSString stringWithFormat:@"vintage %@", aerial.startDate ?: aerial.endDate];
+		dateDetail = [NSString stringWithFormat:NSLocalizedString(@"vintage %@",nil), aerial.startDate ?: aerial.endDate];
 	}
 	NSString * details = dateDetail ?: urlDetail;
 
@@ -196,7 +195,7 @@
 
 	// if popping all the way up we need to tell Settings to save changes
 	[self.displayViewController applyChanges];
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

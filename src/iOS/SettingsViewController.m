@@ -9,12 +9,12 @@
 #import "AppDelegate.h"
 #import "AerialList.h"
 #import "AerialListViewController.h"
-#import "CommonPresetList.h"
 #import "EditorMapLayer.h"
 #import "OsmMapData.h"
 #import "MapView.h"
 #import "MapViewController.h"
 #import "MercatorTileLayer.h"
+#import "PresetsDatabase.h"
 #import "SettingsViewController.h"
 
 
@@ -32,10 +32,7 @@
 {
 	[super viewWillAppear:animated];
 
-	if ( [self isMovingToParentViewController] ) {
-		// becoming visible the first time
-		self.navigationController.navigationBarHidden = NO;
-	}
+	self.navigationController.navigationBarHidden = NO;
 
 	PresetLanguages * presetLanguages = [PresetLanguages new];
 	NSString * preferredLanguageCode = presetLanguages.preferredLanguageCode;
@@ -66,6 +63,11 @@
 
 -(void)accessoryDidConnect:(id)sender
 {
+}
+
+- (IBAction)onDone:(id)sender
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

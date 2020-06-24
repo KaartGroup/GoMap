@@ -7,24 +7,23 @@
 //
 
 #import "iosapi.h"
-#import <QuartzCore/QuartzCore.h> 
+#import <QuartzCore/QuartzCore.h>
 
 @class AerialService;
 @class MapView;
+@class PersistentWebCache;
 
-
-@interface MercatorTileLayer : CALayer <NSCacheDelegate>
+@interface MercatorTileLayer : CALayer
 {
-	NSString						*	_tileCacheDirectory;	// location of tile files
-	NSCache							*	_memoryTileCache;		// cache of tiles kept in memory
-	NSString						*	_logoUrl;
+    PersistentWebCache        *    _webCache;
+    NSString                *    _logoUrl;
 
-	NSMutableDictionary				*	_layerDict;				// map of tiles currently displayed
-	int32_t								_isPerformingLayout;
+    NSMutableDictionary        *    _layerDict;                // map of tiles currently displayed
+    int32_t                        _isPerformingLayout;
 }
 
-@property (strong,nonatomic) AerialService	*	aerialService;
-@property (assign,nonatomic) MapView		*	mapView;
+@property (strong,nonatomic) AerialService    *    aerialService;
+@property (assign,nonatomic) MapView        *    mapView;
 
 -(id)initWithMapView:(MapView *)mapView;
 -(IBAction)purgeTileCache;

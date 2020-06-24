@@ -177,9 +177,21 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 	static NSSet<NSString *> * s_ignoreSet = nil;
 	dispatch_once(&onceToken, ^{
 		s_ignoreSet = [NSSet setWithObjects:
-				@"tiger:upload_uuid", @"tiger:tlid", @"tiger:source", @"tiger:separated",
-				@"geobase:datasetName", @"geobase:uuid", @"sub_sea:type", @"odbl", @"odbl:note",
-				@"yh:LINE_NAME", @"yh:LINE_NUM", @"yh:STRUCTURE", @"yh:TOTYUMONO", @"yh:TYPE", @"yh:WIDTH_RANK",
+				@"tiger:upload_uuid",
+				@"tiger:tlid",
+				@"tiger:source",
+				@"tiger:separated",
+				@"geobase:datasetName",
+				@"geobase:uuid",
+				@"sub_sea:type",
+				@"odbl",
+				@"odbl:note",
+				@"yh:LINE_NAME",
+				@"yh:LINE_NUM",
+				@"yh:STRUCTURE",
+				@"yh:TOTYUMONO",
+				@"yh:TYPE",
+				@"yh:WIDTH_RANK",
 				nil];
 	});
 	return s_ignoreSet;
@@ -509,7 +521,8 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 	[self removeFromParentRelationsUnsafe:way];
 
 	while ( way.nodes.count ) {
-		[self deleteNodeInWayUnsafe:way index:way.nodes.count-1];
+		OsmNode * node = way.nodes.lastObject;
+		[self deleteNodeInWayUnsafe:way index:way.nodes.count-1 preserveNode:node.hasInterestingTags];
 	}
 	[way setDeleted:YES undo:_undoManager];
 }
@@ -540,11 +553,11 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 	[_spatial updateMember:way fromBox:origBox undo:_undoManager];
 }
 
--(void)deleteNodeInWayUnsafe:(OsmWay *)way index:(NSInteger)index
+-(void)deleteNodeInWayUnsafe:(OsmWay *)way index:(NSInteger)index preserveNode:(BOOL)preserveNode
 {
 	[self registerUndoCommentString:NSLocalizedString(@"delete node from way",nil)];
 	OsmNode * node = way.nodes[ index ];
-	assert( node.wayCount > 0 );
+	DbgAssert( node.wayCount > 0 );
 
 	OSMRect bbox = way.boundingBox;
 	[way removeNodeAtIndex:index undo:_undoManager];
@@ -553,7 +566,7 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		[way removeNodeAtIndex:index undo:_undoManager];
 	[_spatial updateMember:way fromBox:bbox undo:_undoManager];
 
-	if ( node.wayCount == 0 ) {
+	if ( node.wayCount == 0 && !preserveNode ) {
 		[self deleteNodeUnsafe:node];
 	}
 }
@@ -1202,6 +1215,7 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		data = [self gzippedData:data];
 		[request setHTTPBody:data];
 		[request setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"application/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
 		[request setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
 	}
 	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
@@ -1766,11 +1780,11 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
     }
 
 	NSString * wayName = [way attributeForName:@"id"].stringValue;
-    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tWay " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tWay ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:wayName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"w" stringByAppendingString:wayName] }]];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d nodes)\n",nodeCount]
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d nodes)\n",nil),nodeCount]
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 
 	for ( NSXMLElement * tag in way.children ) {
@@ -1804,11 +1818,11 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
     }
 
 	NSString * relationName = [relation attributeForName:@"id"].stringValue;
-    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tRelation " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tRelation ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:relationName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"r" stringByAppendingString:relationName] }]];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d members)\n",memberCount]
+	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d members)\n",nil),memberCount]
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 
 	for ( NSXMLElement * tag in relation.children ) {
@@ -2160,8 +2174,7 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 
 	// don't discard too frequently
 	NSDate * now = [NSDate date];
-	if ( [now timeIntervalSinceDate:_previousDiscardDate] < 15 ) {
-		NSLog(@"skip\n");
+	if ( [now timeIntervalSinceDate:_previousDiscardDate] < 60 ) {
 		return NO;
 	}
 	

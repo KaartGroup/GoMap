@@ -26,6 +26,8 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 
 @implementation AerialService
 
+@synthesize placeholderImage = _placeholderImage;
+
 -(instancetype)initWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url
 					maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
 				  startDate:(NSString *)startDate
@@ -303,17 +305,6 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 }
 
 
--(NSString *)cacheName
-{
-	if ( self.isBingAerial )
-		return @"BingAerialTiles";
-
-	const char *cstr = [_url cStringUsingEncoding:NSUTF8StringEncoding];
-	NSData * data = [NSData dataWithBytes:cstr length:_url.length];
-	uint8_t digest[CC_SHA1_DIGEST_LENGTH];
-	CC_SHA1(data.bytes, (CC_LONG)data.length, digest);
-	return [NSString stringWithFormat:@"%08x", *(uint32_t *)digest];
-}
 -(NSString *)metadataUrl
 {
 	if ( self.isBingAerial ) {
@@ -323,14 +314,28 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 }
 -(NSData *)placeholderImage
 {
-	if ( self.isBingAerial ) {
-		static NSData * data;
-		static dispatch_once_t onceToken;
-		dispatch_once(&onceToken, ^{
-			data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"BingPlaceholderImage" ofType:@"png"]];
-		});
-		return data;
+	if ( _placeholderImage ) {
+		return _placeholderImage.length ? _placeholderImage : nil;
 	}
+	NSString * name = nil;
+	if ( self.isBingAerial ) {
+		name = @"BingPlaceholderImage";
+	} else if ( [_identifier isEqualToString:@"EsriWorldImagery"] ) {
+		name = @"EsriPlaceholderImage";
+	}
+	if ( name ) {
+		NSString * path = [[NSBundle mainBundle] pathForResource:name ofType:@"png"];
+		if ( path == nil )
+			path = [[NSBundle mainBundle] pathForResource:name ofType:@"jpg"];
+		NSData * data = [NSData dataWithContentsOfFile:path];
+		if ( data.length ) {
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				_placeholderImage = data;
+			});
+		}
+		return _placeholderImage;
+	}
+	_placeholderImage = [NSData new];
 	return nil;
 }
 
@@ -450,33 +455,6 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 	if ( ![featureArray isKindOfClass:[NSArray class]] )
 		return nil;
 
-	NSDictionary * blacklist = @{
-		@"hike_n_bike"					: @YES,                  // 'Hike & Bike'
-		@"osm-mapnik-german_style"		: @YES,      // 'OpenStreetMap (German Style)'
-		@"osm-mapnik-black_and_white"	: @YES,   // 'OpenStreetMap (Standard Black & White)'
-		@"skobbler"						: @YES,                     // 'Skobbler'
-		@"openpt_map"					: @YES,                   // 'OpenPT Map (overlay)'
-		@"tf-cycle"						: @YES,                     // 'Thunderforest OpenCycleMap'
-		@"qa_no_address"				: @YES,                // 'QA No Address'
-		@"landsat"						: @YES,                      // 'Landsat'
-
-		@"US-TIGER-Roads-2012"			: @YES,
-		@"US-TIGER-Roads-2014"			: @YES,
-
-		@"Waymarked_Trails-Cycling"		: @YES,
-		@"Waymarked_Trails-Hiking"		: @YES,
-		@"Waymarked_Trails-MTB"			: @YES,
-		@"Waymarked_Trails-Skating"		: @YES,
-		@"Waymarked_Trails-Winter_Sports": @YES,
-
-		@"OSM_Inspector-Addresses"		: @YES,
-		@"OSM_Inspector-Geometry"		: @YES,
-		@"OSM_Inspector-Highways"		: @YES,
-		@"OSM_Inspector-Multipolygon"	: @YES,
-		@"OSM_Inspector-Places"			: @YES,
-		@"OSM_Inspector-Routing"		: @YES,
-		@"OSM_Inspector-Tagging"		: @YES
-	};
 	NSDictionary * supportedProjections = @{
 		@"EPSG:3857" 	: @(YES),
 		@"EPSG:4326" 	: @(YES),
@@ -489,7 +467,20 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 		@"EPSG:3785" 	: @(YES)
 	};
 
-	NSArray * knownUnsupported = @[ @"scanex", @"wms_endpoint", @"bing" ];
+	NSDictionary * categories = @{
+		@"photo" 		: @YES,
+		@"elevation" 	: @YES
+	};
+
+	NSDictionary * supportedTypes = @{
+		@"tms" 			: @YES,
+		@"wms" 			: @YES,
+		@"scanex" 		: @NO,
+		@"wms_endpoint" : @NO,
+		@"wmts" 		: @NO,
+		@"bing" 		: @NO,
+	};
+
 	NSMutableArray * externalAerials = [NSMutableArray new];
 	for ( NSDictionary * entry in featureArray ) {
 
@@ -506,11 +497,11 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 				continue;
 			}
 			NSString * 	identifier			= properties[@"id"];
-			if ( identifier.length == 0 || blacklist[identifier] )
-				continue;
 			NSString *  category			= properties[@"category"];
-			if ( category && ![category isEqualToString:@"photo"] )
+			if ( categories[category] == nil ) {
+				// NSLog(@"category %@ - %@",category,identifier);
 				continue;
+			}
 			NSString *	startDateString		= properties[@"start_date"];
 			NSString *	endDateString		= properties[@"end_date"];
 			NSDate 	 *  endDate   = [AerialService dateFromString:endDateString];
@@ -524,21 +515,11 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 			NSString * 	attribString 		= properties[@"attribution"][@"text"];
 			NSString * 	attribUrl 			= properties[@"attribution"][@"url"];
 			NSInteger	overlay				= [properties[@"overlay"] integerValue];
-			NSArray  * 	polygonPoints 		= nil;
-			BOOL		isMultiPolygon		= NO;	// a GeoJSON multipolygon, which has an extra layer of nesting
-			if ( isGeoJSON ) {
-				NSDictionary * 	geometry = entry[@"geometry"];
-				if ( [geometry isKindOfClass:[NSDictionary class]] ) {
-					polygonPoints = geometry[@"coordinates"];
-					isMultiPolygon = [geometry[@"type"] isEqualToString:@"MultiPolygon"];
-				}
-			} else {
-				polygonPoints = properties[@"extent"][@"polygon"];
-			}
-
-			if ( !([type isEqualToString:@"tms"] || [type isEqualToString:@"wms"]) ) {
-				if ( ![knownUnsupported containsObject:type] )
-					NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
+			NSNumber * supported = supportedTypes[ type ];
+			if ( supported == nil ) {
+				NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
+				continue;
+			} else if ( supported.boolValue == NO ) {
 				continue;
 			}
 			if ( overlay ) {
@@ -562,6 +543,18 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 				}
 				if ( projection == nil )
 					continue;
+			}
+
+			NSArray  * 	polygonPoints 		= nil;
+			BOOL		isMultiPolygon		= NO;	// a GeoJSON multipolygon, which has an extra layer of nesting
+			if ( isGeoJSON ) {
+				NSDictionary * 	geometry = entry[@"geometry"];
+				if ( [geometry isKindOfClass:[NSDictionary class]] ) {
+					polygonPoints = geometry[@"coordinates"];
+					isMultiPolygon = [geometry[@"type"] isEqualToString:@"MultiPolygon"];
+				}
+			} else {
+				polygonPoints = properties[@"extent"][@"polygon"];
 			}
 
 			CGPathRef polygon = NULL;

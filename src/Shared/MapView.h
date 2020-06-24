@@ -60,6 +60,15 @@ typedef enum {
 	GPS_STATE_HEADING,
 } GPS_STATE;
 
+
+@interface MapLocation : NSObject
+@property (nonatomic) double longitude;
+@property (nonatomic) double latitude;
+@property (nonatomic) double zoom;
+@property (nonatomic) MapViewState viewState;
+@end
+
+
 #if TARGET_OS_IPHONE
 @interface MapView : UIView <CLLocationManagerDelegate,UIActionSheetDelegate,UIGestureRecognizerDelegate,SKStoreProductViewControllerDelegate>
 #else
@@ -175,19 +184,21 @@ typedef enum {
 @property (assign,nonatomic)	BOOL							enableGpxLogging;
 @property (assign,nonatomic)	BOOL							enableTurnRestriction;
 @property (assign,nonatomic)	BOOL							enableAutomaticCacheManagement;
-
+@property (assign, nonatomic)   BOOL                             enableEnhancedHwyEditor;
 @property (assign,nonatomic)	BOOL							automatedFramerateTestActive;
 
 @property (readonly,nonatomic)	CAShapeLayer				*	crossHairs;
 
 @property (readonly,nonatomic)	NSString					*	countryCodeForLocation;
+@property (readonly,nonatomic)	CLLocationCoordinate2D			countryCodeLocation;
 
 @property (readonly,nonatomic)	CGPoint							pushpinPosition;
+
+-(void)viewDidAppear;
 
 -(void)updateAerialAttributionButton;
 -(void)updateEditControl;				// show/hide edit control based on selection
 
--(void)viewDidAppear;
 -(void)save;
 -(void)discardStaleData;
 
@@ -210,6 +221,9 @@ typedef enum {
 
 -(void)setTransformForLatitude:(double)latitude longitude:(double)longitude width:(double)widthDegrees;
 -(double)metersPerPixel;
+-(void)setMapLocation:(MapLocation *)location;
+
+-(double)zoom;
 
 -(void)progressIncrement:(BOOL)animate;
 -(void)progressDecrement;
@@ -234,6 +248,7 @@ typedef enum {
 - (IBAction)undo:(id)sender;
 - (IBAction)redo:(id)sender;
 
+-(IBAction)editControlAction:(id)sender;
 #if TARGET_OS_IPHONE
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)pan;
 - (IBAction)handlePinchGesture:(UIPinchGestureRecognizer *)pinch;

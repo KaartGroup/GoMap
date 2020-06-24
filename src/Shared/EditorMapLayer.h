@@ -31,17 +31,20 @@ extern const double MinIconSizeInPixels;
 
 @interface EditorMapLayer : CALayer<NSCoding>
 {
-	CGSize					_iconSize;
-	double					_highwayScale;
-
-	NSMutableArray<OsmBaseObject *>		*	_shownObjects;
-	NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
-
-	NSMutableArray<CALayer *>		*	_highlightLayers;
-
-	BOOL					_isPerformingLayout;
-
-	CATransformLayer	*	_baseLayer;
+    CGSize					_iconSize;
+    double					_highwayScale;
+    
+    NSMutableSet        *    _nameDrawSet;
+    
+    
+    NSMutableArray<OsmBaseObject *>		*	_shownObjects;
+    NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
+    
+    NSMutableArray<CALayer *>		*	_highlightLayers;
+    
+    BOOL					_isPerformingLayout;
+    
+    CATransformLayer	*	_baseLayer;
 }
 
 @property (assign,nonatomic)	BOOL			enableObjectFilters;	// turn all filters on/on
@@ -77,6 +80,7 @@ extern const double MinIconSizeInPixels;
 - (NSArray<OsmBaseObject *> *)osmHitTestMultiple:(CGPoint)point radius:(CGFloat)radius ;
 - (OsmNode *)osmHitTestNodeInSelectedWay:(CGPoint)point radius:(CGFloat)radius ;
 
+
 - (void)updateMapLocation;
 - (void)purgeCachedDataHard:(BOOL)hard;
 
@@ -86,7 +90,7 @@ extern const double MinIconSizeInPixels;
 -(OsmWay *)createWayWithNode:(OsmNode *)node;
 
 -(void)adjustNode:(OsmNode *)node byDistance:(CGPoint)delta;
--(OsmBaseObject *)duplicateObject:(OsmBaseObject *)object;
+-(OsmBaseObject *)duplicateObject:(OsmBaseObject *)object withOffset:(OSMPoint)offset;
 
 // these are similar to OsmMapData methods but also update selections and refresh the layout
 -(EditActionWithNode)canAddNodeToWay:(OsmWay *)way atIndex:(NSInteger)index error:(NSString **)error;
@@ -95,6 +99,8 @@ extern const double MinIconSizeInPixels;
 
 - (BOOL)copyTags:(OsmBaseObject *)object;
 - (void)mergeTags:(OsmBaseObject *)object;
+- (BOOL)copyName:(OsmBaseObject *)object;
+- (BOOL)copyNameAndClass:(OsmBaseObject *)object;
 - (BOOL)canPasteTags;
 - (void)replaceTags:(OsmBaseObject *)object;
 

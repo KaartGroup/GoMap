@@ -4,7 +4,9 @@
 //
 //  Created by Bryce Cogswell on 9/25/12.
 //  Copyright (c) 2012 Bryce Cogswell. All rights reserved.
-//
+
+// -(void)presentEnhancedHwyEditor:(CGPoint) point on line 2586
+//  [self presentEnhancedHwyEditor: point]; for the above code 3873
 
 #import <QuartzCore/QuartzCore.h>
 #import <SafariServices/SafariServices.h>
@@ -17,9 +19,9 @@
 #import "DisplayLink.h"
 #import "DLog.h"
 #import "EditorMapLayer.h"
+#import "EnhancedHwyEditorController.h"
 #import "FpsLabel.h"
 #import "GpxLayer.h"
-#import "HtmlAlertViewController.h"
 #import "MapView.h"
 #import "MercatorTileLayer.h"
 #import "MyApplication.h"
@@ -66,8 +68,8 @@ static const CGFloat Z_CROSSHAIRS		= 100;
 static const CGFloat Z_FLASH			= 110;
 
 
-
-
+@implementation MapLocation
+@end
 
 
 @interface MapView ()
@@ -206,9 +208,9 @@ const CGFloat kEditControlCornerRadius = 4;
 			_crossHairs.zPosition	= Z_CROSSHAIRS;
 
 			path = [UIBezierPath new];
-			CGFloat shadowWidth = 1.0;
-			UIBezierPath * p1 = [UIBezierPath bezierPathWithRect:CGRectMake(-(radius+shadowWidth), -shadowWidth, 2*(radius+shadowWidth), 2*shadowWidth)];
-			UIBezierPath * p2 = [UIBezierPath bezierPathWithRect:CGRectMake(-shadowWidth, -(radius+shadowWidth), 2*shadowWidth, 2*(radius+shadowWidth))];
+			CGFloat shadowWidth = 2.0;
+			UIBezierPath * p1 = [UIBezierPath bezierPathWithRect:CGRectMake(-(radius+shadowWidth-1), -shadowWidth, 2*(radius+shadowWidth-1), 2*shadowWidth)];
+			UIBezierPath * p2 = [UIBezierPath bezierPathWithRect:CGRectMake(-shadowWidth, -(radius+shadowWidth-1), 2*shadowWidth, 2*(radius+shadowWidth-1))];
 			[path appendPath:p1];
 			[path appendPath:p2];
 			_crossHairs.shadowColor		= UIColor.blackColor.CGColor;
@@ -234,11 +236,6 @@ const CGFloat kEditControlCornerRadius = 4;
 		_rulerLayer.drawsAsynchronously	= YES;
 #endif
 
-#if !TARGET_OS_IPHONE
-		[self setFrame:frame];
-#endif
-
-#if TARGET_OS_IPHONE
 		_editorLayer.mapData.undoCommentCallback = ^(BOOL undo,NSDictionary * context) {
 
 			if ( self.silentUndo )
@@ -259,6 +256,7 @@ const CGFloat kEditControlCornerRadius = 4;
 			if ( _editorLayer.selectedNode.deleted )
 				_editorLayer.selectedNode = nil;
 
+#if TARGET_OS_IPHONE
 			NSString * pushpin = context[@"pushpin"];
 			if ( pushpin && _editorLayer.selectedPrimary ) {
 				// since we don't record the pushpin location until after a drag has begun we need to re-center on the object:
@@ -271,10 +269,10 @@ const CGFloat kEditControlCornerRadius = 4;
 			} else {
 				[self removePin];
 			}
+#endif
 			NSString * message = [NSString stringWithFormat:@"%@ %@", title, action];
 			[self flashMessage:message];
 		};
-#endif
 	}
 	return self;
 }
@@ -335,6 +333,14 @@ const CGFloat kEditControlCornerRadius = 4;
 	_addNodeButtonLongPressGestureRecognizer.delegate = self;
 	[self.addNodeButton addGestureRecognizer:_addNodeButtonLongPressGestureRecognizer];
 
+	// pan gesture to recognize mouse-wheel scrolling (zoom)
+	if (@available(iOS 13.4, *)) {
+		UIPanGestureRecognizer * scrollWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScrollWheelGesture:)];
+		scrollWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
+		scrollWheelGesture.maximumNumberOfTouches = 0;
+		[self addGestureRecognizer:scrollWheelGesture];
+	}
+
 	_notesDatabase			= [OsmNotesDatabase new];
 	_notesDatabase.mapData	= _editorLayer.mapData;
 	_notesViewDict			= [NSMutableDictionary new];
@@ -359,9 +365,11 @@ const CGFloat kEditControlCornerRadius = 4;
 	_centerOnGPSButton.hidden = YES;
 
 	// compass button
-	//self.compassButton.hidden = YES;
 	self.compassButton.clipsToBounds = NO;
 	self.compassButton.contentMode = UIViewContentModeCenter;
+	[self.compassButton setImage:nil forState:UIControlStateNormal];
+	CALayer * compass = [self compassLayerWithRadius:self.compassButton.bounds.size.width/2];
+	[self.compassButton.layer addSublayer:compass];
 
 #if 0
 	// Support zoom via tap and drag
@@ -369,15 +377,6 @@ const CGFloat kEditControlCornerRadius = 4;
 	_tapAndDragGesture.delegate = self;
 	[self addGestureRecognizer:_tapAndDragGesture];
 #endif
-}
-
-
--(void)viewDidAppear
-{
-	static BOOL first = YES;
-	if ( !first )
-		return;
-	first = NO;
 
 	// these need to be loaded late because assigning to them changes the view
 	self.viewState				= (MapViewState)	[[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewState"];
@@ -389,29 +388,129 @@ const CGFloat kEditControlCornerRadius = 4;
 	self.enableGpxLogging		= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBreadCrumb"];
 	self.enableTurnRestriction	= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableTurnRestriction"];
 
-	// get current location
-	double scale		= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.scale"];
-	double latitude		= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.latitude"];
-	double longitude	= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.longitude"];
-	
 	_countryCodeForLocation = [[NSUserDefaults standardUserDefaults] objectForKey:@"countryCodeForLocation"];
-
-	if ( !isnan(latitude) && !isnan(longitude) && !isnan(scale) ) {
-		[self setTransformForLatitude:latitude longitude:longitude scale:scale];
-	} else {
-		OSMRect rc = OSMRectFromCGRect( self.layer.frame );
-		self.screenFromMapTransform = OSMTransformMakeTranslation( rc.origin.x+rc.size.width/2 - 128, rc.origin.y+rc.size.height/2 - 128);
-		// turn on GPS which will move us to current location
-		self.gpsState = GPS_STATE_LOCATION;
-	}
-
-	// get notes
-	[self updateNotesFromServerWithDelay:0];
 
 	[self updateAerialAttributionButton];
 }
 
+-(void)viewDidAppear
+{
+    static BOOL first = YES;
+    if ( !first )
+        return;
+    first = NO;
+    
+    // these need to be loaded late because assigning to them changes the view
+    self.viewState                = (MapViewState)    [[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewState"];
+    self.viewOverlayMask        = (ViewOverlayMask) [[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewOverlays"];
+    
+    self.enableRotation            = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableRotation"];
+    self.enableBirdsEye            = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBirdsEye"];
+    self.enableUnnamedRoadHalo    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableUnnamedRoadHalo"];
+    self.enableGpxLogging        = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBreadCrumb"];
+    self.enableTurnRestriction    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableTurnRestriction"];
+    self.enableEnhancedHwyEditor = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableEnhancedHwyEditor"];
+    
+    // get current location
+    double scale		= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.scale"];
+    double latitude		= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.latitude"];
+    double longitude	= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.longitude"];
+    
+    _countryCodeForLocation = [[NSUserDefaults standardUserDefaults] objectForKey:@"countryCodeForLocation"];
+    
+#if 1
+    if ( !isnan(latitude) && !isnan(longitude) && !isnan(scale) ) {
+        [self setTransformForLatitude:latitude longitude:longitude scale:scale];
+    } else {
+        OSMRect rc = OSMRectFromCGRect( self.layer.frame );
+        self.screenFromMapTransform = OSMTransformMakeTranslation( rc.origin.x+rc.size.width/2 - 128, rc.origin.y+rc.size.height/2 - 128);
+        // turn on GPS which will move us to current location
+        self.gpsState = GPS_STATE_LOCATION;
+    }
+#endif
+    
+    // get notes
+    [self updateNotesFromServerWithDelay:0];
+    
+    [self updateAerialAttributionButton];
+    
+#if FRAMERATE_TEST
+    // automaatically scroll view for frame rate testing
+    OSMTransform t = { 161658.59853698246, 0, 0, 161658.59853698246, -6643669.8581485003, -14441173.300930388 };
+    self.screenFromMapTransform = t;
+    __block int side = 0, distance = 0;
+    __weak MapView * weakSelf = self;
+    DisplayLink * displayLink = [DisplayLink shared];
+    [displayLink addName:@"autoScroll" block:^{
+        int dx = 0, dy = 0;
+        switch ( side ) {
+            case 0:
+                dx = 1;
+                break;
+            case 1:
+                dy = 1;
+                break;
+            case 2:
+                dx = -1;
+                break;
+            case 3:
+                dy = -1;
+                break;
+        }
+        if ( ++distance > 30 ) {
+            side = (side+1) % 4;
+            distance = 0;
+        }
+        [weakSelf adjustOriginBy:CGPointMake(dx,dy)];
+    }];
+#endif
+}
 
+-(CALayer *)compassLayerWithRadius:(CGFloat)radius
+{
+	CALayer * compass = [CALayer new];
+	CGFloat width = round(radius/5);
+	compass.bounds = CGRectMake(0, 0, 2*radius, 2*radius);
+	compass.backgroundColor = UIColor.whiteColor.CGColor;
+	compass.borderColor = UIColor.darkGrayColor.CGColor;
+	compass.borderWidth = 1.0;
+	compass.cornerRadius = radius;
+	compass.position = CGPointMake(radius, radius);
+	{
+		CAShapeLayer * north = [CAShapeLayer new];
+		UIBezierPath * path = [UIBezierPath bezierPath];
+		[path moveToPoint:CGPointMake(-width,0)];
+		[path addLineToPoint:CGPointMake(width,0)];
+		[path addLineToPoint:CGPointMake(0,-round(radius*0.9))];
+		[path closePath];
+		north.path = path.CGPath;
+		north.fillColor = UIColor.systemRedColor.CGColor;
+		north.position = CGPointMake(radius, radius);
+		[compass addSublayer:north];
+	}
+	{
+		CAShapeLayer * south = [CAShapeLayer new];
+		UIBezierPath * path = [UIBezierPath bezierPath];
+		[path moveToPoint:CGPointMake(-width,0)];
+		[path addLineToPoint:CGPointMake(width,0)];
+		[path addLineToPoint:CGPointMake(0,round(radius*0.9))];
+		[path closePath];
+		south.path = path.CGPath;
+		south.fillColor = UIColor.lightGrayColor.CGColor;
+		south.position = CGPointMake(radius, radius);
+		[compass addSublayer:south];
+	}
+	{
+		CALayer * pivot = [CALayer new];
+		pivot.bounds = CGRectMake(radius-width/2, radius-width/2, width, width);
+		pivot.backgroundColor = UIColor.whiteColor.CGColor;
+		pivot.borderColor = UIColor.blackColor.CGColor;
+		pivot.cornerRadius = width/2;
+		pivot.position = CGPointMake(radius, radius);
+		[compass addSublayer:pivot];
+	}
+	return compass;
+}
 -(BOOL)automatedFramerateTestActive
 {
 	NSString * NAME = @"autoScroll";
@@ -429,20 +528,46 @@ const CGFloat kEditControlCornerRadius = 4;
 		// automaatically scroll view for frame rate testing
 		self.fpsLabel.showFPS = YES;
 
-		OSMTransform t = { 161658.59853698246, 0, 0, 161658.59853698246, -6643669.8581485003, -14441173.300930388 };
-		self.screenFromMapTransform = t;
-		__block CGFloat angle = 1.5*M_PI;
+		// this set's the starting center point
+		const OSMPoint startLatLon = { -122.205831, 47.675024 };
+		const double startZoom = 17.302591;
+		[self setTransformForLatitude:startLatLon.y longitude:startLatLon.x zoom:startZoom];
+
+		// sets the size of the circle
+		const double radius = 100;
+		const CGFloat startAngle = 1.5 * M_PI;
+		const CGFloat rpm = 2.0;
+		const CGFloat zoomTotal = 1.1; // 10% larger
+		const CGFloat zoomDelta = pow(zoomTotal,1/60.0);
+
+		__block CGFloat angle = startAngle;
+		__block CFTimeInterval prevTime = CACurrentMediaTime();
 		__weak MapView * weakSelf = self;
+
 		[displayLink addName:NAME block:^{
-			// circle
-			CGFloat x1 = cos(angle);
-			CGFloat y1 = sin(angle);
-			angle += M_PI/60;
-			CGFloat x2 = cos(angle);
-			CGFloat y2 = sin(angle);
-			CGFloat dx = (x2 - x1) * 100;
-			CGFloat dy = (y2 - y1) * 100;
-			[weakSelf adjustOriginBy:CGPointMake(dx,dy)];
+			CFTimeInterval time = CACurrentMediaTime();
+			CFTimeInterval delta = time - prevTime;
+			CGFloat newAngle = angle + (2*M_PI)/rpm * delta;	// angle change depends on framerate to maintain 2/RPM
+
+			if ( angle < startAngle && newAngle >= startAngle ) {
+				// reset to start position
+				[self setTransformForLatitude:startLatLon.y longitude:startLatLon.x zoom:startZoom];
+				angle = startAngle;
+			} else {
+				// move along circle
+				CGFloat x1 = cos(angle);
+				CGFloat y1 = sin(angle);
+				CGFloat x2 = cos(newAngle);
+				CGFloat y2 = sin(newAngle);
+				CGFloat dx = (x2 - x1) * radius;
+				CGFloat dy = (y2 - y1) * radius;
+
+				[weakSelf adjustOriginBy:CGPointMake(dx,dy)];
+				double zoomRatio = dy >= 0 ? zoomDelta : 1/zoomDelta;
+				[weakSelf adjustZoomBy:zoomRatio aroundScreenPoint:_crossHairs.position];
+				angle = fmod( newAngle, 2*M_PI );
+			}
+			prevTime = time;
 		}];
 	} else {
 		self.fpsLabel.showFPS = NO;
@@ -479,8 +604,7 @@ const CGFloat kEditControlCornerRadius = 4;
 -(void)save
 {
 	// save defaults first
-	CGRect rc = self.layer.bounds;
-	OSMPoint center = { rc.origin.x + rc.size.width/2, rc.origin.y + rc.size.height/2 };
+	OSMPoint center = OSMPointFromCGPoint( self.crossHairs.position );
 	center = [self mapPointFromScreenPoint:center birdsEye:NO];
 	center = LongitudeLatitudeFromMapPoint( center );
 	double scale = OSMTransformScaleX(self.screenFromMapTransform);
@@ -496,6 +620,7 @@ const CGFloat kEditControlCornerRadius = 4;
 	[[NSUserDefaults standardUserDefaults] setBool:self.enableUnnamedRoadHalo	forKey:@"mapViewEnableUnnamedRoadHalo"];
 	[[NSUserDefaults standardUserDefaults] setBool:self.enableGpxLogging		forKey:@"mapViewEnableBreadCrumb"];
 	[[NSUserDefaults standardUserDefaults] setBool:self.enableTurnRestriction	forKey:@"mapViewEnableTurnRestriction"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.enableEnhancedHwyEditor forKey:@"mapViewEnableEnhancedHwyEditor"];
 	[[NSUserDefaults standardUserDefaults] setBool:self.enableAutomaticCacheManagement	forKey:@"automaticCacheManagement"];
 
 	[[NSUserDefaults standardUserDefaults] setObject:_countryCodeForLocation 	forKey:@"countryCodeForLocation"];
@@ -514,14 +639,15 @@ const CGFloat kEditControlCornerRadius = 4;
 	[self save];
 }
 
--(void)setFrame:(CGRect)rect
+-(void)layoutSubviews
 {
-	[super setFrame:rect];
+	[super layoutSubviews];
 
-	[CATransaction begin];
-	[CATransaction setAnimationDuration:0.0];
+	CGRect bounds = self.bounds;
+
+	// update locatno of ruler
 #if TARGET_OS_IPHONE
-	CGRect rc = CGRectMake(10, rect.size.height - 80, 150, 30);
+	CGRect rc = CGRectMake(10, bounds.size.height - 40, 150, 30);
 	if (@available(iOS 11.0, *)) {
 		rc.origin.y -= self.safeAreaInsets.bottom;
 		rc.origin.x += self.safeAreaInsets.left;
@@ -531,31 +657,23 @@ const CGFloat kEditControlCornerRadius = 4;
 	_rulerLayer.frame = CGRectMake(10, rect.size.height - 40, 150, 30);
 #endif
 
-//	_buildingsLayer.frame = rect;
-
+	// make sure our view remains centered on the same point after rotation
 	CGSize oldSize = _editorLayer.bounds.size;
 	if ( oldSize.width ) {
-		CGSize newSize = rect.size;
+		CGSize newSize = bounds.size;
 		CGPoint delta = { (newSize.width - oldSize.width)/2, (newSize.height - oldSize.height)/2 };
 		[self adjustOriginBy:delta];
 	}
 
+	// update bounds of layers
 	for ( CALayer * layer in _backgroundLayers ) {
-		if ( [layer isKindOfClass:[MercatorTileLayer class]] ) {
-			layer.anchorPoint = CGPointMake(0.5,0.5);
-			layer.frame = self.layer.bounds;
-		} else {
-			layer.position = self.layer.position;
-			layer.bounds = self.layer.bounds;
-		}
+		layer.frame = self.bounds;
 	}
-	_buildings3D.frame = self.layer.bounds;
+	_buildings3D.frame = bounds;
 
-	_crossHairs.position = CGRectCenter( rect );
+	_crossHairs.position = CGRectCenter( bounds );
 
 	_statusBarBackground.hidden = [UIApplication sharedApplication].statusBarHidden;
-
-	[CATransaction commit];
 }
 
 #pragma mark Utility
@@ -588,7 +706,7 @@ const CGFloat kEditControlCornerRadius = 4;
 	[self.viewController presentViewController:alertError animated:YES completion:nil];
 }
 
--(NSAttributedString *)htmlAsAttributedString:(NSString *)html textColor:(UIColor *)textColor
+-(NSAttributedString *)htmlAsAttributedString:(NSString *)html textColor:(UIColor *)textColor backgroundColor:(UIColor *)backColor
 {
 	if ( [html hasPrefix:@"<"] ) {
 		NSDictionary<NSAttributedStringDocumentReadingOptionKey,id> * d1 = @{
@@ -603,6 +721,7 @@ const CGFloat kEditControlCornerRadius = 4;
 			NSMutableAttributedString * s = [[NSMutableAttributedString alloc] initWithAttributedString:attrText];
 			// change text color
 			[s addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, s.length)];
+			[s addAttribute:NSBackgroundColorAttributeName value:backColor range:NSMakeRange(0, s.length)];
 			// center align
 			NSMutableParagraphStyle * paragraphStyle = [NSMutableParagraphStyle new];
 			paragraphStyle.alignment = NSTextAlignmentCenter;
@@ -641,7 +760,7 @@ const CGFloat kEditControlCornerRadius = 4;
 		[_flashLabel.centerXAnchor	constraintEqualToAnchor:self.centerXAnchor].active = YES;
 	}
 
-	NSAttributedString * attrText = [self htmlAsAttributedString:message textColor:UIColor.whiteColor];
+	NSAttributedString * attrText = [self htmlAsAttributedString:message textColor:UIColor.whiteColor backgroundColor:UIColor.blackColor];
 	if ( attrText.length > 0 ) {
 		_flashLabel.attributedText = attrText;
 	} else {
@@ -722,7 +841,7 @@ const CGFloat kEditControlCornerRadius = 4;
 		if ( flash ) {
 			[self flashMessage:text duration:0.9];
 		} else {
-			NSAttributedString * attrText = [self htmlAsAttributedString:text textColor:UIColor.blackColor];
+			NSAttributedString * attrText = [self htmlAsAttributedString:text textColor:UIColor.blackColor backgroundColor:UIColor.whiteColor];
 			UIAlertController * alertError = [UIAlertController alertControllerWithTitle:title message:text preferredStyle:UIAlertControllerStyleAlert];
 			if ( attrText ) {
 				[alertError setValue:attrText forKey:@"attributedMessage"];
@@ -751,7 +870,6 @@ const CGFloat kEditControlCornerRadius = 4;
 	}
 }
 
-
 -(void)askToRate:(NSInteger)uploadCount
 {
 	double countLog10 = log10(uploadCount);
@@ -765,6 +883,7 @@ const CGFloat kEditControlCornerRadius = 4;
         [self.viewController presentViewController:alertViewRateApp animated:YES completion:nil];
 	}
 }
+
 -(void)showInAppStore
 {
 #if 1
@@ -803,7 +922,17 @@ const CGFloat kEditControlCornerRadius = 4;
 
 -(void)updateCountryCodeForLocationUsingNominatim
 {
+	if ( self.viewStateZoomedOut )
+		return;
+
+	// if we moved a significant distance then check our country location
 	CLLocationCoordinate2D loc = [self longitudeLatitudeForScreenPoint:self.center birdsEye:YES];
+	double distance = GreatCircleDistance(OSMPointMake(loc.longitude,loc.latitude), OSMPointMake(_countryCodeLocation.longitude,_countryCodeLocation.latitude));
+	if ( distance < 10*1000 ) {
+		return;
+	}
+	_countryCodeLocation = loc;
+
 	NSString * url = [NSString stringWithFormat:@"https://nominatim.openstreetmap.org/reverse?zoom=13&addressdetails=1&format=json&lat=%f&lon=%f",loc.latitude,loc.longitude];
 	NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 		if ( data.length ) {
@@ -811,7 +940,6 @@ const CGFloat kEditControlCornerRadius = 4;
 			if ( json ) {
 				NSString * code = json[ @"address" ][ @"country_code" ];
 				if ( code ) {
-					NSLog(@"country = %@\n",code);
 					dispatch_async(dispatch_get_main_queue(), ^{
 						_countryCodeForLocation = code;
 					});
@@ -821,8 +949,6 @@ const CGFloat kEditControlCornerRadius = 4;
 	}];
 	[task resume];
 }
-
-
 
 #pragma mark Rotate object
 
@@ -917,20 +1043,22 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 	switch (newState) {
 		case MAPVIEW_EDITOR:
-			_editorLayer.whiteText = NO;
 			_editorLayer.hidden = NO;
 			_aerialLayer.hidden = YES;
 			_mapnikLayer.hidden = YES;
 			_userInstructionLabel.hidden = YES;
+			_editorLayer.whiteText = YES;
+			self.backgroundColor = UIColor.lightGrayColor;
 			break;
 		case MAPVIEW_EDITORAERIAL:
-			_editorLayer.whiteText = YES;
 			_aerialLayer.aerialService = _customAerials.currentAerial;
 			_editorLayer.hidden = NO;
 			_aerialLayer.hidden = NO;
 			_mapnikLayer.hidden = YES;
 			_userInstructionLabel.hidden = YES;
 			_aerialLayer.opacity = 0.75;
+			_editorLayer.whiteText = YES;
+			self.backgroundColor = UIColor.whiteColor;
 			break;
 		case MAPVIEW_AERIAL:
 			_aerialLayer.aerialService = _customAerials.currentAerial;
@@ -1023,8 +1151,15 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		[_editorLayer setNeedsLayout];
 	}
 }
-#pragma mark Coordinate Transforms
 
+-(void)setEnableEnhancedHwyEditor:(BOOL)enableEnhancedHwyEditor
+{
+    if ( _enableEnhancedHwyEditor != enableEnhancedHwyEditor) {
+        _enableEnhancedHwyEditor = enableEnhancedHwyEditor;
+    }
+}
+
+#pragma mark Coordinate Transforms
 
 
 -(void)setScreenFromMapTransform:(OSMTransform)t
@@ -1069,8 +1204,8 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	_screenFromMapTransform = t;
 
 	// determine if we've zoomed out enough to disable editing
-	CGPoint center = CGRectCenter(self.bounds);
-	CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:center birdsEye:YES];
+	CGPoint screenCenter = CGRectCenter(self.bounds);
+	CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:screenCenter birdsEye:YES];
 	double area = MetersPerDegree( latLon.latitude );
 	OSMRect rcMap = [self boundingMapRectForScreen];
 	area = area*area * rcMap.size.width * rcMap.size.height;
@@ -1079,6 +1214,8 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	[_rulerLayer updateDisplay];
 	[self updateMouseCoordinates];
 	[self updateUserLocationIndicator:nil];
+
+	[self updateCountryCodeForLocationUsingNominatim];
 
 #if TARGET_OS_IPHONE
 	// update pushpin location
@@ -1280,25 +1417,23 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(void)setTransformForLatitude:(double)latitude longitude:(double)longitude scale:(double)scale
 {
-#if 1
-	OSMPoint center = MapPointForLatitudeLongitude( latitude, longitude );
-	[self setMapCenter:center scale:scale];
-#else
-	CGPoint point = [self screenPointForLatitude:latitude longitude:longitude];
-	CGPoint center = CGRectCenter( self.layer.bounds );
+	OSMPoint mapCenter = MapPointForLatitudeLongitude( latitude, longitude );
+
+	// translate
+	OSMPoint point = [self screenPointFromMapPoint:mapCenter birdsEye:NO];
+	CGPoint center = _crossHairs.position;
 
 	CGPoint delta = { center.x - point.x, center.y - point.y };
-	double ratio = scale / OSMTransformScaleX(_screenFromMapTransform);
-
 	[self adjustOriginBy:delta];
+
+	double ratio = scale / OSMTransformScaleX(_screenFromMapTransform);
 	[self adjustZoomBy:ratio aroundScreenPoint:center];
-#endif
 }
 
 -(void)setTransformForLatitude:(double)latitude longitude:(double)longitude
 {
 	CGPoint point = [self screenPointForLatitude:latitude longitude:longitude birdsEye:NO];
-	CGPoint center = CGRectCenter( self.layer.bounds );
+	CGPoint center = _crossHairs.position;
 	CGPoint delta = { center.x - point.x, center.y - point.y };
 	[self adjustOriginBy:delta];
 }
@@ -1307,6 +1442,28 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 {
 	double scale = 360/(widthDegrees / 2);
 	[self setTransformForLatitude:latitude longitude:longitude scale:scale];
+}
+
+-(void)setTransformForLatitude:(double)latitude longitude:(double)longitude zoom:(double)zoom
+{
+	double scale = pow(2,zoom);
+	[self setTransformForLatitude:latitude longitude:longitude scale:scale];
+}
+
+-(void)setMapLocation:(MapLocation *)location
+{
+	double zoom = location.zoom ?: 18.0;
+	double scale = pow(2,zoom);
+	[self setTransformForLatitude:location.latitude longitude:location.longitude scale:scale];
+	if ( location.viewState != MAPVIEW_NONE ) {
+		self.viewState = location.viewState;
+	}
+}
+
+-(double)zoom
+{
+	double scaleX = OSMTransformScaleX( _screenFromMapTransform );
+	return log2(scaleX);
 }
 
 
@@ -1781,19 +1938,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 {
 }
 
--(void)setMapCenter:(OSMPoint)mapCenter scale:(double)newScale
-{
-	// translate
-	OSMPoint point = [self screenPointFromMapPoint:mapCenter birdsEye:NO];
-	CGPoint center = CGRectCenter( self.layer.bounds );
-
-	CGPoint delta = { center.x - point.x, center.y - point.y };
-	[self adjustOriginBy:delta];
-
-	double ratio = newScale / OSMTransformScaleX(_screenFromMapTransform);
-	[self adjustZoomBy:ratio aroundScreenPoint:center];
-}
-
 -(void)adjustOriginBy:(CGPoint)delta
 {
 	if ( delta.x == 0.0 && delta.y == 0.0 )
@@ -1824,11 +1968,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 	[self refreshNoteButtonsFromDatabase];
 
-	if ( log2(scale) < 13 && log2(ratio*scale) >= 13 ) {
-		// we zoomed in, so fetch local country code
-		[self updateCountryCodeForLocationUsingNominatim];
-	}
-	
 	OSMPoint offset = [self mapPointFromScreenPoint:OSMPointFromCGPoint(zoomCenter) birdsEye:NO];
 	OSMTransform t = _screenFromMapTransform;
 	t = OSMTransformTranslate( t, offset.x, offset.y );
@@ -1969,7 +2108,7 @@ static NSString * const DisplayLinkHeading	= @"Heading";
     }
 
 	if ( _editorLayer.selectedPrimary.tags.count > 0 ) {
-		NSString * question = [NSString stringWithFormat:@"Pasting %ld tag(s)", (long)copyPasteTags.count];
+		NSString * question = [NSString stringWithFormat:NSLocalizedString(@"Pasting %ld tag(s)",nil), (long)copyPasteTags.count];
 		UIAlertController * alertPaste = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Paste",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
 		[alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
 		[alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Merge Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
@@ -2285,7 +2424,18 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 			break;
 		case ACTION_DUPLICATE:
 			{
-				OsmBaseObject * newObject = [_editorLayer duplicateObject:_editorLayer.selectedPrimary];
+				CGPoint delta = { _crossHairs.position.x - _pushpinView.arrowPoint.x,
+								  _crossHairs.position.y - _pushpinView.arrowPoint.y };
+				OSMPoint offset;
+				if ( hypot( delta.x, delta.y ) > 20 ) {
+					// move to position of crosshairs
+					CLLocationCoordinate2D p1 = [self longitudeLatitudeForScreenPoint:_pushpinView.arrowPoint birdsEye:YES];
+					CLLocationCoordinate2D p2 = [self longitudeLatitudeForScreenPoint:_crossHairs.position birdsEye:YES];
+					offset = OSMPointMake( p2.longitude - p1.longitude, p2.latitude - p1.latitude );
+				} else {
+					offset = OSMPointMake( 0.00005, -0.00005 );
+				}
+				OsmBaseObject * newObject = [_editorLayer duplicateObject:_editorLayer.selectedPrimary withOffset:offset];
 				if ( newObject == nil ) {
 					error = NSLocalizedString(@"Could not duplicate object",nil);
 				} else {
@@ -2435,6 +2585,28 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 }
 
 
+// Enhanced Highway Editor modal
+-(void)presentEnhancedHwyEditor:(CGPoint) point
+{
+    void (^showEnhancedHwyEditor)(void) = ^{
+        EnhancedHwyEditorController * myVc = [_viewController.storyboard instantiateViewControllerWithIdentifier:@"EnhancedHwyEditorController"];
+        myVc.parentViewCenter        = CGRectCenter(self.layer.bounds);
+        myVc.screenFromMapTransform = _screenFromMapTransform;
+        myVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [_viewController presentViewController:myVc animated:YES completion:nil];
+        
+        
+        // if GPS is running don't keep moving around
+        self.userOverrodeLocationPosition = YES;
+        
+        // scroll view so intersection stays visible
+        CGPoint delta = { 415 - point.x, 180 - point.y };
+        [self adjustOriginBy:delta];
+        
+    };
+    showEnhancedHwyEditor();
+}
+ 
 // Turn restriction panel
 -(void)restrictOptionSelected
 {
@@ -2814,7 +2986,42 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	[self updateEditControl];
 
 	if ( object == nil ) {
-		_pushpinView.placeholderImage = [UIImage imageNamed:@"question.png"];
+		CALayer * layer = _pushpinView.placeholderLayer;
+		if ( layer.sublayers.count == 0 ) {
+#if 0
+			layer.contents			= (id)[UIImage imageNamed:@"new_object"].CGImage;
+			layer.contentsScale 	= UIScreen.mainScreen.scale;
+			layer.bounds        	= CGRectMake(0, 0, 20, 20);
+#else
+			layer.bounds        	= CGRectMake(0, 0, 24, 24);
+			layer.cornerRadius  	= layer.bounds.size.width/2;
+			layer.backgroundColor	= [UIColor colorWithRed:0.0 green:150/255.0 blue:1.0 alpha:1.0].CGColor;
+			layer.masksToBounds   	= YES;
+			layer.borderColor	 	= UIColor.whiteColor.CGColor;
+			layer.borderWidth	 	= 1.0;
+			layer.contentsScale 	= UIScreen.mainScreen.scale;
+			// shadow
+			layer.shadowColor		= UIColor.blackColor.CGColor;
+			layer.shadowOffset		= CGSizeMake(3,3);
+			layer.shadowRadius		= 3;
+			layer.shadowOpacity		= 0.5;
+			layer.masksToBounds		= NO;
+
+			CATextLayer * text = [CATextLayer new];
+			text.foregroundColor	= UIColor.whiteColor.CGColor;
+			text.foregroundColor	= [UIColor colorWithRed:0 green:0 blue:0.5 alpha:1.0].CGColor;
+			text.foregroundColor	= UIColor.whiteColor.CGColor;
+			text.string				= @"?";
+			text.fontSize			= 18;
+			text.font				= (__bridge CFTypeRef)[UIFont boldSystemFontOfSize:text.fontSize];
+			text.alignmentMode		= kCAAlignmentCenter;
+			text.bounds				= layer.bounds;
+			text.position			= CGPointMake(0,1);
+			text.anchorPoint		= CGPointZero;
+			text.contentsScale 		= UIScreen.mainScreen.scale;
+			[layer addSublayer:text];
+#endif
+		}
 	}
 	
 	[self addSubview:_pushpinView];
@@ -2828,7 +3035,7 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 - (void)refreshPushpinText
 {
 	NSString * text = _editorLayer.selectedPrimary.friendlyDescription;
-	text = text ?: @"(new object)";
+	text = text ?: NSLocalizedString(@"(new object)",nil);
 	_pushpinView.text = text;
 }
 
@@ -3067,7 +3274,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	_blinkSegment = segment;
 
 	// create a layer for the object
-	_blinkLayer = [CAShapeLayer layer];
 	CGMutablePathRef path = CGPathCreateMutable();
 	if ( object.isNode ) {
 		OsmNode * node = (id)object;
@@ -3087,22 +3293,35 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	} else {
 		assert(NO);
 	}
-	_blinkLayer.path = path;
-	_blinkLayer.fillColor	= NULL;
+	_blinkLayer = [CAShapeLayer layer];
+	_blinkLayer.path 		= path;
+	_blinkLayer.fillColor	= nil;
 	_blinkLayer.lineWidth	= 3.0;
 	_blinkLayer.frame		= self.bounds;
 	_blinkLayer.zPosition	= Z_BLINK;
-	_blinkLayer.strokeColor	= NSColor.whiteColor.CGColor;
-	_blinkLayer.lineDashPhase = 0.0;
-	_blinkLayer.lineDashPattern = @[ @(3), @(3) ];
-	[self.layer addSublayer:_blinkLayer];
+	_blinkLayer.strokeColor	= NSColor.blackColor.CGColor;
+
+	CAShapeLayer * dots = [CAShapeLayer layer];
+	dots.path 				= _blinkLayer.path;
+	dots.fillColor			= nil;
+	dots.lineWidth			= _blinkLayer.lineWidth;
+	dots.bounds				= _blinkLayer.bounds;
+	dots.position			= CGPointZero;
+	dots.anchorPoint		= CGPointZero;
+	dots.strokeColor		= NSColor.whiteColor.CGColor;
+	dots.lineDashPhase 		= 0.0;
+	dots.lineDashPattern 	= @[ @(4), @(4) ];
+	[_blinkLayer addSublayer:dots];
+
 	CABasicAnimation * dashAnimation = [CABasicAnimation animationWithKeyPath:@"lineDashPhase"];
-	dashAnimation.fromValue	= @(0.0);
-	dashAnimation.toValue	= @(10.0);
-	dashAnimation.duration	= 0.20;
-	dashAnimation.repeatCount = 100000;
-	[_blinkLayer addAnimation:dashAnimation forKey:@"linePhase"];
+	dashAnimation.fromValue		= @(0.0);
+	dashAnimation.toValue		= @(-16.0);
+	dashAnimation.duration		= 0.6;
+	dashAnimation.repeatCount	= CGFLOAT_MAX;
+	[dots addAnimation:dashAnimation forKey:@"linePhase"];
 	CGPathRelease(path);
+
+	[self.layer addSublayer:_blinkLayer];
 }
 
 
@@ -3217,30 +3436,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 		OsmNoteComment * comment = note.comments.lastObject;
 		NSString * title = note.isWaypoint ? @"Waypoint" : @"Keep Right";
 
-#if 0
-		// use our custom alertview
-		HtmlAlertViewController * alert = [self.viewController.storyboard instantiateViewControllerWithIdentifier:@"HtmlAlert"];
-		[self.window addSubview:alert.view];
-		alert.heading.text			= title;
-		alert.htmlText				= comment.text;
-		_alertKeepRight = (id)alert;	// so we don't get deallocated
-		__weak HtmlAlertViewController * weakAlert = alert;
-		[alert addButton:@"OK" callback:^{
-			[weakAlert.view removeFromSuperview];
-			_alertKeepRight = nil;
-		}];
-		[alert addButton:@"Ignore" callback:^{
-			// they want to hide this button from now on
-			[_notesDatabase ignoreNote:_currentNote];
-			[self refreshNoteButtonsFromDatabase];
-			_editorLayer.selectedNode = nil;
-			_editorLayer.selectedWay = nil;
-			_editorLayer.selectedRelation = nil;
-			[self removePin];
-			[weakAlert.view removeFromSuperview];
-			_alertKeepRight = nil;
-		}];
-#else
 		// use regular alertview
 		NSString * text = comment.text;
 		NSRange r1 = [text rangeOfString:@"<a "];
@@ -3265,7 +3460,7 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 			[self removePin];
  		}]];
 		[self.viewController presentViewController:alertKeepRight animated:YES completion:nil];
-#endif
+
 	} else if ( note.isFixme ) {
 		OsmBaseObject * object = [_editorLayer.mapData objectWithExtendedIdentifier:note.noteId];
 		_editorLayer.selectedNode		= object.isNode;
@@ -3375,6 +3570,10 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)pinch
 {
 	if ( pinch.state == UIGestureRecognizerStateChanged ) {
+
+		if ( isnan(pinch.scale) )
+			return;
+
 		self.userOverrodeLocationZoom = YES;
 
 		DisplayLink * displayLink = [DisplayLink shared];
@@ -3427,7 +3626,7 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 		case UIGestureRecognizerStateEnded:
 			if ( CACurrentMediaTime() - _addNodeButtonTimestamp < 0.5 ) {
 				// treat as tap
-				CGPoint point = CGRectCenter( self.bounds );
+				CGPoint point = _crossHairs.position;
 				[self dropPinAtPoint:point];
 			}
 			_addNodeButtonTimestamp = 0.0;
@@ -3484,6 +3683,17 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 		UIAlertController * multiSelectSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Select Object",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 		for ( OsmBaseObject * object in objects ) {
 			NSString * title = object.friendlyDescription;
+			if ( ![title hasPrefix:@"("] ) {
+				// indicate what type of object it is
+				if ( object.isNode )
+					title = [title stringByAppendingString:NSLocalizedString(@" (node)",@"")];
+				else if ( object.isWay )
+					title = [title stringByAppendingString:NSLocalizedString(@" (way)",nil)];
+				else if ( object.isRelation ) {
+					NSString * type = object.tags[@"type"] ?: NSLocalizedString(@"relation",nil);
+					title = [title stringByAppendingFormat:@" (%@)",type];
+				}
+			}
 			[multiSelectSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				// processing for selecting one of multipe objects
 				[_editorLayer setSelectedNode:nil];
@@ -3583,6 +3793,17 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 
 #pragma mark Mouse movment
 
+- (void)handleScrollWheelGesture:(UIPanGestureRecognizer *)pan
+{
+	if ( pan.state == UIGestureRecognizerStateChanged ) {
+		CGPoint delta 	= [pan translationInView:self];
+		CGPoint center 	= [pan locationInView:self];
+		center.y -= delta.y;
+		CGFloat zoom = delta.y >= 0 ? (1000 + delta.y) / 1000 : 1000/(1000-delta.y);
+		[self adjustZoomBy:zoom aroundScreenPoint:center];
+	}
+}
+
 - (void)singleClick:(CGPoint)point
 {
 	OsmBaseObject * hit = nil;
@@ -3610,16 +3831,18 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 				_editorLayer.selectedWay = nil;
 				_editorLayer.selectedRelation = nil;
 			} else if ( hit.isWay ) {
-				if ( _editorLayer.selectedRelation.isMultipolygon && [hit.isWay.parentRelations containsObject:_editorLayer.selectedRelation] ) {
+				if ( _editorLayer.selectedRelation && [hit.isWay.parentRelations containsObject:_editorLayer.selectedRelation] ) {
 					// selecting way inside previously selected relation
 					_editorLayer.selectedNode = nil;
 					_editorLayer.selectedWay = (id)hit;
 				} else if ( hit.parentRelations.count > 0 ) {
 					// select relation the way belongs to
 					NSArray * relations = [hit.parentRelations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmRelation * relation, id bindings) {
-						return relation.isMultipolygon;
+						return relation.isMultipolygon || relation.isBoundary || relation.isWaterway;
 					}]];
-					OsmRelation * relation = relations.count > 0 ? relations[0] : nil;
+					if ( relations.count == 0 && !hit.hasInterestingTags )
+						relations = hit.parentRelations;	// if the way doesn't have tags then always promote to containing relation
+					OsmRelation * relation = relations.count > 0 ? relations.firstObject : nil;
 					if ( relation ) {
 						hit = relation;	// convert hit to relation
 						_editorLayer.selectedNode = nil;
@@ -3645,6 +3868,9 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 			_editorLayer.selectedWay = nil;
 			_editorLayer.selectedRelation = nil;
 		}
+        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay ) {
+                   [self presentEnhancedHwyEditor: point];
+               }
 	}
 
 	[self removePin];
