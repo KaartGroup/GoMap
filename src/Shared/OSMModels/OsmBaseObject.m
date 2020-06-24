@@ -31,8 +31,6 @@
     return text;
 }
 
-
-
 BOOL IsInterestingTag(NSString * key)
 {
 	if ( [key isEqualToString:@"attribution"] )
@@ -477,9 +475,9 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
     if ( name.length )
         return name;
 
-    NSString * featureName = [CommonPresetList featureNameForObjectDict:self.tags geometry:self.geometryName];
+    NSString * featureName = [PresetsDatabase featureNameForObjectDict:self.tags geometry:self.geometryName];
     if ( featureName ) {
-        CommonPresetFeature * feature = [CommonPresetFeature commonPresetFeatureWithName:featureName];
+        PresetFeature * feature = [PresetFeature presetFeatureForFeatureName:featureName];
         name = feature.friendlyName;
         if ( name.length > 0 )
             return name;
@@ -495,16 +493,16 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
             }
         }
         if ( restriction ) {
-            if ( [restriction hasPrefix:@"no_left_turn"] )        return @"No Left Turn restriction";
-            if ( [restriction hasPrefix:@"no_right_turn"] )        return @"No Right Turn restriction";
-            if ( [restriction hasPrefix:@"no_straight_on"] )    return @"No Straight On restriction";
-            if ( [restriction hasPrefix:@"only_left_turn"] )    return @"Only Left Turn restriction";
-            if ( [restriction hasPrefix:@"only_right_turn"] )    return @"Only Right Turn restriction";
-            if ( [restriction hasPrefix:@"only_straight_on"] )    return @"Only Straight On restriction";
-            if ( [restriction hasPrefix:@"no_u_turn"] )            return @"No U-Turn restriction";
-            return [NSString stringWithFormat:@"Restriction: %@",restriction];
+            if ( [restriction hasPrefix:@"no_left_turn"] )		return NSLocalizedString(@"No Left Turn restriction",nil);
+            if ( [restriction hasPrefix:@"no_right_turn"] )    	return NSLocalizedString(@"No Right Turn restriction",nil);
+            if ( [restriction hasPrefix:@"no_straight_on"] )   	return NSLocalizedString(@"No Straight On restriction",nil);
+            if ( [restriction hasPrefix:@"only_left_turn"] )   	return NSLocalizedString(@"Only Left Turn restriction",nil);
+            if ( [restriction hasPrefix:@"only_right_turn"] )   return NSLocalizedString(@"Only Right Turn restriction",nil);
+            if ( [restriction hasPrefix:@"only_straight_on"] ) 	return NSLocalizedString(@"Only Straight On restriction",nil);
+            if ( [restriction hasPrefix:@"no_u_turn"] )        	return NSLocalizedString(@"No U-Turn restriction",nil);
+            return [NSString stringWithFormat:NSLocalizedString(@"Restriction: %@",nil),restriction];
         } else {
-            return [NSString stringWithFormat:@"Relation: %@",self.tags[@"type"]];
+            return [NSString stringWithFormat:NSLocalizedString(@"Relation: %@",nil),self.tags[@"type"]];
         }
     }
 
@@ -520,7 +518,7 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 #endif
 
     __block NSString * tagDescription = nil;
-    NSSet * featureKeys = [CommonPresetList allFeatureKeys];
+    NSSet * featureKeys = [PresetsDatabase allFeatureKeys];
     // look for a feature key
     [_tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL * stop) {
         if ( [featureKeys containsObject:key] ) {

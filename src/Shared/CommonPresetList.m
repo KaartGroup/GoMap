@@ -26,14 +26,14 @@ const int UITextAutocapitalizationTypeSentences = 1;
 const int UITextAutocapitalizationTypeWords		= 2;
 #endif
 
-static NSDictionary<NSString *,NSDictionary *> 					* g_addressFormatsDict;	// address formats for different countries
-static NSDictionary<NSString *,NSArray *> 						* g_defaultsDict;		// map a geometry to a set of features/categories
-static NSDictionary<NSString *,NSDictionary *> 					* g_categoriesDict;		// map a top-level category ("building") to a set of specific features ("building/retail")
-static NSDictionary<NSString *,NSDictionary *> 					* g_presetsDict;		// tags for a specific feature
-static NSDictionary<NSString *,NSDictionary *> 					* g_fieldsDict;			// possible values for a preset key ("oneway=")
-static NSDictionary<NSString *,NSDictionary *> 					* g_translationDict;	// translations of all preset text
-static NSMutableDictionary<NSString *,NSMutableArray *> 		* g_taginfoCache;		// OSM TagInfo database in the cloud
-static NSMutableDictionary<NSString *,CommonPresetFeature *> 	* g_FeatureCache;		// quickly map a featureName to a CommonPresetFeature
+static NSDictionary<NSString *,NSDictionary *> 				* g_addressFormatsDict;
+static NSDictionary<NSString *,NSArray *> 					* g_defaultsDict;
+static NSDictionary<NSString *,NSDictionary *> 				* g_categoriesDict;
+static NSDictionary<NSString *,NSDictionary *> 				* g_presetsDict;
+static NSDictionary<NSString *,NSDictionary *> 				* g_fieldsDict;
+static NSDictionary<NSString *,NSDictionary *> 				* g_translationDict;
+static NSMutableDictionary<NSString *,NSMutableArray *> 	* g_taginfoCache;
+static NSMutableDictionary<NSString *,CommonPresetFeature *> 	* g_FeatureRepository;
 
 static NSDictionary * DictionaryForFile( NSString * file )
 {
@@ -274,7 +274,7 @@ BOOL IsOsmBooleanTrue( NSString * value )
 {
 	g_presetsDict		= nil;
 	g_taginfoCache		= nil;
-	g_FeatureCache	= nil;
+	g_FeatureRepository	= nil;
 	InitializeDictionaries();
 }
 
@@ -359,23 +359,9 @@ BOOL IsOsmBooleanTrue( NSString * value )
 	return set;
 }
 
-+(NSSet *)allFeatureKeys
-{
-	static NSMutableSet * set = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		set = [NSMutableSet new];
-		[g_presetsDict enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSDictionary * dict, BOOL * _Nonnull stop) {
-			NSRange slash = [key rangeOfString:@"/"];
-			NSString * feature = slash.location != NSNotFound ? [key substringToIndex:slash.location] : key;
-			[set addObject:feature];
-		}];
-	});
-	return set;
-}
 
 
-+(NSArray *)featuresAndCategoriesForMemberList:(NSArray *)memberList
++(NSArray *)featuresForMembersList:(NSArray *)memberList
 {
 	NSMutableArray * list = [NSMutableArray new];
 	for ( NSString * featureName in memberList ) {
@@ -397,10 +383,10 @@ BOOL IsOsmBooleanTrue( NSString * value )
 	return list;
 }
 
-+(NSArray *)featuresAndCategoriesForGeometry:(NSString *)geometry
++(NSArray *)featuresForGeometry:(NSString *)geometry
 {
 	NSArray * list = g_defaultsDict[geometry];
-	NSArray * featureList = [self featuresAndCategoriesForMemberList:list];
+	NSArray * featureList = [self featuresForMembersList:list];
 	return featureList;
 }
 
@@ -653,7 +639,7 @@ BOOL IsOsmBooleanTrue( NSString * value )
 					return (CommonPresetGroup *)presets;	// hack for multi-combo: we already created the group and stashed it in presets
 				}
 			} else if ( update ) {
-				dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 					NSString * cleanKey = isMulti ? [key stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@":"]] : key;
 					NSString * urlText = isMulti ?
 						[NSString stringWithFormat:@"https://taginfo.openstreetmap.org/api/4/keys/all?query=%@&filter=characters_colon&page=1&rp=10&sortname=count_all&sortorder=desc", cleanKey] :
@@ -855,17 +841,17 @@ BOOL IsOsmBooleanTrue( NSString * value )
 	__block double bestMatchScore = 0.0;
 	__block NSString * bestMatchName = nil;
 
-	NSString * currentCountryCode = [AppDelegate getAppDelegate].mapView.countryCodeForLocation;
+	NSString * countryCode = [AppDelegate getAppDelegate].mapView.countryCodeForLocation;
 
 	[g_presetsDict enumerateKeysAndObjectsUsingBlock:^(NSString * featureName, NSDictionary * dict, BOOL * stop) {
 
 		__block double totalScore = 0;
 #if USE_SUGGESTIONS
-		NSArray<NSString *> * countryList = dict[@"countryCodes"];
-		if ( countryList.count > 0 ) {
+		NSArray<NSString *> * a = dict[@"countryCodes"];
+		if ( a.count > 0 ) {
 			BOOL found = NO;
-			for ( NSString * country in countryList ) {
-				if ( [currentCountryCode isEqualToString:country] ) {
+			for ( NSString * s in a ) {
+				if ( [countryCode isEqualToString:s] ) {
 					found = YES;
 					break;
 				}
@@ -921,9 +907,6 @@ BOOL IsOsmBooleanTrue( NSString * value )
 					totalScore += matchScore/2;
 					return;
 				}
-			} else if ( [key isEqualToString:@"area"] && [value isEqualToString:@"yes"] && [geometry isEqualToString:@"area"] ) {
-				totalScore += 0.1;
-				return;
 			}
 			totalScore = -1;
 			*stop2 = YES;
@@ -1019,7 +1002,6 @@ BOOL IsOsmBooleanTrue( NSString * value )
 {
 	NSDictionary * featureDict = g_presetsDict[ featureName ];
 	NSArray * fields = featureDict[fieldType];
-
 	if ( fields == nil ) {
 		// inherit from parent
 		NSRange slash = [featureName rangeOfString:@"/" options:NSBackwardsSearch];
@@ -1031,13 +1013,6 @@ BOOL IsOsmBooleanTrue( NSString * value )
 	}
 
 	for ( NSString * field in fields ) {
-
-		if ( [field hasPrefix:@"{"] && [field hasSuffix:@"}"]) {
-			// copy fields from referenced item
-			NSString * ref = [field substringWithRange:NSMakeRange(1, field.length-2)];
-			[self presetsForFeature:ref geometry:geometry field:fieldType allFields:fieldSet update:update];
-			continue;
-		}
 
 		if ( [fieldSet containsObject:field] )
 			continue;
@@ -1279,16 +1254,16 @@ BOOL IsOsmBooleanTrue( NSString * value )
 	if ( name == nil )
 		return nil;
 	// all tags are single-instanced, so we can easily compare them
-	if ( g_FeatureCache == nil ) {
-		g_FeatureCache = [NSMutableDictionary new];
+	if ( g_FeatureRepository == nil ) {
+		g_FeatureRepository = [NSMutableDictionary new];
 	}
-	CommonPresetFeature * tag = g_FeatureCache[ name ];
+	CommonPresetFeature * tag = g_FeatureRepository[ name ];
 	if ( tag == nil ) {
 		tag = [[CommonPresetFeature alloc] initWithName:name];
 		if ( tag == nil ) {
 			tag = (id)[NSNull null];
 		}
-		g_FeatureCache[ name ] = tag;
+		g_FeatureRepository[ name ] = tag;
 	}
 	return [tag isKindOfClass:[NSNull class]] ? nil : tag;
 }
@@ -1364,10 +1339,6 @@ BOOL IsOsmBooleanTrue( NSString * value )
 	return _icon;
 }
 
--(NSString *)logoURL
-{
-	return _dict[@"imageURL"];
-}
 
 -(NSArray *)terms
 {

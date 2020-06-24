@@ -15,8 +15,6 @@ extension MapViewController {
         guard let url = URL(string: urlAsString) else { return }
         
         let safariViewController = SFSafariViewController(url: url)
-		safariViewController.modalPresentationStyle = .pageSheet
-		safariViewController.popoverPresentationController?.sourceView = self.view
-		present(safariViewController, animated: true)
+        present(safariViewController, animated: true)
     }
 }

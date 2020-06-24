@@ -54,18 +54,21 @@ static const NSInteger CACHE_SECTION			= 3;
 
 	MapView * mapView = [(AppDelegate *)[[UIApplication sharedApplication] delegate] mapView];
 
-	// becoming visible the first time
-	self.navigationController.navigationBarHidden = NO;
+	if ( [self isMovingToParentViewController] ) {
+		// becoming visible the first time
+		self.navigationController.navigationBarHidden = NO;
 
-	_notesSwitch.on				= (mapView.viewOverlayMask & VIEW_OVERLAY_NOTES) != 0;
-	_gpsTraceSwitch.on			= !mapView.gpsTraceLayer.hidden;
+		_notesSwitch.on				= (mapView.viewOverlayMask & VIEW_OVERLAY_NOTES) != 0;
+		_gpsTraceSwitch.on			= !mapView.gpsTraceLayer.hidden;
 
-	_birdsEyeSwitch.on			= mapView.enableBirdsEye;
-	_rotationSwitch.on			= mapView.enableRotation;
-	_unnamedRoadSwitch.on		= mapView.enableUnnamedRoadHalo;
-	_gpxLoggingSwitch.on		= mapView.enableGpxLogging;
-	_turnRestrictionSwitch.on	= mapView.enableTurnRestriction;
-	_objectFiltersSwitch.on		= mapView.editorLayer.enableObjectFilters;
+		_birdsEyeSwitch.on			= mapView.enableBirdsEye;
+		_rotationSwitch.on			= mapView.enableRotation;
+		_unnamedRoadSwitch.on		= mapView.enableUnnamedRoadHalo;
+		_gpxLoggingSwitch.on		= mapView.enableGpxLogging;
+		_turnRestrictionSwitch.on	= mapView.enableTurnRestriction;
+		_objectFiltersSwitch.on		= mapView.editorLayer.enableObjectFilters;
+
+	}
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -73,10 +76,8 @@ static const NSInteger CACHE_SECTION			= 3;
 	// place a checkmark next to currently selected display
 	if ( indexPath.section == BACKGROUND_SECTION ) {
 		MapView * mapView = [AppDelegate getAppDelegate].mapView;
-		if ( cell.tag == mapView.viewState ) {
+		if ( indexPath.row == mapView.viewState ) {
 			cell.accessoryType = UITableViewCellAccessoryCheckmark;
-		} else {
-			cell.accessoryType = UITableViewCellAccessoryNone;
 		}
 	}
 
@@ -117,8 +118,6 @@ static const NSInteger CACHE_SECTION			= 3;
 	mapView.enableUnnamedRoadHalo	= _unnamedRoadSwitch.on;
 	mapView.enableGpxLogging		= _gpxLoggingSwitch.on;
 	mapView.enableTurnRestriction	= _turnRestrictionSwitch.on;
-
-	[mapView.editorLayer setNeedsLayout];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -127,10 +126,6 @@ static const NSInteger CACHE_SECTION			= 3;
 	[self applyChanges];
 }
 
-- (IBAction)onDone:(id)sender
-{
-	[self dismissViewControllerAnimated:YES completion:nil];
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -65,20 +65,21 @@ NSDictionary * MergeTags(NSDictionary * myself, NSDictionary * tags, BOOL failOn
 
 // attributes
 @property (readonly,nonatomic)    NSDictionary<NSString *, NSString *>    *    tags;
-@property (readonly,nonatomic)    NSNumber        *    ident;
-@property (readonly,nonatomic)    NSString        *    user;
-@property (readonly,nonatomic)    NSString        *    timestamp;
-@property (readonly,nonatomic)    int32_t                version;
-@property (readonly,nonatomic)    OsmIdentifier        changeset;
-@property (readonly,nonatomic)    int32_t                uid;
-@property (readonly,nonatomic)    BOOL                visible;
+@property (readonly,nonatomic)    NSNumber        *    	ident;
+@property (readonly,nonatomic)    NSString        *    	user;
+@property (readonly,nonatomic)    NSString        *    	timestamp;
+@property (readonly,nonatomic)    int32_t              	version;
+@property (readonly,nonatomic)    OsmIdentifier        	changeset;
+@property (readonly,nonatomic)    int32_t              	uid;
+@property (readonly,nonatomic)    BOOL                 	visible;
 
 // extra stuff
-@property (readonly,nonatomic)    OSMRect                boundingBox;
-@property (strong,nonatomic)    NSArray            *    shapeLayers;
-@property (readonly,nonatomic)    ONEWAY                isOneWay;
-@property (assign,nonatomic)    TRISTATE            isShown;
+@property (readonly,nonatomic)    OSMRect				boundingBox;
+@property (strong,nonatomic)    NSArray            *   	shapeLayers;
+@property (readonly,nonatomic)    ONEWAY               	isOneWay;
+@property (assign,nonatomic)    TRISTATE            	isShown;
 
++(NSDictionary *)featureKeys;
 +(NSDateFormatter *)rfc3339DateFormatter;
 
 -(void)constructTag:(NSString *)tag value:(NSString *)value;
@@ -90,7 +91,6 @@ NSDictionary * MergeTags(NSDictionary * myself, NSDictionary * tags, BOOL failOn
 -(void)serverUpdateChangeset:(OsmIdentifier)changeset;
 -(void)serverUpdateIdent:(OsmIdentifier)ident;
 -(void)serverUpdateInPlace:(OsmBaseObject *)newerVersion;
-
 -(void)incrementModifyCount:(UndoManager *)undo;
 -(void)resetModifyCount:(UndoManager *)undo;
 -(void)setTags:(NSDictionary<NSString *, NSString *> *)tags undo:(UndoManager *)undo;

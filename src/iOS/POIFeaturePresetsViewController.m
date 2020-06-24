@@ -151,10 +151,7 @@
                     }
                 });
             }
-		} else if ( !_childPushed &&
-				   tabController.selection.ident.integerValue <= 0 &&
-				   tabController.keyValueDict.count == 0 )
-		{
+		} else if ( !_childPushed && tabController.keyValueDict.count == 0 ) {
 			// if we're being displayed for a newly created node then go straight to the Type picker
 			[self performSegueWithIdentifier:@"POITypeSegue" sender:nil];
 		}
@@ -187,6 +184,29 @@
 			value = @"yes";
 		[tabController setFeatureKey:key value:value];
 	}];
+}
+
+- (NSString *)featureKeyForDict:(NSDictionary *)dict
+{
+	for ( NSString * tag in [OsmBaseObject featureKeys] ) {
+		NSString * value = dict[ tag ];
+		if ( value.length ) {
+			return tag;
+		}
+	}
+	return nil;
+}
+- (NSString *)featureStringForDict:(NSDictionary *)dict
+{
+	NSString * key = [self featureKeyForDict:dict];
+	NSString * value = dict[ key ];
+	if ( value.length ) {
+		NSString * text = [NSString stringWithFormat:@"%@ (%@)", value, key];
+		text = [text stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+		text = text.capitalizedString;
+		return text;
+	}
+	return nil;
 }
 
 #pragma mark - Table view data source
@@ -234,7 +254,7 @@
 
 		CommonPresetKey 	* presetKey	= rowObject;
 		NSString * key = presetKey.tagKey;
-		NSString * cellName = key == nil ? @"CommonTagType" : [key isEqualToString:@"name"] ? @"CommonTagName" : @"CommonTagSingle";
+		NSString * cellName = key == nil || [key isEqualToString:@"name"] ? @"CommonTagType" : @"CommonTagSingle";
 
 		FeaturePresetCell * cell = [tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath];
 		cell.nameLabel.text = presetKey.name;
@@ -265,6 +285,8 @@
 		if ( _drillDownGroup == nil && indexPath.section == 0 && indexPath.row == 0 ) {
 			// Type cell
 			NSString * text = [_tags featureName];
+			if ( text == nil )
+				text = [self featureStringForDict:objectDict];
 			cell.valueField.text = text;
 			cell.valueField.enabled = NO;
 		} else {

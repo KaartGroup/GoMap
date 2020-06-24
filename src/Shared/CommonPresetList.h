@@ -77,8 +77,6 @@ typedef int UITextAutocapitalizationType;
 @property (readonly,nonatomic)	NSDictionary	*	tags;
 @property (readonly,nonatomic)	NSString		*	summary;
 @property (readonly,nonatomic)	UIImage			*	icon;
-@property (readonly,nonatomic)	NSString		*	logoURL;
-@property (strong,nonatomic)	UIImage			*	logoImage;
 @property (readonly,nonatomic)	NSArray			*	terms;
 @property (readonly,nonatomic)	NSArray			*	geometry;
 @property (readonly,nonatomic)	NSArray			*	members;
@@ -120,12 +118,12 @@ typedef int UITextAutocapitalizationType;
 
 +(instancetype)sharedList;
 +(NSString *)featureNameForObjectDict:(NSDictionary *)tagDict geometry:(NSString *)geometry;
-+(NSArray *)featuresAndCategoriesForGeometry:(NSString *)geometry;
++(NSArray *)featuresForGeometry:(NSString *)geometry;
 +(NSArray *)featuresInCategory:(CommonPresetCategory *)category matching:(NSString *)searchText;
 +(NSSet *)allTagKeys;
 +(NSSet *)allTagValuesForKey:(NSString *)key;
-+(NSSet *)allFeatureKeys;
 +(NSString *)friendlyValueNameForKey:(NSString *)key value:(NSString *)value geometry:(NSString *)geometry;
+
 
 -(void)setPresetsForFeature:(NSString *)feature tags:(NSDictionary *)dict geometry:(NSString *)geometry  update:(void (^)(void))update;
 

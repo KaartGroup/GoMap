@@ -18,17 +18,17 @@
 
 @interface POIFeaturePickerViewController : UITableViewController <UISearchBarDelegate, UIAlertViewDelegate>
 {
-	NSArray					*	_featureList;
+	NSArray					*	_typeArray;
 	NSArray					*	_searchArrayRecent;
 	NSArray					*	_searchArrayAll;
 	IBOutlet UISearchBar    *	_searchBar;
 	BOOL						_isTopLevel;
 }
-@property (strong,nonatomic) CommonPresetCategory				*	parentCategory;
-@property (assign,nonatomic) id<POITypeViewControllerDelegate>		delegate;
 
+@property (strong,nonatomic) CommonPresetCategory				*	parentCategory;
+
+@property (strong,nonatomic) CommonPresetCategory					*	parentCategory;
 -(IBAction)back:(id)sender;
--(IBAction)configure:(id)sender;
 
 
 +(void)loadMostRecentForGeometry:(NSString *)geometry;

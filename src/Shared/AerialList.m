@@ -26,8 +26,6 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 
 @implementation AerialService
 
-@synthesize placeholderImage = _placeholderImage;
-
 -(instancetype)initWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url
 					maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
 				  startDate:(NSString *)startDate
@@ -495,11 +493,11 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 				continue;
 			}
 			NSString * 	identifier			= properties[@"id"];
-			NSString *  category			= properties[@"category"];
-			if ( categories[category] == nil ) {
-				// NSLog(@"category %@ - %@",category,identifier);
+			if ( identifier.length == 0 || blacklist[identifier] )
 				continue;
-			}
+			NSString *  category			= properties[@"category"];
+			if ( category && ![category isEqualToString:@"photo"] )
+				continue;
 			NSString *	startDateString		= properties[@"start_date"];
 			NSString *	endDateString		= properties[@"end_date"];
 			NSDate 	 *  endDate   = [AerialService dateFromString:endDateString];
@@ -513,11 +511,21 @@ static NSString * CUSTOMAERIALSELECTION_KEY = @"AerialListSelection";
 			NSString * 	attribString 		= properties[@"attribution"][@"text"];
 			NSString * 	attribUrl 			= properties[@"attribution"][@"url"];
 			NSInteger	overlay				= [properties[@"overlay"] integerValue];
-			NSNumber * supported = supportedTypes[ type ];
-			if ( supported == nil ) {
-				NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
-				continue;
-			} else if ( supported.boolValue == NO ) {
+			NSArray  * 	polygonPoints 		= nil;
+			BOOL		isMultiPolygon		= NO;	// a GeoJSON multipolygon, which has an extra layer of nesting
+			if ( isGeoJSON ) {
+				NSDictionary * 	geometry = entry[@"geometry"];
+				if ( [geometry isKindOfClass:[NSDictionary class]] ) {
+					polygonPoints = geometry[@"coordinates"];
+					isMultiPolygon = [geometry[@"type"] isEqualToString:@"MultiPolygon"];
+				}
+			} else {
+				polygonPoints = properties[@"extent"][@"polygon"];
+			}
+
+			if ( !([type isEqualToString:@"tms"] || [type isEqualToString:@"wms"]) ) {
+				if ( ![knownUnsupported containsObject:type] )
+					NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
 				continue;
 			}
 			if ( overlay ) {
