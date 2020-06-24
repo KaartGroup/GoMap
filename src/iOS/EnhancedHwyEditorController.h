@@ -46,17 +46,16 @@
     NSMutableArray    * _tags;
     NSMutableArray    * _nameTags;
     NSMutableArray    * _namePresets;
-		NSMutableArray    * _laneTags; 
+    NSMutableArray    * _laneTags;
     IBOutlet UIButton * oneWayButton;
     IBOutlet UIButton * reverseButton;
     IBOutlet UITableView * tagTable;
-		IBOutlet UIButton * saveButton;
-		IBOutlet UILabel * lblValue;
-		IBOutlet UIStepper * laneStepper;
-		__weak IBOutlet NSLayoutConstraint *bottomViewConstraint;
+    IBOutlet UIButton * saveButton;
+    IBOutlet UIStepper * laneStepper;
+    IBOutlet UIButton * closeBtn;
+    IBOutlet UITextField * txtValue;
+    __weak IBOutlet NSLayoutConstraint *bottomViewConstraint;
 }
-
-+(CustomPresetList *)shared;
 
 @property (strong,nonatomic)    NSMutableDictionary *    keyValueDict;
 
@@ -66,7 +65,9 @@
 @property (strong, nonatomic) IBOutlet UILabel * highwayEditorLabel;
 - (IBAction)onewayPressed;
 - (IBAction)reversePressed;
+- (IBAction)closeBtnPressed:(id)sender;
 - (IBAction)laneStepperPressed:(UIStepper *)sender;
++(CustomPresetList *)shared;
 - (IBAction)done;
 
 
