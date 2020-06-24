@@ -31,17 +31,20 @@ extern const double MinIconSizeInPixels;
 
 @interface EditorMapLayer : CALayer<NSCoding>
 {
-	CGSize					_iconSize;
-	double					_highwayScale;
-
-	NSMutableArray<OsmBaseObject *>		*	_shownObjects;
-	NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
-
-	NSMutableArray<CALayer *>		*	_highlightLayers;
-
-	BOOL					_isPerformingLayout;
-
-	CATransformLayer	*	_baseLayer;
+    CGSize					_iconSize;
+    double					_highwayScale;
+    
+    NSMutableSet        *    _nameDrawSet;
+    
+    
+    NSMutableArray<OsmBaseObject *>		*	_shownObjects;
+    NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
+    
+    NSMutableArray<CALayer *>		*	_highlightLayers;
+    
+    BOOL					_isPerformingLayout;
+    
+    CATransformLayer	*	_baseLayer;
 }
 
 @property (assign,nonatomic)	BOOL			enableObjectFilters;	// turn all filters on/on
@@ -96,6 +99,8 @@ extern const double MinIconSizeInPixels;
 
 - (BOOL)copyTags:(OsmBaseObject *)object;
 - (void)mergeTags:(OsmBaseObject *)object;
+- (BOOL)copyName:(OsmBaseObject *)object;
+- (BOOL)copyNameAndClass:(OsmBaseObject *)object;
 - (BOOL)canPasteTags;
 - (void)replaceTags:(OsmBaseObject *)object;
 

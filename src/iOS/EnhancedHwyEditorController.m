@@ -17,7 +17,7 @@
 #import "OsmNotesDatabase.h"
 #import "OsmMapData.h"
 #import "OsmMapData+Edit.h"
-#import "OsmRelation.h"
+#import "OsmRelation.h" // changed from OsmObjects
 
 typedef enum {
     EMPTY = -2,
@@ -26,17 +26,17 @@ typedef enum {
     FORWARD = 1
 } ONEWAY_STATES;
 typedef enum {
-    EMPTY_LANE = 0,
-    PLUS_CLICKED = +1,
-    NO_LANES = -2,
-    MINUS_CLICKED = -1,
+        EMPTY_LANE = 0,
+        PLUS_CLICKED = +1,
+        NO_LANES = -2,
+        MINUS_CLICKED = -1,
 } LANE_COUNT;
 
 @interface EnhancedHwyEditorController ()
 {
     NSMutableArray        *    _parentWays;
     NSMutableArray        *    _highwayViewArray; //    Array of EnhancedHwyEditorView to Store number of ways
-    
+
     //    NSArray                * _laneCount;
     EnhancedHwyEditorView    *    _selectedFromHwy;
     UIButton            *   _uTurnButton;
@@ -48,13 +48,13 @@ typedef enum {
     OsmWay              *   _selectedWay;
     ONEWAY_STATES         _onewayState;
     LANE_COUNT           _laneCountState;
-    
+
     MapView             *   _mapView;
     EditorMapLayer      *   _editorLayer;
     
     NSInteger               _reverseCount;
-    NSInteger               _laneCount;
-    NSInteger               _laneValues;
+        NSInteger               _laneCount;
+        NSInteger               _laneValues;
 }
 @end
 
@@ -83,14 +83,15 @@ typedef enum {
         if ( [tag hasPrefix:@"name"] ){
             [nameTags addObject:[NSMutableArray arrayWithObjects:tag, value, nil]];
         }
-        if(![_keyValueDict objectForKey:@"lanes"]){
-            _laneCount = 0;
-        } else {
-            _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
-            _stepper.value = _laneCount;
-        }
-    }];
-    //RIGHT HERE
+
+                if(![_keyValueDict objectForKey:@"lanes"]){
+                        _laneCount = 0;
+                } else {
+                        _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
+                        _stepper.value = _laneCount;
+                }
+        }];
+        //RIGHT HERE
     if ( nameTags.count > 0 ){
         _nameTags = [[nameTags sortedArrayUsingComparator:^NSComparisonResult(NSArray * obj1,NSArray * obj2) {
             return [obj1[0] compare:obj2[0]];
@@ -102,7 +103,7 @@ typedef enum {
         _nameTags = nameTags;
         [_tags addObject:[NSMutableArray arrayWithObjects:@"name", @"", nil]];
     }
-    
+
     // Check for `name` presets and add them as options in the list
     for ( CustomPreset * custom in [CustomPresetList shared] ) {
         if ( custom.appliesToKey.length ) {
@@ -117,7 +118,7 @@ typedef enum {
             [_namePresets addObject:custom.tagKey];
         }
     }
-    
+
     if ( ![_keyValueDict objectForKey:@"oneway"]){
         _onewayState = EMPTY;
     } else {
@@ -125,20 +126,20 @@ typedef enum {
     }
     
     [self setOnewayBtnStyle];
-    
-    //lanecount for stepper
-    if (![_keyValueDict objectForKey:@"lanes"]){
-        _laneCount = EMPTY_LANE;
-        NSLog(@"LANES = TRUE");
-    } else {
-        _laneCount = (LANE_COUNT)_selectedWay.isModified;
-        NSLog(@"LANES = FALSE");
-    }
-    NSLog(@"LANESTEPPER: %f", _stepper.value);
-    //[txtValue setText:[NSString stringWithFormat:@"%f", [laneStepper value]]];
+
+//lanecount for stepper
+        if (![_keyValueDict objectForKey:@"lanes"]){
+                _laneCount = EMPTY_LANE;
+                NSLog(@"LANES = TRUE");
+        } else {
+                _laneCount = (LANE_COUNT)_selectedWay.isModified;
+                NSLog(@"LANES = FALSE");
+        }
+        NSLog(@"LANESTEPPER: %f", _stepper.value);
+        //[txtValue setText:[NSString stringWithFormat:@"%f", [laneStepper value]]];
     [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
     [tagTable reloadData];
-    saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
+        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -151,7 +152,7 @@ typedef enum {
     [super viewDidAppear:animated];
     
     TextPair * cell = [tagTable.visibleCells firstObject];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [cell.text2 becomeFirstResponder];
     [_mapView.editControl.bottomAnchor constraintEqualToAnchor:self.highwayEditorView.topAnchor constant:-11].active = YES;
@@ -197,7 +198,7 @@ typedef enum {
 
 - (IBAction)textFieldEditingDidBegin:(UITextField *)textField
 {
-    UITableViewCell * cell = (id)textField.superview;
+     UITableViewCell * cell = (id)textField.superview;
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
     TextPair * pair = (id)cell;
@@ -230,7 +231,7 @@ typedef enum {
 - (void)keyboardWillChangeFrame:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
+
     bottomViewConstraint = [_highwayEditorView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-keyboardFrame.size.height];
     bottomViewConstraint.active = YES;
 }
@@ -258,7 +259,7 @@ typedef enum {
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
     NSIndexPath * indexPath = [tagTable indexPathForCell:cell];
-    
+
     if ( indexPath.section == 0 ) {
         // edited tags
         TextPair * pair = (id)cell;
@@ -270,7 +271,7 @@ typedef enum {
             }
         }
         BOOL isValue = textField == pair.text2;
-        
+
         if ( isValue ) {
             // new value
             kv[1] = textField.text;
@@ -280,7 +281,7 @@ typedef enum {
             kv[0] = textField.text;
             tagKv[0] = textField.text;
         }
-        
+
         NSMutableDictionary * dict = [self keyValueDictionary];
         saveButton.enabled = [self isTagDictChanged:dict];
     }
@@ -291,7 +292,7 @@ typedef enum {
     UITouch * touch = [touches anyObject];
     CGPoint point = [touch locationInView:_mapView];
     CGPoint editControlPoint = [touch locationInView:_mapView.editControl];
-    
+
     if ( [_mapView.editControl hitTest:editControlPoint withEvent:event]) {
         NSUInteger segmentSize = _mapView.editControl.bounds.size.width / _mapView.editControl.numberOfSegments;
         NSUInteger touchedSegment = editControlPoint.x / segmentSize;
@@ -299,7 +300,7 @@ typedef enum {
         [self dismissViewControllerAnimated:NO completion:^{
             [_mapView editControlAction:_mapView.editControl];
         }];
-        
+
         return;
     }
     OsmBaseObject * hit = [_mapView.editorLayer osmHitTest:point radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:nil];
@@ -328,7 +329,7 @@ typedef enum {
 - (IBAction)onewayPressed {
     NSMutableArray * onewayTag;
     NSInteger * index = 0;
-    for ( NSMutableArray * kv in _tags ) {
+    for ( NSMutableArray * kv in _tags ){
         if ( [kv[0] isEqualToString:@"oneway"] )
             onewayTag = kv;
         index++;
@@ -344,12 +345,12 @@ typedef enum {
             onewayTag[1] = @"no";
             _onewayState = NONE;
             break;
-            
+        
         case NONE:
             onewayTag[1] = @"yes";
             _onewayState = FORWARD;
             break;
-            
+        
         case FORWARD:
             [_tags removeObject: onewayTag];
             _onewayState = EMPTY;
@@ -381,31 +382,39 @@ typedef enum {
 }
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
-    NSInteger value =  (int)sender.value;
-    NSLog(@"LANE STEPPER VALUE: %li", (long)value);
-    [_editorLayer setNeedsLayout];
-    NSMutableArray * laneTag;
-    NSInteger * index = 0;
-    for ( NSMutableArray * kv in _tags ) {
-        if ( [kv[0] isEqualToString:@"lanes"] )
-            laneTag = kv;
-        index++;
-    }
-    laneTag[1] = @(value);
-    NSLog(@"LaneTag value: %@", laneTag );
-    if ( ![self isTagDictChanged:[self keyValueDictionary]] ){
-        [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
-        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
-    }
+        NSString * error = nil;
+            EditAction laneAdded;
+            double value =  [sender value];
+        NSLog(@"LANE STEPPER VALUE: %d", (int) _stepper.value);
+            [txtValue setText:[NSString stringWithFormat:@"%d", (int)value]];
+            if(laneAdded)
+                    [txtValue setText:[NSString stringWithFormat:@"%f", [laneStepper value]]];
+            if(error) {
+                    UIAlertController * alertError = [UIAlertController alertControllerWithTitle:error message:nil preferredStyle:UIAlertControllerStyleAlert];
+                    [alertError addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
+                    [self presentViewController:alertError animated:YES completion:nil];
+            }
+            [_editorLayer setNeedsLayout];
+            if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
+                     NSMutableArray * laneTag;
+                         NSInteger * index = 0;
+                         for ( NSMutableArray * kv in _tags ){
+                                 if ( [kv[0] isEqualToString:@"lanes"] )
+                                         laneTag = kv;
+                                 index++;
+                    }
+            }
+        saveButton.enabled = _laneCount %2 != 0;
+        //saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
 }
 
 - (IBAction)closeBtnPressed:(id)sender {
-    [self dismissViewControllerAnimated:true completion:nil];
+        [self dismissViewControllerAnimated:true completion:nil];
 }
 
 - (IBAction)done {
     [self dismissViewControllerAnimated:true completion:nil];
-    [self saveState];
+        [self saveState];
     
     [self commitChanges];
 }
@@ -451,3 +460,4 @@ typedef enum {
 }
 
 @end
+

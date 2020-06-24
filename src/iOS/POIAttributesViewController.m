@@ -70,14 +70,19 @@ enum {
 {
 	OsmBaseObject * object = AppDelegate.getAppDelegate.mapView.editorLayer.selectedPrimary;
 
-	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-	OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
-	if ( object.isNode )
-		return 1;	// longitude/latitude
-	if ( object.isWay )
-		return object.isWay.nodes.count;	// all nodes
-	if ( object.isRelation )
-		return 0;
+	if ( section == SECTION_METADATA ) {
+		return 6;
+	}
+	if ( object.isNode ) {
+		if ( section == SECTION_NODE_LATLON )
+			return 1;	// longitude/latitude
+	} else if ( object.isWay ) {
+		if ( section == SECTION_WAY_EXTRA ) {
+			return 1;
+		} else if ( section == SECTION_WAY_NODES ) {
+			return object.isWay.nodes.count;	// all nodes
+		}
+	}
 	return 0;
 }
 
@@ -127,14 +132,17 @@ enum {
 	} else if ( object.isNode ) {
 		if ( indexPath.section == SECTION_NODE_LATLON ) {
 			OsmNode * node = object.isNode;
-			switch ( indexPath.row ) {
-				case 0:
-					cell.title.text = NSLocalizedString(@"Lat/Lon",nil);
-					cell.value.text = [NSString stringWithFormat:@"%f,%f", node.lat, node.lon];
-				default:
-					break;
-			}
-		} else if ( object.isWay ) {
+			cell.title.text = NSLocalizedString(@"Lat/Lon",nil);
+			cell.value.text = [NSString stringWithFormat:@"%f,%f", node.lat, node.lon];
+		}
+	} else if ( object.isWay ) {
+		if ( indexPath.section == SECTION_WAY_EXTRA ) {
+			double len = object.isWay.lengthInMeters;
+			cell.title.text = NSLocalizedString(@"Length",nil);
+			cell.value.text = len >= 10 ? [NSString stringWithFormat:NSLocalizedString(@"%.0f meters",nil), len]
+										: [NSString stringWithFormat:NSLocalizedString(@"%.1f meters",nil), len];
+			cell.accessoryType = UITableViewCellAccessoryNone;
+		} else if ( indexPath.section == SECTION_WAY_NODES ) {
 			OsmWay * way = object.isWay;
 			OsmNode * node = way.nodes[ indexPath.row ];
 			cell.title.text = NSLocalizedString(@"Node",nil);
@@ -167,8 +175,7 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-    OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
+	OsmBaseObject * object = AppDelegate.getAppDelegate.mapView.editorLayer.selectedPrimary;
     if ( object == nil ) {
         return;
     }

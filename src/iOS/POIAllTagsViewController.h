@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface TextPairTableCell : UITableViewCell
+{
+    IBOutlet UIView             * _fixContstraintView;
+    IBOutlet NSLayoutConstraint *    _fixConstraint;
+}
 @property (assign,nonatomic) IBOutlet	AutocompleteTextField *	text1;
 @property (assign,nonatomic) IBOutlet	AutocompleteTextField *	text2;
 @end
