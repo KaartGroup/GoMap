@@ -7,18 +7,29 @@
 //
 
 #import "iosapi.h"
-#import "CommonPresetList.h"
+#import "PersistentWebCache.h"
 #import "POITabBarController.h"
 #import "POIFeaturePickerViewController.h"
+#import "PresetsDatabase.h"
 
 
 static const NSInteger MOST_RECENT_DEFAULT_COUNT = 5;
 static const NSInteger MOST_RECENT_SAVED_MAXIMUM = 100;
 
+
+@interface FeaturePickerCell : UITableViewCell
+@property (strong,atomic)	NSString * featureName;
+@end
+@implementation FeaturePickerCell
+@end
+
+
 @implementation POIFeaturePickerViewController
 
 static NSMutableArray	*	mostRecentArray;
 static NSInteger			mostRecentMaximum;
+
+static PersistentWebCache * logoCache;	// static so memory cache persists each time we appear
 
 
 +(void)loadMostRecentForGeometry:(NSString *)geometry
@@ -30,9 +41,9 @@ static NSInteger			mostRecentMaximum;
 	NSArray * a = [[NSUserDefaults standardUserDefaults] objectForKey:defaults];
 	mostRecentArray = [NSMutableArray arrayWithCapacity:a.count+1];
 	for ( NSString * featureName in a ) {
-		CommonPresetFeature * tagInfo = [CommonPresetFeature commonPresetFeatureWithName:featureName];
-		if ( tagInfo ) {
-			[mostRecentArray addObject:tagInfo];
+		PresetFeature * feature = [PresetFeature presetFeatureForFeatureName:featureName];
+		if ( feature ) {
+			[mostRecentArray addObject:feature];
 		}
 	}
 }
@@ -52,6 +63,10 @@ static NSInteger			mostRecentMaximum;
 {
 	[super viewDidLoad];
 
+	if ( logoCache == nil ) {
+		logoCache = [[PersistentWebCache alloc] initWithName:@"presetLogoCache" memorySize:5*1000000];
+	}
+
 	self.tableView.estimatedRowHeight = 44.0; // or could use UITableViewAutomaticDimension;
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 	
@@ -63,9 +78,9 @@ static NSInteger			mostRecentMaximum;
 
 	if ( _parentCategory == nil ) {
 		_isTopLevel = YES;
-		_typeArray = [CommonPresetList featuresForGeometry:geometry];
+		_featureList = [PresetsDatabase featuresAndCategoriesForGeometry:geometry];
 	} else {
-		_typeArray = _parentCategory.members;
+		_featureList = _parentCategory.members;
 	}
 }
 
@@ -83,6 +98,16 @@ static NSInteger			mostRecentMaximum;
 	}
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+	if ( _isTopLevel && section == 1 ) {
+		NSString * countryCode = [AppDelegate getAppDelegate].mapView.countryCodeForLocation;
+		NSLocale * locale = [NSLocale currentLocale];
+		NSString * countryName = [locale displayNameForKey:NSLocaleCountryCode value:countryCode];
+		return [NSString stringWithFormat:NSLocalizedString(@"Results for %@ (%@)",nil),countryName,countryCode.uppercaseString];
+	}
+	return nil;
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -93,84 +118,94 @@ static NSInteger			mostRecentMaximum;
 			NSInteger count = mostRecentArray.count;
 			return count < mostRecentMaximum ? count : mostRecentMaximum;
 		} else {
-			return _typeArray.count;
+			return _featureList.count;
 		}
 	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UIColor *regularColor, *suggestionColor;
-	if ( @available(iOS 13.0, *) ) {
-		regularColor 	= [UIColor systemBackgroundColor];
-		suggestionColor = [UIColor secondarySystemBackgroundColor];
-	} else {
-		regularColor	= [UIColor whiteColor];
-		suggestionColor = [UIColor colorWithRed:1.0 green:0.9 blue:0.9 alpha:1.0];
-	}
-
+	PresetFeature * feature = nil;
 	if ( _searchArrayAll ) {
-		UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FinalCell" forIndexPath:indexPath];
-		CommonPresetFeature * feature = indexPath.section == 0 ? _searchArrayRecent[ indexPath.row ] : _searchArrayAll[ indexPath.row ];
-		cell.textLabel.text			= feature.friendlyName;
-		cell.imageView.image		= [feature.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [cell.imageView setupTintColorForDarkMode];
-		cell.imageView.contentMode	= UIViewContentModeScaleAspectFit;
-		cell.detailTextLabel.text	= feature.summary;
-		cell.backgroundColor		= feature.suggestion ? suggestionColor : regularColor;
-		return cell;
-	}
-
-	if ( _isTopLevel && indexPath.section == 0 ) {
+		feature = indexPath.section == 0 ? _searchArrayRecent[ indexPath.row ] : _searchArrayAll[ indexPath.row ];
+	} else if ( _isTopLevel && indexPath.section == 0 ) {
 		// most recents
-		UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FinalCell" forIndexPath:indexPath];
-		CommonPresetFeature * feature = mostRecentArray[ indexPath.row ];
-		cell.textLabel.text			= feature.friendlyName;
-		cell.imageView.image		= [feature.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [cell.imageView setupTintColorForDarkMode];
-		cell.imageView.contentMode	= UIViewContentModeScaleAspectFit;
-		cell.detailTextLabel.text	= feature.summary;
-		cell.accessoryType			= UITableViewCellAccessoryNone;
-		cell.backgroundColor		= feature.suggestion ? suggestionColor : regularColor;
-		return cell;
+		feature = mostRecentArray[ indexPath.row ];
 	} else {
 		// type array
-		id tagInfo = _typeArray[ indexPath.row ];
-		if ( [tagInfo isKindOfClass:[CommonPresetCategory class]] ) {
-			CommonPresetCategory * category = tagInfo;
+		id tagInfo = _featureList[ indexPath.row ];
+		if ( [tagInfo isKindOfClass:[PresetCategory class]] ) {
+			PresetCategory * category = tagInfo;
 			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"SubCell" forIndexPath:indexPath];
 			cell.textLabel.text = category.friendlyName;
 			return cell;
 		} else {
-			CommonPresetFeature * feature = tagInfo;
-			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FinalCell" forIndexPath:indexPath];
-			cell.textLabel.text			= feature.friendlyName;
-			cell.imageView.image		= [feature.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            [cell.imageView setupTintColorForDarkMode];
-			cell.imageView.contentMode	= UIViewContentModeScaleAspectFit;
-			cell.detailTextLabel.text	= feature.summary;
-			cell.backgroundColor		= regularColor;
-
-			POITabBarController * tabController = (id)self.tabBarController;
-			NSString * geometry = [self currentSelectionGeometry];
-			NSString * currentFeature = [CommonPresetList featureNameForObjectDict:tabController.keyValueDict geometry:geometry];
-			BOOL selected = [currentFeature isEqualToString:feature.featureName];
-			cell.accessoryType = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-			return cell;
+			feature = tagInfo;
 		}
 	}
+
+	if ( feature.suggestion && feature.logoImage == nil && feature.logoURL ) {
+		// download brand logo for name suggestion
+		feature.logoImage = feature.icon;
+		UIImage * logo = [logoCache objectWithKey:feature.featureName
+			fallbackURL:^{
+				return [NSURL URLWithString:feature.logoURL];
+			} objectForData:^id _Nonnull(NSData * data) {
+				extern UIImage * IconScaledForDisplay(UIImage *icon);
+				UIImage * image = [UIImage imageWithData:data];
+				return IconScaledForDisplay(image);
+			} completion:^(id image) {
+				if ( image ) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						feature.logoImage = image;
+						for ( FeaturePickerCell * cell in self.tableView.visibleCells ) {
+							if ( [cell isKindOfClass:[FeaturePickerCell class]] ) {
+								if ( cell.featureName == feature.featureName ) {
+									cell.imageView.image = image;
+								}
+							}
+						}
+					});
+				}
+			}];
+		if ( logo ) {
+			feature.logoImage = logo;
+		}
+	}
+
+	NSString * brand = @"☆ ";
+	POITabBarController * tabController = (id)self.tabBarController;
+	NSString * geometry = [self currentSelectionGeometry];
+	NSString * currentFeature = [PresetsDatabase featureNameForObjectDict:tabController.keyValueDict geometry:geometry];
+	FeaturePickerCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FinalCell" forIndexPath:indexPath];
+	cell.textLabel.text			= feature.suggestion ? [brand stringByAppendingString:feature.friendlyName] : feature.friendlyName;
+	cell.imageView.image		= feature.logoImage && feature.logoImage != feature.icon
+									? feature.logoImage
+									: [feature.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+	if (@available(iOS 13.0, *)) {
+		cell.imageView.tintColor = UIColor.labelColor;
+	} else {
+		cell.imageView.tintColor = UIColor.blackColor;
+	}
+	cell.imageView.contentMode	= UIViewContentModeScaleAspectFit;
+	cell.detailTextLabel.text	= feature.summary;
+	cell.accessoryType = [currentFeature isEqualToString:feature.featureName] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+	cell.featureName = feature.featureName;
+	return cell;
 }
 
-+(void)updateMostRecentArrayWithSelection:(CommonPresetFeature *)feature geometry:(NSString *)geometry
++(void)updateMostRecentArrayWithSelection:(PresetFeature *)feature geometry:(NSString *)geometry
 {
-	[mostRecentArray removeObject:feature];
+	[mostRecentArray filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PresetFeature * f, id bindings) {
+		return ! [f.featureName isEqualToString:feature.featureName];
+	}]];
 	[mostRecentArray insertObject:feature atIndex:0];
 	if ( mostRecentArray.count > MOST_RECENT_SAVED_MAXIMUM ) {
 		[mostRecentArray removeLastObject];
 	}
 
 	NSMutableArray * a = [[NSMutableArray alloc] initWithCapacity:mostRecentArray.count];
-	for ( CommonPresetFeature * f in mostRecentArray ) {
+	for ( PresetFeature * f in mostRecentArray ) {
 		[a addObject:f.featureName];
 	}
 
@@ -179,7 +214,7 @@ static NSInteger			mostRecentMaximum;
 }
 
 
--(void)updateTagsWithFeature:(CommonPresetFeature *)feature
+-(void)updateTagsWithFeature:(PresetFeature *)feature
 {
 	NSString * geometry = [self currentSelectionGeometry];
 	[self.delegate typeViewController:self didChangeFeatureTo:feature];
@@ -189,29 +224,29 @@ static NSInteger			mostRecentMaximum;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if ( _searchArrayAll ) {
-		CommonPresetFeature * tagInfo = indexPath.section == 0 ? _searchArrayRecent[ indexPath.row ] : _searchArrayAll[ indexPath.row ];
-		[self updateTagsWithFeature:tagInfo];
+		PresetFeature * feature = indexPath.section == 0 ? _searchArrayRecent[ indexPath.row ] : _searchArrayAll[ indexPath.row ];
+		[self updateTagsWithFeature:feature];
 		[self.navigationController popToRootViewControllerAnimated:YES];
 		return;
 	}
 
 	if ( _isTopLevel && indexPath.section == 0 ) {
 		// most recents
-		CommonPresetFeature * tagInfo = mostRecentArray[ indexPath.row ];
-		[self updateTagsWithFeature:tagInfo];
+		PresetFeature * feature = mostRecentArray[ indexPath.row ];
+		[self updateTagsWithFeature:feature];
 		[self.navigationController popToRootViewControllerAnimated:YES];
 	} else {
 		// type list
-		id entry = _typeArray[ indexPath.row ];
-		if ( [entry isKindOfClass:[CommonPresetCategory class]] ) {
-			CommonPresetCategory * category = entry;
+		id entry = _featureList[ indexPath.row ];
+		if ( [entry isKindOfClass:[PresetCategory class]] ) {
+			PresetCategory * category = entry;
 			POIFeaturePickerViewController * sub = [self.storyboard instantiateViewControllerWithIdentifier:@"PoiTypeViewController"];
 			sub.parentCategory	= category;
 			sub.delegate		= self.delegate;
 			[_searchBar resignFirstResponder];
 			[self.navigationController pushViewController:sub animated:YES];
 		} else {
-			CommonPresetFeature * feature = entry;
+			PresetFeature * feature = entry;
 			[self updateTagsWithFeature:feature];
 			[self.navigationController popToRootViewControllerAnimated:YES];
 		}
@@ -225,15 +260,11 @@ static NSInteger			mostRecentMaximum;
 		// no search
 		_searchArrayAll = nil;
 		_searchArrayRecent = nil;
-#if 0
-		[_searchBar performSelector:@selector(resignFirstResponder) withObject:nil afterDelay:0.1];
-#endif
 	} else {
 		// searching
-		_searchArrayAll = [[CommonPresetList featuresInCategory:_parentCategory matching:searchText] mutableCopy];
-
-		_searchArrayRecent = [mostRecentArray filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(CommonPresetFeature * tagInfo, NSDictionary *bindings) {
-			return [tagInfo matchesSearchText:searchText];
+		_searchArrayAll = [[PresetsDatabase featuresInCategory:_parentCategory matching:searchText] mutableCopy];
+		_searchArrayRecent = [mostRecentArray filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PresetFeature * feature, NSDictionary *bindings) {
+			return [feature matchesSearchText:searchText];
 		}]];
 	}
 	[self.tableView reloadData];

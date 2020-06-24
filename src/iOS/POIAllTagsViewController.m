@@ -7,10 +7,9 @@
 //
 
 #import <SafariServices/SafariServices.h>
-
+#import "EnhancedHwyEditorController.h"
 #import "AppDelegate.h"
 #import "AutocompleteTextField.h"
-#import "CommonPresetList.h"
 #import "EditorMapLayer.h"
 #import "MapView.h"
 #import "OsmMapData.h"
@@ -18,7 +17,12 @@
 #import "POIAllTagsViewController.h"
 #import "POITabBarController.h"
 #import "PushPinView.h"
+#import "PresetsDatabase.h"
 #import "RenderInfo.h"
+#import "WikiPage.h"
+#import "PresetsDatabase.h"
+#import "OsmRelation.h"
+#import "TagInfo.h"
 
 
 #define EDIT_RELATIONS 0
@@ -37,8 +41,12 @@
 	}
 }
 
-@end
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+}
 
+@end
 
 @implementation POIAllTagsViewController
 
@@ -48,55 +56,99 @@
 
 	UIBarButtonItem * editButton = self.editButtonItem;
 	[editButton setTarget:self];
-	[editButton setAction:@selector(toggleEditing:)];
+	[editButton setAction:@selector(toggleTableRowEditing:)];
 	self.navigationItem.rightBarButtonItems = @[ self.navigationItem.rightBarButtonItem, editButton ];
+    
+    // fetch values from tab controller
+    //Loads state
+	POITabBarController * tabController = (id)self.tabBarController;
+    _tags        = [NSMutableArray arrayWithCapacity:tabController.keyValueDict.count];
+    _relations    = [tabController.relationList mutableCopy];
+    _members    = tabController.selection.isRelation ? [((OsmRelation *)tabController.selection).members mutableCopy] : nil;
+    
+    [tabController.keyValueDict enumerateKeysAndObjectsUsingBlock:^(NSString * tag, NSString * value, BOOL *stop) {
+        [_tags addObject:[NSMutableArray arrayWithObjects:tag,value,nil]];
+    }];
+    
+    [_tags sortUsingComparator:^NSComparisonResult( NSArray * obj1, NSArray * obj2 ) {
+        NSString * tag1 = obj1[0];
+        NSString * tag2 = obj2[0];
+        BOOL tiger1 = [tag1 hasPrefix:@"tiger:"] || [tag1 hasPrefix:@"gnis:"];
+        BOOL tiger2 = [tag2 hasPrefix:@"tiger:"] || [tag2 hasPrefix:@"gnis:"];
+        if ( tiger1 == tiger2 ) {
+            return [tag1 compare:tag2];
+        } else {
+            return tiger1 - tiger2;
+        }
+    }];
+    
+    [self.tableView reloadData];
+    
+	if ( tabController.selection.isNode ) {
+		self.title = NSLocalizedString(@"Node tags",nil);
+	} else if ( tabController.selection.isWay ) {
+		self.title = NSLocalizedString(@"Way tags",nil);
+	} else if ( tabController.selection.isRelation ) {
+		NSString * type = tabController.keyValueDict[ @"type" ];
+		if ( type.length ) {
+			type = [type stringByReplacingOccurrencesOfString:@"_" withString:@" "];
+			type = [type capitalizedString];
+			self.title = [NSString stringWithFormat:@"%@ tags",type];
+		} else {
+			self.title = NSLocalizedString(@"Relation tags",nil);
+		}
+	} else {
+		self.title = NSLocalizedString(@"All Tags",nil);
+	}
+    _saveButton.enabled = [tabController isTagDictChanged];
 }
 
-- (void)loadState
+- (void)saveState
 {
-	// fetch values from tab controller
+    NSMutableDictionary * dict = [self keyValueDictionary];
+    POITabBarController * tabController = (id)self.tabBarController;
+    tabController.keyValueDict = dict;
+}
+
+
+// return -1 if unchanged, else row to set focus
+- (NSInteger)updateWithRecomendationsForFeature:(BOOL)forceReload
+{
 	POITabBarController * tabController = (id)self.tabBarController;
-	_tags		= [NSMutableArray arrayWithCapacity:tabController.keyValueDict.count];
-	_relations	= [tabController.relationList mutableCopy];
-	_members	= tabController.selection.isRelation ? [((OsmRelation *)tabController.selection).members mutableCopy] : nil;
+	NSString * geometry = tabController.selection.geometryName ?: GEOMETRY_NODE;
+	NSDictionary * dict = [self keyValueDictionary];
+	NSString * newFeature = [PresetsDatabase featureNameForObjectDict:dict geometry:geometry];
 
-	[tabController.keyValueDict enumerateKeysAndObjectsUsingBlock:^(NSString * tag, NSString * value, BOOL *stop) {
-		[_tags addObject:[NSMutableArray arrayWithObjects:tag,value,nil]];
-	}];
+	if ( !forceReload && [newFeature isEqualToString:_featureName] )
+		return -1;
+	_featureName = newFeature;
 
-	[_tags sortUsingComparator:^NSComparisonResult( NSArray * obj1, NSArray * obj2 ) {
-		NSString * tag1 = obj1[0];
-		NSString * tag2 = obj2[0];
-		BOOL tiger1 = [tag1 hasPrefix:@"tiger:"] || [tag1 hasPrefix:@"gnis:"];
-		BOOL tiger2 = [tag2 hasPrefix:@"tiger:"] || [tag2 hasPrefix:@"gnis:"];
-		if ( tiger1 == tiger2 ) {
-			return [tag1 compare:tag2];
-		} else {
-			return tiger1 - tiger2;
-		}
-	}];
+	// remove all entries without key & value
+	[_tags filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSArray<NSString *> * kv, id bindings) {
+		return kv[0].length && kv[1].length;
+	}]];
+
+	NSInteger nextRow = _tags.count;
 
 	// add new cell ready to be edited
 	[_tags addObject:[NSMutableArray arrayWithObjects:@"", @"", nil]];
 
 	// add placeholder keys
-	NSString * geometry = tabController.selection.geometryName ?: GEOMETRY_NODE;
-	NSString * featureName = [CommonPresetList featureNameForObjectDict:tabController.keyValueDict geometry:geometry];
-	if ( featureName ) {
-		[CommonPresetList.sharedList setPresetsForFeature:featureName tags:tabController.keyValueDict geometry:geometry update:^{}];
+	if ( newFeature ) {
+		PresetsForFeature * presets = [PresetsForFeature presetsForFeature:newFeature objectTags:dict geometry:geometry update:nil];
 		NSMutableArray * newKeys = [NSMutableArray new];
-		for ( NSInteger section = 0; section < CommonPresetList.sharedList.sectionCount; ++section ) {
-			for ( NSInteger row = 0; row < [CommonPresetList.sharedList tagsInSection:section]; ++row ) {
-				id preset = [CommonPresetList.sharedList tagAtSection:section row:row];
-				if ( [preset isKindOfClass:[CommonPresetGroup class]] ) {
-					CommonPresetGroup * group = preset;
-					for ( CommonPresetKey * presetKey in group.presetKeys ) {
+		for ( NSInteger section = 0; section < presets.sectionCount; ++section ) {
+			for ( NSInteger row = 0; row < [presets tagsInSection:section]; ++row ) {
+				id preset = [presets presetAtSection:section row:row];
+				if ( [preset isKindOfClass:[PresetGroup class]] ) {
+					PresetGroup * group = preset;
+					for ( PresetKey * presetKey in group.presetKeys ) {
 						if ( presetKey.tagKey.length == 0 )
 							continue;
 						[newKeys addObject:presetKey.tagKey];
 					}
 				} else {
-					CommonPresetKey * presetKey = preset;
+					PresetKey * presetKey = preset;
 					if ( presetKey.tagKey.length == 0 )
 						continue;
 					[newKeys addObject:presetKey.tagKey];
@@ -120,39 +172,50 @@
 
 	[self.tableView reloadData];
 
-	if ( tabController.selection.isNode ) {
-		self.title = NSLocalizedString(@"Node tags",nil);
-	} else if ( tabController.selection.isWay ) {
-		self.title = NSLocalizedString(@"Way tags",nil);
-	} else if ( tabController.selection.isRelation ) {
-		NSString * type = tabController.keyValueDict[ @"type" ];
-		if ( type.length ) {
-			type = [type stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-			type = [type capitalizedString];
-			self.title = [NSString stringWithFormat:@"%@ tags",type];
-		} else {
-			self.title = NSLocalizedString(@"Relation tags",nil);
-		}
-	} else {
-		self.title = NSLocalizedString(@"All Tags",nil);
-	}
-
-	_saveButton.enabled = [tabController isTagDictChanged];
+	return nextRow;
 }
 
-- (void)saveState
+- (void)loadState
 {
-	NSMutableDictionary * dict = [self keyValueDictionary];
 	POITabBarController * tabController = (id)self.tabBarController;
-	tabController.keyValueDict = dict;
+
+	// fetch values from tab controller
+	_tags		= [NSMutableArray arrayWithCapacity:tabController.keyValueDict.count];
+	_relations	= [tabController.relationList mutableCopy];
+	_members	= tabController.selection.isRelation ? [((OsmRelation *)tabController.selection).members mutableCopy] : nil;
+
+	[tabController.keyValueDict enumerateKeysAndObjectsUsingBlock:^(NSString * tag, NSString * value, BOOL *stop) {
+		[_tags addObject:[NSMutableArray arrayWithObjects:tag,value,nil]];
+	}];
+
+	[_tags sortUsingComparator:^NSComparisonResult( NSArray * obj1, NSArray * obj2 ) {
+		NSString * tag1 = obj1[0];
+		NSString * tag2 = obj2[0];
+		BOOL tiger1 = [tag1 hasPrefix:@"tiger:"] || [tag1 hasPrefix:@"gnis:"];
+		BOOL tiger2 = [tag2 hasPrefix:@"tiger:"] || [tag2 hasPrefix:@"gnis:"];
+		if ( tiger1 == tiger2 ) {
+			return [tag1 compare:tag2];
+		} else {
+			return tiger1 - tiger2;
+		}
+	}];
+
+	[self updateWithRecomendationsForFeature:YES];
+
+	_saveButton.enabled = [tabController isTagDictChanged];
+	if (@available(iOS 13.0, *)) {
+		self.tabBarController.modalInPresentation = _saveButton.enabled;
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-	[self loadState];
-
-
+	if ( _showingWikiLink ) {
+		_showingWikiLink = NO;
+	} else {
+		[self loadState];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -164,10 +227,28 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	if ( _tags.count == 0 && _members.count == 0 ) {
-		// if there are no tags then start editing the first one
-		[self addTagCellAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	POITabBarController * tabController = (id)self.tabBarController;
+	if ( tabController.selection == nil ) {
+		TextPairTableCell * cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		if ( cell.text1.text.length == 0 && cell.text2.text.length == 0 ) {
+			[cell.text1 becomeFirstResponder];
+		}
 	}
+}
+
+- (NSArray<id<UIFocusEnvironment>> *)preferredFocusEnvironments
+{
+	if ( @available( macCatalyst 13,*) ) {
+		// On Mac Catalyst set the focus to something other than a text field (which brings up the keyboard)
+		// The Cancel button would be ideal but it isn't clear how to implement that, so select the Add button instead
+#if 0
+		NSIndexPath * indexPath = [NSIndexPath indexPathForRow:_tags.count inSection:0];
+		AddNewCell * cell = [self.tableView cellForRowAtIndexPath:indexPath];
+		if ( cell.button )
+			return @[ cell.button ];
+#endif
+	}
+	return @[];
 }
 
 #pragma mark - Table view data source
@@ -220,81 +301,204 @@
 	}
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)setAssociatedColorForCell:(TextPairTableCell *)cell
 {
-	if ( indexPath.section == 0 ) {
-
-		// Tags
-		if ( indexPath.row == _tags.count ) {
-			// Add new tag
-			AddNewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
-			[cell.button removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
-			[cell.button addTarget:self action:@selector(addTagCell:) forControlEvents:UIControlEventTouchUpInside];
-			return cell;
+	if ( [cell.text1.text isEqualToString:@"colour"] ||
+		 [cell.text1.text isEqualToString:@"color"] ||
+		 [cell.text1.text hasSuffix:@":colour"] ||
+		 [cell.text1.text hasSuffix:@":color"] )
+	{
+		UIColor * color = [Colors cssColorForColorName:cell.text2.text];
+		if ( color ) {
+			CGFloat size = cell.text2.bounds.size.height;
+			size = round( size * 0.5 );
+			UIView * square = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size, size)];
+			square.backgroundColor = color;
+			square.layer.borderColor = UIColor.blackColor.CGColor;
+			square.layer.borderWidth = 1.0;
+			UIView * view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size+6, size)];
+			view.backgroundColor = UIColor.clearColor;
+			[view addSubview:square];
+			cell.text2.rightView = view;
+			cell.text2.rightViewMode = UITextFieldViewModeAlways;
+			return;
 		}
+	}
+	cell.text2.rightView = nil;
+	cell.text2.rightViewMode = UITextFieldViewModeNever;
+}
 
-		TextPairTableCell * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
-		NSArray * kv = _tags[ indexPath.row ];
-		// assign text contents of fields
-		cell.text1.enabled = YES;
-		cell.text2.enabled = YES;
-		cell.text1.text = kv[0];
-		cell.text2.text = kv[1];
+-(IBAction)openWebsite:(id)sender
+{
+	TextPairTableCell * pair = (id)sender;
+	while ( pair && ![pair isKindOfClass:[UITableViewCell class]])
+		pair = (id)pair.superview;
 
-		cell.text1.didSelect = ^{ [cell.text2 becomeFirstResponder]; };
-		cell.text2.didSelect = ^{};
-
-		return cell;
-
-	} else if ( indexPath.section == 1 ) {
-
-		// Relations
-		if ( indexPath.row == _relations.count ) {
-			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
-			return cell;
-		}
-		TextPairTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RelationCell" forIndexPath:indexPath];
-		cell.text1.enabled = NO;
-		cell.text2.enabled = NO;
-		OsmRelation	* relation = _relations[ indexPath.row ];
-		cell.text1.text = relation.ident.stringValue;
-		cell.text2.text = [relation friendlyDescription];
-
-		return cell;
-
-	} else {
-
-		// Members
-		if ( indexPath.row == _members.count ) {
-			AddNewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
-			[cell.button removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
-			[cell.button addTarget:self action:@selector(addTagCell:) forControlEvents:UIControlEventTouchUpInside];
-			return cell;
-		}
-		TextPairTableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MemberCell" forIndexPath:indexPath];
-#if EDIT_RELATIONS
-		cell.text1.enabled = YES;
-		cell.text2.enabled = YES;
-#else
-		cell.text1.enabled = NO;
-		cell.text2.enabled = NO;
-#endif
-		if ( [member isKindOfClass:[OsmMember class]] ) {
-			OsmBaseObject * ref = member.ref;
-			NSString * memberName = [ref isKindOfClass:[OsmBaseObject class]] ? ref.friendlyDescriptionWithDetails : [NSString stringWithFormat:@"%@ %@",member.type, member.ref];
-			cell.text1.text = member.role;
-			cell.text2.text = memberName;
+	NSString * string = nil;
+	if ( [pair.text1.text isEqualToString:@"wikipedia"] ||
+		 [pair.text1.text hasSuffix:@":wikipedia"] )
+	{
+		NSArray<NSString *> * a = [pair.text2.text componentsSeparatedByString:@":"];
+		NSString * lang = [a[0] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+		NSString * page = [a[1] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+		string = [NSString stringWithFormat:@"https://%@.wikipedia.org/wiki/%@",lang,page];
+	} else if ( [pair.text1.text isEqualToString:@"wikidata"] ||
+				[pair.text1.text hasSuffix:@":wikidata"] )
+	{
+		NSString * page = [pair.text2.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+		string = [NSString stringWithFormat:@"https://www.wikidata.org/wiki/%@",page];
+	} else if ( [pair.text2.text hasPrefix:@"http://"] ||
+				[pair.text2.text hasPrefix:@"https://"] )
+	{
+		string = pair.text2.text;
+	}
+	if ( string ) {
+		NSURL * url = [NSURL URLWithString:string];
+		if ( url ) {
+			SFSafariViewController * viewController = [[SFSafariViewController alloc] initWithURL:url];
+			[self presentViewController:viewController animated:YES completion:nil];
 		} else {
-			NSArray * values = (id)member;
-			cell.text1.text = values[0];
-			cell.text2.text = values[1];
+			UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Invalid URL", nil)
+																			message:nil
+																	 preferredStyle:UIAlertControllerStyleAlert];
+			[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleCancel handler:nil]];
+			[self presentViewController:alert animated:YES completion:nil];
 		}
-
-		return cell;
 	}
 }
 
+-(void)setWebsiteButtonForCell:(TextPairTableCell *)cell
+{
+	if ( [cell.text1.text isEqualToString:@"wikipedia"] ||
+		 [cell.text1.text isEqualToString:@"wikidata"] ||
+		 [cell.text1.text hasSuffix:@":wikipedia"] ||
+		 [cell.text1.text hasSuffix:@":wikidata"] ||
+		 [cell.text2.text hasPrefix:@"http://"] ||
+	     [cell.text2.text hasPrefix:@"https://"] )
+	{
+		UIButton * button = [UIButton buttonWithType:UIButtonTypeInfoLight];
+		[button addTarget:self action:@selector(openWebsite:) forControlEvents:UIControlEventTouchUpInside];
+		cell.text2.rightView	 = button;
+		cell.text2.rightViewMode = UITextFieldViewModeAlways;
+	 } else {
+		cell.text2.rightView 	 = nil;
+		cell.text2.rightViewMode = UITextFieldViewModeNever;
+	}
+}
+
+- (void)addTagCell:(id)sender
+{
+    UITableViewCell * cell = sender;    // starts out as UIButton
+    while ( cell && ![cell isKindOfClass:[UITableViewCell class]] )
+        cell = (id)[cell superview];
+    NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+    if ( indexPath.section == 0 ) {
+        [_tags addObject:[NSMutableArray arrayWithObjects:@"",@"",nil]];
+    } else if ( indexPath.section == 2 ) {
+        [_members addObject:[NSMutableArray arrayWithObjects:@"",@"",nil]];
+    } else {
+        return;
+    }
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
+
+    // set new cell to show keyboard
+    TextPair *newCell = (id)[self.tableView cellForRowAtIndexPath:indexPath];
+    [newCell.text1 becomeFirstResponder];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( indexPath.section == 0 ) {
+
+        // Tags
+        if ( indexPath.row == _tags.count ) {
+            // Add new tag
+            AddNewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+            [cell.button removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+            [cell.button addTarget:self action:@selector(addTagCell:) forControlEvents:UIControlEventTouchUpInside];
+            return cell;
+        }
+
+        TextPair * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
+        NSArray * kv = _tags[ indexPath.row ];
+        // assign text contents of fields
+        cell.text1.enabled = YES;
+        cell.text2.enabled = YES;
+        cell.text1.text = kv[0];
+        cell.text2.text = kv[1];
+
+        cell.text1.didSelectAutocomplete = ^{ [cell.text2 becomeFirstResponder]; };
+        cell.text2.didSelectAutocomplete = ^{};
+
+#if 0
+        if ( [kv[0] length] == 0 && [kv[1] length] == 0 ) {
+            // empty key/value so set keyboard focus to it
+            [cell.text1 becomeFirstResponder];
+        }
+#endif
+        return cell;
+
+    } else if ( indexPath.section == 1 ) {
+
+        // Relations
+        if ( indexPath.row == _relations.count ) {
+            UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+            return cell;
+        }
+        TextPair *cell = [tableView dequeueReusableCellWithIdentifier:@"RelationCell" forIndexPath:indexPath];
+        cell.text1.enabled = NO;
+        cell.text2.enabled = NO;
+        OsmRelation    * relation = _relations[ indexPath.row ];
+        cell.text1.text = relation.ident.stringValue;
+        cell.text2.text = [relation friendlyDescription];
+
+        return cell;
+
+    } else {
+
+        // Members
+        if ( indexPath.row == _members.count ) {
+            AddNewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+            [cell.button removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+            [cell.button addTarget:self action:@selector(addTagCell:) forControlEvents:UIControlEventTouchUpInside];
+            return cell;
+        }
+        TextPair *cell = [tableView dequeueReusableCellWithIdentifier:@"MemberCell" forIndexPath:indexPath];
+#if EDIT_RELATIONS
+        cell.text1.enabled = YES;
+        cell.text2.enabled = YES;
+#else
+        cell.text1.enabled = NO;
+        cell.text2.enabled = NO;
+#endif
+        OsmMember    * member = _members[ indexPath.row ];
+        if ( [member isKindOfClass:[OsmMember class]] ) {
+            OsmBaseObject * ref = member.ref;
+            NSString * memberName = [ref isKindOfClass:[OsmBaseObject class]] ? ref.friendlyDescription : [NSString stringWithFormat:@"%@ %@",member.type, member.ref];
+            cell.text1.text = member.role;
+            cell.text2.text = memberName;
+        } else {
+            NSArray * values = (id)member;
+            cell.text1.text = values[0];
+            cell.text2.text = values[1];
+        }
+
+        return cell;
+    }
+}
+
+- (IBAction)toggleEditing:(id)sender
+{
+    POITabBarController * tabController = (id)self.tabBarController;
+
+    BOOL editing = !self.tableView.editing;
+    self.navigationItem.leftBarButtonItem.enabled = !editing;
+    self.navigationItem.rightBarButtonItem.enabled = !editing && [tabController isTagDictChanged];
+    [self.tableView setEditing:editing animated:YES];
+    UIBarButtonItem * button = sender;
+    button.title = editing ? NSLocalizedString(@"Done",nil) : NSLocalizedString(@"Edit",nil);
+    button.style = editing ? UIBarButtonItemStyleDone : UIBarButtonItemStylePlain;
+}
 
 -(NSMutableDictionary *)keyValueDictionary
 {
@@ -315,90 +519,152 @@
 	return dict;
 }
 
-#pragma mark Cell editing
+#pragma mark TextField delegate
 
 - (IBAction)textFieldReturn:(id)sender
 {
-	[sender resignFirstResponder];
-}
-
-- (IBAction)textFieldEditingDidBegin:(UITextField *)textField
-{
-	UITableViewCell * cell = (id)textField.superview;
+	TextPairTableCell * cell = (id)sender;
 	while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
 		cell = (id)cell.superview;
-	TextPairTableCell * pair = (id)cell;
-	BOOL isValue = textField == pair.text2;
 
-	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+	[sender resignFirstResponder];
+	[self updateWithRecomendationsForFeature:YES];
+}
+
+- (IBAction)textFieldEditingDidBegin:(AutocompleteTextField *)textField
+{
+	_currentTextField = textField;
+
+	TextPairTableCell * pair = (id)textField.superview;
+	while ( pair && ![pair isKindOfClass:[UITableViewCell class]])
+		pair = (id)pair.superview;
+	NSIndexPath * indexPath = [self.tableView indexPathForCell:pair];
 
 	if ( indexPath.section == 0 ) {
 
+		BOOL isValue = textField == pair.text2;
 		NSMutableArray * kv = _tags[ indexPath.row ];
 
 		if ( isValue ) {
 			// get list of values for current key
 			NSString * key = kv[0];
-			NSSet * set = [CommonPresetList allTagValuesForKey:key];
+			NSSet * set = [PresetsDatabase allTagValuesForKey:key];
 			AppDelegate * appDelegate = [AppDelegate getAppDelegate];
 			NSMutableSet<NSString *> * values = [appDelegate.mapView.editorLayer.mapData tagValuesForKey:key];
 			[values addObjectsFromArray:[set allObjects]];
 			NSArray * list = [values allObjects];
-			[(AutocompleteTextField *)textField setCompletions:list];
+			textField.strings = list;
 		} else {
 			// get list of keys
-			NSSet * set = [CommonPresetList allTagKeys];
+			NSSet * set = [PresetsDatabase allTagKeys];
 			NSArray * list = [set allObjects];
-			[(AutocompleteTextField *)textField setCompletions:list];
+			textField.strings = list;
 		}
 	}
 }
 
+-(NSString *)convertWikiUrlToReferenceWithKey:(NSString *)key value:(NSString *)url
+{
+	if ( [key hasPrefix:@"wikipedia"] ) {
+		// if the value is for wikipedia then convert the URL to the correct format
+		// format is https://en.wikipedia.org/wiki/Nova_Scotia
+		NSScanner * scanner = [NSScanner scannerWithString:url];
+		NSString *languageCode, *pageName;
+		if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
+			[scanner scanUpToString:@"." intoString:&languageCode] &&
+			([scanner scanString:@".m" intoString:nil] || YES) &&
+			[scanner scanString:@".wikipedia.org/wiki/" intoString:nil] &&
+			[scanner scanUpToString:@"/" intoString:&pageName] &&
+			[scanner isAtEnd] &&
+			languageCode.length == 2 &&
+			pageName.length > 0 )
+		{
+			return [NSString stringWithFormat:@"%@:%@",languageCode,pageName];
+		}
+	} else if ( [key hasPrefix:@"wikidata"] ) {
+		// https://www.wikidata.org/wiki/Q90000000
+		NSScanner * scanner = [NSScanner scannerWithString:url];
+		NSString *pageName;
+		if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
+			([scanner scanString:@"www.wikidata.org/wiki/" intoString:nil] || [scanner scanString:@"m.wikidata.org/wiki/" intoString:nil]) &&
+			[scanner scanUpToString:@"/" intoString:&pageName] &&
+			[scanner isAtEnd] &&
+			pageName.length > 0 )
+		{
+			return pageName;
+		}
+	}
+	return nil;
+}
+
 -(void)textFieldEditingDidEnd:(UITextField *)textField
 {
-	UITableViewCell * cell = (id)textField.superview;
-	while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
-		cell = (id)cell.superview;
-	TextPairTableCell * pair = (id)cell;
-	BOOL isValue = textField == pair.text2;
+	TextPairTableCell * pair = (id)textField.superview;
+	while ( pair && ![pair isKindOfClass:[UITableViewCell class]])
+		pair = (id)pair.superview;
 
-	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+	NSIndexPath * indexPath = [self.tableView indexPathForCell:pair];
 	if ( indexPath.section == 0 ) {
-		if ( isValue ) {
-			NSMutableArray<NSString *> * kv = _tags[ indexPath.row ];
-			if ( [kv[0] hasPrefix:@"wikipedia"] ) {
-				// if the value is for wikipedia then convert the a URL to the correct format
-				// format is https://en.wikipedia.org/wiki/Nova_Scotia
-				NSScanner * scanner = [NSScanner scannerWithString:kv[1]];
-				NSString *languageCode, *pageName;
-				if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
-					[scanner scanUpToString:@"." intoString:&languageCode] &&
-					([scanner scanString:@".m" intoString:nil] || YES) &&
-					[scanner scanString:@".wikipedia.org/wiki/" intoString:nil] &&
-					[scanner scanUpToString:@"/" intoString:&pageName] &&
-					[scanner isAtEnd] &&
-					languageCode.length == 2 &&
-					pageName.length > 0 )
-				{
-					kv[1] = [NSString stringWithFormat:@"%@:%@",languageCode,pageName];
-					pair.text2.text = kv[1];
-				}
-			} else if ( [kv[0] hasPrefix:@"wikidata"] ) {
-				// https://www.wikidata.org/wiki/Q90000000
-				NSScanner * scanner = [NSScanner scannerWithString:kv[1]];
-				NSString *pageName;
-				if ( ([scanner scanString:@"https://" intoString:nil] || [scanner scanString:@"http://" intoString:nil]) &&
-					([scanner scanString:@"www.wikidata.org/wiki/" intoString:nil] || [scanner scanString:@"m.wikidata.org/wiki/" intoString:nil]) &&
-					[scanner scanUpToString:@"/" intoString:&pageName] &&
-					[scanner isAtEnd] &&
-					pageName.length > 0 )
-				{
-					kv[1] = pageName;
-					pair.text2.text = kv[1];
+		NSMutableArray<NSString *> * kv = _tags[ indexPath.row ];
+
+		[self setAssociatedColorForCell:pair];
+		[self setWebsiteButtonForCell:pair];
+
+		if ( kv[0].length && kv[1].length ) {
+
+			// do wikipedia conversion
+			NSString * newValue = [self convertWikiUrlToReferenceWithKey:kv[0] value:kv[1]];
+			if ( newValue ) {
+				kv[1] = newValue;
+				pair.text2.text = newValue;
+			}
+
+			// move the edited row up
+			for ( NSInteger i = 0; i < indexPath.row; ++i ) {
+				NSArray<NSString *> * a = _tags[i];
+				if ( a[0].length == 0 || a[1].length == 0 ) {
+					[_tags removeObjectAtIndex:indexPath.row];
+					[_tags insertObject:kv atIndex:i];
+					[self.tableView moveRowAtIndexPath:indexPath toIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+					break;
 				}
 			}
-		} else {
-			// editing key
+
+			// if we created a row that defines a key that duplicates a row witht the same key elsewhere then delete the other row
+			for ( NSInteger i = 0; i < _tags.count; ++i ) {
+				NSArray<NSString *> * a = _tags[i];
+				if ( a != kv && [a[0] isEqualToString:kv[0]] ) {
+					[_tags removeObjectAtIndex:i];
+					[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+				}
+			}
+
+			// update recommended tags
+			NSInteger nextRow = [self updateWithRecomendationsForFeature:NO];
+			if ( nextRow >= 0 ) {
+				// a new feature was defined
+				NSIndexPath * newPath = [NSIndexPath indexPathForRow:nextRow inSection:0];
+				[self.tableView scrollToRowAtIndexPath:newPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+
+				// move focus to next empty cell
+				TextPairTableCell * nextCell = [self.tableView cellForRowAtIndexPath:newPath];
+				[nextCell.text1 becomeFirstResponder];
+			}
+
+		} else if ( kv[0].length || kv[1].length ) {
+
+			// ensure there's a blank line either elsewhere, or create one below us
+			BOOL haveBlank = NO;
+			for ( NSArray<NSString *> * a in _tags ) {
+				haveBlank = a != kv && a[0].length == 0 && a[1].length == 0;
+				if ( haveBlank )
+					break;
+			}
+			if ( !haveBlank ) {
+				NSIndexPath * newPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+				[_tags insertObject:[NSMutableArray arrayWithObjects:@"", @"", nil] atIndex:newPath.row];
+				[self.tableView insertRowsAtIndexPaths:@[newPath] withRowAnimation:UITableViewRowAnimationNone];
+			}
 		}
 	}
 }
@@ -428,7 +694,65 @@
 		
 		NSMutableDictionary * dict = [self keyValueDictionary];
 		_saveButton.enabled = [tabController isTagDictChanged:dict];
+		if (@available(iOS 13.0, *)) {
+			self.tabBarController.modalInPresentation = _saveButton.enabled;
+		}
 	}
+}
+
+-(void)tabToNext:(BOOL)forward
+{
+	TextPairTableCell * pair = (id)_currentTextField.superview;
+	while ( pair && ![pair isKindOfClass:[TextPairTableCell class]])
+		pair = (id)pair.superview;
+	if ( pair == nil )
+		return;
+
+	NSIndexPath * indexPath = [self.tableView indexPathForCell:pair];
+	UITextField * field = nil;
+	if ( forward ) {
+		if ( _currentTextField == pair.text1 ) {
+			field = pair.text2;
+		} else {
+			NSInteger max = [self tableView:self.tableView numberOfRowsInSection:indexPath.section];
+			NSInteger row = (indexPath.row+1) % max;
+			indexPath = [NSIndexPath indexPathForRow:row inSection:indexPath.section];
+			pair = [self.tableView cellForRowAtIndexPath:indexPath];
+			field = pair.text1;
+		}
+	} else {
+		if ( _currentTextField == pair.text2 ) {
+			field = pair.text1;
+		} else {
+			NSInteger max = [self tableView:self.tableView numberOfRowsInSection:indexPath.section];
+			NSInteger row = (indexPath.row-1+max) % max;
+			indexPath = [NSIndexPath indexPathForRow:row inSection:indexPath.section];
+			pair = [self.tableView cellForRowAtIndexPath:indexPath];
+			field = pair.text2;
+		}
+	}
+	[field becomeFirstResponder];
+	_currentTextField = field;
+}
+
+-(void)tabPrevious:(id)sender
+{
+	[self tabToNext:NO];
+}
+-(void)tabNext:(id)sender
+{
+	[self tabToNext:YES];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+	UIToolbar * toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+	toolbar.items = @[
+		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Previous", nil) style:UIBarButtonItemStylePlain target:self action:@selector(tabPrevious:)],
+		[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Next", nil)     style:UIBarButtonItemStylePlain target:self action:@selector(tabNext:)]
+	];
+	textField.inputAccessoryView = toolbar;
+	return YES;
 }
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -442,7 +766,9 @@
     return newLength <= MAX_LENGTH || returnKey;
 }
 
-- (IBAction)toggleEditing:(id)sender
+#pragma mark - Table view delegate
+
+- (IBAction)toggleTableRowEditing:(id)sender
 {
 	POITabBarController * tabController = (id)self.tabBarController;
 
@@ -475,53 +801,29 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ( editingStyle == UITableViewCellEditingStyleDelete ) {
-		// Delete the row from the data source
-		POITabBarController * tabController = (id)self.tabBarController;
-		if ( indexPath.section == 0 ) {
-			NSArray * kv = _tags[ indexPath.row ];
-			NSString * tag = kv[0];
-			[tabController.keyValueDict removeObjectForKey:tag];
-			[_tags removeObjectAtIndex:indexPath.row];
-		} else if ( indexPath.section == 1 ) {
-			[_relations removeObjectAtIndex:indexPath.row];
-		} else  {
-			[_members removeObjectAtIndex:indexPath.row];
-		}
-		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-		_saveButton.enabled = [tabController isTagDictChanged];
-
-	} else if ( editingStyle == UITableViewCellEditingStyleInsert ) {
-		// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-	}
-}
-
-#pragma mark - Table view delegate
-
-- (void)addTagCellAtIndexPath:(NSIndexPath *)indexPath
-{
-	if ( indexPath.section == 0 ) {
-		[_tags addObject:[NSMutableArray arrayWithObjects:@"",@"",nil]];
-	} else if ( indexPath.section == 2 ) {
-		[_members addObject:[NSMutableArray arrayWithObjects:@"",@"",nil]];
-	} else {
-		return;
-	}
-	[self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationBottom];
-
-	// set new cell to show keyboard
-	TextPairTableCell * newCell = (id)[self.tableView cellForRowAtIndexPath:indexPath];
-	[newCell.text1 becomeFirstResponder];
-}
-
-- (void)addTagCell:(id)sender
-{
-	UITableViewCell * cell = sender;	// starts out as UIButton
-	while ( cell && ![cell isKindOfClass:[UITableViewCell class]] )
-		cell = (id)[cell superview];
-	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-	[self addTagCellAtIndexPath:indexPath];
+    if ( editingStyle == UITableViewCellEditingStyleDelete ) {
+        // Delete the row from the data source
+        POITabBarController * tabController = (id)self.tabBarController;
+        if ( indexPath.section == 0 ) {
+            NSArray * kv = _tags[ indexPath.row ];
+            NSString * tag = kv[0];
+            [tabController.keyValueDict removeObjectForKey:tag];
+            [_tags removeObjectAtIndex:indexPath.row];
+        } else if ( indexPath.section == 1 ) {
+            [_relations removeObjectAtIndex:indexPath.row];
+        } else  {
+            [_members removeObjectAtIndex:indexPath.row];
+        }
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        _saveButton.enabled = [tabController isTagDictChanged];
+        if (@available(iOS 13.0, *)) {
+            self.tabBarController.modalInPresentation = _saveButton.enabled;
+        }
+        
+    } else if ( editingStyle == UITableViewCellEditingStyleInsert ) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
 }
 
 -(IBAction)cancel:(id)sender
@@ -556,11 +858,11 @@
 		progress.bounds = CGRectMake(0, 0, 24, 24);
 		cell.accessoryView = progress;
 		[progress startAnimating];
-		WikiPage * wiki = [WikiPage shared];
-		[wiki bestWikiPageForKey:key value:value language:languageCode completion:^(NSURL * url) {
+		[WikiPage.shared bestWikiPageForKey:key value:value language:languageCode completion:^(NSURL * url) {
 			cell.accessoryView = nil;
 			if ( url && self.view.window ) {
-				UIViewController * viewController = [[SFSafariViewController alloc] initWithURL:url];
+				SFSafariViewController * viewController = [[SFSafariViewController alloc] initWithURL:url];
+				_showingWikiLink = YES;
 				[self presentViewController:viewController animated:YES completion:nil];
 			}
 		}];
@@ -569,58 +871,58 @@
 
 - (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-	// don't allow switching to relation if current selection is modified
-	POITabBarController * tabController = (id)self.tabBarController;
-	NSMutableDictionary * dict = [self keyValueDictionary];
-	if ( [tabController isTagDictChanged:dict] ) {
-		UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Object modified",nil)
-																		message:NSLocalizedString(@"You must save or discard changes to the current object before editing its associated relation",nil)
-																 preferredStyle:UIAlertControllerStyleAlert];
-		[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-		[self presentViewController:alert animated:YES completion:nil];
-		return NO;
-	}
-
-	// switch to relation or relation member
-	UITableViewCell * cell = sender;
-	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-	OsmBaseObject	* object = nil;
-	if ( indexPath.section == 1 ) {
-		// change the selected object in the editor to the relation
-		object = _relations[ indexPath.row ];
-	} else if ( indexPath.section == 2 ) {
-		OsmMember	* member = _members[ indexPath.row ];
-		object = member.ref;
-		if ( ![object isKindOfClass:[OsmBaseObject class]] ) {
-			return NO;
-		}
-	} else {
-		return NO;
-	}
-	MapView * mapView = [AppDelegate getAppDelegate].mapView;
-	[mapView.editorLayer setSelectedNode:object.isNode];
-	[mapView.editorLayer setSelectedWay:object.isWay];
-	[mapView.editorLayer setSelectedRelation:object.isRelation];
-
-	CGPoint newPoint = mapView.pushpinView.arrowPoint;
-	CLLocationCoordinate2D clLatLon = [mapView longitudeLatitudeForScreenPoint:newPoint birdsEye:YES];
-	OSMPoint latLon = { clLatLon.longitude, clLatLon.latitude };
-	latLon = [object pointOnObjectForPoint:latLon];
-	newPoint = [mapView screenPointForLatitude:latLon.y longitude:latLon.x birdsEye:YES];
-	if ( !CGRectContainsPoint( mapView.bounds, newPoint ) ) {
-		// new object is far away
-		[mapView placePushpinForSelection];
-	} else {
-		[mapView placePushpinAtPoint:newPoint object:object];
-	}
-
-	// dismiss ourself and switch to the relation
-	UIViewController * topController = (id)mapView.viewController;
-	[mapView refreshPushpinText];	// update pushpin description to the relation
-	[self dismissViewControllerAnimated:YES completion:^{
-		[topController performSegueWithIdentifier:@"poiSegue" sender:nil];
-	}];
-	return NO;
+    // don't allow switching to relation if current selection is modified
+    POITabBarController * tabController = (id)self.tabBarController;
+    NSMutableDictionary * dict = [self keyValueDictionary];
+    if ( [tabController isTagDictChanged:dict] ) {
+        UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Object modified",nil)
+                                                                        message:NSLocalizedString(@"You must save or discard changes to the current object before editing its associated relation",nil)
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+        return NO;
+    }
+    
+    // switch to relation or relation member
+    UITableViewCell * cell = sender;
+    NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
+    OsmBaseObject	* object = nil;
+    if ( indexPath.section == 1 ) {
+        // change the selected object in the editor to the relation
+        object = _relations[ indexPath.row ];
+    } else if ( indexPath.section == 2 ) {
+        OsmMember	* member = _members[ indexPath.row ];
+        object = member.ref;
+        if ( ![object isKindOfClass:[OsmBaseObject class]] ) {
+            return NO;
+        }
+    } else {
+        return NO;
+    }
+    MapView * mapView = [AppDelegate getAppDelegate].mapView;
+    [mapView.editorLayer setSelectedNode:object.isNode];
+    [mapView.editorLayer setSelectedWay:object.isWay];
+    [mapView.editorLayer setSelectedRelation:object.isRelation];
+    
+    CGPoint newPoint = mapView.pushpinView.arrowPoint;
+    CLLocationCoordinate2D clLatLon = [mapView longitudeLatitudeForScreenPoint:newPoint birdsEye:YES];
+    OSMPoint latLon = { clLatLon.longitude, clLatLon.latitude };
+    latLon = [object pointOnObjectForPoint:latLon];
+    newPoint = [mapView screenPointForLatitude:latLon.y longitude:latLon.x birdsEye:YES];
+    if ( !CGRectContainsPoint( mapView.bounds, newPoint ) ) {
+        // new object is far away
+        [mapView placePushpinForSelection];
+    } else {
+        [mapView placePushpinAtPoint:newPoint object:object];
+    }
+    
+    // dismiss ourself and switch to the relation
+    UIViewController * topController = (id)mapView.viewController;
+    [mapView refreshPushpinText];	// update pushpin description to the relation
+    [self dismissViewControllerAnimated:YES completion:^{
+        [topController performSegueWithIdentifier:@"poiSegue" sender:nil];
+    }];
+    return NO;
 }
 
 @end
