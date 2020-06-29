@@ -56,6 +56,7 @@
     IBOutlet UITextField * txtValue;
     __weak IBOutlet NSLayoutConstraint *bottomViewConstraint;
 }
++(CustomPresetList *)shared;
 @property (strong,nonatomic)    NSMutableDictionary *    keyValueDict;
 
 @property (weak, nonatomic) IBOutlet UIStepper *stepper;
@@ -66,7 +67,6 @@
 - (IBAction)reversePressed;
 - (IBAction)closeBtnPressed:(id)sender;
 - (IBAction)laneStepperPressed:(UIStepper *)sender;
-+(CustomPresetList *)shared;
 - (IBAction)done;
 
 // these are used for screen calculations:
