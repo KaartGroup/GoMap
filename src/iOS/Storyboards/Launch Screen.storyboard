@@ -31,8 +31,13 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" misplaced="YES" image="Kaart Final Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Bx-vt-zOi">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Kaart Final Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Bx-vt-zOi">
                                 <rect key="frame" x="-9" y="326" width="432" height="348"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="2Bx-vt-zOi" secondAttribute="height" multiplier="36:29" id="6ki-Hg-7g3"/>
+                                    <constraint firstAttribute="height" constant="348" id="Zms-la-xSs"/>
+                                    <constraint firstAttribute="width" constant="432" id="nUs-bs-kgu"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

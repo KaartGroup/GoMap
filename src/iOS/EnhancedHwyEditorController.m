@@ -18,6 +18,7 @@
 #import "OsmMapData.h"
 #import "OsmMapData+Edit.h"
 #import "OsmRelation.h" // changed from OsmObjects
+#import "TagInfo.h"
 
 typedef enum {
     EMPTY = -2,
@@ -89,7 +90,7 @@ typedef enum {
         
         if(![_keyValueDict objectForKey:@"lanes"]){
             // then changed value to new tag value
-            _laneCount = 0;
+            _laneCount = laneStepper.value;
             saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
         } else {
             // don't change the value
@@ -135,12 +136,10 @@ typedef enum {
     
     //lanecount for stepper
     if (![_keyValueDict objectForKey:@"lanes"]){
-        // then change the value
         _laneCount = EMPTY_LANE;
         NSLog(@"LANES = TRUE");
     } else {
-        // don't change valuexs
-        _laneCount = (LANE_COUNT)_selectedWay.isModified;
+        _laneCount = _selectedWay.isModified;
         NSLog(@"LANES = FALSE");
     }
     NSLog(@"LANESTEPPER: %f", _stepper.value);
@@ -161,7 +160,7 @@ typedef enum {
     [super viewDidAppear:animated];
     
     TextPair * cell = [tagTable.visibleCells firstObject];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [cell.text2 becomeFirstResponder];
     [_mapView.editControl.bottomAnchor constraintEqualToAnchor:self.highwayEditorView.topAnchor constant:-11].active = YES;
@@ -212,7 +211,7 @@ typedef enum {
 
 - (IBAction)textFieldEditingDidBegin:(UITextField *)textField
 {
-     UITableViewCell * cell = (id)textField.superview;
+    UITableViewCell * cell = (id)textField.superview;
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
     TextPair * pair = (id)cell;
@@ -246,7 +245,7 @@ typedef enum {
 {
     NSDictionary * userInfo = [notification userInfo];
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-
+    
     bottomViewConstraint = [_highwayEditorView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-keyboardFrame.size.height];
     bottomViewConstraint.active = YES;
 }
@@ -276,7 +275,7 @@ typedef enum {
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
     NSIndexPath * indexPath = [tagTable indexPathForCell:cell];
-
+    
     if ( indexPath.section == 0 ) {
         // edited tags
         TextPair * pair = (id)cell;
@@ -288,7 +287,7 @@ typedef enum {
             }
         }
         BOOL isValue = textField == pair.text2;
-
+        
         if ( isValue ) {
             // new value
             kv[1] = textField.text;
@@ -298,7 +297,7 @@ typedef enum {
             kv[0] = textField.text;
             tagKv[0] = textField.text;
         }
-
+        
         NSMutableDictionary * dict = [self keyValueDictionary];
         saveButton.enabled = [self isTagDictChanged:dict];
     }
@@ -310,7 +309,7 @@ typedef enum {
     UITouch * touch = [touches anyObject];
     CGPoint point = [touch locationInView:_mapView];
     CGPoint editControlPoint = [touch locationInView:_mapView.editControl];
-
+    
     if ( [_mapView.editControl hitTest:editControlPoint withEvent:event]) {
         NSUInteger segmentSize = _mapView.editControl.bounds.size.width / _mapView.editControl.numberOfSegments;
         NSUInteger touchedSegment = editControlPoint.x / segmentSize;
@@ -318,7 +317,7 @@ typedef enum {
         [self dismissViewControllerAnimated:NO completion:^{
             [_mapView editControlAction:_mapView.editControl];
         }];
-
+        
         return;
     }
     OsmBaseObject * hit = [_mapView.editorLayer osmHitTest:point radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:nil];
@@ -362,7 +361,7 @@ typedef enum {
             onewayTag[1] = @"no";
             _onewayState = NONE;
             break;
-        
+            
         case NONE:
             onewayTag[1] = @"yes";
             _onewayState = FORWARD;
@@ -399,22 +398,23 @@ typedef enum {
 }
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
-    NSInteger  value =  (int)sender.value;
+    NSInteger value =  (int)sender.value;
     NSLog(@"LANE STEPPER VALUE: %li", (long)value);
-    [_editorLayer setNeedsLayout];
-    NSMutableArray * laneTag;
-    NSInteger * index = 0;
-    for ( NSMutableArray * kv in _tags ){
-        if ( [kv[0] isEqualToString:@"lanes"] )
-            laneTag = kv;
-        index++;
+    //    NSMutableArray * laneTag;
+    //    NSInteger * index = 0;
+    //    for ( NSMutableArray * kv in _tags ) {
+    if ( _stepper.value != [[_keyValueDict valueForKey:@"lanes"] intValue]) {
+        _stepper.value = [[_keyValueDict valueForKey:@"lanes"] intValue];
+        _stepper.value = value;
+        //            laneTag = kv;
+        //            index++;
     }
-    laneTag[1] = @((int)value);
-    NSLog(@"LaneTag: %@", laneTag);
-    NSLog(@"value: %ld", (long)value);
-    if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
+    //        laneTag[1] = @((int)value);
+    //    }
+    [_editorLayer setNeedsLayout];
+    if ( ![self isTagDictChanged:[self keyValueDictionary]] ){
         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
+        saveButton.enabled = value;//[self isTagDictChanged:[self keyValueDictionary]];
     }
 }
 
@@ -469,4 +469,3 @@ typedef enum {
 }
 
 @end
-
