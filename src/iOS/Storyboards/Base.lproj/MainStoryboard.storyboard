@@ -943,7 +943,7 @@
                             <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hH4-6i-Cju" userLabel="Highway View" customClass="EnhancedHwyEditorView">
                                 <rect key="frame" x="0.0" y="849" width="768" height="175"/>
                                 <subviews>
-                                    <label opaque="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Magical Highway Editor" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wfw-p0-zd9" userLabel="Highway Editor">
+                                    <label opaque="NO" alpha="0.80000001192092896" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Magic Highway Editor" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wfw-p0-zd9" userLabel="Highway Editor">
                                         <rect key="frame" x="0.0" y="0.0" width="768" height="20.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -1059,7 +1059,6 @@
                                         <connections>
                                             <action selector="LaneStepper:" destination="gMR-Qx-CMq" eventType="valueChanged" id="Th2-gG-7Td"/>
                                             <action selector="laneStepperPressed:" destination="cYf-2s-el4" eventType="valueChanged" id="MR6-zA-5CI"/>
-                                            <action selector="txtFieldDidChange:" destination="cYf-2s-el4" eventType="valueChanged" id="2hh-ZB-JmK"/>
                                         </connections>
                                     </stepper>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJZ-Sj-Xb8">
@@ -1081,9 +1080,6 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <action selector="txtFieldDidChange:" destination="cYf-2s-el4" eventType="editingDidEnd" id="Rz8-9k-m7X"/>
-                                        </connections>
                                     </textField>
                                 </subviews>
                                 <color key="backgroundColor" red="0.85188430550000005" green="0.84212297199999997" blue="0.82041722539999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1129,7 +1125,6 @@
                         <outlet property="stepper" destination="uqT-FI-Nu6" id="0SS-8N-Tih"/>
                         <outlet property="tagTable" destination="rb4-VR-oLO" id="6Og-M3-J2V"/>
                         <outlet property="txtValue" destination="YsP-M3-XcJ" id="l90-6Q-ME5"/>
-                        <outlet property="txtValueDidChange" destination="YsP-M3-XcJ" id="t0B-AA-hIG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LPM-LV-6n3" userLabel="First Responder" sceneMemberID="firstResponder"/>
