@@ -144,8 +144,7 @@ typedef enum {
     }
     NSLog(@"LANESTEPPER: %f", _stepper.value);
     [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
-    [tagTable reloadData];
-    saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
+//    [tagTable reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -399,22 +398,15 @@ typedef enum {
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
     NSInteger value =  (int)sender.value;
-    NSLog(@"LANE STEPPER VALUE: %li", (long)value);
-    //    NSMutableArray * laneTag;
-    //    NSInteger * index = 0;
-    //    for ( NSMutableArray * kv in _tags ) {
-    if ( _stepper.value != [[_keyValueDict valueForKey:@"lanes"] intValue]) {
-        _stepper.value = [[_keyValueDict valueForKey:@"lanes"] intValue];
-        _stepper.value = value;
-        //            laneTag = kv;
-        //            index++;
+    if ( value != [[_keyValueDict valueForKey:@"lanes"] intValue]) {
+        [[_keyValueDict valueForKey:@"lanes"] intValue];
+        [_keyValueDict objectForKey:@"lanes"];
+        NSLog(@"LANE STEPPER VALUE: %li", (long)value);
     }
-    //        laneTag[1] = @((int)value);
-    //    }
     [_editorLayer setNeedsLayout];
     if ( ![self isTagDictChanged:[self keyValueDictionary]] ){
         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-        saveButton.enabled = value;//[self isTagDictChanged:[self keyValueDictionary]];
+        saveButton.enabled = [[_keyValueDict valueForKey:@"lanes"] intValue];//[self isTagDictChanged:[self keyValueDictionary]];
     }
 }
 
