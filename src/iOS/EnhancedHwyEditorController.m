@@ -394,8 +394,6 @@ typedef enum {
             laneTag = kv;
         index++;
     }
-    NSLog(@"LaneTag: %@", laneTag);
-    NSLog(@"value: %ld", (long)value);
     laneTag[1] = @((int)value);
     [_editorLayer setNeedsLayout];
     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
