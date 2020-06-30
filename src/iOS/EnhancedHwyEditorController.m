@@ -391,9 +391,11 @@ typedef enum {
     for ( NSMutableArray * kv in _tags ){
         if ( [kv[0] isEqualToString:@"lanes"] )
             laneTag = kv;
-        index++;
+    index++;
+            NSLog(@"INDEX: %li", (long)index);
     }
     laneTag[1] = @((int)value);
+    NSLog(@"LANETAG: %@", laneTag[1]);
     [_editorLayer setNeedsLayout];
     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
