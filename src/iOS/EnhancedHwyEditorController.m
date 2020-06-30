@@ -95,7 +95,7 @@ typedef enum {
         }
     }];
     //RIGHT HERE
-    if ( nameTags.count > 0 ){
+    if ( nameTags.count > 0 ) {
         _nameTags = [[nameTags sortedArrayUsingComparator:^NSComparisonResult(NSArray * obj1,NSArray * obj2) {
             return [obj1[0] compare:obj2[0]];
         }] mutableCopy];
@@ -198,8 +198,7 @@ typedef enum {
     [sender resignFirstResponder];
 }
 
-- (IBAction)textFieldEditingDidBegin:(UITextField *)textField
-{
+- (IBAction)textFieldEditingDidBegin:(UITextField *)textField {
     UITableViewCell * cell = (id)textField.superview;
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
