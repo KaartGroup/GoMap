@@ -935,8 +935,6 @@
         <!--Enhanced Hwy Editor Controller-->
         <scene sceneID="5YZ-Wa-00K">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LPM-LV-6n3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="gMR-Qx-CMq" userLabel="Exit" sceneMemberID="exit"/>
                 <viewController storyboardIdentifier="EnhancedHwyEditorController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cYf-2s-el4" customClass="EnhancedHwyEditorController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wTA-tJ-F22">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
@@ -986,15 +984,15 @@
                                         <rect key="frame" x="8" y="29" width="752" height="113"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TagCell" id="qZd-fA-QjD" userLabel="Tag Cell" customClass="TextPairTableCell">
-                                                <rect key="frame" x="0.0" y="28" width="752" height="43.5"/>
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TagCell" rowHeight="47" id="qZd-fA-QjD" userLabel="Tag Cell" customClass="TextPairTableCell">
+                                                <rect key="frame" x="0.0" y="28" width="752" height="47"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qZd-fA-QjD" id="zhb-6P-Apm">
-                                                    <rect key="frame" x="0.0" y="0.0" width="752" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="752" height="47"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="tag" translatesAutoresizingMaskIntoConstraints="NO" id="Bki-iJ-wl9" userLabel="Text1" customClass="AutocompleteTextField">
-                                                            <rect key="frame" x="20" y="5" width="121" height="34"/>
+                                                            <rect key="frame" x="20" y="6.5" width="121" height="34"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" priority="200" constant="121" id="XVY-IA-Lst"/>
                                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="121" id="fDt-0K-Eb5"/>
@@ -1006,7 +1004,7 @@
                                                             </connections>
                                                         </textField>
                                                         <textField opaque="NO" tag="1" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="value" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="qes-iZ-IeF" userLabel="Text2" customClass="AutocompleteTextField">
-                                                            <rect key="frame" x="154" y="5" width="578" height="34"/>
+                                                            <rect key="frame" x="154" y="6.5" width="578" height="34"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" textContentType="address-line1"/>
                                                             <connections>
@@ -1032,45 +1030,8 @@
                                                     <outlet property="text2" destination="qes-iZ-IeF" id="PUj-IF-VgD"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationLevel="1" indentationWidth="0.0" rowHeight="40" id="UHI-XC-mFX" userLabel="Tag Cell">
-                                                <rect key="frame" x="0.0" y="71.5" width="752" height="40"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UHI-XC-mFX" id="K5Z-Sr-i0P">
-                                                    <rect key="frame" x="0.0" y="0.0" width="752" height="40"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <subviews>
-                                                        <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Lanes: " borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pPf-Fh-0g4">
-                                                            <rect key="frame" x="21" y="3" width="121" height="34"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" secondItem="pPf-Fh-0g4" secondAttribute="height" multiplier="127:34" id="Nt6-Yd-lo9"/>
-                                                                <constraint firstAttribute="width" constant="127" id="WrE-tW-qor"/>
-                                                                <constraint firstAttribute="height" constant="34" id="awD-kp-h3I"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                        </textField>
-                                                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="6PE-IT-GM3">
-                                                            <rect key="frame" x="158" y="5" width="94" height="32"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        </stepper>
-                                                        <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6xv-5x-A1K">
-                                                            <rect key="frame" x="73" y="3" width="69" height="34"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="73" id="F2w-VU-gbE"/>
-                                                                <constraint firstAttribute="height" constant="34" id="eIG-wT-wxd"/>
-                                                                <constraint firstAttribute="width" secondItem="6xv-5x-A1K" secondAttribute="height" multiplier="73:34" id="guz-yt-Xni"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits"/>
-                                                        </textField>
-                                                    </subviews>
-                                                    <constraints>
-                                                        <constraint firstItem="pPf-Fh-0g4" firstAttribute="centerX" secondItem="K5Z-Sr-i0P" secondAttribute="centerX" constant="-297.5" id="DGT-zi-2yt"/>
-                                                        <constraint firstItem="pPf-Fh-0g4" firstAttribute="centerY" secondItem="K5Z-Sr-i0P" secondAttribute="centerY" id="i9S-zX-vNi"/>
-                                                    </constraints>
-                                                </tableViewCellContentView>
-                                            </tableViewCell>
                                         </prototypes>
+                                        <sections/>
                                         <connections>
                                             <outlet property="dataSource" destination="cYf-2s-el4" id="dmf-k5-mFf"/>
                                             <outlet property="delegate" destination="cYf-2s-el4" id="e6I-l2-xfG"/>
@@ -1167,6 +1128,8 @@
                         <outlet property="txtValue" destination="YsP-M3-XcJ" id="l90-6Q-ME5"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LPM-LV-6n3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="gMR-Qx-CMq" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-3512.5" y="-164.0625"/>
         </scene>
