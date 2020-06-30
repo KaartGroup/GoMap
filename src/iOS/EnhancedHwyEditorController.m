@@ -86,7 +86,6 @@ typedef enum {
         }
         
         if(![_keyValueDict objectForKey:@"lanes"]){
-            // then changed value to new tag value
             _laneCount = laneStepper.value;
             saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
         } else {
@@ -134,6 +133,7 @@ typedef enum {
     //lanecount for stepper
     if (![_keyValueDict objectForKey:@"lanes"]){
         _laneCount = EMPTY_LANE;
+        NSLog(@"_laneCout for lanestepper for second if statement: @%ld",(long)_laneCount);
         NSLog(@"LANES = TRUE");
     } else {
         _laneCount = _selectedWay.isModified;
@@ -141,7 +141,7 @@ typedef enum {
     }
     NSLog(@"LANESTEPPER: %f", _stepper.value);
     [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
-//    [tagTable reloadData];
+    [tagTable reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -384,16 +384,23 @@ typedef enum {
 }
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
-    NSInteger value =  (int)sender.value;
-    if ( value != [[_keyValueDict valueForKey:@"lanes"] intValue]) {
-        [[_keyValueDict valueForKey:@"lanes"] intValue];
-        [_keyValueDict objectForKey:@"lanes"];
-        NSLog(@"LANE STEPPER VALUE: %li", (long)value);
-    }
+    NSInteger  value =  (int)sender.value;
+    NSLog(@"LANE STEPPER VALUE: %li", (long)value);
     [_editorLayer setNeedsLayout];
-    if ( ![self isTagDictChanged:[self keyValueDictionary]] ){
+    NSMutableArray * laneTag;
+    NSInteger * index = 0;
+    for ( NSMutableArray * kv in _tags ){
+        if ( [kv[0] isEqualToString:@"lanes"] )
+            laneTag = kv;
+        index++;
+    }
+    NSLog(@"LaneTag: %@", laneTag);
+    NSLog(@"value: %ld", (long)value);
+    laneTag[1] = @((int)value);
+    [_editorLayer setNeedsLayout];
+    if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-        saveButton.enabled = [[_keyValueDict valueForKey:@"lanes"] intValue];//[self isTagDictChanged:[self keyValueDictionary]];
+        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
     }
 }
 
