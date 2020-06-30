@@ -60,8 +60,7 @@ typedef enum {
 @end
 
 @implementation EnhancedHwyEditorController
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     _highwayViewArray = [NSMutableArray new];
     
@@ -70,8 +69,8 @@ typedef enum {
     
     [_editorLayer.mapData beginUndoGrouping];
 }
-- (void)loadState
-{
+
+- (void)loadState {
     self.keyValueDict = [NSMutableDictionary new];
     if ( _editorLayer.selectedWay ) {
         [_editorLayer.selectedWay.tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * obj, BOOL *stop) {
@@ -98,7 +97,7 @@ typedef enum {
         }
     }];
     //RIGHT HERE
-    if ( nameTags.count > 0 ){
+    if ( nameTags.count > 0 ) {
         _nameTags = [[nameTags sortedArrayUsingComparator:^NSComparisonResult(NSArray * obj1,NSArray * obj2) {
             return [obj1[0] compare:obj2[0]];
         }] mutableCopy];
@@ -147,15 +146,13 @@ typedef enum {
     [tagTable reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     [self loadState];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     TextPair * cell = [tagTable.visibleCells firstObject];
@@ -166,15 +163,13 @@ typedef enum {
     [_mapView.editControl.topAnchor constraintEqualToAnchor:self.highwayEditorView.topAnchor constant:-54].active = YES;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [_mapView.editControl.bottomAnchor constraintEqualToAnchor:[AppDelegate getAppDelegate].mapView.toolbar.topAnchor constant:-11].active = YES;
     [_mapView.editControl.topAnchor constraintEqualToAnchor:_mapView.centerOnGPSButton.bottomAnchor constant:3].active = YES;
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
     [_editorLayer.mapData endUndoGrouping];
@@ -182,13 +177,11 @@ typedef enum {
 
 # pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _nameTags.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TextPair * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
     NSArray * kv = _nameTags[ indexPath.row ];
     // assign text contents of fields
@@ -203,13 +196,11 @@ typedef enum {
     return cell;
 };
 
-- (IBAction)textFieldReturn:(id)sender
-{
+- (IBAction)textFieldReturn:(id)sender {
     [sender resignFirstResponder];
 }
 
-- (IBAction)textFieldEditingDidBegin:(UITextField *)textField
-{
+- (IBAction)textFieldEditingDidBegin:(UITextField *)textField {
     UITableViewCell * cell = (id)textField.superview;
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
@@ -240,8 +231,7 @@ typedef enum {
     }
 }
 
-- (void)keyboardWillChangeFrame:(NSNotification *)notification
-{
+- (void)keyboardWillChangeFrame:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
@@ -249,8 +239,7 @@ typedef enum {
     bottomViewConstraint.active = YES;
 }
 
--(NSMutableDictionary *)keyValueDictionary
-{
+-(NSMutableDictionary *)keyValueDictionary {
     NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithCapacity:_tags.count];
     for ( NSArray * kv in _tags ) {
         
@@ -268,8 +257,7 @@ typedef enum {
     return dict;
 }
 
-- (IBAction)textFieldChanged:(UITextField *)textField
-{
+- (IBAction)textFieldChanged:(UITextField *)textField {
     UITableViewCell * cell = (id)textField.superview;
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
@@ -303,8 +291,7 @@ typedef enum {
 }
 
 // Close the window if user touches outside it
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch * touch = [touches anyObject];
     CGPoint point = [touch locationInView:_mapView];
     CGPoint editControlPoint = [touch locationInView:_mapView.editControl];
