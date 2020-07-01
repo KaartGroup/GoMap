@@ -119,7 +119,7 @@
 		02F373F916822C2C004614D4 /* UploadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F373F816822C2C004614D4 /* UploadViewController.m */; };
 		02F8F4341696004B002A0820 /* NominatimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F8F4331696004B002A0820 /* NominatimViewController.m */; };
 		02FFCE0B16A7360B001A5B8A /* NSMutableArray+PartialSort.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		0ECE63CD24AA3C63003810AB /* Kaart Final Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ECE63CC24AA3C63003810AB /* Kaart Final Logo.png */; };
+		0E0B61E624AD053C00A43E09 /* Kaart Final Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0B61E524AD053C00A43E09 /* Kaart Final Logo.png */; };
 		0ED6153F24A1108E001AD42C /* CommonTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED6153E24A1108E001AD42C /* CommonTagList.m */; };
 		0EF9944D249D644E004E82C1 /* EnhancedHwyEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */; };
 		0EF99450249D68DE004E82C1 /* TagInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9944F249D68DE004E82C1 /* TagInfo.m */; };
@@ -376,7 +376,7 @@
 		02F8F4331696004B002A0820 /* NominatimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NominatimViewController.m; sourceTree = "<group>"; };
 		02FFCE0916A7360B001A5B8A /* NSMutableArray+PartialSort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+PartialSort.h"; path = "../Shared/NSMutableArray+PartialSort.h"; sourceTree = "<group>"; };
 		02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSMutableArray+PartialSort.mm"; path = "../Shared/NSMutableArray+PartialSort.mm"; sourceTree = "<group>"; };
-		0ECE63CC24AA3C63003810AB /* Kaart Final Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Kaart Final Logo.png"; path = "../../../../Downloads/Kaart Final Logo.png"; sourceTree = "<group>"; };
+		0E0B61E524AD053C00A43E09 /* Kaart Final Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Kaart Final Logo.png"; path = "../../../../../Users/TannerWuster/Downloads/Kaart Final Logo.png"; sourceTree = "<group>"; };
 		0ED6153D24A11047001AD42C /* CommonTagList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonTagList.h; sourceTree = "<group>"; };
 		0ED6153E24A1108E001AD42C /* CommonTagList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonTagList.m; sourceTree = "<group>"; };
 		0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
@@ -680,7 +680,7 @@
 				02ACBA3C16713CCB00BB4414 /* InfoPlist.strings */,
 				02ACBA3F16713CCB00BB4414 /* main.m */,
 				02AFBF1F245774DC00BE43F4 /* OSM-Logo256.png */,
-				0ECE63CC24AA3C63003810AB /* Kaart Final Logo.png */,
+				0E0B61E524AD053C00A43E09 /* Kaart Final Logo.png */,
 				024AB08E240C8721004A3B5B /* POI Icons */,
 			);
 			name = "Supporting Files";
@@ -1031,7 +1031,7 @@
 				02ED19811BBF119C00A57CF4 /* Launch Screen.storyboard in Resources */,
 				02A229E824454838000DA9F4 /* Changeset.storyboard in Resources */,
 				0291D83C24428CBB00F793BE /* POI.storyboard in Resources */,
-				0ECE63CD24AA3C63003810AB /* Kaart Final Logo.png in Resources */,
+				0E0B61E624AD053C00A43E09 /* Kaart Final Logo.png in Resources */,
 				024AB08D240C86FF004A3B5B /* Font Awesome Icons.xcassets in Resources */,
 				027FEA3620B13B8000901E9F /* Maki Icons.xcassets in Resources */,
 				024AB090240C9202004A3B5B /* TNP Icons.xcassets in Resources */,
@@ -1356,7 +1356,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.6.4.1;
+				CURRENT_PROJECT_VERSION = 1.6.4.3;
 				DEVELOPMENT_TEAM = 2STHX823T6;
 				DISPLAY_NAME = "Go Map!! Debug";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1386,7 +1386,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.6.4.1;
+				CURRENT_PROJECT_VERSION = 1.6.4.3;
 				DEVELOPMENT_TEAM = 2STHX823T6;
 				DISPLAY_NAME = "Go Map!!";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

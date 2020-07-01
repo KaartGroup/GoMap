@@ -21,6 +21,4 @@
 
 @interface EnhancedHwyEditorView : UIView
 
-
-
 @end
