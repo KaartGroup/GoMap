@@ -308,13 +308,14 @@ const CGFloat kEditControlCornerRadius = 4;
 	_locationManager.activityType = CLActivityTypeOther;
 #endif
 
-	// set up action button
-	_editControl.hidden = YES;
-	_editControl.selected = NO;
-	_editControl.selectedSegmentIndex = UISegmentedControlNoSegment;
-	[_editControl setTitleTextAttributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] }
-									   forState:UIControlStateNormal];
-	_editControl.layer.zPosition = Z_TOOLBAR;
+    // set up action button
+    _editControl.hidden = YES;
+    _editControl.selected = NO;
+    _editControl.selectedSegmentIndex = UISegmentedControlNoSegment;
+    [_editControl setTitleTextAttributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+                                            NSForegroundColorAttributeName: [UIColor whiteColor]
+    }                                       forState:UIControlStateNormal];
+    _editControl.layer.zPosition = Z_TOOLBAR;
     _editControl.layer.cornerRadius = kEditControlCornerRadius;
 
 	// long press for selecting from multiple objects
@@ -2257,32 +2258,51 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 - (void)updateEditControl
 {
-	BOOL show = _pushpinView || _editorLayer.selectedPrimary;
-	_editControl.hidden = !show;
-	if ( show ) {
-		if ( _editorLayer.selectedPrimary == nil ) {
-			// brand new node
-			if ( _editorLayer.canPasteTags )
-				self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
-			else
-				self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
-		} else {
-			if ( _editorLayer.selectedPrimary.isRelation )
-				if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
-				else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
-				else
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
-				else
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
-		}
-		[_editControl removeAllSegments];
-		for ( NSNumber * action in _editControlActions ) {
-			NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
-			[_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
-		}
-	}
+    BOOL show = _pushpinView || _editorLayer.selectedPrimary;
+    _editControl.hidden = !show;
+    BOOL split = _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
+    NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
+    BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
+    if ( show ) {
+        if ( _editorLayer.selectedPrimary == nil ) {
+            // brand new node
+            if ( _editorLayer.canPasteTags )
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
+            else
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
+        } else {
+            if ( _editorLayer.selectedPrimary.isRelation )
+                if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
+                else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
+                else
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
+                else {
+                    if (_editorLayer.selectedNode && split)
+                        if(restriction)
+                            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_DELETE), @(ACTION_DISCONNECT), @(ACTION_SPLIT), @(ACTION_MORE)];
+                        else
+                            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_DELETE), @(ACTION_DISCONNECT), @(ACTION_SPLIT), @(ACTION_MORE)];
+                        else
+                            if (restriction)
+                                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
+                            else
+                                if (!_editorLayer.selectedWay.isClosed && _editorLayer.selectedWay.isOneWay)
+                                    if ( [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", nil]] ||  [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", @"highway", nil]])
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
+                                    else
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
+                                    else
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
+                }
+        }
+        [_editControl removeAllSegments];
+        for ( NSNumber * action in _editControlActions ) {
+            NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
+            [_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
+        }
+    }
 }
 
 - (void)presentEditActionSheet:(id)sender
@@ -3868,7 +3888,7 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 			_editorLayer.selectedWay = nil;
 			_editorLayer.selectedRelation = nil;
 		}
-        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay ) {
+         if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay.tags[@"highway"] ) {
                    [self presentEnhancedHwyEditor: point];
                }
 	}
