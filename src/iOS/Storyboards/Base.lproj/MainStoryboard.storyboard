@@ -950,23 +950,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCo-Lu-TFG" userLabel="Reverse">
-                                        <rect key="frame" x="304" y="141" width="65" height="34"/>
-                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Reverse">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="reversePressed" destination="cYf-2s-el4" eventType="touchUpInside" id="0NV-Ec-CvA"/>
-                                        </connections>
-                                    </button>
                                     <button contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kdW-EH-aiz" userLabel="OneWay">
-                                        <rect key="frame" x="399" y="141" width="73" height="34"/>
+                                        <rect key="frame" x="537" y="138" width="73" height="34"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="One Way">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -980,8 +965,8 @@
                                             <action selector="onewayPressed" destination="cYf-2s-el4" eventType="touchUpInside" id="56t-MJ-G3F"/>
                                         </connections>
                                     </button>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rb4-VR-oLO">
-                                        <rect key="frame" x="8" y="29" width="752" height="113"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rb4-VR-oLO">
+                                        <rect key="frame" x="8" y="28.5" width="752" height="102.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TagCell" rowHeight="47" id="qZd-fA-QjD" userLabel="Tag Cell" customClass="TextPairTableCell">
@@ -1015,7 +1000,7 @@
                                                         </textField>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="qes-iZ-IeF" firstAttribute="baseline" secondItem="Bki-iJ-wl9" secondAttribute="baseline" constant="-1" id="Juf-al-ahk"/>
+                                                        <constraint firstItem="qes-iZ-IeF" firstAttribute="baseline" secondItem="Bki-iJ-wl9" secondAttribute="baseline" id="Juf-al-ahk"/>
                                                         <constraint firstItem="qes-iZ-IeF" firstAttribute="centerY" secondItem="zhb-6P-Apm" secondAttribute="centerY" id="MUc-ux-3VK"/>
                                                         <constraint firstAttribute="trailing" secondItem="qes-iZ-IeF" secondAttribute="trailing" constant="20" id="Oxe-sM-pR7"/>
                                                         <constraint firstItem="qes-iZ-IeF" firstAttribute="leading" secondItem="Bki-iJ-wl9" secondAttribute="trailing" constant="13" id="ajf-Wu-rEP"/>
@@ -1038,7 +1023,7 @@
                                         </connections>
                                     </tableView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXw-jB-CS2">
-                                        <rect key="frame" x="618" y="141.5" width="142" height="33"/>
+                                        <rect key="frame" x="618" y="138.5" width="142" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <state key="normal" title="Save"/>
                                         <state key="disabled" title="Save"/>
@@ -1052,65 +1037,98 @@
                                             <action selector="saveState" destination="cYf-2s-el4" eventType="touchUpInside" id="kSf-C5-suu"/>
                                         </connections>
                                     </button>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="uqT-FI-Nu6">
-                                        <rect key="frame" x="65" y="141" width="94" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="uqT-FI-Nu6">
+                                        <rect key="frame" x="203" y="138" width="94" height="32"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                         <connections>
                                             <action selector="LaneStepper:" destination="gMR-Qx-CMq" eventType="valueChanged" id="Th2-gG-7Td"/>
                                             <action selector="laneStepperPressed:" destination="cYf-2s-el4" eventType="valueChanged" id="MR6-zA-5CI"/>
                                         </connections>
                                     </stepper>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJZ-Sj-Xb8">
-                                        <rect key="frame" x="217" y="143" width="51" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Lanes:" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VS7-64-HQV">
+                                        <rect key="frame" x="148" y="137" width="57" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="57" id="ft6-Xg-EDH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJZ-Sj-Xb8">
+                                        <rect key="frame" x="38" y="137" width="51" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="51" id="6rs-Ds-0l2"/>
+                                        </constraints>
                                         <state key="normal" title="Close"/>
                                         <connections>
                                             <action selector="closeBtnPressed:" destination="cYf-2s-el4" eventType="touchUpInside" id="Bxx-aa-yyK"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Lanes:" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VS7-64-HQV">
-                                        <rect key="frame" x="8" y="140" width="58" height="34"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YsP-M3-XcJ">
+                                        <rect key="frame" x="235" y="137" width="30" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="p3h-a0-sNL"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YsP-M3-XcJ">
-                                        <rect key="frame" x="97" y="141" width="30" height="34"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCo-Lu-TFG" userLabel="Reverse">
+                                        <rect key="frame" x="373" y="138" width="65" height="34"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Reverse">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="reversePressed" destination="cYf-2s-el4" eventType="touchUpInside" id="YSB-Kk-6QD"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.85188430550000005" green="0.84212297199999997" blue="0.82041722539999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="kdW-EH-aiz" firstAttribute="bottom" secondItem="hH4-6i-Cju" secondAttribute="bottom" id="5Ai-qG-aA1"/>
+                                    <constraint firstItem="kdW-EH-aiz" firstAttribute="bottom" secondItem="hH4-6i-Cju" secondAttribute="bottom" constant="-3" id="5Ai-qG-aA1"/>
+                                    <constraint firstItem="VS7-64-HQV" firstAttribute="top" secondItem="rb4-VR-oLO" secondAttribute="bottom" constant="6" id="5Ez-zS-urI"/>
                                     <constraint firstItem="Wfw-p0-zd9" firstAttribute="top" secondItem="hH4-6i-Cju" secondAttribute="top" id="5dQ-Y7-eXX"/>
                                     <constraint firstAttribute="trailing" secondItem="Wfw-p0-zd9" secondAttribute="trailing" id="66l-1j-aaC"/>
                                     <constraint firstItem="rb4-VR-oLO" firstAttribute="top" secondItem="Wfw-p0-zd9" secondAttribute="bottom" constant="8" id="6EF-kX-q5B"/>
                                     <constraint firstAttribute="height" constant="175" id="AhM-M7-NK1"/>
+                                    <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="leading" constant="38" id="DCO-wO-O6j"/>
+                                    <constraint firstItem="VS7-64-HQV" firstAttribute="leading" secondItem="uJZ-Sj-Xb8" secondAttribute="trailing" constant="59" id="GQK-3Z-Czd"/>
+                                    <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="bottom" secondItem="YsP-M3-XcJ" secondAttribute="bottom" constant="-2" id="IfG-aN-Cz0"/>
                                     <constraint firstAttribute="trailing" secondItem="JXw-jB-CS2" secondAttribute="trailing" constant="8" id="KCQ-9b-hFe"/>
+                                    <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="top" secondItem="rb4-VR-oLO" secondAttribute="bottom" constant="6" id="MzA-1H-Bk5"/>
                                     <constraint firstAttribute="trailing" secondItem="rb4-VR-oLO" secondAttribute="trailing" constant="8" id="NOC-5e-DPs"/>
                                     <constraint firstItem="rb4-VR-oLO" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="leading" constant="8" id="SVI-kZ-nwZ"/>
+                                    <constraint firstItem="YsP-M3-XcJ" firstAttribute="centerX" secondItem="uqT-FI-Nu6" secondAttribute="centerX" id="V6g-hP-da8"/>
                                     <constraint firstItem="JXw-jB-CS2" firstAttribute="centerY" secondItem="kdW-EH-aiz" secondAttribute="centerY" id="VYF-At-Ui3"/>
-                                    <constraint firstItem="kdW-EH-aiz" firstAttribute="leading" secondItem="kCo-Lu-TFG" secondAttribute="trailing" constant="30" id="j1l-1P-8wX"/>
-                                    <constraint firstItem="kdW-EH-aiz" firstAttribute="top" secondItem="rb4-VR-oLO" secondAttribute="bottom" constant="8" id="mRI-Fl-ACo"/>
+                                    <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="centerY" secondItem="kCo-Lu-TFG" secondAttribute="centerY" constant="-2" id="ae5-fv-llZ"/>
+                                    <constraint firstItem="uqT-FI-Nu6" firstAttribute="leading" secondItem="VS7-64-HQV" secondAttribute="trailing" constant="-2" id="cjG-0T-u3C"/>
+                                    <constraint firstItem="kdW-EH-aiz" firstAttribute="leading" secondItem="kCo-Lu-TFG" secondAttribute="trailing" constant="99" id="j1l-1P-8wX"/>
+                                    <constraint firstItem="kdW-EH-aiz" firstAttribute="top" secondItem="rb4-VR-oLO" secondAttribute="bottom" constant="7" id="mRI-Fl-ACo"/>
                                     <constraint firstItem="Wfw-p0-zd9" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="leading" id="pP2-EZ-I0e"/>
-                                    <constraint firstItem="kCo-Lu-TFG" firstAttribute="bottom" secondItem="hH4-6i-Cju" secondAttribute="bottom" id="sKc-HI-S6Y"/>
-                                    <constraint firstItem="rb4-VR-oLO" firstAttribute="bottom" secondItem="kCo-Lu-TFG" secondAttribute="top" constant="-8" id="soB-oi-teg"/>
+                                    <constraint firstItem="kCo-Lu-TFG" firstAttribute="bottom" secondItem="hH4-6i-Cju" secondAttribute="bottom" constant="-3" id="sKc-HI-S6Y"/>
+                                    <constraint firstItem="rb4-VR-oLO" firstAttribute="bottom" secondItem="kCo-Lu-TFG" secondAttribute="top" constant="-7" id="soB-oi-teg"/>
                                     <constraint firstItem="JXw-jB-CS2" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="trailing" constant="-150" id="t5h-ea-0uM"/>
-                                    <constraint firstItem="kCo-Lu-TFG" firstAttribute="trailing" secondItem="hH4-6i-Cju" secondAttribute="centerX" constant="-15" id="vRY-sW-KUS"/>
+                                    <constraint firstItem="kCo-Lu-TFG" firstAttribute="trailing" secondItem="hH4-6i-Cju" secondAttribute="centerX" constant="54" id="vRY-sW-KUS"/>
+                                    <constraint firstItem="VS7-64-HQV" firstAttribute="centerY" secondItem="uqT-FI-Nu6" secondAttribute="centerY" id="yTN-pG-dvt"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="hH4-6i-Cju" firstAttribute="trailing" secondItem="wTA-tJ-F22" secondAttribute="trailing" id="GQ0-LK-buB"/>
                             <constraint firstItem="hH4-6i-Cju" firstAttribute="bottom" secondItem="KPW-HP-wjp" secondAttribute="bottom" id="NtH-9m-8kQ"/>
                             <constraint firstItem="hH4-6i-Cju" firstAttribute="leading" secondItem="wTA-tJ-F22" secondAttribute="leading" id="szd-hc-KCM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="KPW-HP-wjp"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="rUE-6n-Dfp" appends="YES" id="Oal-cA-Jco"/>
+                        </connections>
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -1130,8 +1148,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LPM-LV-6n3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="gMR-Qx-CMq" userLabel="Exit" sceneMemberID="exit"/>
+                <panGestureRecognizer cancelsTouchesInView="NO" minimumNumberOfTouches="1" id="rUE-6n-Dfp"/>
             </objects>
-            <point key="canvasLocation" x="-3780" y="-34"/>
+            <point key="canvasLocation" x="-3669.53125" y="-164.0625"/>
         </scene>
     </scenes>
     <resources>
