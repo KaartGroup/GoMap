@@ -66,6 +66,7 @@ typedef enum {
     _mapView = [AppDelegate getAppDelegate].mapView;
     _editorLayer = _mapView.editorLayer;
     [_editorLayer.mapData beginUndoGrouping];
+
 }
 
 - (void)loadState {
@@ -314,8 +315,8 @@ typedef enum {
     }
     
     if ( touch.view != _highwayEditorView ) {
-        // continue to pan map
-        [self dismissViewControllerAnimated:false completion:nil]; // closes the keyboard
+        //continue to pan UIgit 
+        [self dismissViewControllerAnimated:true completion:nil];
     }
 }       
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17132" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="ipad12_9" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment version="2304" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17105"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,23 +16,17 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Kaart Final Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Bx-vt-zOi">
-                                <rect key="frame" x="-9" y="246" width="432" height="348"/>
+                                <rect key="frame" x="467" y="294" width="432" height="348"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="348" id="sPo-Ne-XAE"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make Awesome Data " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G8Y-ed-q93">
-                                <rect key="frame" x="100.5" y="707.5" width="213.5" height="27.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go Kaart!!" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="20" y="152" width="374" height="43"/>
+                                <rect key="frame" x="496" y="130" width="374" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="374" id="3Fo-9E-NYp"/>
                                 </constraints>
@@ -40,16 +34,22 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make Awesome Data " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G8Y-ed-q93">
+                                <rect key="frame" x="576" y="768" width="214" height="27.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="top" secondItem="GJd-Yh-RWb" secondAttribute="bottom" constant="51" id="454-gf-cpf"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" id="4hE-Kh-OKr"/>
-                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="202" id="9da-FL-5Uc"/>
-                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="-29" id="Ehq-7y-ozg"/>
+                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="top" secondItem="GJd-Yh-RWb" secondAttribute="bottom" constant="121" id="454-gf-cpf"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" constant="-476" id="4hE-Kh-OKr"/>
+                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="294" id="9da-FL-5Uc"/>
+                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="447" id="Ehq-7y-ozg"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="2Bx-vt-zOi" secondAttribute="centerX" id="HWB-Ya-B5F"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="G8Y-ed-q93" secondAttribute="bottom" constant="127" id="WQr-hs-5nF"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="nK6-Nx-FvL"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="G8Y-ed-q93" secondAttribute="bottom" constant="228.5" id="WQr-hs-5nF"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="476" id="nK6-Nx-FvL"/>
                             <constraint firstItem="2Bx-vt-zOi" firstAttribute="centerX" secondItem="G8Y-ed-q93" secondAttribute="centerX" id="oNf-2Z-zVr"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="q7G-bw-vqG"/>
                         </constraints>
