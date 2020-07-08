@@ -1038,7 +1038,7 @@
                                         </connections>
                                     </button>
                                     <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="uqT-FI-Nu6">
-                                        <rect key="frame" x="203" y="138" width="94" height="32"/>
+                                        <rect key="frame" x="203" y="138" width="93" height="32"/>
                                         <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                         <connections>
                                             <action selector="LaneStepper:" destination="gMR-Qx-CMq" eventType="valueChanged" id="Th2-gG-7Td"/>
@@ -1063,14 +1063,6 @@
                                             <action selector="closeBtnPressed:" destination="cYf-2s-el4" eventType="touchUpInside" id="Bxx-aa-yyK"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YsP-M3-XcJ">
-                                        <rect key="frame" x="235" y="137" width="30" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="p3h-a0-sNL"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCo-Lu-TFG" userLabel="Reverse">
                                         <rect key="frame" x="373" y="138" width="65" height="34"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1087,33 +1079,50 @@
                                             <action selector="reversePressed" destination="cYf-2s-el4" eventType="touchUpInside" id="YSB-Kk-6QD"/>
                                         </connections>
                                     </button>
+                                    <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dj0-GW-CGt">
+                                        <rect key="frame" x="236" y="138" width="27" height="32"/>
+                                        <color key="backgroundColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="AlT-kS-mQ5"/>
+                                            <constraint firstAttribute="width" constant="27" id="Qb2-jy-Djb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="top" secondItem="kCo-Lu-TFG" secondAttribute="top" id="3WA-Tz-GFK"/>
                                     <constraint firstItem="kdW-EH-aiz" firstAttribute="bottom" secondItem="hH4-6i-Cju" secondAttribute="bottom" constant="-3" id="5Ai-qG-aA1"/>
                                     <constraint firstItem="VS7-64-HQV" firstAttribute="top" secondItem="rb4-VR-oLO" secondAttribute="bottom" constant="6" id="5Ez-zS-urI"/>
                                     <constraint firstItem="Wfw-p0-zd9" firstAttribute="top" secondItem="hH4-6i-Cju" secondAttribute="top" id="5dQ-Y7-eXX"/>
                                     <constraint firstAttribute="trailing" secondItem="Wfw-p0-zd9" secondAttribute="trailing" id="66l-1j-aaC"/>
                                     <constraint firstItem="rb4-VR-oLO" firstAttribute="top" secondItem="Wfw-p0-zd9" secondAttribute="bottom" constant="8" id="6EF-kX-q5B"/>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="baseline" secondItem="VS7-64-HQV" secondAttribute="firstBaseline" id="AB9-Lo-dWP"/>
                                     <constraint firstAttribute="height" constant="175" id="AhM-M7-NK1"/>
                                     <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="leading" constant="38" id="DCO-wO-O6j"/>
                                     <constraint firstItem="VS7-64-HQV" firstAttribute="leading" secondItem="uJZ-Sj-Xb8" secondAttribute="trailing" constant="59" id="GQK-3Z-Czd"/>
-                                    <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="bottom" secondItem="YsP-M3-XcJ" secondAttribute="bottom" constant="-2" id="IfG-aN-Cz0"/>
                                     <constraint firstAttribute="trailing" secondItem="JXw-jB-CS2" secondAttribute="trailing" constant="8" id="KCQ-9b-hFe"/>
                                     <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="top" secondItem="rb4-VR-oLO" secondAttribute="bottom" constant="6" id="MzA-1H-Bk5"/>
                                     <constraint firstAttribute="trailing" secondItem="rb4-VR-oLO" secondAttribute="trailing" constant="8" id="NOC-5e-DPs"/>
                                     <constraint firstItem="rb4-VR-oLO" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="leading" constant="8" id="SVI-kZ-nwZ"/>
-                                    <constraint firstItem="YsP-M3-XcJ" firstAttribute="centerX" secondItem="uqT-FI-Nu6" secondAttribute="centerX" id="V6g-hP-da8"/>
                                     <constraint firstItem="JXw-jB-CS2" firstAttribute="centerY" secondItem="kdW-EH-aiz" secondAttribute="centerY" id="VYF-At-Ui3"/>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="firstBaseline" secondItem="VS7-64-HQV" secondAttribute="baseline" id="Vxr-fu-jls"/>
                                     <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="centerY" secondItem="kCo-Lu-TFG" secondAttribute="centerY" constant="-2" id="ae5-fv-llZ"/>
+                                    <constraint firstAttribute="bottom" secondItem="dj0-GW-CGt" secondAttribute="bottom" constant="5" id="blU-o2-OR4"/>
                                     <constraint firstItem="uqT-FI-Nu6" firstAttribute="leading" secondItem="VS7-64-HQV" secondAttribute="trailing" constant="-2" id="cjG-0T-u3C"/>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="centerX" secondItem="uqT-FI-Nu6" secondAttribute="centerX" id="gFO-Hd-vr9"/>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="leading" secondItem="VS7-64-HQV" secondAttribute="trailing" constant="31" id="iLf-Qi-GDq"/>
                                     <constraint firstItem="kdW-EH-aiz" firstAttribute="leading" secondItem="kCo-Lu-TFG" secondAttribute="trailing" constant="99" id="j1l-1P-8wX"/>
                                     <constraint firstItem="kdW-EH-aiz" firstAttribute="top" secondItem="rb4-VR-oLO" secondAttribute="bottom" constant="7" id="mRI-Fl-ACo"/>
                                     <constraint firstItem="Wfw-p0-zd9" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="leading" id="pP2-EZ-I0e"/>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="baseline" secondItem="uJZ-Sj-Xb8" secondAttribute="firstBaseline" id="rs5-Di-nUf"/>
                                     <constraint firstItem="kCo-Lu-TFG" firstAttribute="bottom" secondItem="hH4-6i-Cju" secondAttribute="bottom" constant="-3" id="sKc-HI-S6Y"/>
                                     <constraint firstItem="rb4-VR-oLO" firstAttribute="bottom" secondItem="kCo-Lu-TFG" secondAttribute="top" constant="-7" id="soB-oi-teg"/>
                                     <constraint firstItem="JXw-jB-CS2" firstAttribute="leading" secondItem="hH4-6i-Cju" secondAttribute="trailing" constant="-150" id="t5h-ea-0uM"/>
                                     <constraint firstItem="kCo-Lu-TFG" firstAttribute="trailing" secondItem="hH4-6i-Cju" secondAttribute="centerX" constant="54" id="vRY-sW-KUS"/>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="baseline" secondItem="VS7-64-HQV" secondAttribute="baseline" id="wGJ-j5-Cpz"/>
+                                    <constraint firstItem="dj0-GW-CGt" firstAttribute="baseline" secondItem="uJZ-Sj-Xb8" secondAttribute="baseline" id="wh4-RT-nVK"/>
                                     <constraint firstItem="VS7-64-HQV" firstAttribute="centerY" secondItem="uqT-FI-Nu6" secondAttribute="centerY" id="yTN-pG-dvt"/>
                                 </constraints>
                             </view>
@@ -1143,7 +1152,7 @@
                         <outlet property="saveButton" destination="JXw-jB-CS2" id="ydS-6f-wtD"/>
                         <outlet property="stepper" destination="uqT-FI-Nu6" id="0SS-8N-Tih"/>
                         <outlet property="tagTable" destination="rb4-VR-oLO" id="6Og-M3-J2V"/>
-                        <outlet property="txtValue" destination="YsP-M3-XcJ" id="l90-6Q-ME5"/>
+                        <outlet property="txtValue" destination="dj0-GW-CGt" id="Soz-WG-gq4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LPM-LV-6n3" userLabel="First Responder" sceneMemberID="firstResponder"/>
