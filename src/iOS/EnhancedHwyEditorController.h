@@ -74,3 +74,4 @@
 @property (assign,nonatomic)    OSMTransform           screenFromMapTransform;
 
 @end
+// this is what we are doing this is what we are doing and this is what we are doing and this is whar we are doing

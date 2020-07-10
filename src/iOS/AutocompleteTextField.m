@@ -211,7 +211,7 @@ static const CGFloat GradientHeight = 20.0;
 	self.text = _filteredCompletions[ indexPath.row ];
 
 	[self sendActionsForControlEvents:UIControlEventEditingChanged];
-	// [[NSNotificationCenter defaultCenter] postNotificationName:UITextFieldTextDidChangeNotification object:self userInfo:nil];
+//	 [[NSNotificationCenter defaultCenter] postNotificationName:UITextFieldTextDidChangeNotification object:self userInfo:nil];
 
 	if ( self.didSelectAutocomplete ) {
 		self.didSelectAutocomplete();
