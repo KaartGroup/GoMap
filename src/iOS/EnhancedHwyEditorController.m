@@ -26,19 +26,11 @@ typedef enum {
     NONE = 0,
     FORWARD = 1
 } ONEWAY_STATES;
-typedef enum {
-    EMPTY_LANE = 0,
-    PLUS_CLICKED = +1,
-    NO_LANES = -2,
-    MINUS_CLICKED = -1,
-} LANE_COUNT;
-
 @interface EnhancedHwyEditorController ()
 {
     NSMutableArray        *    _parentWays;
     NSMutableArray        *    _highwayViewArray; //    Array of EnhancedHwyEditorView to Store number of ways
     
-    //    NSArray                * _laneCount;
     EnhancedHwyEditorView    *    _selectedFromHwy;
     UIButton            *   _uTurnButton;
     OsmRelation         *   _currentUTurnRelation;
@@ -48,7 +40,6 @@ typedef enum {
     
     OsmWay              *   _selectedWay;
     ONEWAY_STATES         _onewayState;
-    LANE_COUNT           _laneCountState;
     
     MapView             *   _mapView;
     EditorMapLayer      *   _editorLayer;
@@ -66,7 +57,6 @@ typedef enum {
     _mapView = [AppDelegate getAppDelegate].mapView;
     _editorLayer = _mapView.editorLayer;
     [_editorLayer.mapData beginUndoGrouping];
-
 }
 
 - (void)loadState {
@@ -133,14 +123,10 @@ typedef enum {
     
     //lanecount for stepper
     if (![_keyValueDict objectForKey:@"lanes"]){
-        _laneCount = EMPTY_LANE;
-        NSLog(@"_laneCout for lanestepper for second if statement: @%ld",(long)_laneCount);
-        NSLog(@"LANES = TRUE");
+        _laneCount = 0;
     } else {
         _laneCount = _selectedWay.isModified;
-        NSLog(@"LANES = FALSE");
     }
-    NSLog(@"LANESTEPPER: %f", _stepper.value);
     [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
     [tagTable reloadData];
 }
@@ -315,11 +301,11 @@ typedef enum {
     }
     
     if ( touch.view != _highwayEditorView ) {
-        //continue to pan UIgit 
-        [self dismissViewControllerAnimated:true completion:nil];
+        // continue map pan
+        [self dismissViewControllerAnimated:true completion:nil]; // closes the keyboard
     }
-}       
-
+}
+// this is where we are going
 // Convert location point to CGPoint
 -(CGPoint)screenPointForLatitude:(double)latitude longitude:(double)longitude
 {
@@ -385,24 +371,22 @@ typedef enum {
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
     NSInteger  value =  (int)sender.value;
-     NSLog(@"LANE STEPPER VALUE: %li", (long)value);
-     [_editorLayer setNeedsLayout];
-     NSMutableArray * laneTag;
-     NSInteger * index = 0;
-     for ( NSMutableArray * kv in _tags ){
-         if ( [kv[0] isEqualToString:@"lanes"] )
-             laneTag = kv;
-     index++;
-             NSLog(@"INDEX: %li", (long)index);
-     }
-     NSString* laneString = [NSString stringWithFormat:@"%li", (long)value];
-     laneTag[1] = laneString;
-     [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-     [_editorLayer setNeedsLayout];
-     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
-         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-         saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
-     }
+    [_editorLayer setNeedsLayout];
+    NSMutableArray * laneTag;
+    NSInteger * index = 0;
+    for ( NSMutableArray * kv in _tags ){
+        if ( [kv[0] isEqualToString:@"lanes"] )
+            laneTag = kv;
+        index++;
+    }
+    NSString* laneString = [NSString stringWithFormat:@"%li", (long)value];
+    laneTag[1] = laneString;
+    [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+    [_editorLayer setNeedsLayout];
+    if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
+        [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
+    }
 }
 
 - (IBAction)closeBtnPressed:(id)sender {
