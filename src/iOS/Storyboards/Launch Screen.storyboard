@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="ipad12_9" orientation="landscape" layout="fullscreen" appearance="light"/>
+    <device id="ipad10_5" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment version="2304" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -16,26 +16,27 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Kaart Final Logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="2Bx-vt-zOi">
-                                <rect key="frame" x="467" y="294" width="432" height="348"/>
+                                <rect key="frame" x="201" y="419" width="432" height="348"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="348" id="sPo-Ne-XAE"/>
+                                    <constraint firstAttribute="height" constant="348" id="bzt-La-lnV"/>
+                                    <constraint firstAttribute="width" constant="432" id="hKi-QC-rUu"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Go Kaart!!" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="496" y="130" width="374" height="43"/>
+                                <rect key="frame" x="230" y="186" width="374" height="43"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="374" id="3Fo-9E-NYp"/>
+                                    <constraint firstAttribute="width" constant="374" id="BCm-kR-xgo"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-BoldItalic" family="Helvetica Neue" pointSize="36"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make Awesome Data " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G8Y-ed-q93">
-                                <rect key="frame" x="576" y="768" width="214" height="27.5"/>
+                                <rect key="frame" x="310" y="820" width="214" height="27.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -43,15 +44,12 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="top" secondItem="GJd-Yh-RWb" secondAttribute="bottom" constant="121" id="454-gf-cpf"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" constant="-476" id="4hE-Kh-OKr"/>
-                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="294" id="9da-FL-5Uc"/>
-                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="447" id="Ehq-7y-ozg"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="2Bx-vt-zOi" secondAttribute="centerX" id="HWB-Ya-B5F"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="G8Y-ed-q93" secondAttribute="bottom" constant="228.5" id="WQr-hs-5nF"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="476" id="nK6-Nx-FvL"/>
-                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="centerX" secondItem="G8Y-ed-q93" secondAttribute="centerX" id="oNf-2Z-zVr"/>
-                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="q7G-bw-vqG"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="G8Y-ed-q93" secondAttribute="bottom" constant="264.5" id="9jF-jK-Bcw"/>
+                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="419" id="Flx-Sf-0XM"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="I7A-FH-rJD"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="186" id="Kjq-kR-Gbm"/>
+                            <constraint firstItem="2Bx-vt-zOi" firstAttribute="centerX" secondItem="G8Y-ed-q93" secondAttribute="centerX" id="Kva-KA-qTg"/>
+                            <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerX" secondItem="2Bx-vt-zOi" secondAttribute="centerX" id="yQu-lz-RRN"/>
                         </constraints>
                     </view>
                 </viewController>
