@@ -305,7 +305,7 @@ typedef enum {
         [self dismissViewControllerAnimated:true completion:nil]; // closes the keyboard
     }
 }
-// this is where we are going
+
 // Convert location point to CGPoint
 -(CGPoint)screenPointForLatitude:(double)latitude longitude:(double)longitude
 {
