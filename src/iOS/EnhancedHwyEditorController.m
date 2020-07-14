@@ -54,10 +54,8 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     _highwayViewArray = [NSMutableArray new];
-    
     _mapView = [AppDelegate getAppDelegate].mapView;
     _editorLayer = _mapView.editorLayer;
-    
     [_editorLayer.mapData beginUndoGrouping];
 }
 
@@ -307,7 +305,7 @@ typedef enum {
         [self dismissViewControllerAnimated:true completion:nil]; // closes the keyboard
     }
 }
-// this is where we are going
+
 // Convert location point to CGPoint
 -(CGPoint)screenPointForLatitude:(double)latitude longitude:(double)longitude
 {
