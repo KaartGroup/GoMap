@@ -120,7 +120,6 @@
 		02F8F4341696004B002A0820 /* NominatimViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02F8F4331696004B002A0820 /* NominatimViewController.m */; };
 		02FFCE0B16A7360B001A5B8A /* NSMutableArray+PartialSort.mm in Sources */ = {isa = PBXBuildFile; fileRef = 02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E11092424B67741000CC3FC /* Kaart Final Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11092324B67741000CC3FC /* Kaart Final Logo.png */; };
-		0ED6153F24A1108E001AD42C /* CommonTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED6153E24A1108E001AD42C /* CommonTagList.m */; };
 		0EF9944D249D644E004E82C1 /* EnhancedHwyEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */; };
 		0EF99450249D68DE004E82C1 /* TagInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9944F249D68DE004E82C1 /* TagInfo.m */; };
 		64305F7223E7224E00232BB9 /* LocationURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 64305F7123E7224E00232BB9 /* LocationURLParser.m */; };
@@ -377,8 +376,6 @@
 		02FFCE0916A7360B001A5B8A /* NSMutableArray+PartialSort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+PartialSort.h"; path = "../Shared/NSMutableArray+PartialSort.h"; sourceTree = "<group>"; };
 		02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSMutableArray+PartialSort.mm"; path = "../Shared/NSMutableArray+PartialSort.mm"; sourceTree = "<group>"; };
 		0E11092324B67741000CC3FC /* Kaart Final Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Kaart Final Logo.png"; path = "../../../Kaart Final Logo.png"; sourceTree = "<group>"; };
-		0ED6153D24A11047001AD42C /* CommonTagList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonTagList.h; sourceTree = "<group>"; };
-		0ED6153E24A1108E001AD42C /* CommonTagList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonTagList.m; sourceTree = "<group>"; };
 		0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
 		0EF9944E249D6463004E82C1 /* EnhancedHwyEditorController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorController.h; sourceTree = "<group>"; };
 		0EF9944F249D68DE004E82C1 /* TagInfo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TagInfo.m; sourceTree = "<group>"; };
@@ -697,8 +694,6 @@
 				022ABCA220C3750A002D4977 /* Buildings3DView.h */,
 				022ABCA320C3750A002D4977 /* Buildings3DView.m */,
 				02ACBA7016713F2A00BB4414 /* changeset.xsl */,
-				0ED6153D24A11047001AD42C /* CommonTagList.h */,
-				0ED6153E24A1108E001AD42C /* CommonTagList.m */,
 				02D5B5F2248F154D00FEE448 /* Colors.swift */,
 				02354F79246349E100878A04 /* CurvedGlyphLayer.swift */,
 				0216636C2470AFAB00B0B0F6 /* CurvedTextLayer.swift */,
@@ -1102,7 +1097,6 @@
 				021B30C81973AA4400B36EFF /* OsmMapData+Edit.m in Sources */,
 				02C4255316796B5800761C54 /* SpeechBalloonView.m in Sources */,
 				021D4E4B194E0BCB002154B3 /* FpsLabel.m in Sources */,
-				0ED6153F24A1108E001AD42C /* CommonTagList.m in Sources */,
 				64305F7223E7224E00232BB9 /* LocationURLParser.m in Sources */,
 				02A077D2167A77A400686261 /* POIAllTagsViewController.m in Sources */,
 				024C323D1DEEA97100AD62AB /* AdvancedSettingsViewController.m in Sources */,
