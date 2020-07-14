@@ -1132,13 +1132,14 @@ const static CGFloat Z_HALO				= Z_BASE + 3 * ZSCALE;
 const static CGFloat Z_CASING			= Z_BASE + 4 * ZSCALE;
 const static CGFloat Z_LINE				= Z_BASE + 5 * ZSCALE;
 const static CGFloat Z_TEXT				= Z_BASE + 6 * ZSCALE;
-const static CGFloat Z_NODE				= Z_BASE + 7 * ZSCALE;
-const static CGFloat Z_TURN             = Z_BASE + 8 * ZSCALE;	// higher than street signals, etc
-const static CGFloat Z_BUILDING_WALL	= Z_BASE + 9 * ZSCALE;
-const static CGFloat Z_BUILDING_ROOF	= Z_BASE + 10 * ZSCALE;
-const static CGFloat Z_HIGHLIGHT_WAY	= Z_BASE + 11 * ZSCALE;
-const static CGFloat Z_HIGHLIGHT_NODE	= Z_BASE + 12 * ZSCALE;
-const static CGFloat Z_ARROWS			= Z_BASE + 13 * ZSCALE;
+const static CGFloat Z_ARROW            = Z_BASE + 7 * ZSCALE;
+const static CGFloat Z_NODE             = Z_BASE + 8 * ZSCALE;
+const static CGFloat Z_TURN             = Z_BASE + 9 * ZSCALE;    // higher than street signals, etc
+const static CGFloat Z_BUILDING_WALL    = Z_BASE + 10 * ZSCALE;
+const static CGFloat Z_BUILDING_ROOF    = Z_BASE + 11 * ZSCALE;
+const static CGFloat Z_HIGHLIGHT_WAY    = Z_BASE + 12 * ZSCALE;
+const static CGFloat Z_HIGHLIGHT_NODE    = Z_BASE + 13 * ZSCALE;
+const static CGFloat Z_HIGHLIGHT_ARROW    = Z_BASE + 14 * ZSCALE;
 
 
 -(CALayer *)buildingWallLayerForPoint:(OSMPoint)p1 point:(OSMPoint)p2 height:(double)height hue:(double)hue
@@ -1856,63 +1857,36 @@ const static CGFloat Z_ARROWS			= Z_BASE + 13 * ZSCALE;
 		}
 	}
 
-    // Arrow heads and street names
-    for ( OsmBaseObject * object in _shownObjects ) {
-        if ( object.isOneWay ) {
+	// Arrow heads and street names
+	for ( OsmBaseObject * object in _shownObjects ) {
+		BOOL isHighlight = [highlights containsObject:object];
+        if ( object.isOneWay || isHighlight ) {
+			// arrow heads
+			[self invokeAlongScreenClippedWay:object.isWay offset:50 interval:100 block:^(OSMPoint loc, OSMPoint dir){
+				// draw direction arrow at loc/dir
+				BOOL reversed = object.isOneWay == ONEWAY_BACKWARD;
+				double len = reversed ? -15 : 15;
+				double width = 5;
 
-            // arrow heads
-            [self invokeAlongScreenClippedWay:object.isWay offset:50 interval:100 block:^(OSMPoint loc, OSMPoint dir){
-                // draw direction arrow at loc/dir
-                BOOL reversed = object.isOneWay == ONEWAY_BACKWARD;
-                double len = reversed ? -15 : 15;
-                double width = 5;
+				OSMPoint p1 = { loc.x - dir.x*len + dir.y*width, loc.y - dir.y*len - dir.x*width };
+				OSMPoint p2 = { loc.x - dir.x*len - dir.y*width, loc.y - dir.y*len + dir.x*width };
 
-                OSMPoint p1 = { loc.x - dir.x*len + dir.y*width, loc.y - dir.y*len - dir.x*width };
-                OSMPoint p2 = { loc.x - dir.x*len - dir.y*width, loc.y - dir.y*len + dir.x*width };
+				CGMutablePathRef arrowPath = CGPathCreateMutable();
+				CGPathMoveToPoint(arrowPath, NULL, p1.x, p1.y);
+				CGPathAddLineToPoint(arrowPath, NULL, loc.x, loc.y);
+				CGPathAddLineToPoint(arrowPath, NULL, p2.x, p2.y);
+				CGPathAddLineToPoint(arrowPath, NULL, loc.x-dir.x*len*0.5, loc.y-dir.y*len*0.5);
+				CGPathCloseSubpath(arrowPath);
 
-                CGMutablePathRef arrowPath = CGPathCreateMutable();
-                CGPathMoveToPoint(arrowPath, NULL, p1.x, p1.y);
-                CGPathAddLineToPoint(arrowPath, NULL, loc.x, loc.y);
-                CGPathAddLineToPoint(arrowPath, NULL, p2.x, p2.y);
-                CGPathAddLineToPoint(arrowPath, NULL, loc.x-dir.x*len*0.5, loc.y-dir.y*len*0.5);
-                CGPathCloseSubpath(arrowPath);
-
-                CAShapeLayer * arrow = [CAShapeLayer new];
-                arrow.path = arrowPath;
-                arrow.lineWidth = 1;
-                arrow.fillColor = UIColor.blackColor.CGColor;
-                arrow.zPosition    = Z_ARROWS;
-                [layers addObject:arrow];
-                CGPathRelease(arrowPath);
-            }];
-        }
-        if ( [highlights containsObject:object] ) {
-            
-            // arrow heads
-            [self invokeAlongScreenClippedWay:object.isWay offset: object.isOneWay ? 30 : 50 interval:100 block:^(OSMPoint loc, OSMPoint dir){
-                // draw direction arrow at loc/dir
-                double len = 15;
-                double width = 5;
-                
-                OSMPoint p1 = { loc.x - dir.x*len + dir.y*width, loc.y - dir.y*len - dir.x*width };
-                OSMPoint p2 = { loc.x - dir.x*len - dir.y*width, loc.y - dir.y*len + dir.x*width };
-                
-                CGMutablePathRef arrowPath = CGPathCreateMutable();
-                CGPathMoveToPoint(arrowPath, NULL, p1.x, p1.y);
-                CGPathAddLineToPoint(arrowPath, NULL, loc.x, loc.y);
-                CGPathAddLineToPoint(arrowPath, NULL, p2.x, p2.y);
-                CGPathAddLineToPoint(arrowPath, NULL, loc.x-dir.x*len*0.5, loc.y-dir.y*len*0.5);
-                CGPathCloseSubpath(arrowPath);
-                
-                CAShapeLayer * arrow = [CAShapeLayer new];
-                arrow.path = arrowPath;
-                arrow.lineWidth = 1;
-                arrow.fillColor = UIColor.redColor.CGColor;
-                arrow.zPosition    = Z_ARROWS;
-                [layers addObject:arrow];
-                CGPathRelease(arrowPath);
-            }];
-        }
+				CAShapeLayer * arrow = [CAShapeLayer new];
+				arrow.path = arrowPath;
+				arrow.lineWidth = 1;
+				arrow.fillColor = UIColor.blackColor.CGColor;
+				arrow.zPosition = isHighlight ? Z_HIGHLIGHT_ARROW : Z_ARROW;
+				[layers addObject:arrow];
+				CGPathRelease(arrowPath);
+			}];
+		}
 
 		// street names
 		if ( nameLimit > 0 ) {

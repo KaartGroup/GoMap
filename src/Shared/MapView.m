@@ -2610,9 +2610,9 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
         // if GPS is running don't keep moving around
         self.userOverrodeLocationPosition = YES;
         
-        // scroll view so intersection stays visible
+        /* scroll view so intersection stays visible
         CGPoint delta = { 415 - point.x, 180 - point.y };
-        [self adjustOriginBy:delta];
+        [self adjustOriginBy:delta]; */
         
     };
     showEnhancedHwyEditor();
