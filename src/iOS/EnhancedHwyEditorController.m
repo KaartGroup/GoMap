@@ -301,10 +301,10 @@ typedef enum {
     }
     
     if ( touch.view != _highwayEditorView ) {
-        // continue map pan
-        [self dismissViewControllerAnimated:true completion:nil]; // closes the keyboard
+        // continue to pan map
+        //[self dismissViewControllerAnimated:false completion:nil]; // closes the keyboard
     }
-}
+}       
 
 // Convert location point to CGPoint
 -(CGPoint)screenPointForLatitude:(double)latitude longitude:(double)longitude
