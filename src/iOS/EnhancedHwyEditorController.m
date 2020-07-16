@@ -302,7 +302,7 @@ typedef enum {
     
     if ( touch.view != _highwayEditorView ) {
         // continue to pan map
-        //[self dismissViewControllerAnimated:false completion:nil]; // closes the keyboard
+        [self dismissViewControllerAnimated:false completion:nil]; // closes the keyboard
     }
 }       
 
