@@ -1232,8 +1232,8 @@ const static CGFloat Z_HIGHLIGHT_ARROW    = Z_BASE + 14 * ZSCALE;
 				}
 
 				// provide a halo for streets that don't have a name
-				if ( _mapView.enableUnnamedRoadHalo  &&  object.tags[@"highway"] ) {
-					NSString * name = [object givenName];
+                if ( _mapView.enableUnnamedRoadHalo  &&  object.tags[ /*@"motorway", @"trunk", @"primary", @"secondary", @"tertiary", @"unclassified", @"residential", @"road", @"living_street" */ @"highway" ] ) {
+					NSString * name = [object givenName]; 
 					if ( name == nil && ![object.tags[@"noname"] isEqualToString:@"yes"] ) {
 						// it lacks a name
 						CAShapeLayerWithProperties * haloLayer = [CAShapeLayerWithProperties new];
@@ -1253,12 +1253,10 @@ const static CGFloat Z_HIGHLIGHT_ARROW    = Z_BASE + 14 * ZSCALE;
 						[layers addObject:haloLayer];
 					}
 				}
-
 				CGPathRelease(path);
 			}
-		}
+		} 
 	}
-
 	// way (also provides an outline for areas)
 	if ( object.isWay || object.isRelation.isMultipolygon ) {
 		OSMPoint refPoint = { 0, 0 };
