@@ -78,7 +78,6 @@ typedef enum {
         
         if(![_keyValueDict objectForKey:@"lanes"]){
             _laneCount = laneStepper.value;
-            saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
         } else {
             // don't change the value
             _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
@@ -129,6 +128,7 @@ typedef enum {
     }
     [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
     [tagTable reloadData];
+    saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -180,7 +180,7 @@ typedef enum {
     
     return cell;
 };
- 
+
 - (IBAction)textFieldReturn:(id)sender {
     [sender resignFirstResponder];
 }
@@ -379,10 +379,9 @@ typedef enum {
             laneTag = kv;
         index++;
     }
-    NSString* laneString = [NSString stringWithFormat:@"%li", (long)value];
+    NSString * laneString = [NSString stringWithFormat:@"%li", (long)value];
     laneTag[1] = laneString;
-    [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-    [_editorLayer setNeedsLayout];
+    NSLog(@"Lanetag value: %ld", (long)value);
     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
         saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
