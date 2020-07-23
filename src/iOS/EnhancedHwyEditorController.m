@@ -385,24 +385,25 @@ typedef enum {
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
     NSInteger  value =  (int)sender.value;
-     NSLog(@"LANE STEPPER VALUE: %li", (long)value);
-     [_editorLayer setNeedsLayout];
-     NSMutableArray * laneTag;
-     NSInteger * index = 0;
-     for ( NSMutableArray * kv in _tags ){
-         if ( [kv[0] isEqualToString:@"lanes"] )
-             laneTag = kv;
-     index++;
-             NSLog(@"INDEX: %li", (long)index);
-     }
-     NSString* laneString = [NSString stringWithFormat:@"%li", (long)value];
-     laneTag[1] = laneString;
-     [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-     [_editorLayer setNeedsLayout];
-     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
-         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
-         saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
-     }
+    NSLog(@"LANE STEPPER VALUE: %li", (long)value);
+    NSLog(@"LANE STEPPER VALUE: %li", (long)value);
+    [_editorLayer setNeedsLayout];
+    NSMutableArray * laneTag;
+    NSInteger * index = 0;
+    for ( NSMutableArray * kv in _tags ){
+        if ( [kv[0] isEqualToString:@"lanes"] )
+            laneTag = kv;
+        index++;
+        NSLog(@"INDEX: %li", (long)index);
+    }
+    NSString* laneString = [NSString stringWithFormat:@"%li", (long)value];
+    laneTag[1] = laneString;
+    [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+    [_editorLayer setNeedsLayout];
+    if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
+        [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
+    }
 }
 
 - (IBAction)closeBtnPressed:(id)sender {
