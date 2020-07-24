@@ -1232,7 +1232,7 @@ const static CGFloat Z_HIGHLIGHT_ARROW    = Z_BASE + 14 * ZSCALE;
 				}
 
 				// provide a halo for streets that don't have a name
-                if ( _mapView.enableUnnamedRoadHalo  &&  object.tags[ /*@"motorway", @"trunk", @"primary", @"secondary", @"tertiary", @"unclassified", @"residential", @"road", @"living_street" */ @"highway" ] ) {
+                if ( _mapView.enableUnnamedRoadHalo  &&  object.tags[ @"motorway", @"trunk", @"primary", @"secondary", @"tertiary", @"unclassified", @"residential", @"road", @"living_street" /*@"highway" */ ] ) {
 					NSString * name = [object givenName]; 
 					if ( name == nil && ![object.tags[@"noname"] isEqualToString:@"yes"] ) {
 						// it lacks a name
