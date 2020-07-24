@@ -2328,7 +2328,9 @@ typedef enum {
     ACTION_COPYTAGS,
     ACTION_PASTETAGS,
     ACTION_RESTRICT,
-    ACTION_CREATE_RELATION
+    ACTION_CREATE_RELATION,
+    
+    ACTION_ADD_BARRIER
 } EDIT_ACTION;
 
 NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
@@ -2350,9 +2352,12 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
         case ACTION_DELETE:			return NSLocalizedString(@"Delete",nil);
         case ACTION_MORE:			return NSLocalizedString(@"More...",nil);
         case ACTION_HEIGHT:			return NSLocalizedString(@"Measure Height", nil);
-        case ACTION_RESTRICT:		return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
+        case ACTION_RESTRICT:		return abbrev ? NSLocalizedString(@"Restrict", nil) :
+            NSLocalizedString(@"Turn Restrictions", nil);
         case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
+        case ACTION_ADD_BARRIER:     return NSLocalizedString(@"Barrier", nil);
     };
+    NSLog(@"Barrier added %u", action);
     return nil;
 }
 

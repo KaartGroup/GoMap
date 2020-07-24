@@ -162,7 +162,7 @@ static RenderInfo * g_DefaultRender = nil;
 		tagType.key				= [tag attributeForName:@"key"].stringValue;
 		tagType.value			= [tag attributeForName:@"value"].stringValue;
 		tagType.geometry		= [tag attributeForName:@"type"].stringValue;
-		tagType.lineColor		= [RenderInfo colorForString:[tag attributeForName:@"lineColor"].stringValue]; // loads line color
+		tagType.lineColor		= [RenderInfo colorForString:[tag attributeForName:@"lineColor"].stringValue];
 		tagType.areaColor		= [RenderInfo colorForString:[tag attributeForName:@"areaColor"].stringValue];
 		tagType.lineWidth		= [tag attributeForName:@"lineWidth"].stringValue.doubleValue;
 		if ( [tag.name isEqualToString:@"tag"] ) {
