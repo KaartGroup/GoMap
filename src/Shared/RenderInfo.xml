@@ -52,11 +52,11 @@
 	<tag key="highway" value="road" type="way" lineColor="808080" lineWidth="2.000000"/>
 	<tag key="highway" value="secondary" type="way" lineColor="FFFF00" lineWidth="3.000000"/>
 	<tag key="highway" value="secondary_link" type="way" lineColor="FFFF00" lineWidth="2.000000"/>
-	<tag key="highway" value="service" type="way" lineColor="45588c" lineWidth="1.000000"/>
+	<tag key="highway" value="service" type="way" lineColor="39ff14" lineWidth="1.000000"/>
 	<tag key="highway" value="services" type="way" areaColor="C0C0C0"/>
 	<tag key="highway" value="steps" type="way" lineColor="aa3311" lineWidth="1.75000"/>
-	<tag key="highway" value="tertiary" type="way" lineColor="fcfc83" lineWidth="2.000000"/>
-	<tag key="highway" value="tertiary_link" type="way" lineColor="fcfc83" lineWidth="1.500000"/>
+	<tag key="highway" value="tertiary" type="way" lineColor="76a2f5" lineWidth="2.000000"/>
+	<tag key="highway" value="tertiary_link" type="way" lineColor="76a2f5" lineWidth="1.500000" dashed="true" dashedColor="FFFFFF"/>
 	<tag key="highway" value="track" type="way" lineColor="996644" lineWidth="1.000000"/>
 	<tag key="highway" value="trunk" type="way" lineColor="DD2F22" lineWidth="3.000000"/>
 	<tag key="highway" value="trunk_link" type="way" lineColor="DD2F22" lineWidth="2.000000"/>
