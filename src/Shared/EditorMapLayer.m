@@ -1227,14 +1227,13 @@ const static CGFloat Z_HIGHLIGHT_ARROW    = Z_BASE + 14 * ZSCALE;
                         props->lineWidth += 2;
                         layer.strokeColor = UIColor.brownColor.CGColor;
                     }
-                    
                     [layers addObject:layer];
                 }
                 
                 // provide a halo for streets that don't have a name
-                if ( _mapView.enableUnnamedRoadHalo  &&  object.tags[ @"highway" ] ) {
+                // [object.tags[@"highway"] isEqualToString:@"stop"]
+                if ( _mapView.enableUnnamedRoadHalo  &&  ![object.tags[ @"highway" ] isEqualToString:@"track"] && ![object.tags[ @"highway" ] isEqualToString:@"path"]) {
                     NSString * name = [object givenName];
-                    NSString * value = object.tags[ @"track" ];
                     if ( name == nil && ![object.tags[@"noname"] isEqualToString:@"yes"] ) {
                         // it lacks a name
                         CAShapeLayerWithProperties * haloLayer = [CAShapeLayerWithProperties new];
