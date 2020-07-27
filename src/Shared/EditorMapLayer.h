@@ -47,6 +47,7 @@ extern const double MinIconSizeInPixels;
     CATransformLayer	*	_baseLayer;
 }
 
+
 @property (assign,nonatomic)	BOOL			enableObjectFilters;	// turn all filters on/on
 @property (assign,nonatomic)	BOOL			showLevel;				// filter for building level
 @property (copy,nonatomic) 		NSString	*	showLevelRange;			// range of levels for building level
