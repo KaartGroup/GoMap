@@ -1232,7 +1232,7 @@ const static CGFloat Z_HIGHLIGHT_ARROW    = Z_BASE + 14 * ZSCALE;
                 
                 // provide a halo for streets that don't have a name
                 // [object.tags[@"highway"] isEqualToString:@"stop"]
-                if ( _mapView.enableUnnamedRoadHalo  &&  ![object.tags[ @"highway" ] isEqualToString:@"track"] && ![object.tags[ @"highway" ] isEqualToString:@"path"]) {
+                if ( _mapView.enableUnnamedRoadHalo  &&  ![object.tags[ @"highway" ] isEqualToString:@"track"] && ![object.tags[ @"highway" ] isEqualToString:@"path"] && ![object.tags[ @"natural" ] isEqualToString:@"cliff"] && ![object.tags[ @"waterway" ] isEqualToString:@"stream"] && !object.tags[ @"footway" ] && ![object.tags[ @"highway" ] isEqualToString:@"service"] && ![object.tags[ @"highway" ] isEqualToString:@"footway"] && !object.tags[ @"barrier" ] && !object.tags[ @"railway" ] && !object.tags[ @"waterway" ] && !object.tags[ @"power" ] && !object.tags[ @"pipeline" ] && !object.tags[ @"man_made" ] && ![object.tags[ @"amenity" ] isEqualToString:@"parking"] && ![object.tags[ @"boundary" ] isEqualToString:@"administrative"] && ![object.tags[ @"highway" ] isEqualToString:@"cycleway"] && ![object.tags[ @"highway" ] isEqualToString:@"pedestrian"] && ![object.tags[ @"waterway" ] isEqualToString:@"ditch"]) {
                     NSString * name = [object givenName];
                     if ( name == nil && ![object.tags[@"noname"] isEqualToString:@"yes"] ) {
                         // it lacks a name
