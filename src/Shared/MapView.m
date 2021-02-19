@@ -575,115 +575,6 @@ const CGFloat kEditControlCornerRadius = 4;
     }
 }
 
--(CALayer *)compassLayerWithRadius:(CGFloat)radius
-{
-    CALayer * compass = [CALayer new];
-    CGFloat width = round(radius/5);
-    compass.bounds = CGRectMake(0, 0, 2*radius, 2*radius);
-    compass.backgroundColor = UIColor.whiteColor.CGColor;
-    compass.borderColor = UIColor.darkGrayColor.CGColor;
-    compass.borderWidth = 1.0;
-    compass.cornerRadius = radius;
-    compass.position = CGPointMake(radius, radius);
-    {
-        CAShapeLayer * north = [CAShapeLayer new];
-        UIBezierPath * path = [UIBezierPath bezierPath];
-        [path moveToPoint:CGPointMake(-width,0)];
-        [path addLineToPoint:CGPointMake(width,0)];
-        [path addLineToPoint:CGPointMake(0,-round(radius*0.9))];
-        [path closePath];
-        north.path = path.CGPath;
-        north.fillColor = UIColor.systemRedColor.CGColor;
-        north.position = CGPointMake(radius, radius);
-        [compass addSublayer:north];
-    }
-    {
-        CAShapeLayer * south = [CAShapeLayer new];
-        UIBezierPath * path = [UIBezierPath bezierPath];
-        [path moveToPoint:CGPointMake(-width,0)];
-        [path addLineToPoint:CGPointMake(width,0)];
-        [path addLineToPoint:CGPointMake(0,round(radius*0.9))];
-        [path closePath];
-        south.path = path.CGPath;
-        south.fillColor = UIColor.lightGrayColor.CGColor;
-        south.position = CGPointMake(radius, radius);
-        [compass addSublayer:south];
-    }
-    {
-        CALayer * pivot = [CALayer new];
-        pivot.bounds = CGRectMake(radius-width/2, radius-width/2, width, width);
-        pivot.backgroundColor = UIColor.whiteColor.CGColor;
-        pivot.borderColor = UIColor.blackColor.CGColor;
-        pivot.cornerRadius = width/2;
-        pivot.position = CGPointMake(radius, radius);
-        [compass addSublayer:pivot];
-    }
-    return compass;
-}
--(BOOL)automatedFramerateTestActive
-{
-    NSString * NAME = @"autoScroll";
-    DisplayLink * displayLink = [DisplayLink shared];
-    return [displayLink hasName:NAME];
-}
--(void)setAutomatedFramerateTestActive:(BOOL)enable
-{
-    NSString * NAME = @"autoScroll";
-    DisplayLink * displayLink = [DisplayLink shared];
-    
-    if ( enable == [displayLink hasName:NAME] ) {
-        // nothing to do
-    } else if ( enable ) {
-        // automaatically scroll view for frame rate testing
-        self.fpsLabel.showFPS = YES;
-        
-        // this set's the starting center point
-        const OSMPoint startLatLon = { -122.205831, 47.675024 };
-        const double startZoom = 17.302591;
-        [self setTransformForLatitude:startLatLon.y longitude:startLatLon.x zoom:startZoom];
-        
-        // sets the size of the circle
-        const double radius = 100;
-        const CGFloat startAngle = 1.5 * M_PI;
-        const CGFloat rpm = 2.0;
-        const CGFloat zoomTotal = 1.1; // 10% larger
-        const CGFloat zoomDelta = pow(zoomTotal,1/60.0);
-        
-        __block CGFloat angle = startAngle;
-        __block CFTimeInterval prevTime = CACurrentMediaTime();
-        __weak MapView * weakSelf = self;
-        
-        [displayLink addName:NAME block:^{
-            CFTimeInterval time = CACurrentMediaTime();
-            CFTimeInterval delta = time - prevTime;
-            CGFloat newAngle = angle + (2*M_PI)/rpm * delta;	// angle change depends on framerate to maintain 2/RPM
-            
-            if ( angle < startAngle && newAngle >= startAngle ) {
-                // reset to start position
-                [self setTransformForLatitude:startLatLon.y longitude:startLatLon.x zoom:startZoom];
-                angle = startAngle;
-            } else {
-                // move along circle
-                CGFloat x1 = cos(angle);
-                CGFloat y1 = sin(angle);
-                CGFloat x2 = cos(newAngle);
-                CGFloat y2 = sin(newAngle);
-                CGFloat dx = (x2 - x1) * radius;
-                CGFloat dy = (y2 - y1) * radius;
-                
-                [weakSelf adjustOriginBy:CGPointMake(dx,dy)];
-                double zoomRatio = dy >= 0 ? zoomDelta : 1/zoomDelta;
-                [weakSelf adjustZoomBy:zoomRatio aroundScreenPoint:_crossHairs.position];
-                angle = fmod( newAngle, 2*M_PI );
-            }
-            prevTime = time;
-        }];
-    } else {
-        self.fpsLabel.showFPS = NO;
-        [displayLink removeName:NAME];
-    }
-}
-
 - (BOOL)acceptsFirstResponder
 {
     return YES;
@@ -4013,6 +3904,21 @@ static NSString * const DisplayLinkPanning	= @"Panning";
             // if they later try to drag this way ask them if they really wanted to
             _confirmDrag = (_editorLayer.selectedPrimary.modifyCount == 0);
         }
+    }
+}
+
+- (void)presentViewControllerForMeasuringHeight {
+    if ( self.gpsState == GPS_STATE_NONE ) {
+        NSString *errorMessage = NSLocalizedString(@"This action requires GPS to be turned on",nil);
+        
+        [self showAlert:errorMessage message:nil];
+    } else if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusDenied) {
+        NSString *title = NSLocalizedString(@"Unable to access the camera", "");
+        NSString *message = NSLocalizedString(@"In order to measure height, please enable camera access in the app's settings.", "");
+        
+        [self askUserToOpenSettingsWithAlertTitle:title message:message];
+    } else {
+        [self.viewController performSegueWithIdentifier:@"CalculateHeightSegue" sender:nil];
     }
 }
 

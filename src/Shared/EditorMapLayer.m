@@ -1492,18 +1492,6 @@ const static CGFloat Z_HIGHLIGHT_ARROW    = Z_BASE + 14 * ZSCALE;
     return markerIcon;
 }
 
-- (UIImage *)genericIcon
-{
-    // use the "marker" icon
-    static dispatch_once_t onceToken;
-    static UIImage * markerIcon = nil;
-    dispatch_once(&onceToken, ^{
-        markerIcon = [UIImage imageNamed:@"maki-marker"];
-        markerIcon = IconScaledForDisplay( markerIcon );
-    });
-    return markerIcon;
-}
-
 /**
  Determines the `CALayer` instances required to present the given `node` on the map.
  
