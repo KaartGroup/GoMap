@@ -1598,11 +1598,11 @@ const static CGFloat Z_ARROWS			= Z_BASE + 11 * ZSCALE;
     if ( icon ) {
         /// White box as the background
         CALayer *backgroundLayer = [CALayer new];
-        backgroundLayer.bounds          = CGRectMake(0, 0, MinIconSizeInPixels, MinIconSizeInPixels);
-        backgroundLayer.backgroundColor	= [UIColor colorWithWhite:1.0 alpha:0.75].CGColor;
-        backgroundLayer.cornerRadius    = 5;
-        backgroundLayer.masksToBounds   = YES;
-        backgroundLayer.anchorPoint 	= CGPointZero;
+        backgroundLayer.bounds            = CGRectMake(0, 0, MinIconSizeInPixels, MinIconSizeInPixels);
+        backgroundLayer.backgroundColor     = [UIColor colorWithWhite:1.0 alpha:0.75].CGColor;
+        backgroundLayer.cornerRadius        = MinIconSizeInPixels / 2;
+        backgroundLayer.masksToBounds     = YES;
+        backgroundLayer.anchorPoint = CGPointZero;
         
         /// The actual icon image serves as a `mask` for the icon's color layer, allowing for "tinting" of the icons.
         CALayer *iconMaskLayer = [CALayer new];
