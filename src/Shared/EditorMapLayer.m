@@ -1634,6 +1634,11 @@ const static CGFloat Z_ARROWS            = Z_BASE + 11 * ZSCALE;
  */
 - (NSArray<CALayer *> *)shapeLayersForForNode:(OsmNode *)node {
     NSMutableArray<CALayer *> *layers = [NSMutableArray array];
+    
+    CALayer *fieldOfViewLayer = [self fieldOfViewShapeLayerWithCameraNode:node];
+    if (fieldOfViewLayer) {
+        [layers addObject:fieldOfViewLayer];
+    }
 
     OSMPoint pt = MapPointForLatitudeLongitude( node.lat, node.lon );
     
@@ -1716,6 +1721,69 @@ const static CGFloat Z_ARROWS            = Z_BASE + 11 * ZSCALE;
     }
 
     return layers;
+}
+
+/**
+ Determines the `CALayer` instance required to draw the field of view for the given `node`
+ if it was a surveillance camera.
+
+ @param node The node to get the layers for.
+ @return A `CALayer` instance for rendering the given node's field of view.
+ */
+- (CALayer *)fieldOfViewShapeLayerWithCameraNode:(OsmNode *)node {
+    BOOL isSurveillanceCamera = [node.tags[@"surveillance:type"] isEqualToString:@"camera"];
+    if (!isSurveillanceCamera) {
+        // For nodes other than surveillance cameras, we don't want to have a FOV shape layer.
+        return nil;
+    }
+    
+    NSString *directionAsString = node.tags[@"camera:direction"];
+    if (!directionAsString) {
+        // Without a direction, we are not able to draw the FOV.
+        return nil;
+    }
+    
+    CGFloat direction = [directionAsString floatValue];
+    CGFloat heading = direction - 90;
+    
+    CAShapeLayer *layer = [CAShapeLayer layer];
+    
+    layer.fillColor = [UIColor colorWithWhite:0.2 alpha:0.9].CGColor;
+    layer.strokeColor = [UIColor colorWithWhite:1.0 alpha:0.9].CGColor;
+    layer.lineWidth = 0.5;
+    
+    layer.zPosition = -1;
+    
+    OSMPoint pt = MapPointForLatitudeLongitude(node.lat, node.lon);
+    
+    double screenAngle = OSMTransformRotation(self.mapView.screenFromMapTransform);
+    layer.affineTransform = CGAffineTransformMakeRotation(screenAngle);
+    
+    CGFloat radius = 30.0;
+    CGFloat fieldOfViewRadius = 55;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddArc(path,
+                 NULL,
+                 0.0,
+                 0.0,
+                 radius,
+                 [self radiansFromDegrees:heading - fieldOfViewRadius / 2],
+                 [self radiansFromDegrees:heading + fieldOfViewRadius / 2],
+                 NO);
+    CGPathAddLineToPoint(path, NULL, 0, 0);
+    CGPathCloseSubpath(path);
+    layer.path = path;
+    CGPathRelease(path);
+    
+    LayerProperties *layerProperties = [LayerProperties new];
+    layerProperties->position = pt;
+    [layer setValue:layerProperties forKey:@"properties"];
+    
+    return layer;
+}
+
+- (CGFloat)radiansFromDegrees:(CGFloat)degrees {
+    return degrees * M_PI / 180;
 }
 
 -(NSMutableArray *)getShapeLayersForHighlights
@@ -2414,89 +2482,91 @@ static BOOL VisibleSizeLessStrict( OsmBaseObject * obj1, OsmBaseObject * obj2 )
     [CATransaction setAnimationDuration:1.0];
 #endif
 
-    const double    tRotation        = OSMTransformRotation( _mapView.screenFromMapTransform );
-    const double    tScale            = OSMTransformScaleX( _mapView.screenFromMapTransform );
-    const double    pScale            = tScale / PATH_SCALING;
-    const double    pixelsPerMeter    = 0.8 * 1.0 / [_mapView metersPerPixel];
+	const double	tRotation		= OSMTransformRotation( _mapView.screenFromMapTransform );
+	const double	tScale			= OSMTransformScaleX( _mapView.screenFromMapTransform );
+	const double	pScale			= tScale / PATH_SCALING;
+	const double	pixelsPerMeter	= 0.8 * 1.0 / [_mapView metersPerPixel];
 
-    for ( OsmBaseObject * object in _shownObjects ) {
+	for ( OsmBaseObject * object in _shownObjects ) {
 
-        NSArray * layers = [self getShapeLayersForObject:object];
+		NSArray * layers = [self getShapeLayersForObject:object];
 
-        for ( CALayer * layer in layers ) {
+		for ( CALayer * layer in layers ) {
 
-            // configure the layer for presentation
-            BOOL isShapeLayer = [layer isKindOfClass:[CAShapeLayer class]];
-            LayerProperties * props = [layer valueForKey:@"properties"];
-            OSMPoint pt = props->position;
-            OSMPoint pt2 = [_mapView screenPointFromMapPoint:pt birdsEye:NO];
+			// configure the layer for presentation
+			BOOL isShapeLayer = [layer isKindOfClass:[CAShapeLayer class]];
+			LayerProperties * props = [layer valueForKey:@"properties"];
+			OSMPoint pt = props->position;
+			OSMPoint pt2 = [_mapView screenPointFromMapPoint:pt birdsEye:NO];
 
-            if ( props->is3D || (isShapeLayer && !object.isNode) ) {
+			if ( props->is3D || (isShapeLayer && !object.isNode) ) {
 
-                // way or area -- need to rotate and scale
-                if ( props->is3D ) {
-                    if ( _mapView.birdsEyeRotation == 0.0 ) {
-                        [layer removeFromSuperlayer];
-                        continue;
-                    }
-                    CATransform3D t = CATransform3DMakeTranslation( pt2.x-pt.x, pt2.y-pt.y, 0 );
-                    t = CATransform3DScale( t, pScale, pScale, pixelsPerMeter );
-                    t = CATransform3DRotate( t, tRotation, 0, 0, 1 );
-                    t = CATransform3DConcat( props->transform, t );
-                    layer.transform = t;
-                    if ( !isShapeLayer ) {
-                        layer.borderWidth = props->lineWidth / pScale;    // wall
-                    }
+				// way or area -- need to rotate and scale
+				if ( props->is3D ) {
+					if ( _mapView.birdsEyeRotation == 0.0 ) {
+						[layer removeFromSuperlayer];
+						continue;
+					}
+					CATransform3D t = CATransform3DMakeTranslation( pt2.x-pt.x, pt2.y-pt.y, 0 );
+					t = CATransform3DScale( t, pScale, pScale, pixelsPerMeter );
+					t = CATransform3DRotate( t, tRotation, 0, 0, 1 );
+					t = CATransform3DConcat( props->transform, t );
+					layer.transform = t;
+					if ( !isShapeLayer ) {
+						layer.borderWidth = props->lineWidth / pScale;	// wall
+					}
+				} else {
+					CGAffineTransform t = CGAffineTransformMakeTranslation( pt2.x-pt.x, pt2.y-pt.y);
+					t = CGAffineTransformScale( t, pScale, pScale );
+					t = CGAffineTransformRotate( t, tRotation );
+					layer.affineTransform = t;
+				}
+
+				if ( isShapeLayer ) {
+				} else {
+					// its a wall, so bounds are already height/length of wall
+				}
+
+				if ( isShapeLayer ) {
+					CAShapeLayer * shape = (id)layer;
+					shape.lineWidth = props->lineWidth / pScale;
+					shape.lineDashPattern = props->lineDashes ? @[ @([props->lineDashes[0] doubleValue]/pScale), @([props->lineDashes[1] doubleValue]/pScale) ] : nil;
+				}
+
+			} else {
+
+				// node or text -- no scale transform applied
+				if ( [layer isKindOfClass:[CATextLayer class]] ) {
+
+					// get size of building (or whatever) into which we need to fit the text
+					if ( object.isNode ) {
+						// its a node with text, such as an address node
+					} else {
+						// its a label on a building or polygon
+						OSMRect rcMap = [MapView mapRectForLatLonRect:object.boundingBox];
+						OSMRect	rcScreen = [_mapView boundingScreenRectForMapRect:rcMap];
+						if ( layer.bounds.size.width >= 1.1*rcScreen.size.width ) {
+							// text label is too big so hide it
+							[layer removeFromSuperlayer];
+							continue;
+						}
+					}
+
+                } else if ([object.tags[@"surveillance:type"] isEqualToString:@"camera"] && [layer isKindOfClass:[CAShapeLayer class]]) {
+                    layer.affineTransform = CGAffineTransformMakeRotation(tRotation);
                 } else {
-                    CGAffineTransform t = CGAffineTransformMakeTranslation( pt2.x-pt.x, pt2.y-pt.y);
-                    t = CGAffineTransformScale( t, pScale, pScale );
-                    t = CGAffineTransformRotate( t, tRotation );
-                    layer.affineTransform = t;
-                }
 
-                if ( isShapeLayer ) {
-                } else {
-                    // its a wall, so bounds are already height/length of wall
-                }
+					// its an icon or a generic box
+				}
 
-                if ( isShapeLayer ) {
-                    CAShapeLayer * shape = (id)layer;
-                    shape.lineWidth = props->lineWidth / pScale;
-                    shape.lineDashPattern = props->lineDashes ? @[ @([props->lineDashes[0] doubleValue]/pScale), @([props->lineDashes[1] doubleValue]/pScale) ] : nil;
-                }
+				CGFloat scale = [[UIScreen mainScreen] scale];
+				pt2.x = round(pt2.x * scale)/scale;
+				pt2.y = round(pt2.y * scale)/scale;
+				layer.position = CGPointFromOSMPoint(pt2);
+			}
 
-            } else {
-
-                // node or text -- no scale transform applied
-                if ( [layer isKindOfClass:[CATextLayer class]] ) {
-
-                    // get size of building (or whatever) into which we need to fit the text
-                    if ( object.isNode ) {
-                        // its a node with text, such as an address node
-                    } else {
-                        // its a label on a building or polygon
-                        OSMRect rcMap = [MapView mapRectForLatLonRect:object.boundingBox];
-                        OSMRect    rcScreen = [_mapView boundingScreenRectForMapRect:rcMap];
-                        if ( layer.bounds.size.width >= 1.1*rcScreen.size.width ) {
-                            // text label is too big so hide it
-                            [layer removeFromSuperlayer];
-                            continue;
-                        }
-                    }
-
-                } else {
-
-                    // its an icon or a generic box
-                }
-
-                CGFloat scale = [[UIScreen mainScreen] scale];
-                pt2.x = round(pt2.x * scale)/scale;
-                pt2.y = round(pt2.y * scale)/scale;
-                layer.position = CGPointFromOSMPoint(pt2);
-            }
-
-            // add the layer if not already present
-            if ( layer.superlayer == nil ) {
+			// add the layer if not already present
+			if ( layer.superlayer == nil ) {
 #if FADE_INOUT
                 [layer removeAllAnimations];
                 layer.opacity = 1.0;
