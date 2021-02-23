@@ -43,13 +43,12 @@ enum {
 {
     [super viewDidLoad];
 
-	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	AppDelegate * appDelegate = AppDelegate.shared;
 	OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
-	if ( object ) {
-		self.title				= [NSString stringWithFormat:NSLocalizedString(@"%@ Attributes",nil), object.isNode ? NSLocalizedString(@"Node",nil) : object.isWay ? NSLocalizedString(@"Way",nil) : object.isRelation ? NSLocalizedString(@"Relation",nil) : @""];
-	} else {
-		self.title				= NSLocalizedString(@"No Object Selected",nil);
-	}
+	self.title	= object.isNode ? NSLocalizedString(@"Node Attributes",nil)
+				: object.isWay ? NSLocalizedString(@"Way Attributes",nil)
+				: object.isRelation ? NSLocalizedString(@"Relation Attributes",nil)
+				: NSLocalizedString(@"Attributes",@"node/way/relation attributes");
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -62,13 +61,13 @@ enum {
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	OsmBaseObject * object = AppDelegate.getAppDelegate.mapView.editorLayer.selectedPrimary;
+	OsmBaseObject * object = AppDelegate.shared.mapView.editorLayer.selectedPrimary;
 	return object.isNode ? 2 : object.isWay ? 3 : 1;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	OsmBaseObject * object = AppDelegate.getAppDelegate.mapView.editorLayer.selectedPrimary;
+	OsmBaseObject * object = AppDelegate.shared.mapView.editorLayer.selectedPrimary;
 
 	if ( section == SECTION_METADATA ) {
 		return 6;
@@ -88,7 +87,7 @@ enum {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
+	AppDelegate * appDelegate = AppDelegate.shared;
 	OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
 
 	AttributeCustomCell * cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
@@ -98,30 +97,30 @@ enum {
 
 		switch ( indexPath.row ) {
 			case ROW_IDENTIFIER:
-				cell.title.text = NSLocalizedString(@"Identifier",nil);
+				cell.title.text = NSLocalizedString(@"Identifier",@"OSM node/way/relation identifier");
 				cell.value.text = object.ident.stringValue;
 				cell.accessoryType	= object.ident.longLongValue > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 				break;
 			case ROW_USER:
-				cell.title.text = NSLocalizedString(@"User",nil);
+				cell.title.text = NSLocalizedString(@"User",@"OSM user name");
 				cell.value.text = object.user;
 				cell.accessoryType	= object.user.length > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 				break;
 			case ROW_UID:
-				cell.title.text = NSLocalizedString(@"UID",nil);
+				cell.title.text = NSLocalizedString(@"UID",@"OSM numeric user ID");
 				cell.value.text = @(object.uid).stringValue;
 				break;
 			case ROW_MODIFIED:
-				cell.title.text = NSLocalizedString(@"Modified",nil);
+				cell.title.text = NSLocalizedString(@"Modified",@"last modified date");
 				cell.value.text = [NSDateFormatter localizedStringFromDate:object.dateForTimestamp dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterShortStyle];
 				break;
 			case ROW_VERSION:
-				cell.title.text = NSLocalizedString(@"Version",nil);
+				cell.title.text = NSLocalizedString(@"Version",@"OSM object versioh");
 				cell.value.text = @(object.version).stringValue;
 				cell.accessoryType	= object.ident.longLongValue > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 				break;
 			case ROW_CHANGESET:
-				cell.title.text = NSLocalizedString(@"Changeset",nil);
+				cell.title.text = NSLocalizedString(@"Changeset",@"OSM changeset identifier");
 				cell.value.text = @(object.changeset).stringValue;
 				cell.accessoryType = object.ident.longLongValue > 0 ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 				break;
@@ -132,15 +131,16 @@ enum {
 	} else if ( object.isNode ) {
 		if ( indexPath.section == SECTION_NODE_LATLON ) {
 			OsmNode * node = object.isNode;
-			cell.title.text = NSLocalizedString(@"Lat/Lon",nil);
+			cell.title.text = NSLocalizedString(@"Lat/Lon",@"coordinates");
 			cell.value.text = [NSString stringWithFormat:@"%f,%f", node.lat, node.lon];
 		}
 	} else if ( object.isWay ) {
 		if ( indexPath.section == SECTION_WAY_EXTRA ) {
 			double len = object.isWay.lengthInMeters;
+			long nodes = object.isWay.nodes.count;
 			cell.title.text = NSLocalizedString(@"Length",nil);
-			cell.value.text = len >= 10 ? [NSString stringWithFormat:NSLocalizedString(@"%.0f meters",nil), len]
-										: [NSString stringWithFormat:NSLocalizedString(@"%.1f meters",nil), len];
+			cell.value.text = len >= 10 ? [NSString stringWithFormat:NSLocalizedString(@"%.0f meters, %ld nodes",@"way length if > 10m"), len, nodes]
+										: [NSString stringWithFormat:NSLocalizedString(@"%.1f meters, %ld nodes",@"way length if < 10m"), len, nodes];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		} else if ( indexPath.section == SECTION_WAY_NODES ) {
 			OsmWay * way = object.isWay;
@@ -175,7 +175,7 @@ enum {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	OsmBaseObject * object = AppDelegate.getAppDelegate.mapView.editorLayer.selectedPrimary;
+	OsmBaseObject * object = AppDelegate.shared.mapView.editorLayer.selectedPrimary;
     if ( object == nil ) {
         return;
     }

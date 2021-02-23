@@ -7,22 +7,20 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import "VectorMath.h"
 #import "iosapi.h"
 #import "OsmMapData.h"
+#import "VectorMath.h"
 
-@class Buildings3DView;
-@class OsmMapData;
-@class OsmRenderInfo;
-@class MapView;
 @class OsmBaseObject;
+@class OsmMapData;
+@class MapView;
+@class OsmRenderInfo;
 @class OsmNode;
 @class OsmWay;
 @class OsmRelation;
 @class QuadMap;
 
 #define SHOW_3D	1
-#define USE_SCENEKIT 0
 
 static const CGFloat DefaultHitTestRadius = 10.0;	// how close to an object do we need to tap to select it
 static const CGFloat DragConnectHitTestRadius = DefaultHitTestRadius * 0.6;	// how close to an object do we need to drag a node to connect to it
@@ -31,22 +29,14 @@ extern const double MinIconSizeInPixels;
 
 @interface EditorMapLayer : CALayer<NSCoding>
 {
-    CGSize					_iconSize;
-    double					_highwayScale;
-    
-    NSMutableSet        *    _nameDrawSet;
-    
-    
-    NSMutableArray<OsmBaseObject *>		*	_shownObjects;
-    NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
-    
-    NSMutableArray<CALayer *>		*	_highlightLayers;
-    
-    BOOL					_isPerformingLayout;
-    
-    CATransformLayer	*	_baseLayer;
+	CGSize									_iconSize;
+	double									_highwayScale;
+	NSMutableArray<OsmBaseObject *>		*	_shownObjects;
+	NSMutableSet<OsmBaseObject *>		*	_fadingOutSet;
+	NSMutableArray<CALayer *>			*	_highlightLayers;
+	BOOL									_isPerformingLayout;
+	CATransformLayer					*	_baseLayer;
 }
-
 
 @property (assign,nonatomic)	BOOL			enableObjectFilters;	// turn all filters on/on
 @property (assign,nonatomic)	BOOL			showLevel;				// filter for building level
@@ -73,6 +63,7 @@ extern const double MinIconSizeInPixels;
 @property (readonly,nonatomic)	OsmBaseObject		*	selectedPrimary;	// way or node, but not a node in a selected way
 @property (readonly,nonatomic)	OsmMapData			*	mapData;
 @property (assign,nonatomic)	BOOL					addNodeInProgress;
+@property (readonly)			BOOL					atVisibleObjectLimit;
 
 - (id)initWithMapView:(MapView *)mapView;
 - (void)didReceiveMemoryWarning;
@@ -80,7 +71,6 @@ extern const double MinIconSizeInPixels;
 - (OsmBaseObject *)osmHitTest:(CGPoint)point radius:(CGFloat)radius isDragConnect:(BOOL)isDragConnect ignoreList:(NSArray<OsmBaseObject *> *)ignoreList segment:(NSInteger *)segment;
 - (NSArray<OsmBaseObject *> *)osmHitTestMultiple:(CGPoint)point radius:(CGFloat)radius ;
 - (OsmNode *)osmHitTestNodeInSelectedWay:(CGPoint)point radius:(CGFloat)radius ;
-
 
 - (void)updateMapLocation;
 - (void)purgeCachedDataHard:(BOOL)hard;
@@ -99,11 +89,9 @@ extern const double MinIconSizeInPixels;
 
 
 - (BOOL)copyTags:(OsmBaseObject *)object;
-- (void)mergeTags:(OsmBaseObject *)object;
-- (BOOL)copyName:(OsmBaseObject *)object;
-- (BOOL)copyNameAndClass:(OsmBaseObject *)object;
+- (void)pasteTagsMerge:(OsmBaseObject *)object;
 - (BOOL)canPasteTags;
-- (void)replaceTags:(OsmBaseObject *)object;
+- (void)pasteTagsReplace:(OsmBaseObject *)object;
 
 
 - (void)save;

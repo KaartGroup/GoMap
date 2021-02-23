@@ -16,13 +16,10 @@
 // this needs to be shared, because sometimes we'll create a new autocomplete text field when the keyboard is already showing,
 // so it never gets a chance to retrieve the size:
 static CGRect	s_keyboardFrame;
-@interface AutocompleteTextFieldDelegate : NSObject<UITextFieldDelegate>
-@property (strong,nonatomic)    id<UITextFieldDelegate>        realDelegate;
-@property (weak,nonatomic)        AutocompleteTextField    *    owner;
-@end
+
 
 @implementation AutocompleteTextField
-@synthesize strings = _allStrings;
+@synthesize autocompleteStrings = _allStrings;
 
 static const CGFloat GradientHeight = 20.0;
 
@@ -39,7 +36,6 @@ static const CGFloat GradientHeight = 20.0;
 
 -(void)dealloc
 {
-    _realDelegate = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.delegate = nil;
 }
@@ -69,12 +65,12 @@ static const CGFloat GradientHeight = 20.0;
 	[self updateCompletionTableView];
 }
 
--(void)setStrings:(NSArray *)strings
+-(void)setAutocompleteStrings:(NSArray *)strings
 {
 	_allStrings = strings;
 	assert( super.delegate == self );
 }
--(NSArray *)strings
+-(NSArray *)autocompleteStrings
 {
 	return _allStrings;
 }
@@ -211,12 +207,12 @@ static const CGFloat GradientHeight = 20.0;
 	self.text = _filteredCompletions[ indexPath.row ];
 
 	[self sendActionsForControlEvents:UIControlEventEditingChanged];
-//	 [[NSNotificationCenter defaultCenter] postNotificationName:UITextFieldTextDidChangeNotification object:self userInfo:nil];
+	// [[NSNotificationCenter defaultCenter] postNotificationName:UITextFieldTextDidChangeNotification object:self userInfo:nil];
 
 	if ( self.didSelectAutocomplete ) {
 		self.didSelectAutocomplete();
 	}
-    
+
 	// hide completion table view
 	_filteredCompletions = nil;
 	[self updateCompletionTableView];
@@ -274,23 +270,17 @@ static const CGFloat GradientHeight = 20.0;
 		return [_realDelegate textFieldShouldBeginEditing:textField];
 	return YES;
 }
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	if ( [_realDelegate respondsToSelector:@selector(textFieldDidBeginEditing:)])
 		[_realDelegate textFieldDidBeginEditing:textField];
-#if 0
-    [self.owner performSelector:@selector(updateAutocompleteForString:) withObject:self.owner.text];
-#endif
 }
-
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
 	if ( [_realDelegate respondsToSelector:@selector(textFieldShouldEndEditing:)])
 		return [_realDelegate textFieldShouldEndEditing:textField];
 	return YES;
 }
-
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
 	[self clearFilteredCompletionsInternal];
@@ -298,7 +288,6 @@ static const CGFloat GradientHeight = 20.0;
 	if ( [_realDelegate respondsToSelector:@selector(textFieldDidEndEditing:)])
 		[_realDelegate textFieldDidEndEditing:textField];
 }
-
 - (void)textFieldDidEndEditing:(UITextField *)textField reason:(UITextFieldDidEndEditingReason)reason
 {
 	[self clearFilteredCompletionsInternal];
@@ -308,7 +297,6 @@ static const CGFloat GradientHeight = 20.0;
 	else if ( [_realDelegate respondsToSelector:@selector(textFieldDidEndEditing:)])
 		[_realDelegate textFieldDidEndEditing:textField];
 }
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
 	BOOL result = [_realDelegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]
@@ -320,7 +308,6 @@ static const CGFloat GradientHeight = 20.0;
 	}
 	return result;
 }
-
 - (void)textFieldDidChangeSelection:(UITextField *)textField
 {
 	if (@available(iOS 13.0, *)) {
@@ -328,7 +315,6 @@ static const CGFloat GradientHeight = 20.0;
 			[_realDelegate textFieldDidChangeSelection:textField];
 	}
 }
-
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
 	BOOL result = [_realDelegate respondsToSelector:@selector(textFieldShouldClear:)]
@@ -339,7 +325,6 @@ static const CGFloat GradientHeight = 20.0;
 	}
 	return result;
 }
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
 	if ( [_realDelegate respondsToSelector:@selector(textFieldShouldReturn:)])

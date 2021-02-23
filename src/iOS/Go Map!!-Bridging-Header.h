@@ -4,15 +4,19 @@
 
 #import "AppDelegate.h"
 #import "ContactUsViewController.h"
-#import "LocationURLParser.h"
+#import "EditorMapLayer.h"
 #import "KeyChain.h"
 #import "LayerProperties.h"
+#import "LocationURLParser.h"
 #import "LoginViewController.h"
-#import "MapViewController.h"
+#import "MainViewController.h"
 #import "OsmMapData.h"
+#import "OsmMember.h"
 #import "OsmNode.h"
-#import "OsmWay.h"
 #import "OsmRelation.h"
+#import "OsmWay.h"
 #import "PathUtil.h"
-#import "PresetsDatabase.h"
+#import "RenderInfo.h"
 #import "VectorMath.h"
+
+UIImage * IconScaledForDisplay(UIImage *icon);

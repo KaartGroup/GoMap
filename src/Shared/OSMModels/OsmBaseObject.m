@@ -6,9 +6,9 @@
 //  Copyright © 2020 Bryce. All rights reserved.
 //
 
+#import "DLog.h"
 #import "OsmBaseObject.h"
 
-#import "DLog.h"
 
 @implementation OsmBaseObject
 @synthesize deleted = _deleted;
@@ -31,7 +31,9 @@
     return text;
 }
 
-BOOL IsInterestingTag(NSString * key)
+
+
+BOOL IsInterestingKey(NSString * key)
 {
 	if ( [key isEqualToString:@"attribution"] )
 		return NO;
@@ -48,8 +50,7 @@ BOOL IsInterestingTag(NSString * key)
 	if ( [key hasPrefix:@"source_ref"] )
 		return NO;
 
-	NSSet * stripTags = [OsmMapData tagsToAutomaticallyStrip];
-	if ( [stripTags containsObject:key] )
+	if ( [OsmMapData.tagsToAutomaticallyStrip containsObject:key] )
 		return NO;
 
 	return YES;
@@ -58,7 +59,7 @@ BOOL IsInterestingTag(NSString * key)
 -(BOOL)hasInterestingTags
 {
     for ( NSString * key in _tags ) {
-        if ( IsInterestingTag(key) )
+        if ( IsInterestingKey(key) )
             return YES;
     }
     return NO;
@@ -206,20 +207,20 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
     __block NSMutableDictionary * merged = [ourTags mutableCopy];
     [otherTags enumerateKeysAndObjectsUsingBlock:^(NSString * otherKey, NSString * otherValue, BOOL * stop) {
         NSString * ourValue = merged[otherKey];
-        if ( ![ourValue isEqualToString:otherValue] ) {
-            if ( !allowConflicts ) {
-                if ( IsInterestingTag(otherKey) ) {
-                    *stop = YES;
-                    merged = nil;
-                }
-            } else {
-                merged[otherKey] = otherValue;
-            }
-        }
-    }];
-    if ( merged == nil )
-        return nil;    // conflict
-    return [NSDictionary dictionaryWithDictionary:merged];
+		if ( ourValue == nil || allowConflicts ) {
+			merged[otherKey] = otherValue;
+		} else if ( [ourValue isEqualToString:otherValue] ) {
+			// we already have it but replacement is the same
+		} else if ( IsInterestingKey(otherKey) ) {
+			*stop = YES;	// conflict
+			merged = nil;
+		} else {
+			// we don't allow conflicts, but its not an interesting key/value so just ignore the conflict
+		}
+	}];
+	if ( merged == nil )
+		return nil;    // conflict
+	return [NSDictionary dictionaryWithDictionary:merged];
 }
 
 #pragma mark Construction
@@ -439,26 +440,28 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 
 -(NSString *)givenName
 {
-    NSString * name = [_tags objectForKey:@"name"];
-    if ( name.length )
-        return name;
+	enum { USES_NAME = 1, USES_REF = 2 };
+	static NSDictionary * highwayTypes = nil;
+	if ( highwayTypes == nil ) {
+		highwayTypes = @{ @"motorway":@(USES_REF),
+						  @"trunk":@(USES_REF),
+						  @"primary":@(USES_REF),
+						  @"secondary":@(USES_REF),
+						  @"tertiary":@(USES_REF),
+						  @"unclassified":@(USES_NAME),
+						  @"residential":@(USES_NAME),
+						  @"road":@(USES_NAME),
+						  @"living_street":@(USES_NAME) };
+	}
+
+
+	NSString * name = _tags[@"name"];
+	if ( name.length )
+		return name;
 
 	if ( self.isWay ) {
 		NSString * highway = _tags[@"highway"];
 		if ( highway ) {
-			enum { USES_NAME = 1, USES_REF = 2 };
-			static NSDictionary * highwayTypes = nil;
-			if ( highwayTypes == nil )
-				highwayTypes = @{ @"motorway":@(USES_REF),
-								  @"trunk":@(USES_REF),
-								  @"primary":@(USES_REF),
-								  @"secondary":@(USES_REF),
-								  @"tertiary":@(USES_NAME),
-								  @"unclassified":@(USES_NAME),
-								  @"residential":@(USES_NAME),
-								  @"road":@(USES_NAME),
-                                  @"alt name":@(USES_NAME),
-								  @"living_street":@(USES_NAME) };
 			NSInteger uses = [highwayTypes[highway] integerValue];
 			if ( uses & USES_REF) {
 				name = _tags[@"ref"];
@@ -467,7 +470,8 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 			}
 		}
 	}
-	return nil;;
+
+	return _tags[@"brand"];
 }
 
 -(NSString *)friendlyDescriptionWithDetails:(BOOL)details
@@ -476,12 +480,18 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
     if ( name.length )
         return name;
 
-    NSString * featureName = [PresetsDatabase featureNameForObjectDict:self.tags geometry:self.geometryName];
-    if ( featureName ) {
-        PresetFeature * feature = [PresetFeature presetFeatureForFeatureName:featureName];
-        name = feature.friendlyName;
-        if ( name.length > 0 )
-            return name;
+    PresetFeature * feature = [PresetsDatabase.shared matchObjectTagsToFeature:self.tags
+																	  geometry:self.geometryName
+																	includeNSI:YES];
+    if ( feature ) {
+		BOOL isGeneric = [feature.featureID isEqualToString:@"point"] ||
+						 [feature.featureID isEqualToString:@"line"] ||
+						 [feature.featureID isEqualToString:@"area"];
+		if ( !isGeneric ) {
+			name = feature.friendlyName;
+			if ( name.length > 0 )
+				return name;
+		}
     }
 
     if ( self.isRelation ) {
@@ -519,7 +529,7 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 #endif
 
     __block NSString * tagDescription = nil;
-    NSSet * featureKeys = [PresetsDatabase allFeatureKeys];
+    NSSet * featureKeys = [PresetsDatabase.shared allFeatureKeys];
     // look for a feature key
     [_tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL * stop) {
         if ( [featureKeys containsObject:key] ) {
@@ -530,7 +540,7 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
     if ( tagDescription == nil ) {
         // any non-ignored key
         [_tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL * stop) {
-			if ( IsInterestingTag(key) ) {
+			if ( IsInterestingKey(key) ) {
                 *stop = YES;
                 tagDescription = [NSString stringWithFormat:@"%@ = %@",key,value];
             }
@@ -636,25 +646,25 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 }
 
 
--(void)addRelation:(OsmRelation *)relation undo:(UndoManager *)undo
+-(void)addParentRelation:(OsmRelation *)parentRelation undo:(UndoManager *)undo
 {
     if ( _constructed && undo ) {
-        [undo registerUndoWithTarget:self selector:@selector(removeRelation:undo:) objects:@[relation,undo]];
+        [undo registerUndoWithTarget:self selector:@selector(removeParentRelation:undo:) objects:@[parentRelation,undo]];
     }
 
     if ( _parentRelations ) {
-        if ( ![_parentRelations containsObject:relation] )
-            _parentRelations = [_parentRelations arrayByAddingObject:relation];
+        if ( ![_parentRelations containsObject:parentRelation] )
+            _parentRelations = [_parentRelations arrayByAddingObject:parentRelation];
     } else {
-        _parentRelations = @[ relation ];
+        _parentRelations = @[ parentRelation ];
     }
 }
--(void)removeRelation:(OsmRelation *)relation undo:(UndoManager *)undo
+-(void)removeParentRelation:(OsmRelation *)parentRelation undo:(UndoManager *)undo
 {
     if ( _constructed && undo ) {
-        [undo registerUndoWithTarget:self selector:@selector(addRelation:undo:) objects:@[relation,undo]];
+        [undo registerUndoWithTarget:self selector:@selector(addParentRelation:undo:) objects:@[parentRelation,undo]];
     }
-    NSInteger index = [_parentRelations indexOfObject:relation];
+    NSInteger index = [_parentRelations indexOfObject:parentRelation];
     if ( index == NSNotFound ) {
         DLog(@"missing relation");
         return;
@@ -688,7 +698,7 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
         else
             return GEOMETRY_WAY;
     }
-    return @"unknown";
+    return @"";
 }
 
 -(OSM_TYPE)extendedType

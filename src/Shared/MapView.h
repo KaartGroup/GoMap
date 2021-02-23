@@ -21,20 +21,19 @@
 @class CAShapeLayer;
 @class AerialList;
 @class AerialService;
-@class Buildings3DView;
 @class DisplayLink;
 @class EditorMapLayer;
 @class FpsLabel;
 @class GpxLayer;
 @class HtmlErrorWindow;
 @class LocationBallLayer;
-@class MapViewController;
+@class MainViewController;
 @class MercatorTileLayer;
 @class OsmNote;
 @class OsmNotesDatabase;
 @class OsmBaseObject;
 @class PushPinView;
-@class RulerLayer;
+@class RulerView;
 @class TapAndDragGesture;
 @class VoiceAnnouncement;
 
@@ -69,8 +68,15 @@ typedef enum {
 @end
 
 
+@protocol MapViewProgress <NSObject>
+-(void)progressIncrement;
+-(void)progressDecrement;
+-(void)progressAnimate;
+@end
+
+
 #if TARGET_OS_IPHONE
-@interface MapView : UIView <CLLocationManagerDelegate,UIActionSheetDelegate,UIGestureRecognizerDelegate,SKStoreProductViewControllerDelegate>
+@interface MapView : UIView <MapViewProgress,CLLocationManagerDelegate,UIActionSheetDelegate,UIGestureRecognizerDelegate,SKStoreProductViewControllerDelegate>
 #else
 @interface MapView : NSView <CLLocationManagerDelegate>
 #endif
@@ -79,7 +85,6 @@ typedef enum {
 #else
 	CALayer							*	_bingMapsLogo;
 #endif
-	RulerLayer						*	_rulerLayer;
 
 	CGPoint								_lastMouseDragPos;
 
@@ -101,7 +106,6 @@ typedef enum {
 
 #if TARGET_OS_IPHONE
 	PushPinView						*	_pushpinView;
-	UILabel							*	_flashLabel;
 #else
 	HtmlErrorWindow					*	_htmlErrorWindow;
 #endif
@@ -121,24 +125,28 @@ typedef enum {
 	UILongPressGestureRecognizer	*	_addNodeButtonLongPressGestureRecognizer;
 	NSTimeInterval						_addNodeButtonTimestamp;
 #endif
+
+	BOOL								_windowPresented;
+	BOOL								_locationManagerExtraneousNotification;
 }
 
 #if TARGET_OS_IPHONE
-@property (assign,nonatomic)	MapViewController			*	viewController;
+@property (assign,nonatomic)	MainViewController			*	mainViewController;
 @property (assign,nonatomic)	IBOutlet FpsLabel			*	fpsLabel;
 @property (assign,nonatomic)	IBOutlet UILabel			*	userInstructionLabel;
 @property (assign,nonatomic)	IBOutlet UIButton			*	compassButton;
+@property (assign,nonatomic)	IBOutlet UILabel			*	flashLabel;
 
 @property (assign,nonatomic)	IBOutlet UIButton			*	aerialServiceLogo;
 @property (assign,nonatomic)	IBOutlet UIButton			*	helpButton;
 @property (assign,nonatomic)	IBOutlet UIButton			*	centerOnGPSButton;
-
-@property (assign,nonatomic)	IBOutlet UIToolbar			*	toolbar;
 @property (assign,nonatomic)	IBOutlet UIButton			*	addNodeButton;
+@property (assign,nonatomic)	IBOutlet RulerView			*	rulerView;
+
 @property (assign,nonatomic)	IBOutlet UIActivityIndicatorView	*	progressIndicator;
 
 @property (assign,nonatomic)	IBOutlet UISegmentedControl *	editControl;
-@property (strong,nonatomic)	NSArray						*	editControlActions;
+@property (strong,nonatomic)	NSArray<NSNumber *>			*	editControlActions;
 #endif
 
 @property (readonly,nonatomic)	CLLocationManager			*	locationManager;
@@ -158,7 +166,6 @@ typedef enum {
 @property (readonly,nonatomic)	EditorMapLayer				*	editorLayer;
 @property (readonly,nonatomic)	GpxLayer					*	gpxLayer;
 @property (readonly,nonatomic)  MercatorTileLayer           *   noNameLayer;
-@property (readonly,nonatomic)	Buildings3DView				*	buildings3D;
 
 // overlays
 @property (readonly,nonatomic)	MercatorTileLayer			*	locatorLayer;
@@ -184,7 +191,7 @@ typedef enum {
 @property (assign,nonatomic)	BOOL							enableGpxLogging;
 @property (assign,nonatomic)	BOOL							enableTurnRestriction;
 @property (assign,nonatomic)	BOOL							enableAutomaticCacheManagement;
-@property (assign, nonatomic)   BOOL                             enableEnhancedHwyEditor;
+
 @property (assign,nonatomic)	BOOL							automatedFramerateTestActive;
 
 @property (readonly,nonatomic)	CAShapeLayer				*	crossHairs;
@@ -225,10 +232,6 @@ typedef enum {
 
 -(double)zoom;
 
--(void)progressIncrement:(BOOL)animate;
--(void)progressDecrement;
--(void)progressAnimate;
-
 -(void)flashMessage:(NSString *)message;
 -(void)flashMessage:(NSString *)message duration:(NSTimeInterval)duration;
 -(void)presentError:(NSError *)error flash:(BOOL)flash;
@@ -248,7 +251,6 @@ typedef enum {
 - (IBAction)undo:(id)sender;
 - (IBAction)redo:(id)sender;
 
--(IBAction)editControlAction:(id)sender;
 #if TARGET_OS_IPHONE
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)pan;
 - (IBAction)handlePinchGesture:(UIPinchGestureRecognizer *)pinch;
