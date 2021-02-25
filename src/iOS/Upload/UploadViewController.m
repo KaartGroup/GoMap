@@ -157,6 +157,7 @@
 			// flash success message
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[appDelegate.mapView.editorLayer setNeedsLayout];
 				[appDelegate.mapView flashMessage:NSLocalizedString(@"Upload complete!",nil) duration:1.5];
 
 				// record number of uploads
@@ -193,11 +194,6 @@
 
 -(IBAction)editXml:(id)sender
 {
-	AppDelegate * appDelegate = AppDelegate.getAppDelegate;
-
-	MFMailComposeViewController * mail = [[MFMailComposeViewController alloc] init];
-	mail.mailComposeDelegate = self;
-	[mail setSubject:[NSString stringWithFormat:NSLocalizedString(@"%@ changeset",nil), appDelegate.appName]];
 	NSString * xml = [_mapData changesetAsXml];
 	xml = [xml stringByAppendingString:@"\n\n\n\n\n\n\n\n\n\n\n\n"];
 	_xmlTextView.attributedText = nil;
@@ -258,9 +254,9 @@
 }
 
 // this is for navigating from the changeset back to the location of the modified object
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)url inRange:(NSRange)characterRange
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)url inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
 {
-	AppDelegate	*	appDelegate = AppDelegate.getAppDelegate;
+	AppDelegate	*	appDelegate = AppDelegate.shared;
 	NSString 	*	name = url.absoluteString;
 	if ( name.length == 0 )
 		return NO;

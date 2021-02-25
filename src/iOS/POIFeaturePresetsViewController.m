@@ -10,27 +10,23 @@
 #import "AutocompleteTextField.h"
 #import "DLog.h"
 #import "EditorMapLayer.h"
+#import "HeightViewController.h"
 #import "MapView.h"
 #import "OsmMapData.h"
 #import "POIFeaturePresetsViewController.h"
-#import "POIPresetValuesViewController.h"
+#import "POIPresetValuePickerController.h"
 #import "POITabBarController.h"
 #import "POIFeaturePickerViewController.h"
-#import "PresetsDatabase.h"
 #import "RenderInfo.h"
 
 
 @interface FeaturePresetCell : UITableViewCell
 @property (assign,nonatomic)	IBOutlet	UILabel						*	nameLabel;
 @property (assign,nonatomic)	IBOutlet	AutocompleteTextField		*	valueField;
-@property (strong,nonatomic)				PresetKey				*	presetKeyInfo;
+@property (strong,nonatomic)				PresetKey					*	presetKey;
 @end
 
 @implementation FeaturePresetCell
-@end
-
-@interface POIFeaturePresetsViewController() <DirectionViewControllerDelegate>
-
 @end
 
 @implementation POIFeaturePresetsViewController
@@ -69,20 +65,21 @@
 		NSString * geometry = object ? [object geometryName] : GEOMETRY_NODE;
 
 		// update most recent feature
-		NSString * featureName = _selectedFeature ? _selectedFeature.featureName : [PresetsDatabase featureNameForObjectDict:dict geometry:geometry];
-		if ( featureName ) {
-			PresetFeature * feature = [PresetFeature presetFeatureForFeatureName:featureName];
+		PresetFeature * feature = _selectedFeature ?: [PresetsDatabase.shared matchObjectTagsToFeature:dict
+																				   geometry:geometry
+																				  includeNSI:YES];
+		if ( feature ) {
 			[POIFeaturePickerViewController loadMostRecentForGeometry:geometry];
 			[POIFeaturePickerViewController updateMostRecentArrayWithSelection:feature geometry:geometry];
 		}
 
 		__weak POIFeaturePresetsViewController * weakSelf = self;
 
-		_presets = [PresetsForFeature presetsForFeature:featureName objectTags:dict geometry:geometry update:^{
+		_allPresets = [[PresetsForFeature alloc] initWithFeature:feature objectTags:dict geometry:geometry update:^{
 				// this may complete much later, even after we've been dismissed
 				POIFeaturePresetsViewController * mySelf = weakSelf;
 				if ( mySelf && !mySelf->_isEditing ) {
-					mySelf->_presets = [PresetsForFeature presetsForFeature:featureName objectTags:dict geometry:geometry update:nil];
+					mySelf->_allPresets = [[PresetsForFeature alloc] initWithFeature:feature objectTags:dict geometry:geometry update:nil];
 					[mySelf.tableView reloadData];
 				}
 			}];
@@ -110,7 +107,8 @@
 	_childPushed = YES;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     
     if (![self isMovingToParentViewController]) {
@@ -124,13 +122,13 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSIndexPath * index = [NSIndexPath indexPathForRow:1 inSection:0];
                     FeaturePresetCell * cell = [self.tableView cellForRowAtIndexPath:index];
-                    if ( cell && [cell.presetKeyInfo.tagKey isEqualToString:@"name"] ) {
+                    if ( cell && [cell.presetKey.tagKey isEqualToString:@"name"] ) {
                         [cell.valueField becomeFirstResponder];
                     }
                 });
             }
 		} else if ( !_childPushed &&
-				   tabController.selection.ident.integerValue <= 0 &&
+				   tabController.selection.ident.longLongValue <= 0 &&
 				   tabController.keyValueDict.count == 0 )
 		{
 			// if we're being displayed for a newly created node then go straight to the Type picker
@@ -139,32 +137,41 @@
 	}
 }
 
--(void)typeViewController:(POIFeaturePickerViewController *)typeViewController didChangeFeatureTo:(PresetFeature *)feature
+-(void)typeViewController:(POIFeaturePickerViewController *)typeViewController didChangeFeatureTo:(PresetFeature *)newFeature
 {
-	_selectedFeature = feature;
+	_selectedFeature = newFeature;
 	POITabBarController * tabController = (id) self.tabBarController;
 	NSString * geometry = tabController.selection ? [tabController.selection geometryName] : GEOMETRY_NODE;
-	NSString * oldFeatureName = [PresetsDatabase featureNameForObjectDict:tabController.keyValueDict geometry:geometry];
-	PresetFeature * oldFeature = [PresetFeature presetFeatureForFeatureName:oldFeatureName];
+	PresetFeature * oldFeature = [PresetsDatabase.shared matchObjectTagsToFeature:tabController.keyValueDict
+																		 geometry:geometry
+																	   includeNSI:YES];
 
 	// remove previous feature tags
-	NSDictionary * removeTags = oldFeature.removeTags;
+	NSMutableDictionary * removeTags = [oldFeature.removeTags mutableCopy];
+	[removeTags removeObjectsForKeys:newFeature.addTags.allKeys];
 	[removeTags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
 		[tabController setFeatureKey:key value:nil];
 	}];
 
 	// add new feature tags
-	NSDictionary * defaults = [feature defaultValuesForGeometry:geometry];
-	[defaults enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
-		if ( tabController.keyValueDict[key] == nil ) {
+	[newFeature.addTags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
+		if ( [value isEqualToString:@"*"] ) {
+			if ( tabController.keyValueDict[key] == nil ) {
+				[tabController setFeatureKey:key value:@"yes"];
+			} else {
+				// already has a value
+			}
+		} else {
 			[tabController setFeatureKey:key value:value];
 		}
 	}];
 
-	[feature.addTags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
-		if ( [value isEqualToString:@"*"] )
-			value = @"yes";
-		[tabController setFeatureKey:key value:value];
+	// add default values of new feature fields
+	NSDictionary * defaults = [newFeature defaultValuesForGeometry:geometry];
+	[defaults enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL *stop) {
+		if ( tabController.keyValueDict[key] == nil ) {
+			[tabController setFeatureKey:key value:value];
+		}
 	}];
 }
 
@@ -173,18 +180,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return _drillDownGroup ? 1 : _presets.sectionCount + 1;
+	return _drillDownGroup ? 1 : _allPresets.sectionCount + 1;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	if ( _drillDownGroup )
 		return _drillDownGroup.name;
-	if ( section == _presets.sectionCount )
+	if ( section == _allPresets.sectionCount )
 		return nil;
-	if ( section > _presets.sectionCount )
+	if ( section > _allPresets.sectionCount )
 		return nil;
-	PresetGroup * group = [_presets groupAtIndex:section];
+	PresetGroup * group = [_allPresets groupAtIndex:section];
 	return group.name;
 }
 
@@ -192,64 +199,93 @@
 {
 	if ( _drillDownGroup )
 		return _drillDownGroup.presetKeys.count;
-	if ( section == _presets.sectionCount )
+	if ( section == _allPresets.sectionCount )
 		return 1;
-	if ( section > _presets.sectionCount )
+	if ( section > _allPresets.sectionCount )
 		return 0;
-	return [_presets tagsInSection:section];
+	return [_allPresets tagsInSection:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if ( _drillDownGroup == nil ) {
-		if ( indexPath.section == _presets.sectionCount ) {
+		if ( indexPath.section == _allPresets.sectionCount ) {
 			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CustomizePresets" forIndexPath:indexPath];
 			return cell;
 		}
 	}
 
-	id rowObject = _drillDownGroup ? _drillDownGroup.presetKeys[ indexPath.row ] : [_presets presetAtIndexPath:indexPath];
+	POITabBarController	* tabController = (id)self.tabBarController;
+	NSDictionary * keyValueDict = tabController.keyValueDict;
+
+	id rowObject = _drillDownGroup ? _drillDownGroup.presetKeys[ indexPath.row ] : [_allPresets presetAtIndexPath:indexPath];
 	if ( [rowObject isKindOfClass:[PresetKey class]] ) {
 
 		PresetKey 	* presetKey	= rowObject;
 		NSString * key = presetKey.tagKey;
-		NSString * cellName = key == nil ? @"CommonTagType" : [key isEqualToString:@"name"] ? @"CommonTagName" : @"CommonTagSingle";
+		NSString * cellName = key.length == 0 ? @"CommonTagType"
+							: [key isEqualToString:@"name"] ? @"CommonTagName"
+							: @"CommonTagSingle";
 
 		FeaturePresetCell * cell = [tableView dequeueReusableCellWithIdentifier:cellName forIndexPath:indexPath];
 		cell.nameLabel.text = presetKey.name;
 		cell.valueField.placeholder = presetKey.placeholder;
 		cell.valueField.delegate = self;
-		cell.presetKeyInfo = presetKey;
+		cell.presetKey = presetKey;
 
 		cell.valueField.keyboardType = presetKey.keyboardType;
 		cell.valueField.autocapitalizationType = presetKey.autocapitalizationType;
+
 		[cell.valueField removeTarget:self action:NULL forControlEvents:UIControlEventAllEvents];
 		[cell.valueField addTarget:self action:@selector(textFieldReturn:)			forControlEvents:UIControlEventEditingDidEndOnExit];
 		[cell.valueField addTarget:self action:@selector(textFieldChanged:)			forControlEvents:UIControlEventEditingChanged];
 		[cell.valueField addTarget:self action:@selector(textFieldEditingDidBegin:)	forControlEvents:UIControlEventEditingDidBegin];
 		[cell.valueField addTarget:self action:@selector(textFieldDidEndEditing:)	forControlEvents:UIControlEventEditingDidEnd];
-        
-        if ([self canUseDirectionViewControllerToMeasureValueForTagWithKey:presetKey.tagKey]) {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (presetKey.presetList.count > 0) {
-            // The user can select from a list of presets.
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else {
+
+		cell.valueField.rightView 	 = nil;
+
+		if ( presetKey.isYesNo ) {
+			cell.accessoryType = UITableViewCellAccessoryNone;
+		} else if ( presetKey.presetList.count > 0 || key.length == 0 ) {
+			// The user can select from a list of presets.
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		} else if ( [self canMeasureDirectionForKey:presetKey] ) {
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		} else if ( [self canMeasureHeightForKey:presetKey] ) {
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		} else {
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
 
-		POITabBarController	* tabController = (id)self.tabBarController;
-		NSDictionary * objectDict = tabController.keyValueDict;
-
 		if ( _drillDownGroup == nil && indexPath.section == 0 && indexPath.row == 0 ) {
 			// Type cell
-			NSString * text = [_presets featureName];
+			NSString * text = [_allPresets featureName];
 			cell.valueField.text = text;
 			cell.valueField.enabled = NO;
+		} else if ( presetKey.isYesNo ) {
+			// special case for yes/no tristate
+			TristateButton * button = [TristateButton new];
+			NSString * value = keyValueDict[ presetKey.tagKey ];
+			[button setSelectionForString:value];
+			if ( [button stringForSelection] == nil ) {
+				// display the string iff we don't recognize it (or it's nil)
+				cell.valueField.text = [presetKey prettyNameForTagValue:value];
+			} else {
+				cell.valueField.text = nil;
+			}
+			cell.valueField.enabled = YES;
+			cell.valueField.rightView = button;
+			cell.valueField.rightViewMode = UITextFieldViewModeAlways;
+			cell.valueField.placeholder = nil;
+			button.onSelect = ^(NSString * newValue) {
+				[self updateTagWithValue:newValue forKey:cell.presetKey.tagKey];
+				cell.valueField.text = nil;
+				[cell.valueField resignFirstResponder];
+			};
 		} else {
 			// Regular cell
-			NSString * value = objectDict[ presetKey.tagKey ];
-			value = [PresetsDatabase friendlyValueNameForKey:presetKey.tagKey value:value geometry:nil];
+			NSString * value = keyValueDict[ presetKey.tagKey ];
+			value = [presetKey prettyNameForTagValue:value];
 			cell.valueField.text = value;
 			cell.valueField.enabled = YES;
 		}
@@ -260,9 +296,13 @@
 
 		// drill down cell
 		PresetGroup * drillDownGroup = rowObject;
-		FeaturePresetCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CommonTagDrillDown" forIndexPath:indexPath];
+		FeaturePresetCell * cell = [tableView dequeueReusableCellWithIdentifier:@"CommonTagSingle" forIndexPath:indexPath];
 		cell.nameLabel.text = drillDownGroup.name;
-		cell.presetKeyInfo = (id)drillDownGroup;
+		cell.valueField.text = [drillDownGroup multiComboSummaryOfDict:keyValueDict isPlaceholder:NO];
+		cell.valueField.placeholder = [drillDownGroup multiComboSummaryOfDict:nil isPlaceholder:YES];
+		cell.valueField.enabled = NO;
+		cell.valueField.rightView = nil;
+		cell.presetKey = (id)drillDownGroup;
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		return cell;
@@ -278,21 +318,23 @@
     // This workaround is necessary because `tableView:cellForRowAtIndexPath:`
     // currently sets `cell.commonPreset` to an instance of `CommonPresetGroup` by casting it to `id`.
     PresetKey *presetKey = nil;
-    if ([cell.presetKeyInfo isKindOfClass:[PresetKey class]]) {
-        presetKey = cell.presetKeyInfo;
+    if ([cell.presetKey isKindOfClass:[PresetKey class]]) {
+        presetKey = cell.presetKey;
     }
 
 	if ( _drillDownGroup == nil && indexPath.section == 0 && indexPath.row == 0 ) {
 		[self performSegueWithIdentifier:@"POITypeSegue" sender:cell];
-    } else if ([self canUseDirectionViewControllerToMeasureValueForTagWithKey:presetKey.tagKey]) {
-        [self presentDirectionViewControllerForTagWithKey:cell.presetKeyInfo.tagKey
-                                                    value:cell.valueField.text];
-	} else if ( [cell.presetKeyInfo isKindOfClass:[PresetGroup class]] ) {
+	} else if ( [cell.presetKey isKindOfClass:[PresetGroup class]] ) {
 		// special case for drill down
-		PresetGroup * group = (id)cell.presetKeyInfo;
+		PresetGroup * group = (id)cell.presetKey;
 		POIFeaturePresetsViewController * sub = [self.storyboard instantiateViewControllerWithIdentifier:@"PoiCommonTagsViewController"];
 		sub.drillDownGroup = group;
 		[self.navigationController pushViewController:sub animated:YES];
+	} else if ([self canMeasureDirectionForKey:presetKey]) {
+		[self measureDirectionForKey:cell.presetKey.tagKey
+							   value:cell.valueField.text];
+	} else if ([self canMeasureHeightForKey:presetKey]) {
+		[self measureHeightForKey:cell.presetKey.tagKey];
 	} else {
 		[self performSegueWithIdentifier:@"POIPresetSegue" sender:cell];
 	}
@@ -300,11 +342,11 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
 	FeaturePresetCell * cell = sender;
-	if ( [segue.destinationViewController isKindOfClass:[POIPresetValuesViewController class]] ) {
-		POIPresetValuesViewController * preset = segue.destinationViewController;
-		preset.tag = cell.presetKeyInfo.tagKey;
-		preset.valueDefinitions = cell.presetKeyInfo.presetList;
-		preset.navigationItem.title = cell.presetKeyInfo.name;
+	if ( [segue.destinationViewController isKindOfClass:[POIPresetValuePickerController class]] ) {
+		POIPresetValuePickerController * preset = segue.destinationViewController;
+		preset.tag = cell.presetKey.tagKey;
+		preset.valueDefinitions = cell.presetKey.presetList;
+		preset.navigationItem.title = cell.presetKey.name;
 	} else if ( [segue.destinationViewController isKindOfClass:[POIFeaturePickerViewController class]] ) {
 		POIFeaturePickerViewController * dest = (id)segue.destinationViewController;
 		dest.delegate = self;
@@ -358,15 +400,17 @@
 
 		// get list of values for current key
 		FeaturePresetCell * cell = [self cellForTextField:textField];
-		NSString * key = cell.presetKeyInfo.tagKey;
+		NSString * key = cell.presetKey.tagKey;
 		if ( key == nil )
 			return;	// should never happen
-		NSSet * set = [PresetsDatabase allTagValuesForKey:key];
-		AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-		NSMutableSet<NSString *> * values = [appDelegate.mapView.editorLayer.mapData tagValuesForKey:key];
-		[values addObjectsFromArray:[set allObjects]];
-		NSArray * list = [values allObjects];
-		textField.strings = list;
+		if ( [PresetsDatabase.shared eligibleForAutocomplete:key] ) {
+			NSSet * set = [PresetsDatabase.shared allTagValuesForKey:key];
+			AppDelegate * appDelegate = AppDelegate.shared;
+			NSMutableSet<NSString *> * values = [appDelegate.mapView.editorLayer.mapData tagValuesForKey:key];
+			[values addObjectsFromArray:[set allObjects]];
+			NSArray * list = [values allObjects];
+			textField.autocompleteStrings = list;
+		}
 	}
 	_isEditing = YES;
 }
@@ -382,17 +426,25 @@
 - (IBAction)textFieldDidEndEditing:(UITextField *)textField
 {
 	FeaturePresetCell * cell = [self cellForTextField:textField];
-	NSString * key = cell.presetKeyInfo.tagKey;
+	NSString * key = cell.presetKey.tagKey;
 	if ( key == nil )
 		return;	// should never happen
-	NSString * value = textField.text;
-	value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-	textField.text = value;
+	NSString * prettyValue = textField.text;
+	prettyValue = [prettyValue stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	textField.text = prettyValue;
 
+	// convert to raw value if necessary
+	NSString * tagValue = [cell.presetKey tagValueForPrettyName:prettyValue];
 	_isEditing = NO;
+    [self updateTagWithValue:tagValue forKey:key];
 
-    [self updateTagWithValue:value forKey:key];
+	if ( cell.presetKey.isYesNo ) {
+		TristateButton * tri = (id)cell.valueField.rightView;
+		if ( [tri isKindOfClass:[TristateButton class]] ) {
+			[tri setSelectionForString:textField.text];
+		}
+	}
 }
 
 - (void)updateTagWithValue:(NSString *)value forKey:(NSString *)key {
@@ -427,24 +479,40 @@
  @param key The key of the tag that should be measured.
  @return YES if the key can be measured using the `DirectionViewController`, NO if not.
  */
-- (BOOL)canUseDirectionViewControllerToMeasureValueForTagWithKey:(NSString *)key {
+- (BOOL)canMeasureDirectionForKey:(PresetKey *)key
+{
+	if ( key.presetList.count > 0 )
+		return NO;
     NSArray<NSString *> *keys = @[@"direction", @"camera:direction"];
-    
-    return [keys containsObject:key];
+    if ( [keys containsObject:key.tagKey] )
+		return YES;
+	return NO;
 }
 
-- (void)presentDirectionViewControllerForTagWithKey:(NSString *)key value:(NSString *)value {
+- (void)measureDirectionForKey:(NSString *)key value:(NSString *)value
+{
     DirectionViewController *directionViewController = [[DirectionViewController alloc] initWithKey:key
-                                                                                              value:value];
-    directionViewController.delegate = self;
-    
+                                                                                              value:value
+																						   setValue:^(NSString * newValue) {
+		[self updateTagWithValue:newValue forKey:key];
+	}];
     [self.navigationController pushViewController:directionViewController animated:YES];
 }
 
-#pragma mark - <DirectionViewControllerDelegate>
-
-- (void)directionViewControllerDidUpdateTagWithKey:(NSString *)key value:(NSString *)value {
-    [self updateTagWithValue:value forKey:key];
+- (BOOL)canMeasureHeightForKey:(PresetKey *)key
+{
+	return key.presetList.count == 0 && [key.tagKey isEqualToString:@"height"];
+}
+- (void)measureHeightForKey:(NSString *)key
+{
+	if ( [HeightViewController unableToInstantiateWithUserWarning:self] ) {
+		return;
+	}
+	HeightViewController * vc = [HeightViewController instantiate];
+	vc.callback = ^(NSString *newValue) {
+		[self updateTagWithValue:newValue forKey:key];
+	};
+	[self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

@@ -9,16 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface TextPairTableCell : UITableViewCell
-{
-    IBOutlet UIView             * _fixContstraintView;
-    IBOutlet NSLayoutConstraint *    _fixConstraint;
-}
 @property (assign,nonatomic) IBOutlet	AutocompleteTextField *	text1;
 @property (assign,nonatomic) IBOutlet	AutocompleteTextField *	text2;
-@end
-
-@interface AddNewCell : UITableViewCell
-@property (assign,nonatomic) IBOutlet    UIButton *    button;
+@property (assign,nonatomic) IBOutlet	UIButton			  * infoButton;
 @end
 
 @interface POIAllTagsViewController : UITableViewController
@@ -27,8 +20,8 @@
 	NSMutableArray				*	_relations;
 	NSMutableArray				*	_members;
 	IBOutlet UIBarButtonItem	*	_saveButton;
-	BOOL							_showingWikiLink;
-	NSString					*	_featureName;
+	BOOL							_childViewPresented;
+	NSString					*	_featureID;
 	UITextField					*	_currentTextField;
 }
 

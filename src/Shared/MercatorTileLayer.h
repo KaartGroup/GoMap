@@ -7,7 +7,8 @@
 //
 
 #import "iosapi.h"
-#import <QuartzCore/QuartzCore.h>
+#import <QuartzCore/QuartzCore.h> 
+#include <stdatomic.h>
 
 @class AerialService;
 @class MapView;
@@ -15,11 +16,11 @@
 
 @interface MercatorTileLayer : CALayer
 {
-    PersistentWebCache        *    _webCache;
-    NSString                *    _logoUrl;
+	PersistentWebCache		*	_webCache;
+	NSString				*	_logoUrl;
 
-    NSMutableDictionary        *    _layerDict;                // map of tiles currently displayed
-    int32_t                        _isPerformingLayout;
+	NSMutableDictionary		*	_layerDict;				// map of tiles currently displayed
+	atomic_int					_isPerformingLayout;
 }
 
 @property (strong,nonatomic) AerialService    *    aerialService;
@@ -27,7 +28,7 @@
 
 -(id)initWithMapView:(MapView *)mapView;
 -(IBAction)purgeTileCache;
--(void)diskCacheSize:(NSInteger *)pSize count:(NSInteger *)pCount;
+-(void)getDiskCacheSize:(NSInteger *)pSize count:(NSInteger *)pCount;
 -(int32_t)zoomLevel;
 
 -(NSMutableArray *)allTilesIntersectingVisibleRect;
