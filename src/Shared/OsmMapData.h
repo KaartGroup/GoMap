@@ -27,38 +27,38 @@
 @class QuadMapC;
 @class OsmUserStatistics;
 
-extern NSString * OSM_API_URL;	//	@"http://api.openstreetmap.org/"
+extern NSString * OSM_API_URL;    //    @"http://api.openstreetmap.org/"
 
 
-typedef void 		(^EditAction)(void);
-typedef void 		(^EditActionWithNode)(OsmNode * node);
+typedef void         (^EditAction)(void);
+typedef void         (^EditActionWithNode)(OsmNode * node);
 typedef OsmWay    * (^EditActionReturnWay)(void);
 typedef OsmNode   * (^EditActionReturnNode)(void);
 
 
 
 @interface OsmUserStatistics : NSObject
-@property (strong,nonatomic)	NSString	*	user;
-@property (strong,nonatomic)	NSDate		*	lastEdit;
-@property (assign,nonatomic)	NSInteger		editCount;
-@property (strong,nonatomic)	NSMutableSet *	changeSets;
-@property (assign,nonatomic)	NSInteger		changeSetsCount;
+@property (strong,nonatomic)    NSString    *    user;
+@property (strong,nonatomic)    NSDate        *    lastEdit;
+@property (assign,nonatomic)    NSInteger        editCount;
+@property (strong,nonatomic)    NSMutableSet *    changeSets;
+@property (assign,nonatomic)    NSInteger        changeSetsCount;
 @end
 
 
 
 @interface OsmMapData : NSObject <NSXMLParserDelegate, NSCoding, NSKeyedArchiverDelegate, NSKeyedUnarchiverDelegate>
 {
-	NSString										*	_parserCurrentElementText;
-	NSMutableArray									*	_parserStack;
-	NSError											*	_parseError;
-	NSMutableDictionary<NSNumber *, OsmNode *>		*	_nodes;
-	NSMutableDictionary<NSNumber *, OsmWay *>		*	_ways;
-	NSMutableDictionary<NSNumber *, OsmRelation *>	*	_relations;
-	QuadMap											*	_region;	// currently downloaded region
-	QuadMap											*	_spatial;	// spatial index of osm data
-	UndoManager										*	_undoManager;
-	NSTimer											*	_periodicSaveTimer;
+    NSString                                        *    _parserCurrentElementText;
+    NSMutableArray                                    *    _parserStack;
+    NSError                                            *    _parseError;
+    NSMutableDictionary<NSNumber *, OsmNode *>        *    _nodes;
+    NSMutableDictionary<NSNumber *, OsmWay *>        *    _ways;
+    NSMutableDictionary<NSNumber *, OsmRelation *>    *    _relations;
+    QuadMap                                            *    _region;    // currently downloaded region
+    QuadMap                                            *    _spatial;    // spatial index of osm data
+    UndoManager                                        *    _undoManager;
+    NSTimer                                            *    _periodicSaveTimer;
 }
 
 /**
@@ -69,8 +69,8 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
  */
 - (instancetype)initWithUserDefaults:(NSUserDefaults *)userDefaults NS_DESIGNATED_INITIALIZER;
 
-@property (copy,nonatomic)	NSString *	credentialsUserName;
-@property (copy,nonatomic)	NSString *	credentialsPassword;
+@property (copy,nonatomic)    NSString *    credentialsUserName;
+@property (copy,nonatomic)    NSString *    credentialsPassword;
 
 +(void)setEditorMapLayerForArchive:(EditorMapLayer *)editorLayer; // only used when saving/restoring undo manager
 +(EditorMapLayer *)editorMapLayerForArchive; // only used when saving/restoring undo manager
@@ -97,8 +97,8 @@ typedef OsmNode   * (^EditActionReturnNode)(void);
 -(NSString *)undoManagerDescription;
 
 // undo comments
-@property (strong,nonatomic)	NSDictionary * 	(^undoContextForComment)(NSString * comment);
-@property (strong,nonatomic) 	void 			(^undoCommentCallback)(BOOL undo,NSDictionary * context);
+@property (strong,nonatomic)    NSDictionary *     (^undoContextForComment)(NSString * comment);
+@property (strong,nonatomic)     void             (^undoCommentCallback)(BOOL undo,NSDictionary * context);
 -(void)registerUndoCommentString:(NSString *)comment;
 -(void)registerUndoCommentContext:(NSDictionary *)context;
 

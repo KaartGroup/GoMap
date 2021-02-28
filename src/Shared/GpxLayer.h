@@ -8,8 +8,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#define USER_DEFAULTS_GPX_EXPIRATIION_KEY		 @"GpxTrackExpirationDays"
-#define USER_DEFAULTS_GPX_BACKGROUND_TRACKING	 @"GpxTrackBackgroundTracking"
+#define USER_DEFAULTS_GPX_EXPIRATIION_KEY         @"GpxTrackExpirationDays"
+#define USER_DEFAULTS_GPX_BACKGROUND_TRACKING     @"GpxTrackBackgroundTracking"
 
 
 @class CLLocation;
@@ -17,25 +17,25 @@
 
 
 @interface GpxPoint : NSObject <NSCoding>
-@property (assign,nonatomic)	double		longitude;
-@property (assign,nonatomic)	double		latitude;
-@property (assign,nonatomic)	double		accuracy;
-@property (assign,nonatomic)	double		elevation;
-@property (strong,nonatomic)	NSDate *	timestamp;
+@property (assign,nonatomic)    double        longitude;
+@property (assign,nonatomic)    double        latitude;
+@property (assign,nonatomic)    double        accuracy;
+@property (assign,nonatomic)    double        elevation;
+@property (strong,nonatomic)    NSDate *    timestamp;
 @end
 
 
 @interface GpxTrack : NSObject <NSCoding>
 {
-	BOOL		_recording;
-	double		_distance;
+    BOOL        _recording;
+    double        _distance;
 @public
-	CGPathRef	shapePaths[20];	// an array of paths, each simplified according to zoom level so we have good performance when zoomed out
+    CGPathRef    shapePaths[20];    // an array of paths, each simplified according to zoom level so we have good performance when zoomed out
 }
-@property (strong,nonatomic)	NSString		*	name;
-@property (strong,nonatomic)	NSDate			*	creationDate;	// when trace was recorded or downloaded
-@property (readonly,nonatomic)	NSArray			*	points;
-@property (strong,nonatomic)	CAShapeLayer	*	shapeLayer;
+@property (strong,nonatomic)    NSString        *    name;
+@property (strong,nonatomic)    NSDate            *    creationDate;    // when trace was recorded or downloaded
+@property (readonly,nonatomic)    NSArray            *    points;
+@property (strong,nonatomic)    CAShapeLayer    *    shapeLayer;
 
 -(NSString *)gpxXmlString;
 -(NSData *)gpxXmlData;
@@ -50,13 +50,13 @@
 
 @interface GpxLayer : CALayer
 {
-	MapView			*	_mapView;
-	NSInteger			_stabilizingCount;
+    MapView            *    _mapView;
+    NSInteger            _stabilizingCount;
 }
-@property (readonly,nonatomic)	GpxTrack			*	activeTrack;		// track currently being recorded
-@property (weak,nonatomic)		GpxTrack			*	selectedTrack;		// track picked in view controller
-@property (strong,nonatomic)	NSMutableArray		*	previousTracks;		// sorted with most recent first
-@property (readonly)			NSMutableDictionary	*	uploadedTracks;		// track name -> upload date
+@property (readonly,nonatomic)    GpxTrack            *    activeTrack;        // track currently being recorded
+@property (weak,nonatomic)        GpxTrack            *    selectedTrack;        // track picked in view controller
+@property (strong,nonatomic)    NSMutableArray        *    previousTracks;        // sorted with most recent first
+@property (readonly)            NSMutableDictionary    *    uploadedTracks;        // track name -> upload date
 
 
 -(instancetype)initWithMapView:(MapView *)mapView;

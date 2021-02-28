@@ -10,6 +10,6 @@
 
 @interface CreditsViewController : UIViewController
 {
-	IBOutlet UITextView *	_textView;
+    IBOutlet UITextView *    _textView;
 }
 @end

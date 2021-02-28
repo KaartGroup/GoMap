@@ -10,6 +10,6 @@
 
 @interface ClearCacheViewController : UITableViewController
 {
-	IBOutlet UISwitch *	_automaticCacheManagement;
+    IBOutlet UISwitch *    _automaticCacheManagement;
 }
 @end

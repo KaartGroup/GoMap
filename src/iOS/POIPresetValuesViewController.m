@@ -9,7 +9,6 @@
 #import "iosapi.h"
 #import "POIPresetValuesViewController.h"
 #import "POITabBarController.h"
-#import "PresetsDatabase.h"
 #import "RenderInfo.h"
 
 

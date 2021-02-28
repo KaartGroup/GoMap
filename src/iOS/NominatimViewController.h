@@ -10,11 +10,11 @@
 
 @interface NominatimViewController : UIViewController <UISearchBarDelegate>
 {
-	IBOutlet UISearchBar				*	_searchBar;
-	NSMutableArray						*	_resultsArray;
-	IBOutlet UIActivityIndicatorView	*	_activityIndicator;
-	IBOutlet UITableView				*	_tableView;
-	NSArray								*	_historyArray;
+    IBOutlet UISearchBar                *    _searchBar;
+    NSMutableArray                        *    _resultsArray;
+    IBOutlet UIActivityIndicatorView    *    _activityIndicator;
+    IBOutlet UITableView                *    _tableView;
+    NSArray                                *    _historyArray;
 }
 
 -(IBAction)cancel:(id)sender;

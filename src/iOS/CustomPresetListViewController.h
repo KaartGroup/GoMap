@@ -12,7 +12,7 @@
 
 @interface CustomPresetListViewController : UITableViewController <UITableViewDelegate,UITableViewDataSource>
 {
-	PresetKeyUserDefinedList * _customPresets;
+    PresetKeyUserDefinedList * _customPresets;
 }
 
 @end

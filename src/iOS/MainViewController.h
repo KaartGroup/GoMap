@@ -11,8 +11,8 @@
 #import "MapView.h"
 
 typedef enum {
-	BUTTON_LAYOUT_ADD_ON_LEFT,
-	BUTTON_LAYOUT_ADD_ON_RIGHT,
+    BUTTON_LAYOUT_ADD_ON_LEFT,
+    BUTTON_LAYOUT_ADD_ON_RIGHT,
 } BUTTON_LAYOUT;
 
 
@@ -20,16 +20,16 @@ typedef enum {
 
 @interface MainViewController : UIViewController <UIActionSheetDelegate,UIGestureRecognizerDelegate>
 {
-	IBOutlet UIButton		*	_uploadButton;
-	IBOutlet UIButton		*	_undoButton;
-	IBOutlet UIButton		*	_redoButton;
-	IBOutlet UIView			*	_undoRedoView;
-	IBOutlet UIButton		*	_searchButton;
+    IBOutlet UIButton        *    _uploadButton;
+    IBOutlet UIButton        *    _undoButton;
+    IBOutlet UIButton        *    _redoButton;
+    IBOutlet UIView            *    _undoRedoView;
+    IBOutlet UIButton        *    _searchButton;
 }
 
-@property (assign,nonatomic) IBOutlet MapView	*	_Nonnull mapView;
-@property (assign,nonatomic) IBOutlet UIButton 	* 	_Nonnull locationButton;
-@property (assign,nonatomic) BUTTON_LAYOUT	buttonLayout;
+@property (assign,nonatomic) IBOutlet MapView    *    _Nonnull mapView;
+@property (assign,nonatomic) IBOutlet UIButton     *     _Nonnull locationButton;
+@property (assign,nonatomic) BUTTON_LAYOUT    buttonLayout;
 
 -(IBAction)toggleLocation:(_Nullable id)sender;
 -(void)setGpsState:(GPS_STATE)state;

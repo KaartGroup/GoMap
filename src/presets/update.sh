@@ -4,13 +4,13 @@ DIST="https://raw.githubusercontent.com/openstreetmap/id-tagging-schema/main/dis
 
 # Download presets
 presets=(preset_categories
-		preset_defaults
-		fields
-		presets)
+        preset_defaults
+        fields
+        presets)
 
 for preset in ${presets[*]}; do
-	echo $preset
-	curl -fLsS $DIST/$preset.min.json > $preset.json
+    echo $preset
+    curl -fLsS $DIST/$preset.min.json > $preset.json
 done
 
 # Download NSI presets
@@ -29,9 +29,9 @@ GET_LANGS=$(cat <<EOF
 import sys, json
 dict=json.load(sys.stdin)
 for index,(k,v) in enumerate(dict.items()):
-	pct=v['pct']
-	if pct >= 0.3:
-		print(k)
+    pct=v['pct']
+    if pct >= 0.3:
+        print(k)
 EOF
 )
 
@@ -39,7 +39,7 @@ languages=$(curl -fLsS $DIST/translations/index.json |
 python3 -c "$GET_LANGS")
 
 for lang in ${languages[*]}; do
-	echo $lang
+    echo $lang
     curl -fLsS $DIST/translations/$lang.min.json > translations/$lang.json
 done
 
