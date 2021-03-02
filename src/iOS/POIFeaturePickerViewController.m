@@ -63,27 +63,27 @@ static PersistentWebCache * logoCache;    // static so memory cache persists eac
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+	[super viewDidLoad];
 
-    if ( logoCache == nil ) {
-        logoCache = [[PersistentWebCache alloc] initWithName:@"presetLogoCache" memorySize:5*1000000];
-    }
+	if ( logoCache == nil ) {
+		logoCache = [[PersistentWebCache alloc] initWithName:@"presetLogoCache" memorySize:5*1000000];
+	}
 
-    self.tableView.estimatedRowHeight = 44.0; // or could use UITableViewAutomaticDimension;
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+	self.tableView.estimatedRowHeight = 44.0; // or could use UITableViewAutomaticDimension;
+	self.tableView.rowHeight = UITableViewAutomaticDimension;
 
-    NSString * geometry = [self currentSelectionGeometry];
-    if ( geometry == nil )
-        geometry = GEOMETRY_NODE;    // a brand new node
+	NSString * geometry = [self currentSelectionGeometry];
+	if ( geometry == nil )
+		geometry = GEOMETRY_NODE;	// a brand new node
 
-    [self.class loadMostRecentForGeometry:geometry];
+	[self.class loadMostRecentForGeometry:geometry];
 
-    if ( _parentCategory == nil ) {
-        _isTopLevel = YES;
-        _featureList = [PresetsDatabase.shared featuresAndCategoriesForGeometry:geometry];
-    } else {
-        _featureList = _parentCategory.members;
-    }
+	if ( _parentCategory == nil ) {
+		_isTopLevel = YES;
+		_featureList = [PresetsDatabase.shared featuresAndCategoriesForGeometry:geometry];
+	} else {
+		_featureList = _parentCategory.members;
+	}
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -139,6 +139,11 @@ static PersistentWebCache * logoCache;    // static so memory cache persists eac
 - (BOOL)tableView:(UITableView *)tableView canFocusRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NO;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canFocusRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return NO;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

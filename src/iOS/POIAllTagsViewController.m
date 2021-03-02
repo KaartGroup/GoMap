@@ -596,6 +596,15 @@
     return @[forward, backward];
 }
 
+#pragma mark Tab key
+
+- (NSArray *)keyCommands
+{
+	UIKeyCommand *const forward  = [UIKeyCommand keyCommandWithInput:@"\t" modifierFlags:0 action:@selector(tabNext:)];
+	UIKeyCommand *const backward = [UIKeyCommand keyCommandWithInput:@"\t" modifierFlags:UIKeyModifierShift action:@selector(tabPrevious:)];
+	return @[forward, backward];
+}
+
 #pragma mark TextField delegate
 
 - (IBAction)textFieldReturn:(id)sender

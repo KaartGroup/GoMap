@@ -96,152 +96,152 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
+	[super viewWillAppear:animated];
+	self.navigationController.navigationBarHidden = YES;
 
-    // update button layout constraints
-    [NSUserDefaults.standardUserDefaults registerDefaults:@{ @"buttonLayout" : @(BUTTON_LAYOUT_ADD_ON_RIGHT) }];
-    self.buttonLayout = (BUTTON_LAYOUT) [NSUserDefaults.standardUserDefaults integerForKey:@"buttonLayout"];
+	// update button layout constraints
+	[NSUserDefaults.standardUserDefaults registerDefaults:@{ @"buttonLayout" : @(BUTTON_LAYOUT_ADD_ON_RIGHT) }];
+	self.buttonLayout = (BUTTON_LAYOUT) [NSUserDefaults.standardUserDefaults integerForKey:@"buttonLayout"];
 
-    [self setButtonAppearances];
+	[self setButtonAppearances];
 
 #if TARGET_OS_MACCATALYST
-    // mouseover support for Mac Catalyst:
-    UIHoverGestureRecognizer * hover = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:@selector(hover:)];
-    [_mapView addGestureRecognizer:hover];
+	// mouseover support for Mac Catalyst:
+	UIHoverGestureRecognizer * hover = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:@selector(hover:)];
+	[_mapView addGestureRecognizer:hover];
 
-    // right-click support for Mac Catalyst:
-    UIContextMenuInteraction * rightClick = [[UIContextMenuInteraction alloc] initWithDelegate:self];
-    [_mapView addInteraction:rightClick];
+	// right-click support for Mac Catalyst:
+	UIContextMenuInteraction * rightClick = [[UIContextMenuInteraction alloc] initWithDelegate:self];
+	[_mapView addInteraction:rightClick];
 #endif
 }
 
 -(void)hover:(UIGestureRecognizer *)recognizer
 {
-    CGPoint loc = [recognizer locationInView:_mapView];
-    NSInteger segment = 0;
-    OsmBaseObject * hit = nil;
-    if ( _mapView.editorLayer.selectedWay ) {
-        hit = [_mapView.editorLayer osmHitTestNodeInSelectedWay:loc radius:DefaultHitTestRadius];
-    }
-    if ( hit == nil ) {
-        hit = [_mapView.editorLayer osmHitTest:loc radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:&segment];
-    }
-    if ( hit == _mapView.editorLayer.selectedNode || hit == _mapView.editorLayer.selectedWay || hit.isRelation )
-        hit = nil;
-    [_mapView blinkObject:hit segment:segment];
+	CGPoint loc = [recognizer locationInView:_mapView];
+	NSInteger segment = 0;
+	OsmBaseObject * hit = nil;
+	if ( _mapView.editorLayer.selectedWay ) {
+		hit = [_mapView.editorLayer osmHitTestNodeInSelectedWay:loc radius:DefaultHitTestRadius];
+	}
+	if ( hit == nil ) {
+		hit = [_mapView.editorLayer osmHitTest:loc radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:&segment];
+	}
+	if ( hit == _mapView.editorLayer.selectedNode || hit == _mapView.editorLayer.selectedWay || hit.isRelation )
+		hit = nil;
+	[_mapView blinkObject:hit segment:segment];
 }
 
 -(UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
-API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
-    [_mapView rightClickAtLocation:location];
-    return nil;
+{
+	[_mapView rightClickAtLocation:location];
+	return nil;
 }
 
 #if TARGET_OS_MACCATALYST
 -(void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
 {
-    if (@available(macCatalyst 13.4, *)) {
-        for ( UIPress * press in presses ) {
-            UIKey * key = [press key];
-            const CGFloat ARROW_KEY_DELTA = 256;;
-            switch ( key.keyCode ) {
-                case UIKeyboardHIDUsageKeyboardRightArrow:
-                    [_mapView adjustOriginBy:CGPointMake(-ARROW_KEY_DELTA, 0)];
-                    break;
-                case UIKeyboardHIDUsageKeyboardLeftArrow:
-                    [_mapView adjustOriginBy:CGPointMake(ARROW_KEY_DELTA, 0)];
-                    break;
-                case UIKeyboardHIDUsageKeyboardDownArrow:
-                    [_mapView adjustOriginBy:CGPointMake(0, -ARROW_KEY_DELTA)];
-                    break;
-                case UIKeyboardHIDUsageKeyboardUpArrow:
-                    [_mapView adjustOriginBy:CGPointMake(0, ARROW_KEY_DELTA)];
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+	if (@available(macCatalyst 13.4, *)) {
+		for ( UIPress * press in presses ) {
+			UIKey * key = [press key];
+			const CGFloat ARROW_KEY_DELTA = 256;;
+			switch ( key.keyCode ) {
+				case UIKeyboardHIDUsageKeyboardRightArrow:
+					[_mapView adjustOriginBy:CGPointMake(-ARROW_KEY_DELTA, 0)];
+					break;
+				case UIKeyboardHIDUsageKeyboardLeftArrow:
+					[_mapView adjustOriginBy:CGPointMake(ARROW_KEY_DELTA, 0)];
+					break;
+				case UIKeyboardHIDUsageKeyboardDownArrow:
+					[_mapView adjustOriginBy:CGPointMake(0, -ARROW_KEY_DELTA)];
+					break;
+				case UIKeyboardHIDUsageKeyboardUpArrow:
+					[_mapView adjustOriginBy:CGPointMake(0, ARROW_KEY_DELTA)];
+					break;
+				default:
+					break;
+			}
+		}
+	}
 }
 #endif
 
 -(void)setButtonAppearances
 {
-    // update button styling
-    NSArray * buttons = @[
-        // these aren't actually buttons, but they get similar tinting and shadows
-        _mapView.editControl,
-        _undoRedoView,
-        // these are buttons
-        _locationButton,
-        _undoButton,
-        _redoButton,
-        _mapView.addNodeButton,
-        _mapView.compassButton,
-        _mapView.centerOnGPSButton,
-        _mapView.helpButton,
-        _settingsButton,
-        _uploadButton,
-        _displayButton,
-        _searchButton
-    ];
-    for ( UIView * view in buttons ) {
+	// update button styling
+	NSArray * buttons = @[
+		// these aren't actually buttons, but they get similar tinting and shadows
+		_mapView.editControl,
+		_undoRedoView,
+		// these are buttons
+		_locationButton,
+		_undoButton,
+		_redoButton,
+		_mapView.addNodeButton,
+		_mapView.compassButton,
+		_mapView.centerOnGPSButton,
+		_mapView.helpButton,
+		_settingsButton,
+		_uploadButton,
+		_displayButton,
+		_searchButton
+	];
+	for ( UIView * view in buttons ) {
 
-        // corners
-        if ( view == _mapView.compassButton ||
-             view == _mapView.editControl )
-        {
-            // these buttons take care of themselves
-        } else if ( view == _mapView.helpButton ||
-                    view == _mapView.addNodeButton )
-        {
-            // The button is a circle.
-            view.layer.cornerRadius = view.bounds.size.width / 2;
-        } else {
-            // rounded corners
-            view.layer.cornerRadius    = 10.0;
-        }
-        // shadow
-        if ( view.superview != _undoRedoView ) {
-            view.layer.shadowColor     = UIColor.blackColor.CGColor;
-            view.layer.shadowOffset    = CGSizeMake(0,0);
-            view.layer.shadowRadius    = 3;
-            view.layer.shadowOpacity    = 0.5;
-            view.layer.masksToBounds    = NO;
-        }
-        // image blue tint
-        if ( [view isKindOfClass:[UIButton class]] ) {
-            UIButton * button = (UIButton *)view;
-            if ( button != _mapView.compassButton && button != _mapView.helpButton ) {
-                UIImage * image = [button.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                [button setImage:image forState:UIControlStateNormal];
-                if (@available(iOS 13.0, *)) {
-                    button.tintColor = UIColor.linkColor;
-                } else {
-                    button.tintColor = UIColor.systemBlueColor;
-                }
-                if ( button == _mapView.addNodeButton )
-                    button.imageEdgeInsets = UIEdgeInsetsMake(15, 15, 15, 15);    // resize images on button to be smaller
-                else
-                    button.imageEdgeInsets = UIEdgeInsetsMake(9, 9, 9, 9);    // resize images on button to be smaller
-            }
-        }
+		// corners
+		if ( view == _mapView.compassButton ||
+			 view == _mapView.editControl )
+		{
+			// these buttons take care of themselves
+		} else if ( view == _mapView.helpButton ||
+					view == _mapView.addNodeButton )
+		{
+			// The button is a circle.
+			view.layer.cornerRadius = view.bounds.size.width / 2;
+		} else {
+			// rounded corners
+			view.layer.cornerRadius	= 10.0;
+		}
+		// shadow
+		if ( view.superview != _undoRedoView ) {
+			view.layer.shadowColor 	= UIColor.blackColor.CGColor;
+			view.layer.shadowOffset	= CGSizeMake(0,0);
+			view.layer.shadowRadius	= 3;
+			view.layer.shadowOpacity	= 0.5;
+			view.layer.masksToBounds	= NO;
+		}
+		// image blue tint
+		if ( [view isKindOfClass:[UIButton class]] ) {
+			UIButton * button = (UIButton *)view;
+			if ( button != _mapView.compassButton && button != _mapView.helpButton ) {
+				UIImage * image = [button.currentImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+				[button setImage:image forState:UIControlStateNormal];
+				if (@available(iOS 13.0, *)) {
+					button.tintColor = UIColor.linkColor;
+				} else {
+					button.tintColor = UIColor.systemBlueColor;
+				}
+				if ( button == _mapView.addNodeButton )
+					button.imageEdgeInsets = UIEdgeInsetsMake(15, 15, 15, 15);	// resize images on button to be smaller
+				else
+					button.imageEdgeInsets = UIEdgeInsetsMake(9, 9, 9, 9);	// resize images on button to be smaller
+			}
+		}
 
-        // normal background color
-        [self makeButtonNormal:view];
+		// normal background color
+		[self makeButtonNormal:view];
 
-        // background selection color
-        if ( [view isKindOfClass:[UIButton class]] ) {
-            UIButton * button = (UIButton *)view;
-            [button addTarget:self action:@selector(makeButtonHighlight:) forControlEvents:UIControlEventTouchDown];
-            [button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchUpInside];
-            [button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchUpOutside];
-            [button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchCancel];
+		// background selection color
+		if ( [view isKindOfClass:[UIButton class]] ) {
+			UIButton * button = (UIButton *)view;
+			[button addTarget:self action:@selector(makeButtonHighlight:) forControlEvents:UIControlEventTouchDown];
+			[button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchUpInside];
+			[button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchUpOutside];
+			[button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchCancel];
 
-            button.showsTouchWhenHighlighted = YES;
-        }
-    }
+			button.showsTouchWhenHighlighted = YES;
+		}
+	}
 }
 
 -(void)makeButtonHighlight:(UIView *)button
@@ -391,44 +391,44 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
 
 -(BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-    if ( action == @selector(undo:) )
-        return self.mapView.editorLayer.mapData.canUndo;
-    if ( action == @selector(redo:) )
-        return self.mapView.editorLayer.mapData.canRedo;
-    if ( action == @selector(copy:) )
-        return self.mapView.editorLayer.selectedPrimary != nil;
-    if ( action == @selector(paste:) )
-        return self.mapView.editorLayer.selectedPrimary != nil && self.mapView.editorLayer.canPasteTags;
-    if ( action == @selector(delete:) )
-        return self.mapView.editorLayer.selectedPrimary && !self.mapView.editorLayer.selectedRelation;
-    if ( action == @selector(showHelp:) )
-        return YES;
-    return NO;
+	if ( action == @selector(undo:) )
+		return self.mapView.editorLayer.mapData.canUndo;
+	if ( action == @selector(redo:) )
+		return self.mapView.editorLayer.mapData.canRedo;
+	if ( action == @selector(copy:) )
+		return self.mapView.editorLayer.selectedPrimary != nil;
+	if ( action == @selector(paste:) )
+		return self.mapView.editorLayer.selectedPrimary != nil && self.mapView.editorLayer.canPasteTags;
+	if ( action == @selector(delete:) )
+		return self.mapView.editorLayer.selectedPrimary && !self.mapView.editorLayer.selectedRelation;
+	if ( action == @selector(showHelp:) )
+		return YES;
+	return NO;
 }
 
 -(void)undo:(id)sender
 {
-    [self.mapView undo:sender];
+	[self.mapView undo:sender];
 }
 -(void)redo:(id)sender
 {
-    [self.mapView redo:sender];
+	[self.mapView redo:sender];
 }
 -(void)copy:(id)sender
 {
-    [self.mapView performEditAction:ACTION_COPYTAGS];
+	[self.mapView performEditAction:ACTION_COPYTAGS];
 }
 -(void)paste:(id)sender
 {
-    [self.mapView performEditAction:ACTION_PASTETAGS];
+	[self.mapView performEditAction:ACTION_PASTETAGS];
 }
 -(void)delete:(id)sender
 {
-    [self.mapView performEditAction:ACTION_DELETE];
+	[self.mapView performEditAction:ACTION_DELETE];
 }
 -(void)showHelp:(id)sender
 {
-    [self openHelp];
+	[self openHelp];
 }
 
 #pragma mark Gesture recognizers
