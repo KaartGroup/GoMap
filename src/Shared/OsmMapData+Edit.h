@@ -35,17 +35,17 @@
 - (EditAction)canStraightenWay:(OsmWay *)way error:(NSString **)error;
 - (EditAction)canReverseWay:(OsmWay *)way error:(NSString **)error;
 - (EditActionReturnNode)canDisconnectWay:(OsmWay *)way atNode:(OsmNode *)node error:(NSString **)error;
-- (EditActionReturnWay)canSplitWay:(OsmWay *)way atNode:(OsmNode *)node error:(NSString **)error;	// returns the new other half
+- (EditActionReturnWay)canSplitWay:(OsmWay *)way atNode:(OsmNode *)node error:(NSString **)error;    // returns the new other half
 - (EditAction)canJoinWay:(OsmWay *)selectedWay atNode:(OsmNode *)selectedNode error:(NSString **)error;
 - (EditAction)canCircularizeWay:(OsmWay *)way error:(NSString **)error;
 - (OsmBaseObject *)duplicateObject:(OsmBaseObject *)object withOffset:(OSMPoint)offset;
 
 -(OsmRelation *)updateTurnRestrictionRelation:(OsmRelation *)restriction viaNode:(OsmNode *)viaNode
-									  fromWay:(OsmWay *)fromWay
-								  fromWayNode:(OsmNode *)fromWayNode
-										toWay:(OsmWay *)toWay
-									toWayNode:(OsmNode *)toWayNode
-										 turn:(NSString *)strTurn
-									  newWays:(NSArray **)resultWays
-									willSplit:(BOOL(^)(NSArray * splitWays))requiresSplitting;
+                                      fromWay:(OsmWay *)fromWay
+                                  fromWayNode:(OsmNode *)fromWayNode
+                                        toWay:(OsmWay *)toWay
+                                    toWayNode:(OsmNode *)toWayNode
+                                         turn:(NSString *)strTurn
+                                      newWays:(NSArray **)resultWays
+                                    willSplit:(BOOL(^)(NSArray * splitWays))requiresSplitting;
 @end

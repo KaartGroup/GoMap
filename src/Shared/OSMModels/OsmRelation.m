@@ -111,7 +111,7 @@
     if ( needsRedraw ) {
         [self clearCachedProperties];
     }
-	return needsRedraw;
+    return needsRedraw;
 }
 
 // convert references to objects back to NSNumber
@@ -219,8 +219,8 @@
     OSMRect box = { 0, 0, 0, 0 };
     NSSet * objects = [self allMemberObjects];
     for ( OsmBaseObject * obj in objects ) {
-		if ( obj.isRelation )
-			continue;	// child members have already been added to the set
+        if ( obj.isRelation )
+            continue;    // child members have already been added to the set
         OSMRect rc = obj.boundingBox;
         if ( rc.origin.x == 0 && rc.origin.y == 0 && rc.size.height == 0 && rc.size.width == 0 ) {
             // skip
@@ -289,19 +289,19 @@
 
 -(BOOL)isMultipolygon
 {
-	NSString * type = _tags[@"type"];
-	return [type isEqualToString:@"multipolygon"] ||
-		   [type isEqualToString:@"building"];
+    NSString * type = _tags[@"type"];
+    return [type isEqualToString:@"multipolygon"] ||
+           [type isEqualToString:@"building"];
 }
 
 -(BOOL)isBoundary
 {
-	return [_tags[@"type"] isEqualToString:@"boundary"];
+    return [_tags[@"type"] isEqualToString:@"boundary"];
 }
 
 -(BOOL)isWaterway
 {
-	return [_tags[@"type"] isEqualToString:@"waterway"];
+    return [_tags[@"type"] isEqualToString:@"waterway"];
 }
 
 -(BOOL)isRoute

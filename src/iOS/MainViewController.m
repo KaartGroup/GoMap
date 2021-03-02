@@ -103,6 +103,71 @@
     [NSUserDefaults.standardUserDefaults registerDefaults:@{ @"buttonLayout" : @(BUTTON_LAYOUT_ADD_ON_RIGHT) }];
     self.buttonLayout = (BUTTON_LAYOUT) [NSUserDefaults.standardUserDefaults integerForKey:@"buttonLayout"];
 
+    [self setButtonAppearances];
+
+#if TARGET_OS_MACCATALYST
+    // mouseover support for Mac Catalyst:
+    UIHoverGestureRecognizer * hover = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:@selector(hover:)];
+    [_mapView addGestureRecognizer:hover];
+
+    // right-click support for Mac Catalyst:
+    UIContextMenuInteraction * rightClick = [[UIContextMenuInteraction alloc] initWithDelegate:self];
+    [_mapView addInteraction:rightClick];
+#endif
+}
+
+-(void)hover:(UIGestureRecognizer *)recognizer
+{
+    CGPoint loc = [recognizer locationInView:_mapView];
+    NSInteger segment = 0;
+    OsmBaseObject * hit = nil;
+    if ( _mapView.editorLayer.selectedWay ) {
+        hit = [_mapView.editorLayer osmHitTestNodeInSelectedWay:loc radius:DefaultHitTestRadius];
+    }
+    if ( hit == nil ) {
+        hit = [_mapView.editorLayer osmHitTest:loc radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:&segment];
+    }
+    if ( hit == _mapView.editorLayer.selectedNode || hit == _mapView.editorLayer.selectedWay || hit.isRelation )
+        hit = nil;
+    [_mapView blinkObject:hit segment:segment];
+}
+
+-(UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
+API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
+    [_mapView rightClickAtLocation:location];
+    return nil;
+}
+
+#if TARGET_OS_MACCATALYST
+-(void)pressesBegan:(NSSet<UIPress *> *)presses withEvent:(UIPressesEvent *)event
+{
+    if (@available(macCatalyst 13.4, *)) {
+        for ( UIPress * press in presses ) {
+            UIKey * key = [press key];
+            const CGFloat ARROW_KEY_DELTA = 256;;
+            switch ( key.keyCode ) {
+                case UIKeyboardHIDUsageKeyboardRightArrow:
+                    [_mapView adjustOriginBy:CGPointMake(-ARROW_KEY_DELTA, 0)];
+                    break;
+                case UIKeyboardHIDUsageKeyboardLeftArrow:
+                    [_mapView adjustOriginBy:CGPointMake(ARROW_KEY_DELTA, 0)];
+                    break;
+                case UIKeyboardHIDUsageKeyboardDownArrow:
+                    [_mapView adjustOriginBy:CGPointMake(0, -ARROW_KEY_DELTA)];
+                    break;
+                case UIKeyboardHIDUsageKeyboardUpArrow:
+                    [_mapView adjustOriginBy:CGPointMake(0, ARROW_KEY_DELTA)];
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+}
+#endif
+
+-(void)setButtonAppearances
+{
     // update button styling
     NSArray * buttons = @[
         // these aren't actually buttons, but they get similar tinting and shadows
@@ -320,6 +385,53 @@
     [self.view addSubview:speech];
 #endif
 }
+
+
+#pragma mark Keyboard shortcuts
+
+-(BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    if ( action == @selector(undo:) )
+        return self.mapView.editorLayer.mapData.canUndo;
+    if ( action == @selector(redo:) )
+        return self.mapView.editorLayer.mapData.canRedo;
+    if ( action == @selector(copy:) )
+        return self.mapView.editorLayer.selectedPrimary != nil;
+    if ( action == @selector(paste:) )
+        return self.mapView.editorLayer.selectedPrimary != nil && self.mapView.editorLayer.canPasteTags;
+    if ( action == @selector(delete:) )
+        return self.mapView.editorLayer.selectedPrimary && !self.mapView.editorLayer.selectedRelation;
+    if ( action == @selector(showHelp:) )
+        return YES;
+    return NO;
+}
+
+-(void)undo:(id)sender
+{
+    [self.mapView undo:sender];
+}
+-(void)redo:(id)sender
+{
+    [self.mapView redo:sender];
+}
+-(void)copy:(id)sender
+{
+    [self.mapView performEditAction:ACTION_COPYTAGS];
+}
+-(void)paste:(id)sender
+{
+    [self.mapView performEditAction:ACTION_PASTETAGS];
+}
+-(void)delete:(id)sender
+{
+    [self.mapView performEditAction:ACTION_DELETE];
+}
+-(void)showHelp:(id)sender
+{
+    [self openHelp];
+}
+
+#pragma mark Gesture recognizers
 
 -(void)addNodeQuick:(UILongPressGestureRecognizer *)recognizer
 {

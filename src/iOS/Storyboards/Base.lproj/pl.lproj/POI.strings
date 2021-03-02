@@ -1,0 +1,219 @@
+
+/* Class = "UITextField"; placeholder = "no"; ObjectID = "0mW-YK-ajm"; Note = "Do not translate"; */
+"0mW-YK-ajm.placeholder" = "no";
+
+/* Class = "UITextField"; placeholder = "type"; ObjectID = "0zS-QM-zwQ"; Note = "Do not translate"; */
+"0zS-QM-zwQ.placeholder" = "type";
+
+/* Class = "UITabBarItem"; title = "All Tags"; ObjectID = "19J-sp-UTX"; */
+"19J-sp-UTX.title" = "All Tags";
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "1Yx-Ce-yfq"; */
+"1Yx-Ce-yfq.title" = "Back";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "2Q5-Vd-FED"; Note = "Do not translate"; */
+"2Q5-Vd-FED.text" = "Title";
+
+/* Class = "UITabBarItem"; title = "Attributes"; ObjectID = "2cB-FV-ozw"; */
+"2cB-FV-ozw.title" = "Attributes";
+
+/* Class = "UITextField"; placeholder = "Restaurant"; ObjectID = "436-kv-L7j"; */
+"436-kv-L7j.placeholder" = "Restaurant";
+
+/* Class = "UITableViewController"; title = "Point of Interest"; ObjectID = "6VA-gm-L0S"; */
+"6VA-gm-L0S.title" = "Point of Interest";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "8Nt-xf-x5Q"; */
+"8Nt-xf-x5Q.text" = "Title";
+
+/* Class = "UITextField"; placeholder = "Yes"; ObjectID = "9Nw-ha-JK5"; */
+"9Nw-ha-JK5.placeholder" = "Yes";
+
+/* Class = "UITextField"; placeholder = "dog"; ObjectID = "Ak4-ru-E4V"; Note = "Do not translate"; */
+"Ak4-ru-E4V.placeholder" = "dog";
+
+/* Class = "UILabel"; text = "Add New"; ObjectID = "Bnh-U0-D7i"; */
+"Bnh-U0-D7i.text" = "Add New";
+
+/* Class = "UILabel"; text = "Value 8"; ObjectID = "CXe-gQ-Zda"; */
+"CXe-gQ-Zda.text" = "Value 8";
+
+/* Class = "UITableViewSection"; footerTitle = "The preset will be available when editing objects matching this key/value combination. Leave either blank for wildcard."; ObjectID = "Dfv-TT-J6i"; */
+"Dfv-TT-J6i.footerTitle" = "The preset will be available when editing objects matching this key/value combination. Leave either blank for wildcard.";
+
+/* Class = "UITableViewSection"; headerTitle = "Applies To"; ObjectID = "Dfv-TT-J6i"; */
+"Dfv-TT-J6i.headerTitle" = "Applies To";
+
+/* Class = "UILabel"; text = "Key"; ObjectID = "Eou-a6-V4g"; */
+"Eou-a6-V4g.text" = "Key";
+
+/* Class = "UILabel"; text = "Value 3"; ObjectID = "Fcv-4Q-gpE"; */
+"Fcv-4Q-gpE.text" = "Value 3";
+
+/* Class = "UITextField"; placeholder = "designated"; ObjectID = "Fe2-dc-zgA"; Note = "Do not translate"; */
+"Fe2-dc-zgA.placeholder" = "designated";
+
+/* Class = "UITableViewController"; title = "Custom Tags"; ObjectID = "G5R-oP-lp3"; */
+"G5R-oP-lp3.title" = "Custom Tags";
+
+/* Class = "UINavigationItem"; title = "Custom Presets"; ObjectID = "GIO-W7-q5U"; */
+"GIO-W7-q5U.title" = "Custom Presets";
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "Hgu-iP-FnG"; */
+"Hgu-iP-FnG.title" = "Back";
+
+/* Class = "UILabel"; text = "Value 1"; ObjectID = "JAT-qD-dTS"; */
+"JAT-qD-dTS.text" = "Value 1";
+
+/* Class = "UINavigationItem"; title = "POI Type"; ObjectID = "Jsm-mO-hgo"; */
+"Jsm-mO-hgo.title" = "POI Type";
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "KX3-hG-OyE"; */
+"KX3-hG-OyE.title" = "Back";
+
+/* Class = "UINavigationItem"; title = "Custom Preset"; ObjectID = "OND-s7-I6f"; */
+"OND-s7-I6f.title" = "Custom Preset";
+
+/* Class = "UILabel"; text = "Type"; ObjectID = "P3A-5n-1Iq"; */
+"P3A-5n-1Iq.text" = "Type";
+
+/* Class = "UITableViewSection"; headerTitle = "Preset Name"; ObjectID = "QDv-7w-nbx"; */
+"QDv-7w-nbx.headerTitle" = "Preset Name";
+
+/* Class = "UILabel"; text = "Value 6"; ObjectID = "R0q-aM-ULf"; */
+"R0q-aM-ULf.text" = "Value 6";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "Rfe-SO-p0w"; */
+"Rfe-SO-p0w.title" = "Cancel";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "TK4-E8-1q7"; Note = "Do not translate"; */
+"TK4-E8-1q7.text" = "Title";
+
+/* Class = "UITextField"; placeholder = "relation"; ObjectID = "Urd-9O-Mte"; Note = "Do not translate"; */
+"Urd-9O-Mte.placeholder" = "relation";
+
+/* Class = "UILabel"; text = "Wheelchair Access"; ObjectID = "Vli-Ct-Lpz"; */
+"Vli-Ct-Lpz.text" = "Wheelchair Access";
+
+/* Class = "UILabel"; text = "Value 10"; ObjectID = "Wim-Qa-dYQ"; */
+"Wim-Qa-dYQ.text" = "Value 10";
+
+/* Class = "UILabel"; text = "Value 7"; ObjectID = "WoH-od-iKL"; */
+"WoH-od-iKL.text" = "Value 7";
+
+/* Class = "UITextField"; placeholder = "key"; ObjectID = "X1y-nK-nVJ"; Note = "Do not translate"; */
+"X1y-nK-nVJ.placeholder" = "key";
+
+/* Class = "UILabel"; text = "Food & Drink"; ObjectID = "XBV-Ie-LDT"; Note = "Do not translate"; */
+"XBV-Ie-LDT.text" = "Food & Drink";
+
+/* Class = "UILabel"; text = "Subtitle"; ObjectID = "ZYn-TK-k7d"; Note = "Do not translate"; */
+"ZYn-TK-k7d.text" = "Subtitle";
+
+/* Class = "UITextField"; placeholder = "ref"; ObjectID = "aCs-vS-YXj"; Note = "Do not translate"; */
+"aCs-vS-YXj.placeholder" = "ref";
+
+/* Class = "UIBarButtonItem"; title = "Configure"; ObjectID = "aLi-Vs-z0k"; */
+"aLi-Vs-z0k.title" = "Configure";
+
+/* Class = "UINavigationItem"; title = "All Tags"; ObjectID = "cN9-3h-H3l"; */
+"cN9-3h-H3l.title" = "All Tags";
+
+/* Class = "UITextField"; placeholder = "value"; ObjectID = "cP3-lR-lzM"; Note = "Do not translate"; */
+"cP3-lR-lzM.placeholder" = "value";
+
+/* Class = "UITableViewSection"; headerTitle = "Preset Key"; ObjectID = "cTf-Rc-vqr"; */
+"cTf-Rc-vqr.headerTitle" = "Preset Key";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "daQ-tl-pKh"; Note = "Do not translate"; */
+"daQ-tl-pKh.text" = "Label";
+
+/* Class = "UILabel"; text = "Value 9"; ObjectID = "dsA-B6-s7R"; */
+"dsA-B6-s7R.text" = "Value 9";
+
+/* Class = "UITextField"; placeholder = "Dogs Allowed"; ObjectID = "eG3-Xz-Nnp"; */
+"eG3-Xz-Nnp.placeholder" = "Dogs Allowed";
+
+/* Class = "UITabBarController"; title = "Attributes"; ObjectID = "f5t-25-IXF"; */
+"f5t-25-IXF.title" = "Attributes";
+
+/* Class = "UITextField"; placeholder = "clean"; ObjectID = "foC-aN-GtH"; Note = "Do not translate"; */
+"foC-aN-GtH.placeholder" = "clean";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "gv7-b8-wUw"; Note = "Do not translate"; */
+"gv7-b8-wUw.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Attributes"; ObjectID = "hKU-EH-qxp"; */
+"hKU-EH-qxp.title" = "Attributes";
+
+/* Class = "UITextField"; text = "value"; ObjectID = "hfr-Mf-ZHv"; */
+"hfr-Mf-ZHv.text" = "value";
+
+/* Class = "UILabel"; text = "Changeset"; ObjectID = "ijx-N9-1eO"; */
+"ijx-N9-1eO.text" = "Changeset";
+
+/* Class = "UITableViewSection"; footerTitle = "The possible values for the preset"; ObjectID = "jv1-BF-p2a"; */
+"jv1-BF-p2a.footerTitle" = "The possible values for the preset";
+
+/* Class = "UITableViewSection"; headerTitle = "Preset values"; ObjectID = "jv1-BF-p2a"; */
+"jv1-BF-p2a.headerTitle" = "Preset values";
+
+/* Class = "UITextField"; placeholder = "leisure "; ObjectID = "kPA-ky-U48"; Note = "Do not translate"; */
+"kPA-ky-U48.placeholder" = "leisure ";
+
+/* Class = "UITabBarItem"; title = "Common Tags"; ObjectID = "lPv-s6-uEz"; */
+"lPv-s6-uEz.title" = "Common Tags";
+
+/* Class = "UILabel"; text = "Value 5"; ObjectID = "li7-oV-pgT"; */
+"li7-oV-pgT.text" = "Value 5";
+
+/* Class = "UINavigationItem"; title = "Common toags"; ObjectID = "mAb-DX-pqb"; */
+"mAb-DX-pqb.title" = "Common toags";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "mcN-gM-s7u"; */
+"mcN-gM-s7u.text" = "Name";
+
+/* Class = "UILabel"; text = "Value 2"; ObjectID = "nKt-LG-cSw"; */
+"nKt-LG-cSw.text" = "Value 2";
+
+/* Class = "UILabel"; text = "Value 4"; ObjectID = "ng7-T9-SJ6"; */
+"ng7-T9-SJ6.text" = "Value 4";
+
+/* Class = "UILabel"; text = "Value 11"; ObjectID = "o63-qY-4vl"; */
+"o63-qY-4vl.text" = "Value 11";
+
+/* Class = "UITextField"; placeholder = "leashed"; ObjectID = "oC6-w7-cwN"; Note = "Do not translate"; */
+"oC6-w7-cwN.placeholder" = "leashed";
+
+/* Class = "UITextField"; placeholder = "park"; ObjectID = "okh-JP-aKZ"; Note = "Do not translate"; */
+"okh-JP-aKZ.placeholder" = "park";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "omf-S9-Yjq"; */
+"omf-S9-Yjq.text" = "Name";
+
+/* Class = "UIButton"; normalTitle = "Customize Presets"; ObjectID = "pHA-2B-6DC"; */
+"pHA-2B-6DC.normalTitle" = "Customize Presets";
+
+/* Class = "UITextField"; placeholder = "Restaurant"; ObjectID = "pxY-di-zg7"; */
+"pxY-di-zg7.placeholder" = "Restaurant";
+
+/* Class = "UITextField"; placeholder = "role"; ObjectID = "sVp-1S-TjJ"; Note = "Do not translate"; */
+"sVp-1S-TjJ.placeholder" = "role";
+
+/* Class = "UILabel"; text = "Key"; ObjectID = "teB-9L-Nrf"; */
+"teB-9L-Nrf.text" = "Key";
+
+/* Class = "UINavigationItem"; title = "Presets"; ObjectID = "v1b-PG-XxE"; */
+"v1b-PG-XxE.title" = "Presets";
+
+/* Class = "UITextField"; placeholder = "yes"; ObjectID = "vpk-jC-yxl"; Note = "Do not translate"; */
+"vpk-jC-yxl.placeholder" = "yes";
+
+/* Class = "UILabel"; text = "Value 12"; ObjectID = "wFE-f1-sQa"; */
+"wFE-f1-sQa.text" = "Value 12";
+
+/* Class = "UILabel"; text = "Value"; ObjectID = "z19-cc-gHZ"; */
+"z19-cc-gHZ.text" = "Value";
+
+/* Class = "UIButton"; normalTitle = "ⓘ"; ObjectID = "zpj-gL-2Nt"; */
+"zpj-gL-2Nt.normalTitle" = "ⓘ";

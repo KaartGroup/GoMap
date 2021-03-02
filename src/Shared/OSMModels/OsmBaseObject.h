@@ -49,42 +49,42 @@ NSDictionary * _Nullable MergeTags(NSDictionary * _Nullable myself, NSDictionary
 @interface OsmBaseObject : NSObject <NSCoding,NSCopying>
 {
 @protected
-	int32_t                						_modifyCount;
-	BOOL                						_constructed;
-	NSDictionary<NSString *, NSString *>    *	_tags;
-	NSNumber        						*  	_ident;
-	NSArray						            *  	_parentRelations;
+    int32_t                                        _modifyCount;
+    BOOL                                        _constructed;
+    NSDictionary<NSString *, NSString *>    *    _tags;
+    NSNumber                                *      _ident;
+    NSArray                                    *      _parentRelations;
 
-	NSNumber        						*	_isOneWay;
+    NSNumber                                *    _isOneWay;
 @public
-	OSMRect                						_boundingBox;
-	NSInteger						           	renderPriorityCached;
+    OSMRect                                        _boundingBox;
+    NSInteger                                       renderPriorityCached;
 }
-@property (readonly,nonatomic)  BOOL               	deleted;
-@property (strong,nonatomic)    RenderInfo		* _Nullable	renderInfo;
-@property (readonly,nonatomic)  int32_t         	modifyCount;
-@property (readonly,nonatomic)	NSArray     	* _Nullable	parentRelations;
-@property (readonly,nonatomic)  OsmIdentifier    	extendedIdentifier;
-@property (readonly,nonatomic)	OSM_TYPE     		extendedType;
+@property (readonly,nonatomic)  BOOL                   deleted;
+@property (strong,nonatomic)    RenderInfo        * _Nullable    renderInfo;
+@property (readonly,nonatomic)  int32_t             modifyCount;
+@property (readonly,nonatomic)    NSArray         * _Nullable    parentRelations;
+@property (readonly,nonatomic)  OsmIdentifier        extendedIdentifier;
+@property (readonly,nonatomic)    OSM_TYPE             extendedType;
 
 +(OsmIdentifier)extendedIdentifierForType:(OSM_TYPE)type identifier:(OsmIdentifier)identifier;
 +(void)decomposeExtendedIdentifier:(OsmIdentifier)extendedIdentifier type:(OSM_TYPE *_Nonnull)pType ident:(OsmIdentifier *_Nonnull)pIdent;
 
 // attributes
-@property (readonly,nonatomic)	NSDictionary<NSString *, NSString *>    * _Nullable   tags;
+@property (readonly,nonatomic)    NSDictionary<NSString *, NSString *>    * _Nullable   tags;
 @property (readonly,nonatomic)  NSNumber        * _Nonnull  ident;
 @property (readonly,nonatomic)  NSString        * _Nullable user;
 @property (readonly,nonatomic)  NSString        * _Nullable timestamp;
-@property (readonly,nonatomic)  int32_t     	  			version;
-@property (readonly,nonatomic)  OsmIdentifier        		changeset;
-@property (readonly,nonatomic)  int32_t              		uid;
-@property (readonly,nonatomic)  BOOL                 		visible;
+@property (readonly,nonatomic)  int32_t                       version;
+@property (readonly,nonatomic)  OsmIdentifier                changeset;
+@property (readonly,nonatomic)  int32_t                      uid;
+@property (readonly,nonatomic)  BOOL                         visible;
 
 // extra stuff
-@property (readonly,nonatomic)  OSMRect						boundingBox;
-@property (strong,nonatomic)    NSArray<CALayer<LayerPropertiesProviding> *> * _Nullable 	shapeLayers;
-@property (readonly,nonatomic)  ONEWAY               		isOneWay;
-@property (assign,nonatomic)    TRISTATE            		isShown;
+@property (readonly,nonatomic)  OSMRect                        boundingBox;
+@property (strong,nonatomic)    NSArray<CALayer<LayerPropertiesProviding> *> * _Nullable     shapeLayers;
+@property (readonly,nonatomic)  ONEWAY                       isOneWay;
+@property (assign,nonatomic)    TRISTATE                    isShown;
 
 +(NSDateFormatter * _Nonnull)rfc3339DateFormatter;
 

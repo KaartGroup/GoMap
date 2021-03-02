@@ -10,13 +10,13 @@
 
 @interface Database : NSObject
 {
-	NSString			*	_path;
-	struct sqlite3		*	_db;
+    NSString            *    _path;
+    struct sqlite3        *    _db;
 
-	struct sqlite3_stmt	*	_spatialInsert;
-	struct sqlite3_stmt	*	_spatialDelete;
+    struct sqlite3_stmt    *    _spatialInsert;
+    struct sqlite3_stmt    *    _spatialDelete;
 }
-@property (class,readonly,nonatomic)	dispatch_queue_t	dispatchQueue;
+@property (class,readonly,nonatomic)    dispatch_queue_t    dispatchQueue;
 
 +(NSString *)databasePathWithName:(NSString *)name;
 +(void)deleteDatabaseWithName:(NSString *)name;

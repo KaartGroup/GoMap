@@ -35,25 +35,25 @@
 
 BOOL IsInterestingKey(NSString * key)
 {
-	if ( [key isEqualToString:@"attribution"] )
-		return NO;
-	if ( [key isEqualToString:@"created_by"] )
-		return NO;
-	if ( [key isEqualToString:@"source"] )
-		return NO;
-	if ( [key isEqualToString:@"odbl"] )
-		return NO;
-	if ( [key hasPrefix:@"tiger:"] )
-		return NO;
-	if ( [key hasPrefix:@"source:"] )
-		return NO;
-	if ( [key hasPrefix:@"source_ref"] )
-		return NO;
+    if ( [key isEqualToString:@"attribution"] )
+        return NO;
+    if ( [key isEqualToString:@"created_by"] )
+        return NO;
+    if ( [key isEqualToString:@"source"] )
+        return NO;
+    if ( [key isEqualToString:@"odbl"] )
+        return NO;
+    if ( [key hasPrefix:@"tiger:"] )
+        return NO;
+    if ( [key hasPrefix:@"source:"] )
+        return NO;
+    if ( [key hasPrefix:@"source_ref"] )
+        return NO;
 
-	if ( [OsmMapData.tagsToAutomaticallyStrip containsObject:key] )
-		return NO;
+    if ( [OsmMapData.tagsToAutomaticallyStrip containsObject:key] )
+        return NO;
 
-	return YES;
+    return YES;
 }
 
 -(BOOL)hasInterestingTags
@@ -207,20 +207,20 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
     __block NSMutableDictionary * merged = [ourTags mutableCopy];
     [otherTags enumerateKeysAndObjectsUsingBlock:^(NSString * otherKey, NSString * otherValue, BOOL * stop) {
         NSString * ourValue = merged[otherKey];
-		if ( ourValue == nil || allowConflicts ) {
-			merged[otherKey] = otherValue;
-		} else if ( [ourValue isEqualToString:otherValue] ) {
-			// we already have it but replacement is the same
-		} else if ( IsInterestingKey(otherKey) ) {
-			*stop = YES;	// conflict
-			merged = nil;
-		} else {
-			// we don't allow conflicts, but its not an interesting key/value so just ignore the conflict
-		}
-	}];
-	if ( merged == nil )
-		return nil;    // conflict
-	return [NSDictionary dictionaryWithDictionary:merged];
+        if ( ourValue == nil || allowConflicts ) {
+            merged[otherKey] = otherValue;
+        } else if ( [ourValue isEqualToString:otherValue] ) {
+            // we already have it but replacement is the same
+        } else if ( IsInterestingKey(otherKey) ) {
+            *stop = YES;    // conflict
+            merged = nil;
+        } else {
+            // we don't allow conflicts, but its not an interesting key/value so just ignore the conflict
+        }
+    }];
+    if ( merged == nil )
+        return nil;    // conflict
+    return [NSDictionary dictionaryWithDictionary:merged];
 }
 
 #pragma mark Construction
@@ -307,16 +307,16 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 
 -(void)clearCachedProperties
 {
-	_renderInfo            	= nil;
-	renderPriorityCached	= 0;
-	_isOneWay               = nil;
-	_isShown               	= TRISTATE_UNKNOWN;
-	_boundingBox         	= OSMRectZero();
+    _renderInfo                = nil;
+    renderPriorityCached    = 0;
+    _isOneWay               = nil;
+    _isShown                   = TRISTATE_UNKNOWN;
+    _boundingBox             = OSMRectZero();
 
-	for ( CALayer * layer in _shapeLayers ) {
-		[layer removeFromSuperlayer];
-	}
-	_shapeLayers      		= nil;
+    for ( CALayer * layer in _shapeLayers ) {
+        [layer removeFromSuperlayer];
+    }
+    _shapeLayers              = nil;
 }
 
 -(BOOL)isModified
@@ -440,38 +440,38 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 
 -(NSString *)givenName
 {
-	enum { USES_NAME = 1, USES_REF = 2 };
-	static NSDictionary * highwayTypes = nil;
-	if ( highwayTypes == nil ) {
-		highwayTypes = @{ @"motorway":@(USES_REF),
-						  @"trunk":@(USES_REF),
-						  @"primary":@(USES_REF),
-						  @"secondary":@(USES_REF),
-						  @"tertiary":@(USES_REF),
-						  @"unclassified":@(USES_NAME),
-						  @"residential":@(USES_NAME),
-						  @"road":@(USES_NAME),
-						  @"living_street":@(USES_NAME) };
-	}
+    enum { USES_NAME = 1, USES_REF = 2 };
+    static NSDictionary * highwayTypes = nil;
+    if ( highwayTypes == nil ) {
+        highwayTypes = @{ @"motorway":@(USES_REF),
+                          @"trunk":@(USES_REF),
+                          @"primary":@(USES_REF),
+                          @"secondary":@(USES_REF),
+                          @"tertiary":@(USES_REF),
+                          @"unclassified":@(USES_NAME),
+                          @"residential":@(USES_NAME),
+                          @"road":@(USES_NAME),
+                          @"living_street":@(USES_NAME) };
+    }
 
 
-	NSString * name = _tags[@"name"];
-	if ( name.length )
-		return name;
+    NSString * name = _tags[@"name"];
+    if ( name.length )
+        return name;
 
-	if ( self.isWay ) {
-		NSString * highway = _tags[@"highway"];
-		if ( highway ) {
-			NSInteger uses = [highwayTypes[highway] integerValue];
-			if ( uses & USES_REF) {
-				name = _tags[@"ref"];
-				if ( name.length )
-					return name;
-			}
-		}
-	}
+    if ( self.isWay ) {
+        NSString * highway = _tags[@"highway"];
+        if ( highway ) {
+            NSInteger uses = [highwayTypes[highway] integerValue];
+            if ( uses & USES_REF) {
+                name = _tags[@"ref"];
+                if ( name.length )
+                    return name;
+            }
+        }
+    }
 
-	return _tags[@"brand"];
+    return _tags[@"brand"];
 }
 
 -(NSString *)friendlyDescriptionWithDetails:(BOOL)details
@@ -481,17 +481,17 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
         return name;
 
     PresetFeature * feature = [PresetsDatabase.shared matchObjectTagsToFeature:self.tags
-																	  geometry:self.geometryName
-																	includeNSI:YES];
+                                                                      geometry:self.geometryName
+                                                                    includeNSI:YES];
     if ( feature ) {
-		BOOL isGeneric = [feature.featureID isEqualToString:@"point"] ||
-						 [feature.featureID isEqualToString:@"line"] ||
-						 [feature.featureID isEqualToString:@"area"];
-		if ( !isGeneric ) {
-			name = feature.friendlyName;
-			if ( name.length > 0 )
-				return name;
-		}
+        BOOL isGeneric = [feature.featureID isEqualToString:@"point"] ||
+                         [feature.featureID isEqualToString:@"line"] ||
+                         [feature.featureID isEqualToString:@"area"];
+        if ( !isGeneric ) {
+            name = feature.friendlyName;
+            if ( name.length > 0 )
+                return name;
+        }
     }
 
     if ( self.isRelation ) {
@@ -504,13 +504,13 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
             }
         }
         if ( restriction ) {
-            if ( [restriction hasPrefix:@"no_left_turn"] )		return NSLocalizedString(@"No Left Turn restriction",nil);
-            if ( [restriction hasPrefix:@"no_right_turn"] )    	return NSLocalizedString(@"No Right Turn restriction",nil);
-            if ( [restriction hasPrefix:@"no_straight_on"] )   	return NSLocalizedString(@"No Straight On restriction",nil);
-            if ( [restriction hasPrefix:@"only_left_turn"] )   	return NSLocalizedString(@"Only Left Turn restriction",nil);
+            if ( [restriction hasPrefix:@"no_left_turn"] )        return NSLocalizedString(@"No Left Turn restriction",nil);
+            if ( [restriction hasPrefix:@"no_right_turn"] )        return NSLocalizedString(@"No Right Turn restriction",nil);
+            if ( [restriction hasPrefix:@"no_straight_on"] )       return NSLocalizedString(@"No Straight On restriction",nil);
+            if ( [restriction hasPrefix:@"only_left_turn"] )       return NSLocalizedString(@"Only Left Turn restriction",nil);
             if ( [restriction hasPrefix:@"only_right_turn"] )   return NSLocalizedString(@"Only Right Turn restriction",nil);
-            if ( [restriction hasPrefix:@"only_straight_on"] ) 	return NSLocalizedString(@"Only Straight On restriction",nil);
-            if ( [restriction hasPrefix:@"no_u_turn"] )        	return NSLocalizedString(@"No U-Turn restriction",nil);
+            if ( [restriction hasPrefix:@"only_straight_on"] )     return NSLocalizedString(@"Only Straight On restriction",nil);
+            if ( [restriction hasPrefix:@"no_u_turn"] )            return NSLocalizedString(@"No U-Turn restriction",nil);
             return [NSString stringWithFormat:NSLocalizedString(@"Restriction: %@",nil),restriction];
         } else {
             return [NSString stringWithFormat:NSLocalizedString(@"Relation: %@",nil),self.tags[@"type"]];
@@ -540,7 +540,7 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
     if ( tagDescription == nil ) {
         // any non-ignored key
         [_tags enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSString * value, BOOL * stop) {
-			if ( IsInterestingKey(key) ) {
+            if ( IsInterestingKey(key) ) {
                 *stop = YES;
                 tagDescription = [NSString stringWithFormat:@"%@ = %@",key,value];
             }
@@ -550,18 +550,18 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
         return tagDescription;
 
     if ( self.isNode && self.isNode.wayCount > 0 )
-		return details ? [NSString stringWithFormat:NSLocalizedString(@"node %@ (in way)",nil),self.ident]
-						: NSLocalizedString(@"(node in way)",nil);
+        return details ? [NSString stringWithFormat:NSLocalizedString(@"node %@ (in way)",nil),self.ident]
+                        : NSLocalizedString(@"(node in way)",nil);
 
     if ( self.isNode )
-		return details ? [NSString stringWithFormat:NSLocalizedString(@"node %@",nil),self.ident]
-						: NSLocalizedString(@"(node)",nil);
+        return details ? [NSString stringWithFormat:NSLocalizedString(@"node %@",nil),self.ident]
+                        : NSLocalizedString(@"(node)",nil);
 
-	if ( self.isWay )
-		return details ? [NSString stringWithFormat:NSLocalizedString(@"way %@",nil),self.ident]
-						: NSLocalizedString(@"(way)",nil);
+    if ( self.isWay )
+        return details ? [NSString stringWithFormat:NSLocalizedString(@"way %@",nil),self.ident]
+                        : NSLocalizedString(@"(way)",nil);
 
-	if ( self.isRelation ) {
+    if ( self.isRelation ) {
         OsmRelation * relation = self.isRelation;
         NSString * type = relation.tags[@"type"];
         if ( type.length ) {
@@ -580,11 +580,11 @@ NSDictionary * MergeTags( NSDictionary * ourTags, NSDictionary * otherTags, BOOL
 
 -(NSString *)friendlyDescription
 {
-	return [self friendlyDescriptionWithDetails:NO];
+    return [self friendlyDescriptionWithDetails:NO];
 }
 -(NSString *)friendlyDescriptionWithDetails
 {
-	return [self friendlyDescriptionWithDetails:YES];
+    return [self friendlyDescriptionWithDetails:YES];
 }
 
 - (id)copyWithZone:(NSZone *)zone

@@ -5,7 +5,6 @@
 //  Created by Wolfgang Timme on 4/16/19.
 //  Copyright © 2019 Bryce. All rights reserved.
 //
-
 import Foundation
 
 extension ContactUsViewController {
@@ -19,7 +18,6 @@ extension ContactUsViewController {
     }
 
     // MARK: Private methods
-
     private func createVersionDetailsString() -> String? {
         guard
             let appDelegate = UIApplication.shared.delegate as? AppDelegate,
@@ -37,6 +35,6 @@ extension ContactUsViewController {
     @objc func openTestFlightURL() {
         guard let url = URL(string: "https://testflight.apple.com/join/T96F9wYq") else { return }
 
-		UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

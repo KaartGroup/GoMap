@@ -12,7 +12,7 @@
 {
 }
 
-@property NSString	*	tag;
-@property NSArray	*	valueDefinitions;
+@property NSString    *    tag;
+@property NSArray    *    valueDefinitions;
 
 @end

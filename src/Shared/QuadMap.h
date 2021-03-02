@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-	QUAD_SE = 0,
-	QUAD_SW = 1,
-	QUAD_NE = 2,
-	QUAD_NW = 3,
-	QUAD_LAST = 3
+    QUAD_SE = 0,
+    QUAD_SW = 1,
+    QUAD_NE = 2,
+    QUAD_NW = 3,
+    QUAD_LAST = 3
 } QUAD_ENUM;
 
 @class OsmBaseObject;
@@ -22,10 +22,10 @@ struct QuadBoxCC;
 
 @interface QuadBox : NSObject <NSCoding>
 {
-	struct QuadBoxCC *	_cpp;
+    struct QuadBoxCC *    _cpp;
 }
-@property (readonly,nonatomic)	OSMRect				rect;
-@property (readonly,nonatomic)	struct QuadBoxCC  *	cpp;
+@property (readonly,nonatomic)    OSMRect                rect;
+@property (readonly,nonatomic)    struct QuadBoxCC  *    cpp;
 
 -(id)initWithRect:(OSMRect)rect;
 -(instancetype)initWithThis:(struct QuadBoxCC *)cpp;
@@ -58,7 +58,7 @@ struct QuadBoxCC;
 
 
 @interface QuadMap : NSObject <NSCoding>
-@property (strong,nonatomic)	QuadBox	*	rootQuad;
+@property (strong,nonatomic)    QuadBox    *    rootQuad;
 
 -(NSInteger)count;
 -(id)initWithRect:(OSMRect)rect;

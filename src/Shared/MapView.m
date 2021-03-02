@@ -318,13 +318,15 @@ const CGFloat kEditControlCornerRadius = 4;
     _addNodeButtonLongPressGestureRecognizer.delegate = self;
     [self.addNodeButton addGestureRecognizer:_addNodeButtonLongPressGestureRecognizer];
 
-    // pan gesture to recognize mouse-wheel scrolling (zoom)
-    if (@available(iOS 13.4, *)) {
+#if TARGET_OS_MACCATALYST
+    {
+        // pan gesture to recognize mouse-wheel scrolling (zoom) on Mac Catalyst
         UIPanGestureRecognizer * scrollWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScrollWheelGesture:)];
         scrollWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
         scrollWheelGesture.maximumNumberOfTouches = 0;
         [self addGestureRecognizer:scrollWheelGesture];
     }
+#endif
 
     _notesDatabase            = [OsmNotesDatabase new];
     _notesDatabase.mapData    = _editorLayer.mapData;
@@ -2069,28 +2071,6 @@ static NSString * const DisplayLinkHeading    = @"Heading";
 
 #pragma mark Edit Actions
 
-typedef enum {
-    // used by edit control:
-    ACTION_EDITTAGS,
-    ACTION_ADDNOTE,
-    ACTION_DELETE,
-    ACTION_MORE,
-    // used for action sheet edits:
-    ACTION_SPLIT,
-    ACTION_RECTANGULARIZE,
-    ACTION_STRAIGHTEN,
-    ACTION_REVERSE,
-    ACTION_DUPLICATE,
-    ACTION_ROTATE,
-    ACTION_JOIN,
-    ACTION_DISCONNECT,
-    ACTION_CIRCULARIZE,
-    ACTION_COPYTAGS,
-    ACTION_PASTETAGS,
-    ACTION_RESTRICT,
-    ACTION_CREATE_RELATION
-} EDIT_ACTION;
-
 NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 {
     switch (action) {
@@ -2134,17 +2114,22 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
                     self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
                 else
                     self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
-                else
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
+            else
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
         }
         [_editControl removeAllSegments];
         for ( NSNumber * action in _editControlActions ) {
             NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
             [_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
         }
-
-        UIFont * font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        [_editControl setTitleTextAttributes:@{NSFontAttributeName:font} forState:UIControlStateNormal];
+        // mark segment labels as adjustsFontSizeToFitWidth
+        for ( UIView * segment in _editControl.subviews ) {
+            for ( UILabel * label in segment.subviews ) {
+                if ( [label isKindOfClass:[UILabel class]] ) {
+                    label.adjustsFontSizeToFitWidth = YES;
+                }
+            }
+        }
     }
 }
 
@@ -2223,40 +2208,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
     if ( segment < _editControlActions.count ) {
         EDIT_ACTION action = (EDIT_ACTION)_editControlActions[ segment ].integerValue;
-
-        // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-        switch ( action ) {
-            case ACTION_RECTANGULARIZE:
-            case ACTION_STRAIGHTEN:
-            case ACTION_REVERSE:
-            case ACTION_DUPLICATE:
-            case ACTION_ROTATE:
-            case ACTION_CIRCULARIZE:
-            case ACTION_COPYTAGS:
-            case ACTION_PASTETAGS:
-            case ACTION_EDITTAGS:
-            case ACTION_CREATE_RELATION:
-                if ( self.editorLayer.selectedWay &&
-                    self.editorLayer.selectedNode &&
-                    self.editorLayer.selectedNode.tags.count == 0 &&
-                    self.editorLayer.selectedWay.tags.count == 0 &&
-                    !self.editorLayer.selectedWay.isMultipolygonMember )
-                {
-                    // promote the selection to the way
-                    self.editorLayer.selectedNode = nil;
-                    [self refreshPushpinText];
-                }
-                break;
-            case ACTION_SPLIT:
-            case ACTION_JOIN:
-            case ACTION_DISCONNECT:
-            case ACTION_RESTRICT:
-            case ACTION_ADDNOTE:
-            case ACTION_DELETE:
-            case ACTION_MORE:
-                break;
-        }
-
         [self performEditAction:action];
     }
     segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
@@ -2264,6 +2215,39 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(void)performEditAction:(EDIT_ACTION)action
 {
+    // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
+    switch ( action ) {
+        case ACTION_RECTANGULARIZE:
+        case ACTION_STRAIGHTEN:
+        case ACTION_REVERSE:
+        case ACTION_DUPLICATE:
+        case ACTION_ROTATE:
+        case ACTION_CIRCULARIZE:
+        case ACTION_COPYTAGS:
+        case ACTION_PASTETAGS:
+        case ACTION_EDITTAGS:
+        case ACTION_CREATE_RELATION:
+            if ( self.editorLayer.selectedWay &&
+                self.editorLayer.selectedNode &&
+                self.editorLayer.selectedNode.tags.count == 0 &&
+                self.editorLayer.selectedWay.tags.count == 0 &&
+                !self.editorLayer.selectedWay.isMultipolygonMember )
+            {
+                // promote the selection to the way
+                self.editorLayer.selectedNode = nil;
+                [self refreshPushpinText];
+            }
+            break;
+        case ACTION_SPLIT:
+        case ACTION_JOIN:
+        case ACTION_DISCONNECT:
+        case ACTION_RESTRICT:
+        case ACTION_ADDNOTE:
+        case ACTION_DELETE:
+        case ACTION_MORE:
+            break;
+    }
+
     NSString * error = nil;
     switch (action) {
         case ACTION_COPYTAGS:
@@ -3104,6 +3088,10 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(void)blinkObject:(OsmBaseObject *)object segment:(NSInteger)segment
 {
+    if ( object == nil ) {
+        [self unblinkObject];
+        return;
+    }
     if ( object == _blinkObject && segment == _blinkSegment )
         return;
     [_blinkLayer removeFromSuperlayer];
@@ -3653,6 +3641,7 @@ static NSString * const DisplayLinkPanning    = @"Panning";
         [self endObjectRotation];
     }
 
+    [self unblinkObject];    // used by Mac Catalyst, harmless otherwise
 
     if ( _editorLayer.selectedWay ) {
         // check for selecting node inside way
@@ -3726,6 +3715,12 @@ static NSString * const DisplayLinkPanning    = @"Panning";
             _confirmDrag = (_editorLayer.selectedPrimary.modifyCount == 0);
         }
     }
+}
+
+-(void)rightClickAtLocation:(CGPoint)location
+{
+    // right-click is equivalent to holding + and clicking
+    [self dropPinAtPoint:location];
 }
 
 @end
