@@ -15,8 +15,8 @@
 {
     [super viewDidLoad];
 
-	_textView.editable = NO;
-	_textView.layer.cornerRadius = 10.0;
+    _textView.editable = NO;
+    _textView.layer.cornerRadius = 10.0;
 }
 
 @end

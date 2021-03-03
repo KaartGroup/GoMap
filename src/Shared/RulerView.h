@@ -13,10 +13,10 @@
 
 @interface RulerView : UIView
 {
-	CAShapeLayer	*	_shapeLayer;
-	CATextLayer		*	_metricTextLayer;
-	CATextLayer		*	_britishTextLayer;
+    CAShapeLayer    *    _shapeLayer;
+    CATextLayer        *    _metricTextLayer;
+    CATextLayer        *    _britishTextLayer;
 }
-@property (assign,nonatomic) MapView	*	mapView;
+@property (assign,nonatomic) MapView    *    mapView;
 
 @end

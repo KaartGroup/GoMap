@@ -544,10 +544,10 @@ extension EditorMapLayer {
         layer.bounds = bounds
         layer.fillColor = UIColor(red: 0, green: 0, blue: 1, alpha: 0.1).cgColor
         layer.strokeColor = UIColor.blue.cgColor
-        //		layer.lineJoin		= DEFAULT_LINEJOIN
-        //		layer.lineCap		= DEFAULT_LINECAP
+        //        layer.lineJoin        = DEFAULT_LINEJOIN
+        //        layer.lineCap        = DEFAULT_LINECAP
         layer.lineWidth = 2.0
-        //		layer.zPosition		= Z_OCEAN;	// FIXME
+        //        layer.zPosition        = Z_OCEAN;    // FIXME
 
         return layer
     }

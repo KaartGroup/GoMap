@@ -9,7 +9,7 @@
 import XCTest
 
 import CoreLocation
-@testable import Go_Map__
+@testable import Go_Kaart__
 
 class MeasureDirectionViewModelTestCase: XCTestCase {
     private var viewModel: MeasureDirectionViewModel!

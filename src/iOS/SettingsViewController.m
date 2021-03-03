@@ -21,42 +21,42 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-	self.tableView.estimatedRowHeight = 44.0;
-	self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    self.tableView.estimatedRowHeight = 44.0;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[super viewWillAppear:animated];
+    [super viewWillAppear:animated];
 
-	self.navigationController.navigationBarHidden = NO;
+    self.navigationController.navigationBarHidden = NO;
 
-	PresetLanguages * presetLanguages = [PresetLanguages new];
-	NSString * preferredLanguageCode = presetLanguages.preferredLanguageCode;
-	NSString * preferredLanguage = [PresetLanguages localLanguageNameForCode:preferredLanguageCode];
-	_language.text = preferredLanguage;
+    PresetLanguages * presetLanguages = [PresetLanguages new];
+    NSString * preferredLanguageCode = presetLanguages.preferredLanguageCode;
+    NSString * preferredLanguage = [PresetLanguages localLanguageNameForCode:preferredLanguageCode];
+    _language.text = preferredLanguage;
 
-	// set username, but then validate it
-	AppDelegate * appDelegate = AppDelegate.shared;
+    // set username, but then validate it
+    AppDelegate * appDelegate = AppDelegate.shared;
 
-	_username.text = @"";
-	if ( appDelegate.userName.length > 0 ) {
-		[appDelegate.mapView.editorLayer.mapData verifyUserCredentialsWithCompletion:^(NSString * errorMessage) {
-			if ( errorMessage ) {
-				_username.text = NSLocalizedString(@"<unknown>",@"unknown user name");
-			} else {
-				_username.text = appDelegate.userName;
-			}
-			
-			[self.tableView reloadData];
-		}];
-	}
+    _username.text = @"";
+    if ( appDelegate.userName.length > 0 ) {
+        [appDelegate.mapView.editorLayer.mapData verifyUserCredentialsWithCompletion:^(NSString * errorMessage) {
+            if ( errorMessage ) {
+                _username.text = NSLocalizedString(@"<unknown>",@"unknown user name");
+            } else {
+                _username.text = appDelegate.userName;
+            }
+            
+            [self.tableView reloadData];
+        }];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[super viewWillDisappear:animated];
+    [super viewWillDisappear:animated];
 }
 
 -(void)accessoryDidConnect:(id)sender
@@ -65,12 +65,12 @@
 
 - (IBAction)onDone:(id)sender
 {
-	[self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end

@@ -12,58 +12,58 @@ import Foundation
 // A group of related tags, such as address tags, organized for display purposes
 // A group becomes a Section in UITableView
 class PresetGroup: NSObject {
-	@objc let name: String?				// e.g. Address
-	@objc let presetKeys: [AnyHashable]	// either PresetKey or PresetGroup
-	@objc var isDrillDown = false
+    @objc let name: String?                // e.g. Address
+    @objc let presetKeys: [AnyHashable]    // either PresetKey or PresetGroup
+    @objc var isDrillDown = false
 
-	init(name: String?, tags: [AnyHashable]) {
+    init(name: String?, tags: [AnyHashable]) {
 #if DEBUG
-		if tags.count > 0 {
-			assert((tags.last is PresetKey) || (tags.last is PresetGroup)) // second case for drill down group
-		}
+        if tags.count > 0 {
+            assert((tags.last is PresetKey) || (tags.last is PresetGroup)) // second case for drill down group
+        }
 #endif
-		self.name = name
-		self.presetKeys = tags
-		super.init()
-	}
+        self.name = name
+        self.presetKeys = tags
+        super.init()
+    }
 
-	convenience init(fromMerger p1: PresetGroup, with p2: PresetGroup) {
-		self.init(name: p1.name, tags: p1.presetKeys + p2.presetKeys)
-	}
+    convenience init(fromMerger p1: PresetGroup, with p2: PresetGroup) {
+        self.init(name: p1.name, tags: p1.presetKeys + p2.presetKeys)
+    }
 
-	override var description: String {
-		var text = "\(name ?? "<unknown>"):\n"
-		for key in presetKeys {
-			text += "   \(key.description)\n"
-		}
-		return text
-	}
+    override var description: String {
+        var text = "\(name ?? "<unknown>"):\n"
+        for key in presetKeys {
+            text += "   \(key.description)\n"
+        }
+        return text
+    }
 
-	@objc func multiComboSummary(ofDict dict:[String:String]?, isPlaceholder:Bool) -> String
-	{
-		var summary = ""
-		for preset in presetKeys {
-			if let preset = preset as? PresetKey,
-			   let values = preset.presetList,
-			   values.count == 2,
-			   values[0].tagValue == "yes",
-			   values[1].tagValue == "no"
-			{
-				if let v = isPlaceholder ? "yes" : dict?[ preset.tagKey ],
-				   OsmTags.IsOsmBooleanTrue( v )
-				{
-					if summary.isEmpty {
-						summary = preset.name
-					} else {
-						summary = summary + ", " + preset.name
-					}
-				}
-			} else {
-				// it's not a multiCombo
-				return ""
-			}
-		}
-		return summary
-	}
+    @objc func multiComboSummary(ofDict dict:[String:String]?, isPlaceholder:Bool) -> String
+    {
+        var summary = ""
+        for preset in presetKeys {
+            if let preset = preset as? PresetKey,
+               let values = preset.presetList,
+               values.count == 2,
+               values[0].tagValue == "yes",
+               values[1].tagValue == "no"
+            {
+                if let v = isPlaceholder ? "yes" : dict?[ preset.tagKey ],
+                   OsmTags.IsOsmBooleanTrue( v )
+                {
+                    if summary.isEmpty {
+                        summary = preset.name
+                    } else {
+                        summary = summary + ", " + preset.name
+                    }
+                }
+            } else {
+                // it's not a multiCombo
+                return ""
+            }
+        }
+        return summary
+    }
 }
 

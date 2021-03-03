@@ -13,8 +13,8 @@
 
 @interface AerialListViewController : UITableViewController <UITableViewDelegate,UITableViewDataSource>
 {
-	AerialList 	*	 _aerials;
-	NSArray 	*	_imageryForRegion;
+    AerialList     *     _aerials;
+    NSArray     *    _imageryForRegion;
 }
 
 @property (weak) DisplayViewController * displayViewController;

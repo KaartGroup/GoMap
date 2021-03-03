@@ -12,13 +12,13 @@
 
 @interface AerialEditViewController : UITableViewController<UIPickerViewDelegate, UIPickerViewDataSource>
 {
-	IBOutlet UITextField *	nameField;
-	IBOutlet UITextField *	urlField;
-	IBOutlet UITextField *	zoomField;
-	IBOutlet UITextField *	projectionField;
+    IBOutlet UITextField *    nameField;
+    IBOutlet UITextField *    urlField;
+    IBOutlet UITextField *    zoomField;
+    IBOutlet UITextField *    projectionField;
 
-	UIPickerView		*	_picker;
-	NSArray<NSString *>	*	_projectionList;
+    UIPickerView        *    _picker;
+    NSArray<NSString *>    *    _projectionList;
 }
 
 @property NSString * name;

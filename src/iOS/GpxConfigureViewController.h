@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface GpxConfigureViewController : UIViewController <UIPickerViewDelegate,UIPickerViewDataSource>
-@property (assign,nonatomic) IBOutlet	UIPickerView *	pickerView;
-@property (assign,nonatomic) NSNumber				*	expirationValue;
-@property (copy)								void (^ completion)(NSNumber * pick);
+@property (assign,nonatomic) IBOutlet    UIPickerView *    pickerView;
+@property (assign,nonatomic) NSNumber                *    expirationValue;
+@property (copy)                                void (^ completion)(NSNumber * pick);
 @end

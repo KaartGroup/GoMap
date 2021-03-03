@@ -191,7 +191,7 @@ import QuartzCore
         let charCount = string.length
         let typesetter = CTFramesetterGetTypesetter(framesetter)
 
-        //	NSLog(@"\"%@\"",string);
+        //    NSLog(@"\"%@\"",string);
 
         // get line segments
         var pathPoints = Array(repeating: CGPoint.zero, count: CGPathPointCount(path))
@@ -292,7 +292,7 @@ import QuartzCore
                 layer!.position = loc.pos
             }
 
-            //		NSLog(@"-> \"%@\"",[layer.string string]);
+            //        NSLog(@"-> \"%@\"",[layer.string string]);
 
             layers.append(layer!)
 

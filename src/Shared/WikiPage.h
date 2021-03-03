@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 +(instancetype)shared;
 
 - (void)bestWikiPageForKey:(NSString *)tagKey
-					 value:(NSString *)tagValue
-				  language:(NSString *)language
-				completion:(void (^)(NSURL * url))completion;
+                     value:(NSString *)tagValue
+                  language:(NSString *)language
+                completion:(void (^)(NSURL * url))completion;
 
 @end
 

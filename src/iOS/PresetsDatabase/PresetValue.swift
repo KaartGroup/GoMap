@@ -11,37 +11,37 @@ import Foundation
 
 // A possible value for a preset key
 @objc class PresetValue: NSObject, NSSecureCoding {
-	static let supportsSecureCoding: Bool = true
-	
-	@objc let name: String
-	@objc let details: String?
-	@objc let tagValue: String
+    static let supportsSecureCoding: Bool = true
+    
+    @objc let name: String
+    @objc let details: String?
+    @objc let tagValue: String
 
-	@objc init(name: String?, details: String?, tagValue value: String) {
-		self.name = name ?? OsmTags.PrettyTag(value)
-		self.details = details
-		self.tagValue = value
-	}
+    @objc init(name: String?, details: String?, tagValue value: String) {
+        self.name = name ?? OsmTags.PrettyTag(value)
+        self.details = details
+        self.tagValue = value
+    }
 
-	@objc func encode(with coder: NSCoder) {
-		coder.encode(name, forKey: "name")
-		coder.encode(details, forKey: "details")
-		coder.encode(tagValue, forKey: "tagValue")
-	}
+    @objc func encode(with coder: NSCoder) {
+        coder.encode(name, forKey: "name")
+        coder.encode(details, forKey: "details")
+        coder.encode(tagValue, forKey: "tagValue")
+    }
 
-	@objc required init?(coder: NSCoder) {
-		self.details = coder.decodeObject(forKey: "details") as? String
-		if let name = coder.decodeObject(forKey: "name") as? String,
-		   let tagValue = coder.decodeObject(forKey: "tagValue") as? String
-		{
-			self.name = name
-			self.tagValue = tagValue
-		} else {
-			return nil
-		}
-	}
+    @objc required init?(coder: NSCoder) {
+        self.details = coder.decodeObject(forKey: "details") as? String
+        if let name = coder.decodeObject(forKey: "name") as? String,
+           let tagValue = coder.decodeObject(forKey: "tagValue") as? String
+        {
+            self.name = name
+            self.tagValue = tagValue
+        } else {
+            return nil
+        }
+    }
 
-	override var description: String {
-		return name
-	}
+    override var description: String {
+        return name
+    }
 }

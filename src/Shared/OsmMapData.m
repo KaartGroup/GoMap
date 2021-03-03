@@ -78,13 +78,13 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 
 -(void)initCommon
 {
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		[self.userDefaults registerDefaults:@{ OSM_SERVER_KEY : @"https://api.openstreetmap.org/" }];
-	});
-	NSString * server = [self.userDefaults objectForKey:OSM_SERVER_KEY];
-	[self setServer:server];
-	[self setupPeriodicSaveTimer];
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self.userDefaults registerDefaults:@{ OSM_SERVER_KEY : @"https://api.openstreetmap.org/" }];
+    });
+    NSString * server = [self.userDefaults objectForKey:OSM_SERVER_KEY];
+    [self setServer:server];
+    [self setupPeriodicSaveTimer];
 }
 
 - (instancetype)initWithUserDefaults:(NSUserDefaults *)userDefaults {
@@ -110,8 +110,8 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 
 -(void)dealloc
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UndoManagerDidChangeNotification object:_undoManager];
-	[_periodicSaveTimer invalidate];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UndoManagerDidChangeNotification object:_undoManager];
+    [_periodicSaveTimer invalidate];
 }
 
 -(void)setServer:(NSString *)hostname
@@ -137,18 +137,18 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
         hostname = [hostname stringByAppendingString:@"/"];
     }
 
-	if ( [OSM_API_URL isEqualToString:hostname] ) {
-		// no change
-		return;
-	}
+    if ( [OSM_API_URL isEqualToString:hostname] ) {
+        // no change
+        return;
+    }
 
-	if ( OSM_API_URL.length ) {
-		// get rid of old data before connecting to new server
-		[self purgeSoft];
-	}
-	
-	[self.userDefaults setObject:hostname forKey:OSM_SERVER_KEY];
-	OSM_API_URL = hostname;
+    if ( OSM_API_URL.length ) {
+        // get rid of old data before connecting to new server
+        [self purgeSoft];
+    }
+    
+    [self.userDefaults setObject:hostname forKey:OSM_SERVER_KEY];
+    OSM_API_URL = hostname;
 }
 
 -(NSString *)getServer
@@ -2415,24 +2415,24 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 
 -(void)save
 {
-	CFTimeInterval t = CACurrentMediaTime();
-	// save dirty data and relations
-	DbgAssert(g_EditorMapLayerForArchive);
-	OsmMapData * modified = [self modifiedObjects];
-	modified->_region = _region;
-	modified->_spatial = _spatial;
-	QuadBox * spatialRoot = _spatial.rootQuad;
-	_spatial.rootQuad = nil;	// This aliases modified->_spatial.rootQuad, which we will rebuild when we reload
-	[modified saveArchive];
-	_spatial.rootQuad = spatialRoot;
+    CFTimeInterval t = CACurrentMediaTime();
+    // save dirty data and relations
+    DbgAssert(g_EditorMapLayerForArchive);
+    OsmMapData * modified = [self modifiedObjects];
+    modified->_region = _region;
+    modified->_spatial = _spatial;
+    QuadBox * spatialRoot = _spatial.rootQuad;
+    _spatial.rootQuad = nil;    // This aliases modified->_spatial.rootQuad, which we will rebuild when we reload
+    [modified saveArchive];
+    _spatial.rootQuad = spatialRoot;
 
-	t = CACurrentMediaTime() - t;
-	(void)t;
-	DLog(@"archive save %ld,%ld,%ld,%ld,%ld = %f", (long)modified.nodeCount, (long)modified.wayCount, (long)modified.relationCount, (long)_undoManager.countUndoGroups, (long)_region.count, t);
-	DLog(@"Save objects = %ld", (long)self.nodeCount+self.wayCount+self.relationCount);
-	
-	[_periodicSaveTimer invalidate];
-	_periodicSaveTimer = nil;
+    t = CACurrentMediaTime() - t;
+    (void)t;
+    DLog(@"archive save %ld,%ld,%ld,%ld,%ld = %f", (long)modified.nodeCount, (long)modified.wayCount, (long)modified.relationCount, (long)_undoManager.countUndoGroups, (long)_region.count, t);
+    DLog(@"Save objects = %ld", (long)self.nodeCount+self.wayCount+self.relationCount);
+    
+    [_periodicSaveTimer invalidate];
+    _periodicSaveTimer = nil;
 }
 
 -(instancetype)initWithCachedData

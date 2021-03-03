@@ -15,7 +15,7 @@
 
 @interface SpeechBalloonView : NSView
 {
-	CGMutablePathRef	_path;
+    CGMutablePathRef    _path;
 }
 
 - (id)initWithText:(NSString *)text;

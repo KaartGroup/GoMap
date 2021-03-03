@@ -13,11 +13,12 @@
 
 @interface DownloadThreadPool : NSObject <NSURLSessionDataDelegate,NSURLSessionTaskDelegate>
 {
-	atomic_int			_downloadCount;
-	NSURLSession	*	_urlSession;
+    atomic_int            _downloadCount;
+    NSURLSession    *    _urlSession;
 }
 
 +(DownloadThreadPool *)osmPool;
+
 -(void)streamForUrl:(NSString *)url callback:(void(^)(NSInputStream * stream,NSError * error))callback;
 
 -(void)cancelAllDownloads;

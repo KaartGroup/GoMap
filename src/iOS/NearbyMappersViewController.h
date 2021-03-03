@@ -11,6 +11,6 @@
 
 @interface NearbyMappersViewController : UITableViewController
 {
-	NSArray		*	_mappers;
+    NSArray        *    _mappers;
 }
 @end

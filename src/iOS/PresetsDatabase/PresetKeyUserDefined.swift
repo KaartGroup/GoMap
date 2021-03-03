@@ -1,4 +1,3 @@
-
 //
 //  CustomPreset.swift
 //  Go Map!!
@@ -6,6 +5,7 @@
 //  Created by Bryce Cogswell on 12/13/20.
 //  Copyright © 2020 Bryce. All rights reserved.
 //
+
 import Foundation
 
 
@@ -15,6 +15,7 @@ import Foundation
 
     @objc let appliesToKey: String        // "" if not used
     @objc let appliesToValue: String    // "" if not used
+
     @objc required init?(coder: NSCoder) {
         if let appliesToKey = coder.decodeObject(forKey: "appliesToKey") as? String,
            let appliesToValue = coder.decodeObject(forKey: "appliesToValue") as? String

@@ -13,9 +13,9 @@
 @interface POITabBarController : UITabBarController
 {
 }
-@property (strong,nonatomic)	NSMutableDictionary *	keyValueDict;
-@property (strong,nonatomic)	NSArray				*	relationList;
-@property (assign,nonatomic)	OsmBaseObject		*	selection;
+@property (strong,nonatomic)    NSMutableDictionary *    keyValueDict;
+@property (strong,nonatomic)    NSArray                *    relationList;
+@property (assign,nonatomic)    OsmBaseObject        *    selection;
 
 - (void)setFeatureKey:(NSString *)key value:(NSString *)value;
 

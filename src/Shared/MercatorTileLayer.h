@@ -7,7 +7,7 @@
 //
 
 #import "iosapi.h"
-#import <QuartzCore/QuartzCore.h> 
+#import <QuartzCore/QuartzCore.h>
 #include <stdatomic.h>
 
 @class AerialService;
@@ -16,11 +16,11 @@
 
 @interface MercatorTileLayer : CALayer
 {
-	PersistentWebCache		*	_webCache;
-	NSString				*	_logoUrl;
+    PersistentWebCache        *    _webCache;
+    NSString                *    _logoUrl;
 
-	NSMutableDictionary		*	_layerDict;				// map of tiles currently displayed
-	atomic_int					_isPerformingLayout;
+    NSMutableDictionary        *    _layerDict;                // map of tiles currently displayed
+    atomic_int                    _isPerformingLayout;
 }
 
 @property (strong,nonatomic) AerialService    *    aerialService;

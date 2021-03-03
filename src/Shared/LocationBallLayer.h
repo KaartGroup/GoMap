@@ -10,11 +10,11 @@
 
 @interface LocationBallLayer : CALayer
 {
-	CAShapeLayer	*	_headingLayer;
-	CAShapeLayer	*	_ringLayer;
+    CAShapeLayer    *    _headingLayer;
+    CAShapeLayer    *    _ringLayer;
 }
-@property (assign,nonatomic)	BOOL		showHeading;
-@property (assign,nonatomic)	CGFloat		heading;	// radians
-@property (assign,nonatomic)	CGFloat		headingAccuracy;
-@property (assign,nonatomic)	CGFloat		radiusInPixels;
+@property (assign,nonatomic)    BOOL        showHeading;
+@property (assign,nonatomic)    CGFloat        heading;    // radians
+@property (assign,nonatomic)    CGFloat        headingAccuracy;
+@property (assign,nonatomic)    CGFloat        radiusInPixels;
 @end

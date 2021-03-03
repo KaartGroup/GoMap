@@ -18,14 +18,14 @@
 
 @interface POIFeaturePickerViewController : UITableViewController <UISearchBarDelegate>
 {
-	NSArray					*	_featureList;
-	NSArray					*	_searchArrayRecent;
-	NSArray					*	_searchArrayAll;
-	IBOutlet UISearchBar    *	_searchBar;
-	BOOL						_isTopLevel;
+    NSArray                    *    _featureList;
+    NSArray                    *    _searchArrayRecent;
+    NSArray                    *    _searchArrayAll;
+    IBOutlet UISearchBar    *    _searchBar;
+    BOOL                        _isTopLevel;
 }
-@property (strong,nonatomic) PresetCategory				*	parentCategory;
-@property (assign,nonatomic) id<POITypeViewControllerDelegate>		delegate;
+@property (strong,nonatomic) PresetCategory                *    parentCategory;
+@property (assign,nonatomic) id<POITypeViewControllerDelegate>        delegate;
 
 -(IBAction)back:(id)sender;
 -(IBAction)configure:(id)sender;

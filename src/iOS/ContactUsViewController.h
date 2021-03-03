@@ -14,10 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ContactUsViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 {
-	IBOutlet UITableViewCell	*	_sendMailCell;
-	IBOutlet UITableViewCell    *   _testFlightCell;
-	IBOutlet UITableViewCell	*	_githubCell;
-	IBOutlet UITableViewCell	*	_weblateCell;
+    IBOutlet UITableViewCell    *    _sendMailCell;
+    IBOutlet UITableViewCell    *   _testFlightCell;
+    IBOutlet UITableViewCell    *    _githubCell;
+    IBOutlet UITableViewCell    *    _weblateCell;
 }
 @end
 

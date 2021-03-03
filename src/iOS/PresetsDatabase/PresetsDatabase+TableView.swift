@@ -5,6 +5,7 @@
 //  Created by Bryce Cogswell on 12/13/20.
 //  Copyright © 2020 Bryce. All rights reserved.
 //
+
 import Foundation
 
 
@@ -241,6 +242,7 @@ extension PresetsDatabase {
             return []
         }
         taginfoCache[cacheKey] = []    // mark as in-transit
+
         DispatchQueue.global(qos: .default).async(execute: {
             let cleanKey = searchKeys ? key.trimmingCharacters(in: CharacterSet(charactersIn: ":")) : key
             let urlText = searchKeys
@@ -402,6 +404,7 @@ extension PresetsDatabase {
         case "radio", "structureRadio", "manyCombo", "multiCombo":
             // all of these can have multiple keys
             let isMultiCombo = type == "multiCombo"    // uses a prefix key with multiple suffixes
+
             var options = dict["options"] as? [String]
             if options == nil {
                 // need to get options from taginfo

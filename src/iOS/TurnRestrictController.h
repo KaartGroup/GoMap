@@ -22,18 +22,18 @@
 
 @interface TurnRestrictController : UIViewController
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint 	*	constraintViewWithTitleHeight;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint 	*	constraintViewWithTitleWidth;
-@property (strong, nonatomic) IBOutlet UIView 				* 	viewWithTitle;
-@property (strong, nonatomic) IBOutlet UIView 				*	detailView;
-@property (strong, nonatomic) IBOutlet UIButton 			*	infoButton;
-@property (strong, nonatomic) IBOutlet UILabel	 			*	detailText;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint     *    constraintViewWithTitleHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint     *    constraintViewWithTitleWidth;
+@property (strong, nonatomic) IBOutlet UIView                 *     viewWithTitle;
+@property (strong, nonatomic) IBOutlet UIView                 *    detailView;
+@property (strong, nonatomic) IBOutlet UIButton             *    infoButton;
+@property (strong, nonatomic) IBOutlet UILabel                 *    detailText;
 
 
-@property (strong,nonatomic)    OsmNode 		*	centralNode;	// the central node
+@property (strong,nonatomic)    OsmNode         *    centralNode;    // the central node
 
 // these are used for screen calculations:
-@property (assign,nonatomic)    CGPoint            	parentViewCenter;
-@property (assign,nonatomic)    OSMTransform       	screenFromMapTransform;
+@property (assign,nonatomic)    CGPoint                parentViewCenter;
+@property (assign,nonatomic)    OSMTransform           screenFromMapTransform;
 
 @end

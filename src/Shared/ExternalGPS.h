@@ -12,12 +12,12 @@
 
 @interface ExternalGPS : NSObject<NSStreamDelegate>
 {
-	EASession * _session;
-	NSMutableData * _readData;
-	NSMutableData * _writeData;
+    EASession * _session;
+    NSMutableData * _readData;
+    NSMutableData * _writeData;
 }
 
-@property (strong,nonatomic)	EAAccessoryManager *	accessoryManager;
+@property (strong,nonatomic)    EAAccessoryManager *    accessoryManager;
 
 
 @end

@@ -12,12 +12,12 @@
 
 - (BOOL)shouldAutorotate
 {
-	return YES;
+    return YES;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-	return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskAll;
 }
 
 @end

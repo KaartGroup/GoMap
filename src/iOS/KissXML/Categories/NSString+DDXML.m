@@ -8,23 +8,23 @@
 
 - (const xmlChar *)xmlChar
 {
-	return (const xmlChar *)[self UTF8String];
+    return (const xmlChar *)[self UTF8String];
 }
 
 #ifdef GNUSTEP
 - (NSString *)stringByTrimming
 {
-	return [self stringByTrimmingSpaces];
+    return [self stringByTrimmingSpaces];
 }
 #else
 - (NSString *)stringByTrimming
 {
-	NSMutableString *mStr = [self mutableCopy];
-	CFStringTrimWhitespace((__bridge CFMutableStringRef)mStr);
-	
-	NSString *result = [mStr copy];
-	
-	return result;
+    NSMutableString *mStr = [self mutableCopy];
+    CFStringTrimWhitespace((__bridge CFMutableStringRef)mStr);
+    
+    NSString *result = [mStr copy];
+    
+    return result;
 }
 #endif
 

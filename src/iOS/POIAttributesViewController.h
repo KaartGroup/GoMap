@@ -13,6 +13,6 @@
 
 @interface POIAttributesViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate>
 {
-	IBOutlet UIBarButtonItem	*	_saveButton;
+    IBOutlet UIBarButtonItem    *    _saveButton;
 }
 @end

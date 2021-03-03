@@ -10,6 +10,6 @@
 
 @interface LanguageTableViewController : UITableViewController <UITableViewDataSource,UITableViewDelegate>
 {
-	PresetLanguages * _languages;
+    PresetLanguages * _languages;
 }
 @end

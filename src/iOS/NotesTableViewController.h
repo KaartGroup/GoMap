@@ -13,9 +13,9 @@
 
 @interface NotesTableViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 {
-	NSString		*	_newComment;
+    NSString        *    _newComment;
 }
-@property (assign,nonatomic)	IBOutlet UITableView	*	tableView;
-@property (strong,nonatomic)	OsmNote	* note;
-@property (strong,nonatomic)	MapView	* mapView;
+@property (assign,nonatomic)    IBOutlet UITableView    *    tableView;
+@property (strong,nonatomic)    OsmNote    * note;
+@property (strong,nonatomic)    MapView    * mapView;
 @end

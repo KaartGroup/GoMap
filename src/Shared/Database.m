@@ -652,9 +652,8 @@ retry:
     sqlite3_stmt * tagStatement = NULL;
     @try {
         NSString * query = [NSString stringWithFormat:@"SELECT key,value,ident FROM %@", tableName];
-        NSLog(@"Here");
         SqlCheck( sqlite3_prepare_v2( _db, query.UTF8String, -1, &tagStatement, nil ));
-        NSLog(@"Here2");
+
         sqlite3_reset(tagStatement);
         SqlCheck( sqlite3_clear_bindings(tagStatement));
         while ( (rc = sqlite3_step(tagStatement)) == SQLITE_ROW) {

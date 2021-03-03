@@ -13,12 +13,12 @@
 
 @interface TapAndDragGesture : UIGestureRecognizer
 {
-	NSInteger		_tapState;
-	CGPoint			_tapPoint;
+    NSInteger        _tapState;
+    CGPoint            _tapPoint;
 
-	CGPoint			_lastTouchLocation;
-	CGPoint			_lastTouchTranslation;
-	NSTimeInterval	_lastTouchTimestamp;
+    CGPoint            _lastTouchLocation;
+    CGPoint            _lastTouchTranslation;
+    NSTimeInterval    _lastTouchTimestamp;
 }
 - (void)reset;
 - (void)touchesBegan:( NSSet * _Nonnull )touches withEvent:( UIEvent * _Nonnull )event;

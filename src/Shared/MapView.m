@@ -302,39 +302,39 @@ const CGFloat kEditControlCornerRadius = 4;
     _editControl.layer.zPosition = Z_TOOLBAR;
     _editControl.layer.cornerRadius = kEditControlCornerRadius;
 
-	// long press for selecting from multiple objects (for multipolygon members)
-	UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-	longPress.delegate = self;
-	[self addGestureRecognizer:longPress];
+    // long press for selecting from multiple objects (for multipolygon members)
+    UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    longPress.delegate = self;
+    [self addGestureRecognizer:longPress];
 
-	// two-finger rotation
-	UIRotationGestureRecognizer * rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGesture:)];
-	rotationGesture.delegate = self;
-	[self addGestureRecognizer:rotationGesture];
+    // two-finger rotation
+    UIRotationGestureRecognizer * rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGesture:)];
+    rotationGesture.delegate = self;
+    [self addGestureRecognizer:rotationGesture];
 
-	// long-press on + for adding nodes via taps
-	_addNodeButtonLongPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addNodeButtonLongPressHandler:)];
-	_addNodeButtonLongPressGestureRecognizer.minimumPressDuration = 0.001;
-	_addNodeButtonLongPressGestureRecognizer.delegate = self;
-	[self.addNodeButton addGestureRecognizer:_addNodeButtonLongPressGestureRecognizer];
+    // long-press on + for adding nodes via taps
+    _addNodeButtonLongPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addNodeButtonLongPressHandler:)];
+    _addNodeButtonLongPressGestureRecognizer.minimumPressDuration = 0.001;
+    _addNodeButtonLongPressGestureRecognizer.delegate = self;
+    [self.addNodeButton addGestureRecognizer:_addNodeButtonLongPressGestureRecognizer];
 
 #if TARGET_OS_MACCATALYST
-	{
-		// pan gesture to recognize mouse-wheel scrolling (zoom) on Mac Catalyst
-		UIPanGestureRecognizer * scrollWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScrollWheelGesture:)];
-		scrollWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
-		scrollWheelGesture.maximumNumberOfTouches = 0;
-		[self addGestureRecognizer:scrollWheelGesture];
-	}
+    {
+        // pan gesture to recognize mouse-wheel scrolling (zoom) on Mac Catalyst
+        UIPanGestureRecognizer * scrollWheelGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleScrollWheelGesture:)];
+        scrollWheelGesture.allowedScrollTypesMask = UIScrollTypeMaskDiscrete;
+        scrollWheelGesture.maximumNumberOfTouches = 0;
+        [self addGestureRecognizer:scrollWheelGesture];
+    }
 #endif
 
-	_notesDatabase			= [OsmNotesDatabase new];
-	_notesDatabase.mapData	= _editorLayer.mapData;
-	_notesViewDict			= [NSMutableDictionary new];
+    _notesDatabase            = [OsmNotesDatabase new];
+    _notesDatabase.mapData    = _editorLayer.mapData;
+    _notesViewDict            = [NSMutableDictionary new];
 
-	// observe changes to aerial visibility so we can show/hide bing logo
-	[_aerialLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
-	[_editorLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
+    // observe changes to aerial visibility so we can show/hide bing logo
+    [_aerialLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
+    [_editorLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
 #if !TARGET_OS_IPHONE
     [self.window setAcceptsMouseMovedEvents:YES];
 #endif
@@ -2097,40 +2097,40 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 - (void)updateEditControl
 {
-	BOOL show = _pushpinView || _editorLayer.selectedPrimary;
-	_editControl.hidden = !show;
-	if ( show ) {
-		if ( _editorLayer.selectedPrimary == nil ) {
-			// brand new node
-			if ( _editorLayer.canPasteTags )
-				self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
-			else
-				self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
-		} else {
-			if ( _editorLayer.selectedPrimary.isRelation )
-				if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
-				else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
-				else
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
-			else
-				self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
-		}
-		[_editControl removeAllSegments];
-		for ( NSNumber * action in _editControlActions ) {
-			NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
-			[_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
-		}
-		// mark segment labels as adjustsFontSizeToFitWidth
-		for ( UIView * segment in _editControl.subviews ) {
-			for ( UILabel * label in segment.subviews ) {
-				if ( [label isKindOfClass:[UILabel class]] ) {
-					label.adjustsFontSizeToFitWidth = YES;
-				}
-			}
-		}
-	}
+    BOOL show = _pushpinView || _editorLayer.selectedPrimary;
+    _editControl.hidden = !show;
+    if ( show ) {
+        if ( _editorLayer.selectedPrimary == nil ) {
+            // brand new node
+            if ( _editorLayer.canPasteTags )
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
+            else
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
+        } else {
+            if ( _editorLayer.selectedPrimary.isRelation )
+                if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
+                else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
+                else
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
+            else
+                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
+        }
+        [_editControl removeAllSegments];
+        for ( NSNumber * action in _editControlActions ) {
+            NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
+            [_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
+        }
+        // mark segment labels as adjustsFontSizeToFitWidth
+        for ( UIView * segment in _editControl.subviews ) {
+            for ( UILabel * label in segment.subviews ) {
+                if ( [label isKindOfClass:[UILabel class]] ) {
+                    label.adjustsFontSizeToFitWidth = YES;
+                }
+            }
+        }
+    }
 }
 
 - (void)presentEditActionSheet:(id)sender
@@ -2202,68 +2202,68 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(IBAction)editControlAction:(id)sender
 {
-	// get the selected button: has to be done before modifying the node/way selection
-	UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
-	NSInteger segment = segmentedControl.selectedSegmentIndex;
+    // get the selected button: has to be done before modifying the node/way selection
+    UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
+    NSInteger segment = segmentedControl.selectedSegmentIndex;
 
-	if ( segment < _editControlActions.count ) {
-		EDIT_ACTION action = (EDIT_ACTION)_editControlActions[ segment ].integerValue;
-		[self performEditAction:action];
-	}
-	segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
+    if ( segment < _editControlActions.count ) {
+        EDIT_ACTION action = (EDIT_ACTION)_editControlActions[ segment ].integerValue;
+        [self performEditAction:action];
+    }
+    segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
 }
 
 -(void)performEditAction:(EDIT_ACTION)action
 {
-	// if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-	switch ( action ) {
-		case ACTION_RECTANGULARIZE:
-		case ACTION_STRAIGHTEN:
-		case ACTION_REVERSE:
-		case ACTION_DUPLICATE:
-		case ACTION_ROTATE:
-		case ACTION_CIRCULARIZE:
-		case ACTION_COPYTAGS:
-		case ACTION_PASTETAGS:
-		case ACTION_EDITTAGS:
-		case ACTION_CREATE_RELATION:
-			if ( self.editorLayer.selectedWay &&
-				self.editorLayer.selectedNode &&
-				self.editorLayer.selectedNode.tags.count == 0 &&
-				self.editorLayer.selectedWay.tags.count == 0 &&
-				!self.editorLayer.selectedWay.isMultipolygonMember )
-			{
-				// promote the selection to the way
-				self.editorLayer.selectedNode = nil;
-				[self refreshPushpinText];
-			}
-			break;
-		case ACTION_SPLIT:
-		case ACTION_JOIN:
-		case ACTION_DISCONNECT:
-		case ACTION_RESTRICT:
-		case ACTION_ADDNOTE:
-		case ACTION_DELETE:
-		case ACTION_MORE:
-			break;
-	}
+    // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
+    switch ( action ) {
+        case ACTION_RECTANGULARIZE:
+        case ACTION_STRAIGHTEN:
+        case ACTION_REVERSE:
+        case ACTION_DUPLICATE:
+        case ACTION_ROTATE:
+        case ACTION_CIRCULARIZE:
+        case ACTION_COPYTAGS:
+        case ACTION_PASTETAGS:
+        case ACTION_EDITTAGS:
+        case ACTION_CREATE_RELATION:
+            if ( self.editorLayer.selectedWay &&
+                self.editorLayer.selectedNode &&
+                self.editorLayer.selectedNode.tags.count == 0 &&
+                self.editorLayer.selectedWay.tags.count == 0 &&
+                !self.editorLayer.selectedWay.isMultipolygonMember )
+            {
+                // promote the selection to the way
+                self.editorLayer.selectedNode = nil;
+                [self refreshPushpinText];
+            }
+            break;
+        case ACTION_SPLIT:
+        case ACTION_JOIN:
+        case ACTION_DISCONNECT:
+        case ACTION_RESTRICT:
+        case ACTION_ADDNOTE:
+        case ACTION_DELETE:
+        case ACTION_MORE:
+            break;
+    }
 
-	NSString * error = nil;
-	switch (action) {
-		case ACTION_COPYTAGS:
-			if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
-				error = NSLocalizedString(@"The object does not contain any tags",nil);
-			break;
-		case ACTION_PASTETAGS:
-			if ( _editorLayer.selectedPrimary == nil ) {
-				// pasting to brand new object, so we need to create it first
-				[self setTagsForCurrentObject:@{}];
-			}
-			if ( _editorLayer.selectedWay && _editorLayer.selectedNode && _editorLayer.selectedWay.tags.count == 0 ) {
-				// if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-				_editorLayer.selectedNode = nil;
-				[self refreshPushpinText];
-			}
+    NSString * error = nil;
+    switch (action) {
+        case ACTION_COPYTAGS:
+            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
+                error = NSLocalizedString(@"The object does not contain any tags",nil);
+            break;
+        case ACTION_PASTETAGS:
+            if ( _editorLayer.selectedPrimary == nil ) {
+                // pasting to brand new object, so we need to create it first
+                [self setTagsForCurrentObject:@{}];
+            }
+            if ( _editorLayer.selectedWay && _editorLayer.selectedNode && _editorLayer.selectedWay.tags.count == 0 ) {
+                // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
+                _editorLayer.selectedNode = nil;
+                [self refreshPushpinText];
+            }
             [self paste:nil];
             break;
         case ACTION_DUPLICATE:
@@ -3088,65 +3088,65 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(void)blinkObject:(OsmBaseObject *)object segment:(NSInteger)segment
 {
-	if ( object == nil ) {
-		[self unblinkObject];
-		return;
-	}
-	if ( object == _blinkObject && segment == _blinkSegment )
-		return;
-	[_blinkLayer removeFromSuperlayer];
-	_blinkObject = object;
-	_blinkSegment = segment;
+    if ( object == nil ) {
+        [self unblinkObject];
+        return;
+    }
+    if ( object == _blinkObject && segment == _blinkSegment )
+        return;
+    [_blinkLayer removeFromSuperlayer];
+    _blinkObject = object;
+    _blinkSegment = segment;
 
-	// create a layer for the object
-	CGMutablePathRef path = CGPathCreateMutable();
-	if ( object.isNode ) {
-		OsmNode * node = (id)object;
-		CGPoint center = [self screenPointForLatitude:node.lat longitude:node.lon birdsEye:YES];
-		CGRect rect = CGRectMake(center.x, center.y, 0, 0);
-		rect = CGRectInset( rect, -10, -10 );
-		CGPathAddEllipseInRect(path, NULL, rect);
-	} else if ( object.isWay ) {
-		OsmWay * way = (id)object;
-		assert( way.nodes.count >= segment+2 );
-		OsmNode * n1 = way.nodes[segment];
-		OsmNode * n2 = way.nodes[segment+1];
-		CGPoint p1 = [self screenPointForLatitude:n1.lat longitude:n1.lon birdsEye:YES];
-		CGPoint p2 = [self screenPointForLatitude:n2.lat longitude:n2.lon birdsEye:YES];
-		CGPathMoveToPoint(path, NULL, p1.x, p1.y);
-		CGPathAddLineToPoint(path, NULL, p2.x, p2.y);
-	} else {
-		assert(NO);
-	}
-	_blinkLayer = [CAShapeLayer layer];
-	_blinkLayer.path 		= path;
-	_blinkLayer.fillColor	= nil;
-	_blinkLayer.lineWidth	= 3.0;
-	_blinkLayer.frame		= CGRectMake( 0, 0, self.bounds.size.width, self.bounds.size.height );
-	_blinkLayer.zPosition	= Z_BLINK;
-	_blinkLayer.strokeColor	= NSColor.blackColor.CGColor;
+    // create a layer for the object
+    CGMutablePathRef path = CGPathCreateMutable();
+    if ( object.isNode ) {
+        OsmNode * node = (id)object;
+        CGPoint center = [self screenPointForLatitude:node.lat longitude:node.lon birdsEye:YES];
+        CGRect rect = CGRectMake(center.x, center.y, 0, 0);
+        rect = CGRectInset( rect, -10, -10 );
+        CGPathAddEllipseInRect(path, NULL, rect);
+    } else if ( object.isWay ) {
+        OsmWay * way = (id)object;
+        assert( way.nodes.count >= segment+2 );
+        OsmNode * n1 = way.nodes[segment];
+        OsmNode * n2 = way.nodes[segment+1];
+        CGPoint p1 = [self screenPointForLatitude:n1.lat longitude:n1.lon birdsEye:YES];
+        CGPoint p2 = [self screenPointForLatitude:n2.lat longitude:n2.lon birdsEye:YES];
+        CGPathMoveToPoint(path, NULL, p1.x, p1.y);
+        CGPathAddLineToPoint(path, NULL, p2.x, p2.y);
+    } else {
+        assert(NO);
+    }
+    _blinkLayer = [CAShapeLayer layer];
+    _blinkLayer.path         = path;
+    _blinkLayer.fillColor    = nil;
+    _blinkLayer.lineWidth    = 3.0;
+    _blinkLayer.frame        = CGRectMake( 0, 0, self.bounds.size.width, self.bounds.size.height );
+    _blinkLayer.zPosition    = Z_BLINK;
+    _blinkLayer.strokeColor    = NSColor.blackColor.CGColor;
 
-	CAShapeLayer * dots = [CAShapeLayer layer];
-	dots.path 				= _blinkLayer.path;
-	dots.fillColor			= nil;
-	dots.lineWidth			= _blinkLayer.lineWidth;
-	dots.bounds				= _blinkLayer.bounds;
-	dots.position			= CGPointZero;
-	dots.anchorPoint		= CGPointZero;
-	dots.strokeColor		= NSColor.whiteColor.CGColor;
-	dots.lineDashPhase 		= 0.0;
-	dots.lineDashPattern 	= @[ @(4), @(4) ];
-	[_blinkLayer addSublayer:dots];
+    CAShapeLayer * dots = [CAShapeLayer layer];
+    dots.path                 = _blinkLayer.path;
+    dots.fillColor            = nil;
+    dots.lineWidth            = _blinkLayer.lineWidth;
+    dots.bounds                = _blinkLayer.bounds;
+    dots.position            = CGPointZero;
+    dots.anchorPoint        = CGPointZero;
+    dots.strokeColor        = NSColor.whiteColor.CGColor;
+    dots.lineDashPhase         = 0.0;
+    dots.lineDashPattern     = @[ @(4), @(4) ];
+    [_blinkLayer addSublayer:dots];
 
-	CABasicAnimation * dashAnimation = [CABasicAnimation animationWithKeyPath:@"lineDashPhase"];
-	dashAnimation.fromValue		= @(0.0);
-	dashAnimation.toValue		= @(-16.0);
-	dashAnimation.duration		= 0.6;
-	dashAnimation.repeatCount	= CGFLOAT_MAX;
-	[dots addAnimation:dashAnimation forKey:@"linePhase"];
-	CGPathRelease(path);
+    CABasicAnimation * dashAnimation = [CABasicAnimation animationWithKeyPath:@"lineDashPhase"];
+    dashAnimation.fromValue        = @(0.0);
+    dashAnimation.toValue        = @(-16.0);
+    dashAnimation.duration        = 0.6;
+    dashAnimation.repeatCount    = CGFLOAT_MAX;
+    [dots addAnimation:dashAnimation forKey:@"linePhase"];
+    CGPathRelease(path);
 
-	[self.layer addSublayer:_blinkLayer];
+    [self.layer addSublayer:_blinkLayer];
 }
 
 
@@ -3634,93 +3634,93 @@ static NSString * const DisplayLinkPanning    = @"Panning";
 
 - (void)singleClick:(CGPoint)point
 {
-	OsmBaseObject * hit = nil;
+    OsmBaseObject * hit = nil;
 
-	// disable rotation if in action
-	if ( _isRotateObjectMode ) {
-		[self endObjectRotation];
-	}
+    // disable rotation if in action
+    if ( _isRotateObjectMode ) {
+        [self endObjectRotation];
+    }
 
-	[self unblinkObject];	// used by Mac Catalyst, harmless otherwise
+    [self unblinkObject];    // used by Mac Catalyst, harmless otherwise
 
-	if ( _editorLayer.selectedWay ) {
-		// check for selecting node inside way
-		hit = [_editorLayer osmHitTestNodeInSelectedWay:point radius:DefaultHitTestRadius];
-	}
-	if ( hit ) {
-		_editorLayer.selectedNode = (id)hit;
+    if ( _editorLayer.selectedWay ) {
+        // check for selecting node inside way
+        hit = [_editorLayer osmHitTestNodeInSelectedWay:point radius:DefaultHitTestRadius];
+    }
+    if ( hit ) {
+        _editorLayer.selectedNode = (id)hit;
 
-	} else {
+    } else {
 
-		// hit test anything
-		hit = [_editorLayer osmHitTest:point radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:NULL];
-		if ( hit ) {
-			if ( hit.isNode ) {
-				_editorLayer.selectedNode = (id)hit;
-				_editorLayer.selectedWay = nil;
-				_editorLayer.selectedRelation = nil;
-			} else if ( hit.isWay ) {
-				if ( _editorLayer.selectedRelation && [hit.isWay.parentRelations containsObject:_editorLayer.selectedRelation] ) {
-					// selecting way inside previously selected relation
-					_editorLayer.selectedNode = nil;
-					_editorLayer.selectedWay = (id)hit;
-				} else if ( hit.parentRelations.count > 0 ) {
-					// select relation the way belongs to
-					NSArray * relations = [hit.parentRelations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmRelation * relation, id bindings) {
-						return relation.isMultipolygon || relation.isBoundary || relation.isWaterway;
-					}]];
-					if ( relations.count == 0 && !hit.hasInterestingTags )
-						relations = hit.parentRelations;	// if the way doesn't have tags then always promote to containing relation
-					OsmRelation * relation = relations.count > 0 ? relations.firstObject : nil;
-					if ( relation ) {
-						hit = relation;	// convert hit to relation
-						_editorLayer.selectedNode = nil;
-						_editorLayer.selectedWay = nil;
-						_editorLayer.selectedRelation = (id)hit;
-					} else {
-						_editorLayer.selectedNode = nil;
-						_editorLayer.selectedWay = (id)hit;
-						_editorLayer.selectedRelation = nil;
-					}
-				} else {
-					_editorLayer.selectedNode = nil;
-					_editorLayer.selectedWay = (id)hit;
-					_editorLayer.selectedRelation = nil;
-				}
-			} else {
-				_editorLayer.selectedNode = nil;
-				_editorLayer.selectedWay = nil;
-				_editorLayer.selectedRelation = (id)hit;
-			}
-		} else {
-			_editorLayer.selectedNode = nil;
-			_editorLayer.selectedWay = nil;
-			_editorLayer.selectedRelation = nil;
-		}
-	}
+        // hit test anything
+        hit = [_editorLayer osmHitTest:point radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:NULL];
+        if ( hit ) {
+            if ( hit.isNode ) {
+                _editorLayer.selectedNode = (id)hit;
+                _editorLayer.selectedWay = nil;
+                _editorLayer.selectedRelation = nil;
+            } else if ( hit.isWay ) {
+                if ( _editorLayer.selectedRelation && [hit.isWay.parentRelations containsObject:_editorLayer.selectedRelation] ) {
+                    // selecting way inside previously selected relation
+                    _editorLayer.selectedNode = nil;
+                    _editorLayer.selectedWay = (id)hit;
+                } else if ( hit.parentRelations.count > 0 ) {
+                    // select relation the way belongs to
+                    NSArray * relations = [hit.parentRelations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmRelation * relation, id bindings) {
+                        return relation.isMultipolygon || relation.isBoundary || relation.isWaterway;
+                    }]];
+                    if ( relations.count == 0 && !hit.hasInterestingTags )
+                        relations = hit.parentRelations;    // if the way doesn't have tags then always promote to containing relation
+                    OsmRelation * relation = relations.count > 0 ? relations.firstObject : nil;
+                    if ( relation ) {
+                        hit = relation;    // convert hit to relation
+                        _editorLayer.selectedNode = nil;
+                        _editorLayer.selectedWay = nil;
+                        _editorLayer.selectedRelation = (id)hit;
+                    } else {
+                        _editorLayer.selectedNode = nil;
+                        _editorLayer.selectedWay = (id)hit;
+                        _editorLayer.selectedRelation = nil;
+                    }
+                } else {
+                    _editorLayer.selectedNode = nil;
+                    _editorLayer.selectedWay = (id)hit;
+                    _editorLayer.selectedRelation = nil;
+                }
+            } else {
+                _editorLayer.selectedNode = nil;
+                _editorLayer.selectedWay = nil;
+                _editorLayer.selectedRelation = (id)hit;
+            }
+        } else {
+            _editorLayer.selectedNode = nil;
+            _editorLayer.selectedWay = nil;
+            _editorLayer.selectedRelation = nil;
+        }
+    }
 
-	[self removePin];
+    [self removePin];
 
-	if ( _editorLayer.selectedPrimary ) {
-		// adjust tap point to touch object
-		CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:point birdsEye:YES];
-		OSMPoint pt = { latLon.longitude, latLon.latitude };
-		pt = [_editorLayer.selectedPrimary pointOnObjectForPoint:pt];
-		point = [self screenPointForLatitude:pt.y longitude:pt.x birdsEye:YES];
+    if ( _editorLayer.selectedPrimary ) {
+        // adjust tap point to touch object
+        CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:point birdsEye:YES];
+        OSMPoint pt = { latLon.longitude, latLon.latitude };
+        pt = [_editorLayer.selectedPrimary pointOnObjectForPoint:pt];
+        point = [self screenPointForLatitude:pt.y longitude:pt.x birdsEye:YES];
 
-		[self placePushpinAtPoint:point object:_editorLayer.selectedPrimary];
+        [self placePushpinAtPoint:point object:_editorLayer.selectedPrimary];
 
-		if ( _editorLayer.selectedPrimary.isWay || _editorLayer.selectedPrimary.isRelation ) {
-			// if they later try to drag this way ask them if they really wanted to
-			_confirmDrag = (_editorLayer.selectedPrimary.modifyCount == 0);
-		}
-	}
+        if ( _editorLayer.selectedPrimary.isWay || _editorLayer.selectedPrimary.isRelation ) {
+            // if they later try to drag this way ask them if they really wanted to
+            _confirmDrag = (_editorLayer.selectedPrimary.modifyCount == 0);
+        }
+    }
 }
 
 -(void)rightClickAtLocation:(CGPoint)location
 {
-	// right-click is equivalent to holding + and clicking
-	[self dropPinAtPoint:location];
+    // right-click is equivalent to holding + and clicking
+    [self dropPinAtPoint:location];
 }
 
 @end

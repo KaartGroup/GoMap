@@ -10,8 +10,8 @@
 
 @interface GpxViewController : UITableViewController <UITableViewDelegate,UITableViewDataSource>
 {
-	NSTimer						*	_timer;
-	IBOutlet UINavigationBar	*	_navigationBar;
+    NSTimer                        *    _timer;
+    IBOutlet UINavigationBar    *    _navigationBar;
 }
 
 -(IBAction)cancel:(id)sender;

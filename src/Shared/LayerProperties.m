@@ -11,10 +11,10 @@
 @implementation LayerProperties
 -(instancetype)init
 {
-	if ( self = [super init] ) {
-		transform = CATransform3DIdentity;
-	}
-	return self;
+    if ( self = [super init] ) {
+        transform = CATransform3DIdentity;
+    }
+    return self;
 }
 @end
 
@@ -22,10 +22,10 @@
 @synthesize properties = _properties;
 -(instancetype)init
 {
-	if ( self = [super init] ) {
-		_properties = [LayerProperties new];
-	}
-	return self;
+    if ( self = [super init] ) {
+        _properties = [LayerProperties new];
+    }
+    return self;
 }
 
 @end
@@ -34,10 +34,10 @@
 @synthesize properties = _properties;
 -(instancetype)init
 {
-	if ( self = [super init] ) {
-		_properties = [LayerProperties new];
-	}
-	return self;
+    if ( self = [super init] ) {
+        _properties = [LayerProperties new];
+    }
+    return self;
 }
 @end
 
@@ -45,10 +45,10 @@
 @synthesize properties = _properties;
 -(instancetype)init
 {
-	if ( self = [super init] ) {
-		_properties = [LayerProperties new];
-	}
-	return self;
+    if ( self = [super init] ) {
+        _properties = [LayerProperties new];
+    }
+    return self;
 }
 @end
 

@@ -10,10 +10,10 @@
 
 @interface MyApplication : UIApplication
 {
-	NSMutableDictionary * 	_touches;
-	UIImage				*	_touchImage;
+    NSMutableDictionary *     _touches;
+    UIImage                *    _touchImage;
 }
 
-@property(assign,nonatomic)	BOOL showTouchCircles;
+@property(assign,nonatomic)    BOOL showTouchCircles;
 
 @end

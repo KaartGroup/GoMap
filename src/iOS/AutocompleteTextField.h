@@ -13,16 +13,17 @@
 
 @interface AutocompleteTextField : UITextField <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 {
-	__weak id<UITextFieldDelegate>		_realDelegate;
-	UITableView						*	_completionTableView;
-	CGFloat								_origCellOffset;
-	NSArray							*	_filteredCompletions;
+    __weak id<UITextFieldDelegate>        _realDelegate;
 
-	CAGradientLayer					*	_gradientLayer;
+    UITableView                        *    _completionTableView;
+    CGFloat                                _origCellOffset;
+    NSArray                            *    _filteredCompletions;
+
+    CAGradientLayer                    *    _gradientLayer;
 }
 
-@property (copy,nonatomic)	NSArray<NSString *> * autocompleteStrings;
-@property (copy,nonatomic)	void (^didSelectAutocomplete)(void);
+@property (copy,nonatomic)    NSArray<NSString *> * autocompleteStrings;
+@property (copy,nonatomic)    void (^didSelectAutocomplete)(void);
 
 -(void)clearFilteredCompletionsInternal;
 -(void)updateAutocompleteForString:(NSString *)text;

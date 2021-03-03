@@ -25,7 +25,7 @@ static const double MaxLongitude = 180;
 /// <returns>The clipped value.</returns>
 static double Clip(double n, double minValue, double maxValue)
 {
-	return MIN(MAX(n, minValue), maxValue);
+    return MIN(MAX(n, minValue), maxValue);
 }
 
 
@@ -39,7 +39,7 @@ static double Clip(double n, double minValue, double maxValue)
 /// <returns>The map width and height in pixels.</returns>
 static NSUInteger MapSize(NSInteger levelOfDetail)
 {
-	return (NSUInteger) 256 << levelOfDetail;
+    return (NSUInteger) 256 << levelOfDetail;
 }
 
 
@@ -55,32 +55,32 @@ static NSUInteger MapSize(NSInteger levelOfDetail)
 /// <returns>The ground resolution, in meters per pixel.</returns>
 static double GroundResolution(double latitude, NSInteger levelOfDetail)
 {
-	latitude = Clip(latitude, MinLatitude, MaxLatitude);
-	return cos(latitude * M_PI / 180) * 2 * M_PI * EarthRadius / MapSize(levelOfDetail);
+    latitude = Clip(latitude, MinLatitude, MaxLatitude);
+    return cos(latitude * M_PI / 180) * 2 * M_PI * EarthRadius / MapSize(levelOfDetail);
 }
 
 inline static double MetersPerDegree( double latitude )
 {
-	return cos(latitude * M_PI / 180) * 2 * M_PI * EarthRadius / 360;
+    return cos(latitude * M_PI / 180) * 2 * M_PI * EarthRadius / 360;
 }
 
 inline static int MinimumLevelOfDetail(double latitude, double metersPerPixel)
 {
-	double res = GroundResolution(latitude, 0);
-	int levelOfDetail = (int)ceil( log2( res / metersPerPixel ) );
-	return levelOfDetail;
+    double res = GroundResolution(latitude, 0);
+    int levelOfDetail = (int)ceil( log2( res / metersPerPixel ) );
+    return levelOfDetail;
 }
 
 
 inline static double MetersPerDegreeLatitude( double latitude )
 {
-	latitude *= M_PI / 180;
-	return 111132.954 - 559.822 * cos( 2 * latitude ) + 1.175 * cos( 4 * latitude );
+    latitude *= M_PI / 180;
+    return 111132.954 - 559.822 * cos( 2 * latitude ) + 1.175 * cos( 4 * latitude );
 }
 inline static double MetersPerDegreeLongitude( double latitude )
 {
-	latitude *= M_PI / 180;
-	return 111132.954 * cos ( latitude );
+    latitude *= M_PI / 180;
+    return 111132.954 * cos ( latitude );
 }
 
 
@@ -97,16 +97,16 @@ inline static double MetersPerDegreeLongitude( double latitude )
 /// <param name="pixelY">Output parameter receiving the Y coordinate in pixels.</param>
 inline static void LatLongToPixelXY(double latitude, double longitude, NSInteger levelOfDetail, NSInteger * pixelX, NSInteger * pixelY)
 {
-	latitude = Clip(latitude, MinLatitude, MaxLatitude);
-	longitude = Clip(longitude, MinLongitude, MaxLongitude);
+    latitude = Clip(latitude, MinLatitude, MaxLatitude);
+    longitude = Clip(longitude, MinLongitude, MaxLongitude);
 
-	double x = (longitude + 180) / 360;
-	double sinLatitude = sin(latitude * M_PI / 180);
-	double y = 0.5 - log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * M_PI);
+    double x = (longitude + 180) / 360;
+    double sinLatitude = sin(latitude * M_PI / 180);
+    double y = 0.5 - log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * M_PI);
 
-	NSUInteger mapSize = MapSize(levelOfDetail);
-	*pixelX = (int) Clip(x * mapSize + 0.5, 0, mapSize - 1);
-	*pixelY = (int) Clip(y * mapSize + 0.5, 0, mapSize - 1);
+    NSUInteger mapSize = MapSize(levelOfDetail);
+    *pixelX = (int) Clip(x * mapSize + 0.5, 0, mapSize - 1);
+    *pixelY = (int) Clip(y * mapSize + 0.5, 0, mapSize - 1);
 }
 
 
@@ -123,12 +123,12 @@ inline static void LatLongToPixelXY(double latitude, double longitude, NSInteger
 /// <param name="longitude">Output parameter receiving the longitude in degrees.</param>
 inline static void PixelXYToLatLong(int pixelX, int pixelY, int levelOfDetail, double * latitude, double * longitude)
 {
-	double mapSize = MapSize(levelOfDetail);
-	double x = (Clip(pixelX, 0, mapSize - 1) / mapSize) - 0.5;
-	double y = 0.5 - (Clip(pixelY, 0, mapSize - 1) / mapSize);
+    double mapSize = MapSize(levelOfDetail);
+    double x = (Clip(pixelX, 0, mapSize - 1) / mapSize) - 0.5;
+    double y = 0.5 - (Clip(pixelY, 0, mapSize - 1) / mapSize);
 
-	*latitude = 90 - 360 * atan(exp(-y * 2 * M_PI)) / M_PI;
-	*longitude = 360 * x;
+    *latitude = 90 - 360 * atan(exp(-y * 2 * M_PI)) / M_PI;
+    *longitude = 360 * x;
 }
 
 
@@ -143,8 +143,8 @@ inline static void PixelXYToLatLong(int pixelX, int pixelY, int levelOfDetail, d
 /// <param name="tileY">Output parameter receiving the tile Y coordinate.</param>
 inline static void PixelXYToTileXY(long pixelX, long pixelY, long * tileX, long * tileY)
 {
-	*tileX = pixelX / 256;
-	*tileY = pixelY / 256;
+    *tileX = pixelX / 256;
+    *tileY = pixelY / 256;
 }
 
 
@@ -159,8 +159,8 @@ inline static void PixelXYToTileXY(long pixelX, long pixelY, long * tileX, long 
 /// <param name="pixelY">Output parameter receiving the pixel Y coordinate.</param>
 inline static void TileXYToPixelXY(int tileX, int tileY, int * pixelX, int * pixelY)
 {
-	*pixelX = tileX * 256;
-	*pixelY = tileY * 256;
+    *pixelX = tileX * 256;
+    *pixelY = tileY * 256;
 }
 
 
@@ -175,45 +175,45 @@ inline static void TileXYToPixelXY(int tileX, int tileY, int * pixelX, int * pix
 /// <returns>A string containing the QuadKey.</returns>
 inline static NSString * TileXYToQuadKey(long tileX, long tileY, long levelOfDetail)
 {
-	NSMutableString * quadKey = [NSMutableString string];
-	for (long i = levelOfDetail; i > 0; i--)
-	{
-		char digit = '0';
-		int mask = 1 << (i - 1);
-		if ((tileX & mask) != 0)
-		{
-			digit++;
-		}
-		if ((tileY & mask) != 0)
-		{
-			digit++;
-			digit++;
-		}
-		[quadKey appendFormat:@"%c",digit];
-	}
-	return quadKey;
+    NSMutableString * quadKey = [NSMutableString string];
+    for (long i = levelOfDetail; i > 0; i--)
+    {
+        char digit = '0';
+        int mask = 1 << (i - 1);
+        if ((tileX & mask) != 0)
+        {
+            digit++;
+        }
+        if ((tileY & mask) != 0)
+        {
+            digit++;
+            digit++;
+        }
+        [quadKey appendFormat:@"%c",digit];
+    }
+    return quadKey;
 }
 
 
 inline static NSString * TileXYToQuadKey2(long tileX, long tileY, int levelOfDetail)
 {
-	NSMutableString * quadKey = [NSMutableString stringWithCapacity:levelOfDetail];
-	for (int i = levelOfDetail; i > 0; i--)
-	{
-		char digit = '0';
-		int mask = 1 << (i - 1);
-		if ((tileX & mask) != 0)
-		{
-			digit++;
-		}
-		if ((tileY & mask) != 0)
-		{
-			digit++;
-			digit++;
-		}
-		[quadKey appendFormat:@"%c",digit];
-	}
-	return quadKey;
+    NSMutableString * quadKey = [NSMutableString stringWithCapacity:levelOfDetail];
+    for (int i = levelOfDetail; i > 0; i--)
+    {
+        char digit = '0';
+        int mask = 1 << (i - 1);
+        if ((tileX & mask) != 0)
+        {
+            digit++;
+        }
+        if ((tileY & mask) != 0)
+        {
+            digit++;
+            digit++;
+        }
+        [quadKey appendFormat:@"%c",digit];
+    }
+    return quadKey;
 }
 
 
@@ -228,32 +228,32 @@ inline static NSString * TileXYToQuadKey2(long tileX, long tileY, int levelOfDet
 /// <param name="levelOfDetail">Output parameter receiving the level of detail.</param>
 inline static void QuadKeyToTileXY(NSString * quadKey, int * tileX, int * tileY, int * levelOfDetail)
 {
-	*tileX = *tileY = 0;
-	*levelOfDetail = (int)quadKey.length;
-	
-	for (int i = *levelOfDetail; i > 0; i--) {
-		int mask = 1 << (i - 1);
-		switch ( [quadKey characterAtIndex:*levelOfDetail - i] )  {
-			case '0':
-				break;
+    *tileX = *tileY = 0;
+    *levelOfDetail = (int)quadKey.length;
+    
+    for (int i = *levelOfDetail; i > 0; i--) {
+        int mask = 1 << (i - 1);
+        switch ( [quadKey characterAtIndex:*levelOfDetail - i] )  {
+            case '0':
+                break;
 
-			case '1':
-				*tileX |= mask;
-				break;
+            case '1':
+                *tileX |= mask;
+                break;
 
-			case '2':
-				*tileY |= mask;
-				break;
+            case '2':
+                *tileY |= mask;
+                break;
 
-			case '3':
-				*tileX |= mask;
-				*tileY |= mask;
-				break;
+            case '3':
+                *tileX |= mask;
+                *tileY |= mask;
+                break;
 
-			default:
-				assert(NO);
-		}
-	}
+            default:
+                assert(NO);
+        }
+    }
 }
 
 

@@ -12,17 +12,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface PersistentWebCache : NSObject
 {
-	NSURL 				*	_cacheDirectory;
-	NSCache				* 	_memoryCache;
-	NSMutableDictionary	*	_pending;		// track objects we're already downloading so we don't issue multiple requests
+    NSURL                 *    _cacheDirectory;
+    NSCache                *     _memoryCache;
+    NSMutableDictionary    *    _pending;        // track objects we're already downloading so we don't issue multiple requests
 }
 
 -(instancetype)initWithName:(NSString *)name memorySize:(NSInteger)memorySize;
 
 -(id _Nullable)objectWithKey:(NSString * _Nonnull)cacheKey
-				 fallbackURL:(NSURL *(^_Nonnull)(void))url
-			   objectForData:(id(^)(NSData *_Nullable))objectForData
-				  completion:(void(^_Nonnull)(id))completion;
+                 fallbackURL:(NSURL *(^_Nonnull)(void))url
+               objectForData:(id(^)(NSData *_Nullable))objectForData
+                  completion:(void(^_Nonnull)(id))completion;
 
 -(void)removeAllObjects;
 -(void)removeObjectsAsyncOlderThan:(NSDate *_Nonnull)expiration;

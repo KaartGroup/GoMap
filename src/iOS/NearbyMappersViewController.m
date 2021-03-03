@@ -19,33 +19,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
-	self.tableView.estimatedRowHeight = 44;
-	self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    self.tableView.estimatedRowHeight = 44;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
 
-	AppDelegate * appDelegate = AppDelegate.shared;
+    AppDelegate * appDelegate = AppDelegate.shared;
 
-	OSMRect rect = [appDelegate.mapView screenLongitudeLatitude];
-	_mappers = [appDelegate.mapView.editorLayer.mapData userStatisticsForRegion:rect];
+    OSMRect rect = [appDelegate.mapView screenLongitudeLatitude];
+    _mappers = [appDelegate.mapView.editorLayer.mapData userStatisticsForRegion:rect];
 
-	_mappers = [_mappers sortedArrayUsingComparator:^NSComparisonResult(OsmUserStatistics * s1, OsmUserStatistics * s2) {
-		return -[s1.lastEdit compare:s2.lastEdit];
-	}];
+    _mappers = [_mappers sortedArrayUsingComparator:^NSComparisonResult(OsmUserStatistics * s1, OsmUserStatistics * s2) {
+        return -[s1.lastEdit compare:s2.lastEdit];
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	[super viewDidAppear:animated];
-	if ( _mappers.count == 0 ) {
-		UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Data",@"Alert title")
-																		message:NSLocalizedString(@"Ensure the editor view is visible and displays objects in the local area",nil)
-																 preferredStyle:UIAlertControllerStyleAlert];
-		[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-			[self.navigationController popViewControllerAnimated:YES];
-		}]];
-		[self presentViewController:alert animated:YES completion:^{
-		}];
-	}
+    [super viewDidAppear:animated];
+    if ( _mappers.count == 0 ) {
+        UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Data",@"Alert title")
+                                                                        message:NSLocalizedString(@"Ensure the editor view is visible and displays objects in the local area",nil)
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }]];
+        [self presentViewController:alert animated:YES completion:^{
+        }];
+    }
 }
 
 #pragma mark - Table view data source
@@ -57,7 +57,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 	_mappers.count;
+    return     _mappers.count;
 }
 
 #pragma mark - Table view delegate
@@ -67,10 +67,10 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
-	OsmUserStatistics * stats = _mappers[ indexPath.row ];
-	cell.textLabel.text = stats.user;
-	NSString * date = [NSDateFormatter localizedStringFromDate:stats.lastEdit dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
-	cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%ld edits, last active %@",@"Brief synopsis of a mapper's activity (count,last active date)"), (long)stats.editCount, date];
+    OsmUserStatistics * stats = _mappers[ indexPath.row ];
+    cell.textLabel.text = stats.user;
+    NSString * date = [NSDateFormatter localizedStringFromDate:stats.lastEdit dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterNoStyle];
+    cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%ld edits, last active %@",@"Brief synopsis of a mapper's activity (count,last active date)"), (long)stats.editCount, date];
 
     return cell;
 }

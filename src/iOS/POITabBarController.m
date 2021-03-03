@@ -48,15 +48,15 @@
 
 - (NSArray *) keyCommands
 {
-	UIKeyCommand *esc = [UIKeyCommand keyCommandWithInput:UIKeyInputEscape modifierFlags:0 action:@selector(escapeKeyPress:)];
-	return @[esc];
+    UIKeyCommand *esc = [UIKeyCommand keyCommandWithInput:UIKeyInputEscape modifierFlags:0 action:@selector(escapeKeyPress:)];
+    return @[esc];
 }
 
 - (void) escapeKeyPress:(UIKeyCommand *)keyCommand
 {
-	UIViewController * vc = self.selectedViewController;
-	[vc.view endEditing:YES];
-	[vc dismissViewControllerAnimated:YES completion:nil];
+    UIViewController * vc = self.selectedViewController;
+    [vc.view endEditing:YES];
+    [vc dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**

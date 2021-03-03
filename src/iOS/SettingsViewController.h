@@ -11,7 +11,7 @@
 
 @interface SettingsViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 {
-	IBOutlet UILabel			*	_username;
-	IBOutlet UILabel			*	_language;
+    IBOutlet UILabel            *    _username;
+    IBOutlet UILabel            *    _language;
 }
 @end

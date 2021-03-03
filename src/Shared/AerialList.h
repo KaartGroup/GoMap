@@ -10,27 +10,27 @@
 #import "VectorMath.h"
 
 
-#define BING_MAPS_KEY	@"ApunJH62__wQs1qE32KVrf6Fmncn7OZj6gWg_wtr27DQLDCkwkxGl4RsItKW4Fkk"
+#define BING_MAPS_KEY    @"ApunJH62__wQs1qE32KVrf6Fmncn7OZj6gWg_wtr27DQLDCkwkxGl4RsItKW4Fkk"
 
 
 @interface AerialService : NSObject
 
-@property (class,readonly)	NSArray<NSString *> *	supportedProjections;
+@property (class,readonly)    NSArray<NSString *> *    supportedProjections;
 
-@property (readonly) NSString	*	name;
-@property (readonly) NSString	*	identifier;
-@property (readonly) NSString	*	url;
-@property (readonly) int32_t		maxZoom;
-@property (readonly) NSString	*	metadataUrl;
-@property (readonly) NSData		*	placeholderImage;
-@property (readonly) CGPathRef 		polygon;
-@property (readonly) BOOL			roundZoomUp;
-@property (readonly) NSString	*	startDate;
-@property (readonly) NSString	*	endDate;
-@property (readonly) NSString	*	wmsProjection;
-@property (readonly) NSString	*	attributionString;
-@property (readonly) UIImage	*	attributionIcon;
-@property (readonly) NSString	*	attributionUrl;
+@property (readonly) NSString    *    name;
+@property (readonly) NSString    *    identifier;
+@property (readonly) NSString    *    url;
+@property (readonly) int32_t        maxZoom;
+@property (readonly) NSString    *    metadataUrl;
+@property (readonly) NSData        *    placeholderImage;
+@property (readonly) CGPathRef         polygon;
+@property (readonly) BOOL            roundZoomUp;
+@property (readonly) NSString    *    startDate;
+@property (readonly) NSString    *    endDate;
+@property (readonly) NSString    *    wmsProjection;
+@property (readonly) NSString    *    attributionString;
+@property (readonly) UIImage    *    attributionIcon;
+@property (readonly) NSString    *    attributionUrl;
 
 
 -(BOOL)isBingAerial;
@@ -55,13 +55,13 @@
 
 @interface AerialList : NSObject
 {
-	NSMutableArray	 				*	_userDefinedList;	// user-defined tile servers
-	NSArray							*	_downloadedList;	// downloaded on each launch
-	NSMutableArray<AerialService *>	*	_recentlyUsed;
+    NSMutableArray                     *    _userDefinedList;    // user-defined tile servers
+    NSArray                            *    _downloadedList;    // downloaded on each launch
+    NSMutableArray<AerialService *>    *    _recentlyUsed;
 }
 
-@property (nonatomic) 	AerialService				*	currentAerial;
-@property (readonly) 	NSDate						*	lastDownloadDate;
+@property (nonatomic)     AerialService                *    currentAerial;
+@property (readonly)     NSDate                        *    lastDownloadDate;
 
 -(void)load;
 -(void)save;
