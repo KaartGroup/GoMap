@@ -26,7 +26,7 @@
 #import "SpeechBalloonLayer.h"
 #import "RenderInfo.h"
 #import "VectorMath.h"
-#import "Go_Map__-Swift.h"
+#import "Go_Kaart__-Swift.h"
 
 #define FADE_INOUT            0
 #define SINGLE_SIDED_WALLS    1
