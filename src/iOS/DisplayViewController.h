@@ -22,6 +22,7 @@
     IBOutlet UISwitch * _turnRestrictionSwitch;
     IBOutlet UISwitch * _objectFiltersSwitch;
     IBOutlet UIButton *    _addButtonPosition;
+    IBOutlet UISwitch * _enhancedHwyEditorSwitch;
 }
 
 -(IBAction)chooseAddButtonPosition:(id)sender;

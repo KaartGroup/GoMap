@@ -480,9 +480,9 @@
 		0EF1807025F01A0300084B6C /* RenderInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RenderInfo.json; path = ../Shared/RenderInfo.json; sourceTree = "<group>"; };
 		0EF1807825F01C5900084B6C /* PresetKeyTagCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PresetKeyTagCase.swift; path = ../../../../../../Desktop/GoMap/src/iOS/GoMapTests/PresetKeyTagCase.swift; sourceTree = "<group>"; };
 		0EF1808525F01C8E00084B6C /* PresetKeyTagCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PresetKeyTagCase.swift; path = ../../../../../../Desktop/GoMap/src/iOS/GoMapTests/PresetKeyTagCase.swift; sourceTree = "<group>"; };
-		0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
-		0EF9944E249D6463004E82C1 /* EnhancedHwyEditorController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorController.h; sourceTree = "<group>"; };
-		0EF99452249D6D9C004E82C1 /* EnhancedHwyEditorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorView.h; sourceTree = "<group>"; };
+		0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
+		0EF9944E249D6463004E82C1 /* EnhancedHwyEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorController.h; sourceTree = "<group>"; };
+		0EF99452249D6D9C004E82C1 /* EnhancedHwyEditorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorView.h; sourceTree = "<group>"; };
 		64305F7023E7224E00232BB9 /* LocationURLParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationURLParser.h; sourceTree = "<group>"; };
 		64305F7123E7224E00232BB9 /* LocationURLParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationURLParser.m; sourceTree = "<group>"; };
 		64305F7323E723B200232BB9 /* GeoURLParserTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoURLParserTestCase.swift; sourceTree = "<group>"; };
@@ -1631,6 +1631,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1660,6 +1661,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

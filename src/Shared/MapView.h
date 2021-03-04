@@ -215,6 +215,8 @@ typedef enum {
 
 @property (assign,nonatomic)    BOOL                            automatedFramerateTestActive;
 
+@property (assign, nonatomic)   BOOL                             enableEnhancedHwyEditor;
+
 @property (readonly,nonatomic)    CAShapeLayer                *    crossHairs;
 
 @property (readonly,nonatomic)    NSString                    *    countryCodeForLocation;
@@ -277,6 +279,7 @@ typedef enum {
 -(IBAction)redo:(id)sender;
 -(void)performEditAction:(EDIT_ACTION)action;
 
+-(IBAction)editControlAction:(id)sender;
 #if TARGET_OS_IPHONE
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)pan;
 - (IBAction)handlePinchGesture:(UIPinchGestureRecognizer *)pinch;

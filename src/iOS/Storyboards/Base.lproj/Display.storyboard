@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18121" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18121" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina3_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -1537,6 +1537,36 @@ Clear the Mapnik or Overlay tile caches  to download the latest tiles that refle
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Kaart Power Modes" id="3TX-KF-IdU" userLabel="Kaart Power Modes">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="j9N-M6-cfl">
+                                        <rect key="frame" x="0.0" y="731.5" width="768" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="j9N-M6-cfl" id="3bH-9K-aZZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Magic Highway Editor" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hVj-hL-jF1" userLabel="Enhanced Highway Editor">
+                                                    <rect key="frame" x="15" y="11.5" width="673" height="21"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yyF-sy-uO0" userLabel="Enhanced Highway Switch">
+                                                    <rect key="frame" x="689" y="6.5" width="51" height="31"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="yyF-sy-uO0" firstAttribute="centerY" secondItem="3bH-9K-aZZ" secondAttribute="centerY" id="1nl-Pm-rxP"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="yyF-sy-uO0" secondAttribute="trailing" constant="10" id="2ge-id-aa5"/>
+                                                <constraint firstItem="yyF-sy-uO0" firstAttribute="centerY" secondItem="hVj-hL-jF1" secondAttribute="centerY" id="gw2-bI-1Lo"/>
+                                                <constraint firstItem="yyF-sy-uO0" firstAttribute="leading" secondItem="hVj-hL-jF1" secondAttribute="trailing" constant="1" id="phO-mI-6sa"/>
+                                                <constraint firstItem="hVj-hL-jF1" firstAttribute="leading" secondItem="3bH-9K-aZZ" secondAttribute="leading" constant="15" id="yyB-TH-qzE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="Interactions" id="RJU-Z2-QFh">
                                 <cells>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="WpQ-Uc-2gz">
@@ -1645,6 +1675,7 @@ Clear the Mapnik or Overlay tile caches  to download the latest tiles that refle
                     <connections>
                         <outlet property="_addButtonPosition" destination="el8-h8-H1F" id="gtU-mk-rXW"/>
                         <outlet property="_birdsEyeSwitch" destination="IuS-7H-TV3" id="qn2-l1-Fvx"/>
+                        <outlet property="_enhancedHwyEditorSwitch" destination="yyF-sy-uO0" id="mQ3-dg-vVA"/>
                         <outlet property="_gpsTraceSwitch" destination="hvT-hi-s8k" id="aav-pU-882"/>
                         <outlet property="_gpxLoggingSwitch" destination="1jq-Mx-hmn" id="Xjp-YQ-1CM"/>
                         <outlet property="_notesSwitch" destination="fC8-R7-fUP" id="1ot-P9-Y8q"/>

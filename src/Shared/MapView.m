@@ -16,6 +16,7 @@
 #import "DisplayLink.h"
 #import "DLog.h"
 #import "EditorMapLayer.h"
+#import "EnhancedHwyEditorController.h"
 #import "FpsLabel.h"
 #import "GpxLayer.h"
 #import "MapView.h"
@@ -373,6 +374,7 @@ const CGFloat kEditControlCornerRadius = 4;
     self.enableUnnamedRoadHalo    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableUnnamedRoadHalo"];
     self.enableGpxLogging        = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBreadCrumb"];
     self.enableTurnRestriction    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableTurnRestriction"];
+    self.enableEnhancedHwyEditor = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableEnhancedHwyEditor"];
 
     _countryCodeForLocation = [[NSUserDefaults standardUserDefaults] objectForKey:@"countryCodeForLocation"];
 
@@ -555,6 +557,7 @@ const CGFloat kEditControlCornerRadius = 4;
     [[NSUserDefaults standardUserDefaults] setBool:self.enableUnnamedRoadHalo    forKey:@"mapViewEnableUnnamedRoadHalo"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableGpxLogging        forKey:@"mapViewEnableBreadCrumb"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableTurnRestriction    forKey:@"mapViewEnableTurnRestriction"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.enableEnhancedHwyEditor forKey:@"mapViewEnableEnhancedHwyEditor"];
     [[NSUserDefaults standardUserDefaults] setBool:self.enableAutomaticCacheManagement    forKey:@"automaticCacheManagement"];
 
     [[NSUserDefaults standardUserDefaults] setObject:_countryCodeForLocation     forKey:@"countryCodeForLocation"];
@@ -1043,6 +1046,12 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
     }
 }
 
+-(void)setEnableEnhancedHwyEditor:(BOOL)enableEnhancedHwyEditor
+{
+    if ( _enableEnhancedHwyEditor != enableEnhancedHwyEditor) {
+        _enableEnhancedHwyEditor = enableEnhancedHwyEditor;
+    }
+}
 
 #pragma mark Coordinate Transforms
 
@@ -2427,6 +2436,27 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
     [self.mainViewController performSegueWithIdentifier:@"poiSegue" sender:nil];
 }
 
+// Enhanced Highway Editor modal
+-(void)presentEnhancedHwyEditor:(CGPoint) point
+{
+    void (^showEnhancedHwyEditor)(void) = ^{
+        EnhancedHwyEditorController * myVc = [_mainViewController.storyboard instantiateViewControllerWithIdentifier:@"EnhancedHwyEditorController"];
+        myVc.parentViewCenter        = CGRectCenter(self.layer.bounds);
+        myVc.screenFromMapTransform = _screenFromMapTransform;
+        myVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        [_mainViewController presentViewController:myVc animated:YES completion:nil];
+        
+        
+        // if GPS is running don't keep moving around
+        self.userOverrodeLocationPosition = YES;
+        
+        /* scroll view so intersection stays visible
+        CGPoint delta = { 415 - point.x, 180 - point.y };
+        [self adjustOriginBy:delta]; */
+        
+    };
+    showEnhancedHwyEditor();
+}
 
 // Turn restriction panel
 -(void)restrictOptionSelected
@@ -3696,6 +3726,9 @@ static NSString * const DisplayLinkPanning    = @"Panning";
             _editorLayer.selectedNode = nil;
             _editorLayer.selectedWay = nil;
             _editorLayer.selectedRelation = nil;
+        }
+        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay.tags[@"highway"] ) {
+            [self presentEnhancedHwyEditor: point];
         }
     }
 
