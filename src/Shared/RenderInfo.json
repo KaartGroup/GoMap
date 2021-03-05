@@ -96,7 +96,7 @@
     "lineWidth" : 1
   },
   "highway/construction" : {
-    "lineColor" : "FFFF00",
+    "lineColor" : "FF5F1F",
     "lineWidth" : 2
   },
   "highway/corridor" : {
@@ -165,11 +165,11 @@
     "lineWidth" : 2
   },
   "highway/secondary" : {
-    "lineColor" : "39FF14",
+    "lineColor" : "FFFF00",
     "lineWidth" : 3
   },
   "highway/secondary_link" : {
-    "lineColor" : "39FF14",
+    "lineColor" : "FFFF00",
     "lineWidth" : 2
   },
   "highway/service" : {
@@ -250,7 +250,7 @@
   },
   "landuse/construction" : {
     "areaColor" : "FFFF00",
-    "lineColor" : "FFFF00",
+    "lineColor" : "FF5F1F",
     "lineWidth" : 1
   },
   "landuse/farm" : {
