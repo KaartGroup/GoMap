@@ -165,11 +165,11 @@
     "lineWidth" : 2
   },
   "highway/secondary" : {
-    "lineColor" : "FFFF00",
+    "lineColor" : "39FF14",
     "lineWidth" : 3
   },
   "highway/secondary_link" : {
-    "lineColor" : "FFFF00",
+    "lineColor" : "39FF14",
     "lineWidth" : 2
   },
   "highway/service" : {
@@ -184,11 +184,11 @@
     "lineWidth" : 1.75
   },
   "highway/tertiary" : {
-    "lineColor" : "FCFC83",
+    "lineColor" : "76a2f5",
     "lineWidth" : 2
   },
   "highway/tertiary_link" : {
-    "lineColor" : "FCFC83",
+    "lineColor" : "76a2f5",
     "lineWidth" : 1.5
   },
   "highway/track" : {
