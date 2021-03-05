@@ -2108,6 +2108,9 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 {
     BOOL show = _pushpinView || _editorLayer.selectedPrimary;
     _editControl.hidden = !show;
+    BOOL split = _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
+    NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
+    BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
     if ( show ) {
         if ( _editorLayer.selectedPrimary == nil ) {
             // brand new node
@@ -2118,13 +2121,29 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
         } else {
             if ( _editorLayer.selectedPrimary.isRelation )
                 if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
                 else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
                 else
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
-            else
-                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
+                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
+                else {
+                    if (_editorLayer.selectedNode && split)
+                        if(restriction)
+                            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_DELETE), @(ACTION_DISCONNECT), @(ACTION_SPLIT), @(ACTION_MORE)];
+                        else
+                            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_DELETE), @(ACTION_DISCONNECT), @(ACTION_SPLIT), @(ACTION_MORE)];
+                        else
+                            if (restriction)
+                                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
+                            else
+                                if (!_editorLayer.selectedWay.isClosed && _editorLayer.selectedWay.isOneWay)
+                                    if ( [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", nil]] ||  [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", @"highway", nil]])
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
+                                    else
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
+                                    else
+                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
+                }
         }
         [_editControl removeAllSegments];
         for ( NSNumber * action in _editControlActions ) {
