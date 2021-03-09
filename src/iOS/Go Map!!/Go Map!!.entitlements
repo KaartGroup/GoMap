@@ -5,6 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:gomaposm.com</string>
+		<string>applinks:openstreetmap.org</string>
 		<string>applinks:www.gomaposm.com</string>
 	</array>
 	<key>com.apple.security.app-sandbox</key>

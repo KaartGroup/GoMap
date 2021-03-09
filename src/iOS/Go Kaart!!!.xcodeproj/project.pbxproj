@@ -101,10 +101,11 @@
 		0E11092424B67741000CC3FC /* Kaart Final Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11092324B67741000CC3FC /* Kaart Final Logo.png */; };
 		0E39C3EB25E8293C0043463D /* EditorMapLayer+Ocean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E39C3EA25E8293C0043463D /* EditorMapLayer+Ocean.swift */; };
 		0E5200DF25EC54C500A722BF /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5200DE25EC54C400A722BF /* RulerView.m */; };
-		0E569CDB25EDEBF90010DDDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0E569CD925EDEBF90010DDDB /* Localizable.strings */; };
 		0E68F27925EEA72E00A9871A /* POI.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E68F27B25EEA72E00A9871A /* POI.storyboard */; };
 		0E73714425F1FC5700D7547C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E73713925F1F86B00D7547C /* Launch Screen.storyboard */; };
 		0E80819F25EDEDFD00CF82A8 /* POI-Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E80819E25EDEDFD00CF82A8 /* POI-Icons.xcassets */; };
+		0E839D0925F712010047C2B1 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E839D0625F712010047C2B1 /* HeightViewController.m */; };
+		0E839D0E25F7127B0047C2B1 /* Height.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E839D1025F7127B0047C2B1 /* Height.storyboard */; };
 		0E88165F25E8224200F069C4 /* PresetsForFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E88165525E8224100F069C4 /* PresetsForFeature.swift */; };
 		0E88166025E8224200F069C4 /* PresetLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E88165625E8224100F069C4 /* PresetLanguages.swift */; };
 		0E88166125E8224200F069C4 /* PresetValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E88165725E8224100F069C4 /* PresetValue.swift */; };
@@ -120,9 +121,6 @@
 		0E9E818E25E83842000D7977 /* TristateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E818D25E83842000D7977 /* TristateButton.swift */; };
 		0E9E819A25E839EA000D7977 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E819825E839EA000D7977 /* MainViewController.m */; };
 		0EC9C3C225EEB05500498D28 /* Changeset.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EC9C3C425EEB05500498D28 /* Changeset.storyboard */; };
-		0EC9C3D125EEB11200498D28 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EC9C3CF25EEB11200498D28 /* HeightViewController.m */; };
-		0EE664BD25EEB435000A333E /* Height.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EE664BB25EEB435000A333E /* Height.storyboard */; };
-		0EE664D225EEB560000A333E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0EE664D025EEB560000A333E /* InfoPlist.strings */; };
 		0EE6654725EECBBA000A333E /* Display.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0291D83524427AFA00F793BE /* Display.storyboard */; };
 		0EE6654E25EECC90000A333E /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E68F27325EEA72200A9871A /* Settings.storyboard */; };
 		0EE6655725EECCEF000A333E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA4B16713CCB00BB4414 /* MainStoryboard.storyboard */; };
@@ -361,6 +359,7 @@
 		02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSMutableArray+PartialSort.mm"; path = "../Shared/NSMutableArray+PartialSort.mm"; sourceTree = "<group>"; };
 		0E0E6CD325E823B50008BD99 /* OsmTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OsmTags.swift; sourceTree = "<group>"; };
 		0E11092324B67741000CC3FC /* Kaart Final Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Kaart Final Logo.png"; path = "../../../Kaart Final Logo.png"; sourceTree = "<group>"; };
+		0E28B4A525F2AA3C005FD78C /* apple-app-site-association */ = {isa = PBXFileReference; lastKnownFileType = text; name = "apple-app-site-association"; path = "../apple-app-site-association"; sourceTree = "<group>"; };
 		0E39C3EA25E8293C0043463D /* EditorMapLayer+Ocean.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EditorMapLayer+Ocean.swift"; path = "../Shared/EditorMapLayer+Ocean.swift"; sourceTree = "<group>"; };
 		0E5200DD25EC54C400A722BF /* RulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RulerView.h; path = ../Shared/RulerView.h; sourceTree = "<group>"; };
 		0E5200DE25EC54C400A722BF /* RulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RulerView.m; path = ../Shared/RulerView.m; sourceTree = "<group>"; };
@@ -370,6 +369,20 @@
 		0E68F27A25EEA72E00A9871A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/POI.storyboard; sourceTree = "<group>"; };
 		0E73713925F1F86B00D7547C /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E80819E25EDEDFD00CF82A8 /* POI-Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "POI-Icons.xcassets"; path = "../POI-Icons.xcassets"; sourceTree = "<group>"; };
+		0E839D0625F712010047C2B1 /* HeightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeightViewController.m; sourceTree = "<group>"; };
+		0E839D0825F712010047C2B1 /* HeightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightViewController.h; sourceTree = "<group>"; };
+		0E839D0F25F7127B0047C2B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Height.storyboard; sourceTree = "<group>"; };
+		0E839D1825F7127D0047C2B1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Height.strings; sourceTree = "<group>"; };
+		0E839D1D25F712800047C2B1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Height.strings"; sourceTree = "<group>"; };
+		0E839D1F25F712820047C2B1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Height.strings"; sourceTree = "<group>"; };
+		0E839D2125F712860047C2B1 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Height.strings; sourceTree = "<group>"; };
+		0E839D2325F712870047C2B1 /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Height.strings"; sourceTree = "<group>"; };
+		0E839D2525F712890047C2B1 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Height.strings; sourceTree = "<group>"; };
+		0E839D2725F7128B0047C2B1 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Height.strings; sourceTree = "<group>"; };
+		0E839D2925F7128D0047C2B1 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Height.strings; sourceTree = "<group>"; };
+		0E839D2B25F7128F0047C2B1 /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/Height.strings"; sourceTree = "<group>"; };
+		0E839D2D25F712900047C2B1 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Height.strings; sourceTree = "<group>"; };
+		0E839D2F25F712920047C2B1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Height.strings; sourceTree = "<group>"; };
 		0E88165525E8224100F069C4 /* PresetsForFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsForFeature.swift; sourceTree = "<group>"; };
 		0E88165625E8224100F069C4 /* PresetLanguages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetLanguages.swift; sourceTree = "<group>"; };
 		0E88165725E8224100F069C4 /* PresetValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetValue.swift; sourceTree = "<group>"; };
@@ -387,15 +400,10 @@
 		0E9E819825E839EA000D7977 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		0E9E819925E839EA000D7977 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		0EC9C3C325EEB05500498D28 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Changeset.storyboard; sourceTree = "<group>"; };
-		0EC9C3CD25EEB11200498D28 /* HeightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HeightViewController.h; path = Height/HeightViewController.h; sourceTree = SOURCE_ROOT; };
-		0EC9C3CF25EEB11200498D28 /* HeightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HeightViewController.m; path = Height/HeightViewController.m; sourceTree = SOURCE_ROOT; };
-		0EE664BC25EEB435000A333E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../../../../../Desktop/GoMap/src/iOS/Height/Base.lproj/Height.storyboard; sourceTree = "<group>"; };
-		0EE664C225EEB4AA000A333E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../../../../../../Desktop/GoMap/src/iOS/Height/en.lproj/Height.strings; sourceTree = "<group>"; };
 		0EE664CA25EEB52E000A333E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		0EE664CC25EEB539000A333E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/POI.strings; sourceTree = "<group>"; };
 		0EE664D125EEB560000A333E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../../../../../Desktop/GoMap/src/iOS/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0EE664D725EEB576000A333E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Changeset.strings; sourceTree = "<group>"; };
-		0EE664D825EEB584000A333E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "../../../../../../Desktop/GoMap/src/iOS/Height/zh-Hans.lproj/Height.strings"; sourceTree = "<group>"; };
 		0EE664D925EEB587000A333E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Settings.strings"; sourceTree = "<group>"; };
 		0EE664DA25EEB589000A333E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/POI.strings"; sourceTree = "<group>"; };
 		0EE664DB25EEB58A000A333E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Changeset.strings"; sourceTree = "<group>"; };
@@ -403,19 +411,16 @@
 		0EE664DD25EEB5AB000A333E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
 		0EE664DE25EEB62C000A333E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "../../../../../Desktop/GoMap/src/iOS/zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		0EE664DF25EEB631000A333E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "../../../../../Desktop/GoMap/src/iOS/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		0EE664E025EEB645000A333E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "../../../../../../Desktop/GoMap/src/iOS/Height/zh-Hant.lproj/Height.strings"; sourceTree = "<group>"; };
 		0EE664E125EEB64C000A333E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Display.strings"; sourceTree = "<group>"; };
 		0EE664E225EEB64E000A333E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
 		0EE664E325EEB650000A333E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Settings.strings"; sourceTree = "<group>"; };
 		0EE664E425EEB652000A333E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/POI.strings"; sourceTree = "<group>"; };
 		0EE664E525EEB654000A333E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Changeset.strings"; sourceTree = "<group>"; };
-		0EE664E625EEC906000A333E /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = ../../../../../../Desktop/GoMap/src/iOS/Height/hr.lproj/Height.strings; sourceTree = "<group>"; };
 		0EE664E725EEC90B000A333E /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Display.strings; sourceTree = "<group>"; };
 		0EE664E825EEC90C000A333E /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		0EE664E925EEC90D000A333E /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Settings.strings; sourceTree = "<group>"; };
 		0EE664EA25EEC90E000A333E /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/POI.strings; sourceTree = "<group>"; };
 		0EE664EB25EEC90E000A333E /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Changeset.strings; sourceTree = "<group>"; };
-		0EE664EC25EEC958000A333E /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "../../../../../../Desktop/GoMap/src/iOS/Height/fi-FI.lproj/Height.strings"; sourceTree = "<group>"; };
 		0EE664ED25EEC959000A333E /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Display.strings"; sourceTree = "<group>"; };
 		0EE664EE25EEC95A000A333E /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
 		0EE664EF25EEC95A000A333E /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Settings.strings"; sourceTree = "<group>"; };
@@ -423,37 +428,31 @@
 		0EE664F125EEC95C000A333E /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "fi-FI.lproj/Changeset.strings"; sourceTree = "<group>"; };
 		0EE664F225EEC95C000A333E /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "../../../../../Desktop/GoMap/src/iOS/fi-FI.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		0EE664F325EEC95C000A333E /* fi-FI */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fi-FI"; path = "../../../../../Desktop/GoMap/src/iOS/fi-FI.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		0EE664F425EEC96B000A333E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = ../../../../../../Desktop/GoMap/src/iOS/Height/fr.lproj/Height.strings; sourceTree = "<group>"; };
 		0EE664F525EEC971000A333E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Display.strings; sourceTree = "<group>"; };
 		0EE664F625EEC971000A333E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		0EE664F725EEC972000A333E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Settings.strings; sourceTree = "<group>"; };
 		0EE664F825EEC973000A333E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/POI.strings; sourceTree = "<group>"; };
 		0EE664F925EEC973000A333E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Changeset.strings; sourceTree = "<group>"; };
-		0EE664FA25EEC982000A333E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = ../../../../../../Desktop/GoMap/src/iOS/Height/de.lproj/Height.strings; sourceTree = "<group>"; };
 		0EE664FB25EEC988000A333E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Display.strings; sourceTree = "<group>"; };
 		0EE664FC25EEC988000A333E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		0EE664FD25EEC989000A333E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Settings.strings; sourceTree = "<group>"; };
 		0EE664FE25EEC98A000A333E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/POI.strings; sourceTree = "<group>"; };
 		0EE664FF25EEC98B000A333E /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Changeset.strings; sourceTree = "<group>"; };
-		0EE6650025EEC995000A333E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ../../../../../../Desktop/GoMap/src/iOS/Height/ja.lproj/Height.strings; sourceTree = "<group>"; };
 		0EE6650125EEC99C000A333E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Display.strings; sourceTree = "<group>"; };
 		0EE6650225EEC99D000A333E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		0EE6650325EEC99E000A333E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Settings.strings; sourceTree = "<group>"; };
 		0EE6650425EEC99E000A333E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/POI.strings; sourceTree = "<group>"; };
 		0EE6650525EEC99F000A333E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Changeset.strings; sourceTree = "<group>"; };
-		0EE6650E25EEC9DF000A333E /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "../../../../../../Desktop/GoMap/src/iOS/Height/nb-NO.lproj/Height.strings"; sourceTree = "<group>"; };
 		0EE6650F25EEC9E4000A333E /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/Display.strings"; sourceTree = "<group>"; };
 		0EE6651025EEC9E5000A333E /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
 		0EE6651125EEC9E7000A333E /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/Settings.strings"; sourceTree = "<group>"; };
 		0EE6651225EEC9E8000A333E /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/POI.strings"; sourceTree = "<group>"; };
 		0EE6651325EEC9E9000A333E /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/Changeset.strings"; sourceTree = "<group>"; };
-		0EE6651425EEC9FC000A333E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = ../../../../../../Desktop/GoMap/src/iOS/Height/pl.lproj/Height.strings; sourceTree = "<group>"; };
 		0EE6651525EECA03000A333E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Display.strings; sourceTree = "<group>"; };
 		0EE6651625EECA04000A333E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		0EE6651725EECA05000A333E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Settings.strings; sourceTree = "<group>"; };
 		0EE6651825EECA07000A333E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/POI.strings; sourceTree = "<group>"; };
 		0EE6651925EECA08000A333E /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Changeset.strings; sourceTree = "<group>"; };
-		0EE6651A25EECA0A000A333E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ../../../../../../Desktop/GoMap/src/iOS/Height/ru.lproj/Height.strings; sourceTree = "<group>"; };
 		0EE6651B25EECA11000A333E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Display.strings; sourceTree = "<group>"; };
 		0EE6651C25EECA12000A333E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		0EE6651D25EECA14000A333E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Settings.strings; sourceTree = "<group>"; };
@@ -634,6 +633,7 @@
 			isa = PBXGroup;
 			children = (
 				02BACD22205A1DDB00C74A49 /* Go Map!!.entitlements */,
+				0E28B4A525F2AA3C005FD78C /* apple-app-site-association */,
 				02ACBA3916713CCB00BB4414 /* Go Map! */,
 				64348CEB225E7CD900ADE7FB /* GoMapTests */,
 				64348D09225EA24E00ADE7FB /* GoMapUITests */,
@@ -890,9 +890,9 @@
 		0EC9C3CC25EEB0F200498D28 /* Height */ = {
 			isa = PBXGroup;
 			children = (
-				0EE664BB25EEB435000A333E /* Height.storyboard */,
-				0EC9C3CD25EEB11200498D28 /* HeightViewController.h */,
-				0EC9C3CF25EEB11200498D28 /* HeightViewController.m */,
+				0E839D1025F7127B0047C2B1 /* Height.storyboard */,
+				0E839D0825F712010047C2B1 /* HeightViewController.h */,
+				0E839D0625F712010047C2B1 /* HeightViewController.m */,
 			);
 			path = Height;
 			sourceTree = "<group>";
@@ -1089,6 +1089,7 @@
 				TargetAttributes = {
 					02ACBA2E16713CCB00BB4414 = {
 						DevelopmentTeam = 2STHX823T6;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
 								enabled = 1;
@@ -1146,7 +1147,7 @@
 			files = (
 				0E73714425F1FC5700D7547C /* Launch Screen.storyboard in Resources */,
 				0E80819F25EDEDFD00CF82A8 /* POI-Icons.xcassets in Resources */,
-				0EE664D225EEB560000A333E /* InfoPlist.strings in Resources */,
+				0E839D0E25F7127B0047C2B1 /* Height.storyboard in Resources */,
 				028F504719BA2F460093C423 /* presets in Resources */,
 				02AFBF20245774DC00BE43F4 /* OSM-Logo256.png in Resources */,
 				02AFBF242458C1E800BE43F4 /* BingPlaceholderImage.png in Resources */,
@@ -1158,10 +1159,8 @@
 				64D74BF42253DF49004FFD20 /* DirectionViewController.xib in Resources */,
 				0EC9C3C225EEB05500498D28 /* Changeset.storyboard in Resources */,
 				0E68F27925EEA72E00A9871A /* POI.storyboard in Resources */,
-				0E569CDB25EDEBF90010DDDB /* Localizable.strings in Resources */,
 				0EF1807125F01A0300084B6C /* RenderInfo.json in Resources */,
 				0E11092424B67741000CC3FC /* Kaart Final Logo.png in Resources */,
-				0EE664BD25EEB435000A333E /* Height.storyboard in Resources */,
 				0E9970A225E844D0009E94B5 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1187,6 +1186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E839D0925F712010047C2B1 /* HeightViewController.m in Sources */,
 				02ACBA4016713CCB00BB4414 /* main.m in Sources */,
 				02ACBA4416713CCB00BB4414 /* AppDelegate.m in Sources */,
 				647F46CE2253EA4C00CEC482 /* MeasureDirectionViewModel.swift in Sources */,
@@ -1253,7 +1253,6 @@
 				02354F7A246349E100878A04 /* CurvedGlyphLayer.swift in Sources */,
 				020C2A90168A7688003F2C2A /* CreditsViewController.m in Sources */,
 				6442666822540EDF00C0D545 /* Disposable.swift in Sources */,
-				0EC9C3D125EEB11200498D28 /* HeightViewController.m in Sources */,
 				02B69D101BF5A66B002605A3 /* LanguageTableViewController.m in Sources */,
 				6453777023D3913100656A1C /* OsmRelation.m in Sources */,
 				02BED98E168BF87200357B94 /* NearbyMappersViewController.m in Sources */,
@@ -1436,6 +1435,25 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
+		0E839D1025F7127B0047C2B1 /* Height.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0E839D0F25F7127B0047C2B1 /* Base */,
+				0E839D1825F7127D0047C2B1 /* en */,
+				0E839D1D25F712800047C2B1 /* zh-Hans */,
+				0E839D1F25F712820047C2B1 /* zh-Hant */,
+				0E839D2125F712860047C2B1 /* hr */,
+				0E839D2325F712870047C2B1 /* fi-FI */,
+				0E839D2525F712890047C2B1 /* fr */,
+				0E839D2725F7128B0047C2B1 /* de */,
+				0E839D2925F7128D0047C2B1 /* ja */,
+				0E839D2B25F7128F0047C2B1 /* nb-NO */,
+				0E839D2D25F712900047C2B1 /* pl */,
+				0E839D2F25F712920047C2B1 /* ru */,
+			);
+			name = Height.storyboard;
+			sourceTree = "<group>";
+		};
 		0EC9C3C425EEB05500498D28 /* Changeset.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1453,25 +1471,6 @@
 				0EE6651F25EECA17000A333E /* ru */,
 			);
 			name = Changeset.storyboard;
-			sourceTree = "<group>";
-		};
-		0EE664BB25EEB435000A333E /* Height.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0EE664BC25EEB435000A333E /* Base */,
-				0EE664C225EEB4AA000A333E /* en */,
-				0EE664D825EEB584000A333E /* zh-Hans */,
-				0EE664E025EEB645000A333E /* zh-Hant */,
-				0EE664E625EEC906000A333E /* hr */,
-				0EE664EC25EEC958000A333E /* fi-FI */,
-				0EE664F425EEC96B000A333E /* fr */,
-				0EE664FA25EEC982000A333E /* de */,
-				0EE6650025EEC995000A333E /* ja */,
-				0EE6650E25EEC9DF000A333E /* nb-NO */,
-				0EE6651425EEC9FC000A333E /* pl */,
-				0EE6651A25EECA0A000A333E /* ru */,
-			);
-			name = Height.storyboard;
 			sourceTree = "<group>";
 		};
 		0EE664D025EEB560000A333E /* InfoPlist.strings */ = {
@@ -1613,9 +1612,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.6.4.10;
 				DEVELOPMENT_TEAM = 2STHX823T6;
 				DISPLAY_NAME = "Go Map!! Debug";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1623,11 +1623,12 @@
 				INFOPLIST_FILE = "Go Map!!-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 1.6.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
 				PRODUCT_NAME = "Go Kaart!!";
 				PROVISIONING_PROFILE = "";
-				SUPPORTS_MACCATALYST = YES;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1644,9 +1645,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_ENTITLEMENTS = "Go Map!!/Go Map!!.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 2.0.1;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.6.4.10;
 				DEVELOPMENT_TEAM = 2STHX823T6;
 				DISPLAY_NAME = "Go Map!!";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1654,11 +1656,12 @@
 				INFOPLIST_FILE = "Go Map!!-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 1.6.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
 				PRODUCT_NAME = "Go Kaart!!";
 				PROVISIONING_PROFILE = "";
-				SUPPORTS_MACCATALYST = YES;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Go Map!!-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
