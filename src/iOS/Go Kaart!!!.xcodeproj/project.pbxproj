@@ -102,10 +102,10 @@
 		0E39C3EB25E8293C0043463D /* EditorMapLayer+Ocean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E39C3EA25E8293C0043463D /* EditorMapLayer+Ocean.swift */; };
 		0E5200DF25EC54C500A722BF /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5200DE25EC54C400A722BF /* RulerView.m */; };
 		0E68F27925EEA72E00A9871A /* POI.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E68F27B25EEA72E00A9871A /* POI.storyboard */; };
-		0E73714425F1FC5700D7547C /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E73713925F1F86B00D7547C /* Launch Screen.storyboard */; };
 		0E80819F25EDEDFD00CF82A8 /* POI-Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E80819E25EDEDFD00CF82A8 /* POI-Icons.xcassets */; };
 		0E839D0925F712010047C2B1 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E839D0625F712010047C2B1 /* HeightViewController.m */; };
 		0E839D0E25F7127B0047C2B1 /* Height.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E839D1025F7127B0047C2B1 /* Height.storyboard */; };
+		0E839D3A25F7DA200047C2B1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E839D3925F7DA200047C2B1 /* Launch Screen.storyboard */; };
 		0E88165F25E8224200F069C4 /* PresetsForFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E88165525E8224100F069C4 /* PresetsForFeature.swift */; };
 		0E88166025E8224200F069C4 /* PresetLanguages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E88165625E8224100F069C4 /* PresetLanguages.swift */; };
 		0E88166125E8224200F069C4 /* PresetValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E88165725E8224100F069C4 /* PresetValue.swift */; };
@@ -367,7 +367,6 @@
 		0E569CE425EDEC660010DDDB /* POI-Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "POI-Icons"; path = "../POI-Icons"; sourceTree = "<group>"; };
 		0E68F27225EEA72200A9871A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		0E68F27A25EEA72E00A9871A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/POI.storyboard; sourceTree = "<group>"; };
-		0E73713925F1F86B00D7547C /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E80819E25EDEDFD00CF82A8 /* POI-Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "POI-Icons.xcassets"; path = "../POI-Icons.xcassets"; sourceTree = "<group>"; };
 		0E839D0625F712010047C2B1 /* HeightViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeightViewController.m; sourceTree = "<group>"; };
 		0E839D0825F712010047C2B1 /* HeightViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeightViewController.h; sourceTree = "<group>"; };
@@ -383,6 +382,7 @@
 		0E839D2B25F7128F0047C2B1 /* nb-NO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "nb-NO"; path = "nb-NO.lproj/Height.strings"; sourceTree = "<group>"; };
 		0E839D2D25F712900047C2B1 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Height.strings; sourceTree = "<group>"; };
 		0E839D2F25F712920047C2B1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Height.strings; sourceTree = "<group>"; };
+		0E839D3925F7DA200047C2B1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0E88165525E8224100F069C4 /* PresetsForFeature.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsForFeature.swift; sourceTree = "<group>"; };
 		0E88165625E8224100F069C4 /* PresetLanguages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetLanguages.swift; sourceTree = "<group>"; };
 		0E88165725E8224100F069C4 /* PresetValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetValue.swift; sourceTree = "<group>"; };
@@ -621,8 +621,8 @@
 			isa = PBXGroup;
 			children = (
 				0291D83524427AFA00F793BE /* Display.storyboard */,
-				0E73713925F1F86B00D7547C /* Launch Screen.storyboard */,
 				02ACBA4B16713CCB00BB4414 /* MainStoryboard.storyboard */,
+				0E839D3925F7DA200047C2B1 /* Launch Screen.storyboard */,
 				0E68F27325EEA72200A9871A /* Settings.storyboard */,
 				0E68F27B25EEA72E00A9871A /* POI.storyboard */,
 			);
@@ -1145,9 +1145,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E73714425F1FC5700D7547C /* Launch Screen.storyboard in Resources */,
 				0E80819F25EDEDFD00CF82A8 /* POI-Icons.xcassets in Resources */,
 				0E839D0E25F7127B0047C2B1 /* Height.storyboard in Resources */,
+				0E839D3A25F7DA200047C2B1 /* Launch Screen.storyboard in Resources */,
 				028F504719BA2F460093C423 /* presets in Resources */,
 				02AFBF20245774DC00BE43F4 /* OSM-Logo256.png in Resources */,
 				02AFBF242458C1E800BE43F4 /* BingPlaceholderImage.png in Resources */,
