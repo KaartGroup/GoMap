@@ -167,8 +167,8 @@
 /* Class = "UILabel"; text = "Value 5"; ObjectID = "li7-oV-pgT"; */
 "li7-oV-pgT.text" = "Value 5";
 
-/* Class = "UINavigationItem"; title = "Common toags"; ObjectID = "mAb-DX-pqb"; */
-"mAb-DX-pqb.title" = "Common toags";
+/* Class = "UINavigationItem"; title = "Common Tags"; ObjectID = "mAb-DX-pqb"; */
+"mAb-DX-pqb.title" = "Common Tags";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "mcN-gM-s7u"; */
 "mcN-gM-s7u.text" = "Name";
