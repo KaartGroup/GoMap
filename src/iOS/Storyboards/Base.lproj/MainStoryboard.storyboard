@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Fx1-V2-8uJ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Fx1-V2-8uJ">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -1045,6 +1045,52 @@
                                                     <outlet property="text1" destination="Bki-iJ-wl9" id="ygZ-PN-aRd"/>
                                                     <outlet property="text2" destination="qes-iZ-IeF" id="PUj-IF-VgD"/>
                                                 </connections>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LaneTagCell" id="G8J-9H-TdT">
+                                                <rect key="frame" x="0.0" y="75" width="752" height="46.5"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="G8J-9H-TdT" id="itu-e1-dyn">
+                                                    <rect key="frame" x="0.0" y="0.0" width="752" height="46.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Lanes:" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jKq-uk-tk2">
+                                                            <rect key="frame" x="22" y="5" width="57" height="36.5"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="57" id="JN2-B9-fy3"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textField>
+                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="O7A-qJ-bLQ">
+                                                            <rect key="frame" x="204" y="7.5" width="27" height="32"/>
+                                                            <color key="backgroundColor" systemColor="tableCellGroupedBackgroundColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="27" id="9se-9B-UVh"/>
+                                                                <constraint firstAttribute="height" constant="32" id="r7l-Vk-jpM"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textField>
+                                                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="EKC-hn-aWB">
+                                                            <rect key="frame" x="643" y="7" width="94" height="32.5"/>
+                                                            <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                                                            <connections>
+                                                                <action selector="LaneStepper:" destination="gMR-Qx-CMq" eventType="valueChanged" id="y4Q-7G-McG"/>
+                                                                <action selector="laneStepperPressed:" destination="cYf-2s-el4" eventType="valueChanged" id="wnJ-JO-pKe"/>
+                                                            </connections>
+                                                        </stepper>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="jKq-uk-tk2" firstAttribute="leading" secondItem="itu-e1-dyn" secondAttribute="leadingMargin" constant="6" id="2rs-PU-k2G"/>
+                                                        <constraint firstItem="EKC-hn-aWB" firstAttribute="centerY" secondItem="O7A-qJ-bLQ" secondAttribute="centerY" id="9pA-4O-Hpt"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="EKC-hn-aWB" secondAttribute="trailing" constant="-1" id="G5E-Jo-3J0"/>
+                                                        <constraint firstItem="jKq-uk-tk2" firstAttribute="top" secondItem="itu-e1-dyn" secondAttribute="topMargin" constant="-6" id="GQ4-dA-nes"/>
+                                                        <constraint firstItem="O7A-qJ-bLQ" firstAttribute="centerY" secondItem="jKq-uk-tk2" secondAttribute="centerY" id="NGJ-BZ-k1D"/>
+                                                        <constraint firstItem="EKC-hn-aWB" firstAttribute="top" secondItem="itu-e1-dyn" secondAttribute="topMargin" constant="-4" id="S5u-5L-1iD"/>
+                                                        <constraint firstItem="O7A-qJ-bLQ" firstAttribute="leading" secondItem="itu-e1-dyn" secondAttribute="leading" constant="204" id="aOo-tz-A3o"/>
+                                                        <constraint firstItem="jKq-uk-tk2" firstAttribute="centerY" secondItem="itu-e1-dyn" secondAttribute="centerY" id="hlX-hE-Mte"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
                                             </tableViewCell>
                                         </prototypes>
                                         <sections/>

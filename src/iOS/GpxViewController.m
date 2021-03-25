@@ -22,12 +22,12 @@
 
 
 @interface GpxTrackTableCell : UITableViewCell <UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
-@property (assign,nonatomic)    IBOutlet    UILabel                *    startDate;
-@property (assign,nonatomic)    IBOutlet    UILabel                *    duration;
-@property (assign,nonatomic)    IBOutlet    UILabel                *    details;
-@property (assign,nonatomic)    IBOutlet    UIButton            *    uploadButton;
-@property (strong,nonatomic)                GpxTrack            *    gpxTrack;
-@property (assign,nonatomic)                GpxViewController    *    tableView;
+@property (assign, nonatomic)    IBOutlet    UILabel                *    startDate;
+@property (assign, nonatomic)    IBOutlet    UILabel                *    duration;
+@property (assign, nonatomic)    IBOutlet    UILabel                *    details;
+@property (weak, nonatomic)    IBOutlet    UIButton            *    uploadButton;
+@property (strong, nonatomic)                GpxTrack            *    gpxTrack;
+@property (assign, nonatomic)                GpxViewController    *    tableView;
 @end
 @implementation GpxTrackTableCell
 -(IBAction)doAction:(id)sender
@@ -54,15 +54,21 @@
             [self.tableView presentViewController:controller animated:YES completion:nil];
         }
     }]];
-
-    [self.tableView presentViewController:alert animated:YES completion:nil];
     // set location of popup
-    UIButton * button = sender;
-    alert.popoverPresentationController.sourceView = button;
-    alert.popoverPresentationController.sourceRect = button.bounds;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        [self.tableView presentViewController:alert animated:YES completion:nil];
+    }
+    //if iPad
+    else {
+        // Change Rect to position Popover
+        [self.tableView presentViewController:alert animated:YES completion:nil];
+        alert.modalPresentationStyle = UIModalPresentationPopover;
+        alert.popoverPresentationController.sourceView = self.uploadButton;
+        alert.popoverPresentationController.sourceRect = self.uploadButton.bounds;
+//        [self.tableView presentViewController:alert animated:YES completion:nil];
+    }
 }
 @end
-
 @interface GpxTrackBackgroundCollection : UITableViewCell
 @property (assign,nonatomic)    IBOutlet    UISwitch    *    enableBackground;
 @end
@@ -88,13 +94,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.tableView.estimatedRowHeight = 44;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-
+    
     _navigationBar.topItem.rightBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
+    
     AppDelegate * appDelegate = AppDelegate.shared;
     [appDelegate.mapView.gpxLayer loadTracksInBackgroundWithProgress:^{
         [self.tableView reloadData];
@@ -105,7 +111,7 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
     AppDelegate * appDelegate = AppDelegate.shared;
     if ( appDelegate.mapView.gpxLayer.activeTrack ) {
         [self startTimerForStartDate:appDelegate.mapView.gpxLayer.activeTrack.creationDate];
@@ -127,7 +133,7 @@
     delta = 1 - fmod(delta,1.0);
     date = [now dateByAddingTimeInterval:delta];
     _timer = [[NSTimer alloc] initWithFireDate:date interval:1.0 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-
+    
     NSRunLoop *runloop = [NSRunLoop currentRunLoop];
     [runloop addTimer:_timer forMode:NSDefaultRunLoopMode];
 }
@@ -201,7 +207,7 @@
 {
     MapView * mapView = AppDelegate.shared.mapView;
     GpxLayer * gpxLayer = mapView.gpxLayer;
-
+    
     if ( indexPath.section == SECTION_ACTIVE_TRACK && gpxLayer.activeTrack == nil ) {
         // no active track
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -226,7 +232,7 @@
             return cell;
         }
     }
-
+    
     // active track or previous tracks
     GpxTrack *    track = indexPath.section == SECTION_ACTIVE_TRACK ? gpxLayer.activeTrack : gpxLayer.previousTracks[ indexPath.row ];
     NSInteger    dur = (NSInteger)round(track.duration);
@@ -264,7 +270,7 @@
         GpxLayer * gpxLayer = AppDelegate.shared.mapView.gpxLayer;
         GpxTrack * track = gpxLayer.previousTracks[ indexPath.row ];
         [gpxLayer deleteTrack:track];
-
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -309,76 +315,76 @@
 -(void)shareTrack:(GpxTrack *)track
 {
     UIAlertController * progress = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploading GPX...",nil)
-                                                                    message:NSLocalizedString(@"Please wait",nil)
-                                                             preferredStyle:UIAlertControllerStyleAlert];
+                                                                       message:NSLocalizedString(@"Please wait",nil)
+                                                                preferredStyle:UIAlertControllerStyleAlert];
     [self presentViewController:progress animated:YES completion:nil];
-
+    
     // let progress window display before we submit work
     dispatch_async(dispatch_get_main_queue(), ^{
         AppDelegate * appDelegate = AppDelegate.shared;
-
+        
         NSString * url = [OSM_API_URL stringByAppendingFormat:@"api/0.6/gpx/create"];
-
+        
         NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
         NSString * boundary = @"----------------------------d10f7aa230e8";
         [request setHTTPMethod:@"POST"];
         NSString * contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
         [request setValue:contentType    forHTTPHeaderField:@"Content-Type"];
         [request setValue:@"close"        forHTTPHeaderField:@"Connection"];
-
+        
         NSDateFormatter * dateFormatter = [NSDateFormatter new];
         [dateFormatter setDateFormat:@"yyyy_MM_dd__HH_mm_ss"];
         NSString * startDateFile = [dateFormatter stringFromDate:track.creationDate];
         NSString * startDateFriendly = [NSDateFormatter localizedStringFromDate:track.creationDate dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
-
+        
         NSMutableData * body = [NSMutableData new];
         [body appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary]   dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithString:[NSString stringWithFormat: @"Content-Disposition: form-data; name=\"file\"; filename=\"GoMap__%@.gpx\"\r\n",startDateFile]] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:track.gpxXmlData];
-
+        
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary]   dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithString:[NSString stringWithFormat: @"Content-Disposition: form-data; name=\"description\"\r\n\r\n"]] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithFormat:@"Go Map!! %@",startDateFriendly] dataUsingEncoding:NSUTF8StringEncoding]];
-
+        
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary]   dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithString:[NSString stringWithFormat: @"Content-Disposition: form-data; name=\"tags\"\r\n\r\n"]] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[@"GoMap" dataUsingEncoding:NSUTF8StringEncoding]];
-
+        
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary]   dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithString:[NSString stringWithFormat: @"Content-Disposition: form-data; name=\"public\"\r\n\r\n"]] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[@"1" dataUsingEncoding:NSUTF8StringEncoding]];
-
+        
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary]   dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[[NSString stringWithString:[NSString stringWithFormat: @"Content-Disposition: form-data; name=\"visibility\"\r\n\r\n"]] dataUsingEncoding:NSUTF8StringEncoding]];
         [body appendData:[@"public" dataUsingEncoding:NSUTF8StringEncoding]];
-
+        
         [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
         [request setHTTPBody:body];
-
+        
         [request setValue:[NSString stringWithFormat:@"%ld", (long)body.length] forHTTPHeaderField:@"Content-Length"];
-
+        
         NSString * auth = [NSString stringWithFormat:@"%@:%@", appDelegate.userName, appDelegate.userPassword];
         auth = [OsmMapData encodeBase64:auth];
         auth = [NSString stringWithFormat:@"Basic %@", auth];
         [request setValue:auth forHTTPHeaderField:@"Authorization"];
-
+        
         NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [progress dismissViewControllerAnimated:YES completion:nil];
-
+                
                 NSHTTPURLResponse * httpResponse = [response isKindOfClass:[NSHTTPURLResponse class]] ? (id)response : nil;
                 if ( httpResponse.statusCode == 200 ) {
                     // ok
                     UIAlertController * success = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"GPX Upload Complete",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
                     [success addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
                     [self presentViewController:success animated:YES completion:nil];
-
+                    
                     // mark track as uploaded in UI
                     GpxLayer * gpxLayer = AppDelegate.shared.mapView.gpxLayer;
                     [gpxLayer markTrackUploaded:track];
                     [self.tableView reloadData];
-
+                    
                 } else {
                     DLog(@"response = %@\n",response);
                     DLog(@"data = %s", (char *)data.bytes);
@@ -410,7 +416,7 @@
         dest.expirationValue = [[NSUserDefaults standardUserDefaults] objectForKey:USER_DEFAULTS_GPX_EXPIRATIION_KEY];
         dest.completion = ^(NSNumber * pick){
             [[NSUserDefaults standardUserDefaults] setObject:pick forKey:USER_DEFAULTS_GPX_EXPIRATIION_KEY];
-
+            
             if ( pick.doubleValue > 0 ) {
                 AppDelegate * appDelegate = AppDelegate.shared;
                 NSDate * cutoff = [NSDate dateWithTimeIntervalSinceNow:-pick.doubleValue*24*60*60];

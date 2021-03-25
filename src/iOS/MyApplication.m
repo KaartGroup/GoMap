@@ -47,7 +47,7 @@ static const CGFloat TOUCH_RADIUS = 22;
         // if we double-tap then the second tap will be captured by our own window
         pos = [touch.window convertPoint:pos toWindow:nil];
 
-        if ( [UIDevice.currentDevice userInterfaceIdiom] == UIUserInterfaceIdiomPhone ) {
+        if ( [UIDevice.currentDevice userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
             // Translate coordinates in case screen is rotated. On iPad the tranform is done for us.
             pos = [UIScreen.mainScreen.coordinateSpace convertPoint:pos toCoordinateSpace:UIScreen.mainScreen.fixedCoordinateSpace];
         }

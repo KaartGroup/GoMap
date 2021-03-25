@@ -23,6 +23,9 @@
 /* Class = "UILabel"; text = "66.6 FPS"; ObjectID = "9t5-wq-j1u"; */
 "9t5-wq-j1u.text" = "66.6 FPS";
 
+/* Class = "UITextField"; placeholder = "tag"; ObjectID = "Bki-iJ-wl9"; */
+"Bki-iJ-wl9.placeholder" = "tag";
+
 /* Class = "UIButton"; accessibilityHint = "Reorient map north"; ObjectID = "E22-sL-sNt"; */
 "E22-sL-sNt.accessibilityHint" = "Reorient map north";
 
@@ -38,11 +41,20 @@
 /* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "HeZ-95-3K1"; */
 "HeZ-95-3K1.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
 
+/* Class = "UIButton"; disabledTitle = "Save"; ObjectID = "JXw-jB-CS2"; */
+"JXw-jB-CS2.disabledTitle" = "Save";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "JXw-jB-CS2"; */
+"JXw-jB-CS2.normalTitle" = "Save";
+
 /* Class = "UINavigationItem"; title = "Note"; ObjectID = "MBY-TK-Wuy"; */
 "MBY-TK-Wuy.title" = "Note";
 
 /* Class = "UILabel"; text = "Zoom to Edit"; ObjectID = "N5Q-nV-TPG"; */
 "N5Q-nV-TPG.text" = "Zoom to Edit";
+
+/* Class = "UITextField"; text = "1"; ObjectID = "O7A-qJ-bLQ"; */
+"O7A-qJ-bLQ.text" = "1";
 
 /* Class = "UIButton"; normalTitle = "Resolve"; ObjectID = "OJ0-aO-ri1"; */
 "OJ0-aO-ri1.normalTitle" = "Resolve";
@@ -53,11 +65,29 @@
 /* Class = "UINavigationItem"; title = "Bing Maps"; ObjectID = "Qz0-Ce-YCX"; */
 "Qz0-Ce-YCX.title" = "Bing Maps";
 
+/* Class = "UITextField"; text = "Lanes:"; ObjectID = "VS7-64-HQV"; */
+"VS7-64-HQV.text" = "Lanes:";
+
+/* Class = "UILabel"; text = "Magic Highway Editor"; ObjectID = "Wfw-p0-zd9"; */
+"Wfw-p0-zd9.text" = "Magic Highway Editor";
+
 /* Class = "UITextView"; text = "Changeset comment goes here"; ObjectID = "ach-1A-88x"; */
 "ach-1A-88x.text" = "Changeset comment goes here";
 
+/* Class = "UITextField"; text = "1"; ObjectID = "dj0-GW-CGt"; */
+"dj0-GW-CGt.text" = "1";
+
 /* Class = "UIBarButtonItem"; title = "Commit"; ObjectID = "gdu-Sf-XrE"; */
 "gdu-Sf-XrE.title" = "Commit";
+
+/* Class = "UITextField"; text = "Lanes:"; ObjectID = "jKq-uk-tk2"; */
+"jKq-uk-tk2.text" = "Lanes:";
+
+/* Class = "UIButton"; normalTitle = "Reverse"; ObjectID = "kCo-Lu-TFG"; */
+"kCo-Lu-TFG.normalTitle" = "Reverse";
+
+/* Class = "UIButton"; normalTitle = "One Way"; ObjectID = "kdW-EH-aiz"; */
+"kdW-EH-aiz.normalTitle" = "One Way";
 
 /* Class = "UILabel"; text = "Subtitle"; ObjectID = "l7S-YL-RKK"; */
 "l7S-YL-RKK.text" = "Subtitle";
@@ -68,6 +98,9 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "qP9-Sc-sc4"; */
 "qP9-Sc-sc4.text" = "Label";
 
+/* Class = "UITextField"; placeholder = "value"; ObjectID = "qes-iZ-IeF"; */
+"qes-iZ-IeF.placeholder" = "value";
+
 /* Class = "UIViewController"; title = "Search for Location"; ObjectID = "siu-I6-IEp"; */
 "siu-I6-IEp.title" = "Search for Location";
 
@@ -76,6 +109,9 @@
 
 /* Class = "UILabel"; text = "2014-06-17 17:54 UTC"; ObjectID = "tOO-VD-MeJ"; */
 "tOO-VD-MeJ.text" = "2014-06-17 17:54 UTC";
+
+/* Class = "UIButton"; normalTitle = "Close"; ObjectID = "uJZ-Sj-Xb8"; */
+"uJZ-Sj-Xb8.normalTitle" = "Close";
 
 /* Class = "UILabel"; text = "Title"; ObjectID = "vRO-Aj-Sdr"; */
 "vRO-Aj-Sdr.text" = "Title";
