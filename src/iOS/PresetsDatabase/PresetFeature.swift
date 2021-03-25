@@ -10,11 +10,11 @@ import Foundation
 
 // A feature-defining tag such as amenity=shop
 @objc class PresetFeature: NSObject {
-
+    
     static let uninitializedImage = UIImage()
-
+    
     @objc let featureID: String
-
+    
     // from json dictionary:
     let _addTags: [String : String]?
     let fields: [String]?
@@ -30,11 +30,11 @@ import Foundation
     let searchable: Bool
     let tags: [String : String]
     let terms: [String]
-
+    
     init(withID featureID:String, jsonDict:[String:Any], isNSI:Bool)
     {
         self.featureID = featureID
-
+        
         self._addTags = jsonDict["addTags"] as? [String: String]
         self.fields = jsonDict["fields"] as? [String]
         self.geometry = jsonDict["geometry"] as? [String] ?? []
@@ -48,11 +48,15 @@ import Foundation
         self._removeTags = jsonDict["removeTags"] as? [String: String]
         self.searchable = jsonDict["searchable"] as? Bool ?? true
         self.tags = jsonDict["tags"] as! [String: String]
-        self.terms = jsonDict["terms"] as? [String] ?? jsonDict["matchNames"] as? [String] ?? []
-
+        if let terms = jsonDict["terms"] as? String {
+            self.terms = terms.split(separator: ",").compactMap { "\($0)" }
+        } else {
+            self.terms = jsonDict["terms"] as? [String] ?? jsonDict["matchNames"] as? [String] ?? []
+        }
+        
         self.nsiSuggestion = isNSI
     }
-
+    
     class func convertLocationSet( _ locationSet:[String:[String]]? ) -> [String:[String]]?
     {
         // convert locations to country codes
@@ -69,29 +73,29 @@ import Foundation
         }
         return ["include":includes]
     }
-
+    
     @objc let nsiSuggestion: Bool        // is from NSI
     @objc var nsiLogo: UIImage? = nil    // from NSI imageURL
-
+    
     var _iconUnscaled: UIImage? = PresetFeature.uninitializedImage
     var _iconScaled24: UIImage? = PresetFeature.uninitializedImage
-
+    
     @objc override var description : String {
         return self.featureID
     }
-
+    
     @objc func friendlyName() -> String
     {
         return self.name ?? self.featureID
     }
-
+    
     @objc func summary() -> String? {
         let parentID = PresetFeature.parentIDofID( self.featureID )
         let result = PresetsDatabase.shared.inheritedValueOfFeature(parentID,
-            fieldGetter: { (feature:PresetFeature?) -> AnyHashable? in return feature!.name })
+                                                                    fieldGetter: { (feature:PresetFeature?) -> AnyHashable? in return feature!.name })
         return result as? String
     }
-
+    
     @objc func iconUnscaled() -> UIImage? {
         if _iconUnscaled == PresetFeature.uninitializedImage {
             _iconUnscaled = self.icon != nil ? UIImage(named: self.icon!) : nil
@@ -105,15 +109,15 @@ import Foundation
         }
         return _iconScaled24
     }
-
+    
     @objc func addTags() -> [String : String]? {
         return self._addTags ?? self.tags
     }
-
+    
     @objc func removeTags() -> [String : String]? {
         return self._removeTags ?? self.addTags()
     }
-
+    
     class func parentIDofID(_ featureID:String) -> String?
     {
         if let range = featureID.range(of: "/", options: .backwards, range: nil, locale: nil) {
@@ -121,7 +125,7 @@ import Foundation
         }
         return nil
     }
-
+    
     @objc func matchesSearchText(_ searchText: String?, geometry:String) -> Bool {
         guard let searchText = searchText else {
             return false
@@ -142,21 +146,21 @@ import Foundation
         }
         return false
     }
-
+    
     func matchObjectTagsScore(_ objectTags: [String: String], geometry: String) -> Double
     {
         guard self.geometry.contains(geometry) else { return 0.0 }
-
+        
         if self.featureID == "landuse/orchard" {
             print("self")
         }
-
+        
         var totalScore = 1.0
-
+        
         var seen = Set<String>()
         for (key, value) in self.tags {
             seen.insert(key)
-
+            
             var v: String?
             if key.hasSuffix("*") {
                 let c = String(key.dropLast())
@@ -181,7 +185,7 @@ import Foundation
             }
             return 0.0 // invalid match
         }
-
+        
         // boost score for additional matches in addTags
         if let addTags = self._addTags {
             for (key, val) in addTags {
@@ -192,7 +196,7 @@ import Foundation
         }
         return totalScore
     }
-
+    
     @objc func defaultValuesForGeometry(_ geometry: String) -> [String : String]
     {
         var result : [String : String] = [:]
