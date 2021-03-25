@@ -121,19 +121,21 @@
     CGPoint loc = [recognizer locationInView:_mapView];
     NSInteger segment = 0;
     OsmBaseObject * hit = nil;
-    if ( _mapView.editorLayer.selectedWay ) {
-        hit = [_mapView.editorLayer osmHitTestNodeInSelectedWay:loc radius:DefaultHitTestRadius];
+    if ( recognizer.state == UIGestureRecognizerStateChanged ) {
+        if ( _mapView.editorLayer.selectedWay ) {
+            hit = [_mapView.editorLayer osmHitTestNodeInSelectedWay:loc radius:DefaultHitTestRadius];
+        }
+        if ( hit == nil ) {
+            hit = [_mapView.editorLayer osmHitTest:loc radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:&segment];
+        }
+        if ( hit == _mapView.editorLayer.selectedNode || hit == _mapView.editorLayer.selectedWay || hit.isRelation )
+            hit = nil;
     }
-    if ( hit == nil ) {
-        hit = [_mapView.editorLayer osmHitTest:loc radius:DefaultHitTestRadius isDragConnect:NO ignoreList:nil segment:&segment];
-    }
-    if ( hit == _mapView.editorLayer.selectedNode || hit == _mapView.editorLayer.selectedWay || hit.isRelation )
-        hit = nil;
-    [_mapView blinkObject:hit segment:segment];
+    [_mapView blinkObject:hit segment:-1];
 }
 
 -(UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
-API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
+{
     [_mapView rightClickAtLocation:location];
     return nil;
 }

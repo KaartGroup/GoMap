@@ -437,7 +437,8 @@ typedef enum {
 {
     AppDelegate * appDelegate = AppDelegate.shared;
     [appDelegate.mapView setTagsForCurrentObject:self.keyValueDict];
-    [appDelegate.mapView updateEditControl];
+    [_mapView updateEditControl];
 }
 
 @end
+ 

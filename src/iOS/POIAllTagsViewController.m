@@ -7,7 +7,6 @@
 //
 
 #import <SafariServices/SafariServices.h>
-#import "EnhancedHwyEditorController.h"
 
 #import "AppDelegate.h"
 #import "AutocompleteTextField.h"
