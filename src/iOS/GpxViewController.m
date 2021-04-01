@@ -33,6 +33,9 @@
 -(IBAction)doAction:(id)sender
 {
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Share",@"Title for sharing options") message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    //    alert = [[UIAlertController alloc]init]; //ipad
+    //    alert.preferredContentSize = CGSizeMake(200, 200); //ipad
+    //    alert.modalPresentationStyle = UIModalPresentationPopover; //ipad
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Upload to OSM",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self.tableView shareTrack:_gpxTrack];
@@ -55,6 +58,13 @@
         }
     }]];
     // set location of popup
+    //    UIButton * button = sender;
+    //    UIPopoverPresentationController * popoverpresentationController = alert.popoverPresentationController;
+    //    popoverpresentationController.delegate = self;
+    //    popoverpresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    //    popoverpresentationController.sourceRect = _uploadButton.bounds;
+    //    popoverpresentationController.sourceView = _uploadButton;
+    //    [self.tableView presentViewController:alert animated:YES completion:nil];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         [self.tableView presentViewController:alert animated:YES completion:nil];
     }
@@ -65,7 +75,9 @@
         alert.modalPresentationStyle = UIModalPresentationPopover;
         alert.popoverPresentationController.sourceView = self.uploadButton;
         alert.popoverPresentationController.sourceRect = self.uploadButton.bounds;
-//        [self.tableView presentViewController:alert animated:YES completion:nil];
+        [self presentViewController:alert animated:YES completion:nil];
+        [self presentViewController:alert animated:YES completion:nil];
+        
     }
 }
 @end
