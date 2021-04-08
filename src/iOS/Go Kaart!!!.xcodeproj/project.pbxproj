@@ -100,6 +100,7 @@
 		0E0E6CD425E823B50008BD99 /* OsmTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0E6CD325E823B50008BD99 /* OsmTags.swift */; };
 		0E11092424B67741000CC3FC /* Kaart Final Logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11092324B67741000CC3FC /* Kaart Final Logo.png */; };
 		0E39C3EB25E8293C0043463D /* EditorMapLayer+Ocean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E39C3EA25E8293C0043463D /* EditorMapLayer+Ocean.swift */; };
+		0E3F0C1B261F642D008A869B /* PresetKeyTagCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3F0C1A261F642D008A869B /* PresetKeyTagCase.swift */; };
 		0E5200DF25EC54C500A722BF /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5200DE25EC54C400A722BF /* RulerView.m */; };
 		0E68F27925EEA72E00A9871A /* POI.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E68F27B25EEA72E00A9871A /* POI.storyboard */; };
 		0E80819F25EDEDFD00CF82A8 /* POI-Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E80819E25EDEDFD00CF82A8 /* POI-Icons.xcassets */; };
@@ -125,8 +126,6 @@
 		0EE6654E25EECC90000A333E /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E68F27325EEA72200A9871A /* Settings.storyboard */; };
 		0EE6655725EECCEF000A333E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ACBA4B16713CCB00BB4414 /* MainStoryboard.storyboard */; };
 		0EF1807125F01A0300084B6C /* RenderInfo.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EF1807025F01A0300084B6C /* RenderInfo.json */; };
-		0EF1807B25F01C5900084B6C /* PresetKeyTagCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF1807825F01C5900084B6C /* PresetKeyTagCase.swift */; };
-		0EF1808625F01C8E00084B6C /* PresetKeyTagCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF1808525F01C8E00084B6C /* PresetKeyTagCase.swift */; };
 		0EF9944D249D644E004E82C1 /* EnhancedHwyEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */; };
 		64305F7223E7224E00232BB9 /* LocationURLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 64305F7123E7224E00232BB9 /* LocationURLParser.m */; };
 		64305F7423E723B200232BB9 /* GeoURLParserTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64305F7323E723B200232BB9 /* GeoURLParserTestCase.swift */; };
@@ -361,6 +360,7 @@
 		0E11092324B67741000CC3FC /* Kaart Final Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Kaart Final Logo.png"; path = "../../../Kaart Final Logo.png"; sourceTree = "<group>"; };
 		0E28B4A525F2AA3C005FD78C /* apple-app-site-association */ = {isa = PBXFileReference; lastKnownFileType = text; name = "apple-app-site-association"; path = "../apple-app-site-association"; sourceTree = "<group>"; };
 		0E39C3EA25E8293C0043463D /* EditorMapLayer+Ocean.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "EditorMapLayer+Ocean.swift"; path = "../Shared/EditorMapLayer+Ocean.swift"; sourceTree = "<group>"; };
+		0E3F0C1A261F642D008A869B /* PresetKeyTagCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetKeyTagCase.swift; sourceTree = "<group>"; };
 		0E5200DD25EC54C400A722BF /* RulerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RulerView.h; path = ../Shared/RulerView.h; sourceTree = "<group>"; };
 		0E5200DE25EC54C400A722BF /* RulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RulerView.m; path = ../Shared/RulerView.m; sourceTree = "<group>"; };
 		0E569CDA25EDEBF90010DDDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../../../../../Desktop/GoMap/src/iOS/en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -477,8 +477,6 @@
 		0EE6652F25EECA54000A333E /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ../../../../../Desktop/GoMap/src/iOS/ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0EE6654625EECB56000A333E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Display.strings; sourceTree = "<group>"; };
 		0EF1807025F01A0300084B6C /* RenderInfo.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = RenderInfo.json; path = ../Shared/RenderInfo.json; sourceTree = "<group>"; };
-		0EF1807825F01C5900084B6C /* PresetKeyTagCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PresetKeyTagCase.swift; path = ../../../../../../Desktop/GoMap/src/iOS/GoMapTests/PresetKeyTagCase.swift; sourceTree = "<group>"; };
-		0EF1808525F01C8E00084B6C /* PresetKeyTagCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PresetKeyTagCase.swift; path = ../../../../../../Desktop/GoMap/src/iOS/GoMapTests/PresetKeyTagCase.swift; sourceTree = "<group>"; };
 		0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
 		0EF9944E249D6463004E82C1 /* EnhancedHwyEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorController.h; sourceTree = "<group>"; };
 		0EF99452249D6D9C004E82C1 /* EnhancedHwyEditorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorView.h; sourceTree = "<group>"; };
@@ -911,8 +909,7 @@
 			children = (
 				64E21EB622651F0D004605D7 /* Helpers */,
 				64348CFA225E867800ADE7FB /* MeasureDirectionViewModelTestCase.swift */,
-				0EF1807825F01C5900084B6C /* PresetKeyTagCase.swift */,
-				0EF1808525F01C8E00084B6C /* PresetKeyTagCase.swift */,
+				0E3F0C1A261F642D008A869B /* PresetKeyTagCase.swift */,
 				64348CF6225E867800ADE7FB /* Mocks */,
 				64348D02225E8E4300ADE7FB /* OsmNode_DirectionTestCase.swift */,
 				64348CEC225E7CD900ADE7FB /* GoMapTests.swift */,
@@ -1302,13 +1299,12 @@
 			files = (
 				64348CFE225E867800ADE7FB /* MeasureDirectionViewModelTestCase.swift in Sources */,
 				64348CFC225E867800ADE7FB /* MeasureDirectionViewModelDelegateMock.swift in Sources */,
-				0EF1808625F01C8E00084B6C /* PresetKeyTagCase.swift in Sources */,
-				0EF1807B25F01C5900084B6C /* PresetKeyTagCase.swift in Sources */,
 				64348CED225E7CD900ADE7FB /* GoMapTests.swift in Sources */,
 				64305F7423E723B200232BB9 /* GeoURLParserTestCase.swift in Sources */,
 				64348CFB225E867800ADE7FB /* HeadingProviderMock.swift in Sources */,
 				64E21EB822651F2D004605D7 /* XCTestCase+UserDefaults.swift in Sources */,
 				64C072FE22622B9C00598078 /* Require.swift in Sources */,
+				0E3F0C1B261F642D008A869B /* PresetKeyTagCase.swift in Sources */,
 				64348CFD225E867800ADE7FB /* CLHeadingMock.swift in Sources */,
 				64348D03225E8E4300ADE7FB /* OsmNode_DirectionTestCase.swift in Sources */,
 				64E21EB522651C06004605D7 /* OSMMapDataTestCase.swift in Sources */,
