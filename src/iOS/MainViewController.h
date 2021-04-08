@@ -18,7 +18,7 @@ typedef enum {
 
 @class MapView;
 
-@interface MainViewController : UIViewController <UIActionSheetDelegate,UIGestureRecognizerDelegate,UIContextMenuInteractionDelegate>
+@interface MainViewController : UIViewController <UIActionSheetDelegate,UIGestureRecognizerDelegate,UIContextMenuInteractionDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 {
     IBOutlet UIButton        *    _uploadButton;
     IBOutlet UIButton        *    _undoButton;
@@ -29,9 +29,15 @@ typedef enum {
 
 @property (assign,nonatomic) IBOutlet MapView    *    _Nonnull mapView;
 @property (assign,nonatomic) IBOutlet UIButton     *     _Nonnull locationButton;
+@property (assign,nonatomic) IBOutlet UIButton      *       _Nonnull cameraButton;
+@property (assign,nonatomic) IBOutlet UIButton      *       _Nonnull galleryButton;
 @property (assign,nonatomic) BUTTON_LAYOUT    buttonLayout;
 
+
 -(IBAction)toggleLocation:(_Nullable id)sender;
+- (IBAction)takePhoto:(UIButton *_Nullable)sender;
+- (IBAction)selectPhoto:(UIButton *_Nullable)sender;
+
 -(void)setGpsState:(GPS_STATE)state;
 
 - (void)updateUndoRedoButtonState;

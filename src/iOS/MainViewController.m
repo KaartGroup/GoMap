@@ -58,16 +58,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.mapView.mainViewController = self;
-
+    
     AppDelegate * delegate = AppDelegate.shared;
     delegate.mapView = self.mapView;
-
+    
     // undo/redo buttons
     [self updateUndoRedoButtonState];
     [self updateUploadButtonState];
-
+    
     __weak __auto_type weakSelf = self;
     [self.mapView.editorLayer.mapData addChangeCallback:^{
         [weakSelf updateUndoRedoButtonState];
@@ -75,17 +75,19 @@
     }];
     
     [self setupAccessibility];
-
+    
     // long press for quick access to aerial imagery
     UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(displayButtonLongPressGesture:)];
     [self.displayButton addGestureRecognizer:longPress];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:NULL];
 }
 
 - (void)setupAccessibility
 {
     self.locationButton.accessibilityIdentifier = @"location_button";
+    self.cameraButton.accessibilityIdentifier = @"camera_button";
+    self.galleryButton.accessibilityIdentifier = @"gallery_button";
     
     _undoButton.accessibilityLabel = NSLocalizedString(@"Undo",nil);
     _redoButton.accessibilityLabel = NSLocalizedString(@"Redo",nil);
@@ -98,18 +100,18 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
-
+    
     // update button layout constraints
     [NSUserDefaults.standardUserDefaults registerDefaults:@{ @"buttonLayout" : @(BUTTON_LAYOUT_ADD_ON_RIGHT) }];
     self.buttonLayout = (BUTTON_LAYOUT) [NSUserDefaults.standardUserDefaults integerForKey:@"buttonLayout"];
-
+    
     [self setButtonAppearances];
-
+    
 #if TARGET_OS_MACCATALYST
     // mouseover support for Mac Catalyst:
     UIHoverGestureRecognizer * hover = [[UIHoverGestureRecognizer alloc] initWithTarget:self action:@selector(hover:)];
     [_mapView addGestureRecognizer:hover];
-
+    
     // right-click support for Mac Catalyst:
     UIContextMenuInteraction * rightClick = [[UIContextMenuInteraction alloc] initWithDelegate:self];
     [_mapView addInteraction:rightClick];
@@ -135,7 +137,7 @@
 }
 
 -(UIContextMenuConfiguration *)contextMenuInteraction:(UIContextMenuInteraction *)interaction configurationForMenuAtLocation:(CGPoint)location
-{
+API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
     [_mapView rightClickAtLocation:location];
     return nil;
 }
@@ -177,6 +179,9 @@
         _undoRedoView,
         // these are buttons
         _locationButton,
+        // problem
+        _cameraButton,
+        _galleryButton,
         _undoButton,
         _redoButton,
         _mapView.addNodeButton,
@@ -189,14 +194,14 @@
         _searchButton
     ];
     for ( UIView * view in buttons ) {
-
+        
         // corners
         if ( view == _mapView.compassButton ||
-             view == _mapView.editControl )
+            view == _mapView.editControl )
         {
             // these buttons take care of themselves
         } else if ( view == _mapView.helpButton ||
-                    view == _mapView.addNodeButton )
+                   view == _mapView.addNodeButton )
         {
             // The button is a circle.
             view.layer.cornerRadius = view.bounds.size.width / 2;
@@ -229,10 +234,10 @@
                     button.imageEdgeInsets = UIEdgeInsetsMake(9, 9, 9, 9);    // resize images on button to be smaller
             }
         }
-
+        
         // normal background color
         [self makeButtonNormal:view];
-
+        
         // background selection color
         if ( [view isKindOfClass:[UIButton class]] ) {
             UIButton * button = (UIButton *)view;
@@ -240,7 +245,7 @@
             [button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchUpInside];
             [button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchUpOutside];
             [button addTarget:self action:@selector(makeButtonNormal:) forControlEvents:UIControlEventTouchCancel];
-
+            
             button.showsTouchWhenHighlighted = YES;
         }
     }
@@ -287,9 +292,11 @@
 -(void)makeMovableButtons
 {
     NSArray * buttons = @[
-//        _mapView.editControl,
+        //        _mapView.editControl,
         _undoRedoView,
         _locationButton,
+        _cameraButton,
+        _galleryButton,
         _searchButton,
         _mapView.addNodeButton,
         _settingsButton,
@@ -298,7 +305,7 @@
         _mapView.compassButton,
         _mapView.helpButton,
         _mapView.centerOnGPSButton,
-//        _mapView.rulerView,
+        //        _mapView.rulerView,
     ];
     // remove layout constraints
     for ( UIButton * button in buttons ) {
@@ -311,10 +318,10 @@
         [button addGestureRecognizer:panGesture];
     }
     NSString * message = @"This build has a temporary feature: Drag the buttons in the UI to new locations that looks and feel best for you.\n\n"
-                        @"* Submit your preferred layouts either via email or on GitHub.\n\n"
-                        @"* Positions reset when the app terminates\n\n"
-                        @"* Orientation changes are not supported\n\n"
-                        @"* Buttons won't move when they're disabled (undo/redo, upload)";
+    @"* Submit your preferred layouts either via email or on GitHub.\n\n"
+    @"* Positions reset when the app terminates\n\n"
+    @"* Orientation changes are not supported\n\n"
+    @"* Buttons won't move when they're disabled (undo/redo, upload)";
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"Attention Testers!" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction * ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action){
         [alert dismissViewControllerAnimated:YES completion:nil];
@@ -322,6 +329,7 @@
     [alert addAction:ok];
     [self presentViewController:alert animated:YES completion:nil];
 }
+
 - (void)buttonPan:(UIPanGestureRecognizer *)pan
 {
     if ( pan.state == UIGestureRecognizerStateBegan ) {
@@ -340,9 +348,9 @@
 -(void)setButtonLayout:(BUTTON_LAYOUT)buttonLayout
 {
     _buttonLayout = buttonLayout;
-
+    
     [NSUserDefaults.standardUserDefaults setInteger:_buttonLayout forKey:@"buttonLayout"];
-
+    
     BOOL left = buttonLayout == BUTTON_LAYOUT_ADD_ON_LEFT;
     NSLayoutAttribute attribute = left ? NSLayoutAttributeLeading : NSLayoutAttributeTrailing;
     UIButton * addButton = _mapView.addNodeButton;
@@ -353,7 +361,7 @@
         if ( !([c.secondItem isKindOfClass:[UILayoutGuide class]] || [c.secondItem isKindOfClass:[UIView class]]) )
             continue;;
         if ( (c.firstAttribute == NSLayoutAttributeLeading || c.firstAttribute == NSLayoutAttributeTrailing) &&
-             (c.secondAttribute == NSLayoutAttributeLeading || c.secondAttribute == NSLayoutAttributeTrailing) )
+            (c.secondAttribute == NSLayoutAttributeLeading || c.secondAttribute == NSLayoutAttributeTrailing) )
         {
             [superview removeConstraint:c];
             NSLayoutConstraint * c2 = [NSLayoutConstraint constraintWithItem:c.firstItem
@@ -373,14 +381,14 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    
 #if USER_MOVABLE_BUTTONS
     [self makeMovableButtons];
 #endif
-
+    
     // this is necessary because we need the frame to be set on the view before we set the previous lat/lon for the view
     [_mapView viewDidAppear];
-
+    
 #if 0 && DEBUG
     SpeechBalloonView * speech = [[SpeechBalloonView alloc] initWithText:@"Press here to create a new node,\nor to begin a way"];
     [speech setTargetView:_toolbar];
@@ -470,7 +478,7 @@
                     _mapView.viewState = MAPVIEW_EDITORAERIAL;
             }]];
         }
-
+        
         // add options for changing display
         NSString * prefix = @"🌐 ";
         UIAlertAction * editorOnly = [UIAlertAction actionWithTitle:[prefix stringByAppendingString:NSLocalizedString(@"Editor only",nil)]
@@ -488,7 +496,7 @@
                                                               handler:^(UIAlertAction * _Nonnull action) {
             _mapView.viewState = MAPVIEW_EDITORAERIAL;
         }];
-
+        
         switch ( _mapView.viewState ) {
             case MAPVIEW_EDITOR:
                 [actionSheet addAction:editorAerial];
@@ -508,7 +516,7 @@
                 [actionSheet addAction:aerialOnly];
                 break;
         }
-
+        
         [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:actionSheet animated:YES completion:nil];
         // set location of popup
@@ -522,9 +530,9 @@
     [super didReceiveMemoryWarning];
     
     DLog(@"memory warning: %f MB used", MemoryUsedMB() );
-
+    
     [self.mapView flashMessage:NSLocalizedString(@"Low memory: clearing cache",nil)];
-
+    
     [_mapView.editorLayer didReceiveMemoryWarning];
 }
 
@@ -532,7 +540,7 @@
 {
     if ( self.mapView.gpsState != state ) {
         self.mapView.gpsState = state;
-
+        
         // update GPS icon
         NSString * imageName = (self.mapView.gpsState == GPS_STATE_NONE) ? @"location2" : @"location.fill";
         UIImage * image = [UIImage imageNamed:imageName];
@@ -553,6 +561,65 @@
             [self setGpsState:GPS_STATE_NONE];
             break;
     }
+}
+
+
+//UIAlertController * alert = [UIAlertController
+//                alertControllerWithTitle:@"Title"
+//                                 message:@"Message"
+//                          preferredStyle:UIAlertControllerStyleAlert];
+
+- (IBAction)takePhoto:(UIButton *)sender {
+    
+    
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        
+        UIAlertController *myAlertView = [UIAlertController
+                        alertControllerWithTitle:@"Erorr"
+                                         message:@"Device has no camera"
+                                  preferredStyle:UIAlertControllerStyleAlert];
+        
+        // action button
+        UIAlertAction *show = [UIAlertAction actionWithTitle:@"Show Camera" style:UIAlertActionStyleDefault handler:nil];
+
+        [myAlertView addAction:show]; // adds show action button to alert controller
+        
+    } else {
+        
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        
+        [self presentViewController:picker animated:YES completion:NULL];
+        
+    }
+}
+
+- (IBAction)selectPhoto:(UIButton *)sender {
+
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = YES;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+
+    [self presentViewController:picker animated:YES completion:NULL];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    chosenImage = [chosenImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    [self.locationButton setImage:image forState:UIControlStateNormal];
+//    self.imageView.image = chosenImage;
+    
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+
+    [picker dismissViewControllerAnimated:YES completion:NULL];
+    
 }
 
 -(void)applicationDidEnterBackground:(id)sender
@@ -581,7 +648,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
     // http://stackoverflow.com/questions/3344341/uibutton-inside-a-view-that-has-a-uitapgesturerecognizer
-
+    
     if ( [touch.view isKindOfClass:[UIControl class]] || [touch.view isKindOfClass:[UIToolbar class]] ) {
         // we touched a button, slider, or other UIControl
         return NO; // ignore the touch
