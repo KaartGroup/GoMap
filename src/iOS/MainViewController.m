@@ -17,8 +17,7 @@
 #import "OsmMapData.h"
 #import "PushPinView.h"
 #import "SpeechBalloonView.h"
-
-
+#import <MobileCoreServices/MobileCoreServices.h>
 #define USER_MOVABLE_BUTTONS    0
 
 @interface MainViewController ()
@@ -179,7 +178,6 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
         _undoRedoView,
         // these are buttons
         _locationButton,
-        // problem
         _cameraButton,
         _galleryButton,
         _undoButton,
@@ -563,63 +561,82 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
     }
 }
 
-
-//UIAlertController * alert = [UIAlertController
-//                alertControllerWithTitle:@"Title"
-//                                 message:@"Message"
-//                          preferredStyle:UIAlertControllerStyleAlert];
-
 - (IBAction)takePhoto:(UIButton *)sender {
-    
-    
-    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        NSArray *media = [UIImagePickerController
+                          availableMediaTypesForSourceType: UIImagePickerControllerSourceTypeCamera];
         
-        UIAlertController *myAlertView = [UIAlertController
-                        alertControllerWithTitle:@"Erorr"
-                                         message:@"Device has no camera"
-                                  preferredStyle:UIAlertControllerStyleAlert];
+        if ([media containsObject:(NSString*)kUTTypeImage] == YES) {
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            //picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+            [picker setMediaTypes:[NSArray arrayWithObject:(NSString *)kUTTypeImage]];
+            
+            picker.delegate = self;
+            [self presentViewController:picker animated:YES completion:NULL];
+            //[picker release];
+            
+        }
+        else {
+            UIAlertController *alert = [UIAlertController
+                                        alertControllerWithTitle:@"Unsupported"
+                                        message:@"Camera does not support photo capturing."
+                                        preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *show = [UIAlertAction actionWithTitle:@"Show Camera" style:UIAlertActionStyleDefault handler:nil];
+            [alert addAction:show]; // adds show action button to alert controller
+        }
         
-        // action button
+    }
+    else {
+        UIAlertController *alert = [UIAlertController
+                                    alertControllerWithTitle:@"Unavailable"
+                                    message:@"This device does not have a camera."
+                                    preferredStyle:UIAlertControllerStyleAlert];
+        
         UIAlertAction *show = [UIAlertAction actionWithTitle:@"Show Camera" style:UIAlertActionStyleDefault handler:nil];
-
-        [myAlertView addAction:show]; // adds show action button to alert controller
-        
-    } else {
-        
-        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-        picker.delegate = self;
-        picker.allowsEditing = YES;
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        
-        [self presentViewController:picker animated:YES completion:NULL];
-        
+        [alert addAction:show]; // adds show action button to alert controller
     }
 }
 
 - (IBAction)selectPhoto:(UIButton *)sender {
-
+    
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-
+    
     [self presentViewController:picker animated:YES completion:NULL];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    chosenImage = [chosenImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//    [self.locationButton setImage:image forState:UIControlStateNormal];
-//    self.imageView.image = chosenImage;
+    NSLog(@"Media Info: %@", info);
+    NSString *mediaType = [info valueForKey:UIImagePickerControllerMediaType];
+    
+    if([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
+        UIImage *photoTaken = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+        
+        //Save Photo to library only if it wasnt already saved i.e. its just been taken
+        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+            UIImageWriteToSavedPhotosAlbum(photoTaken, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+        }
+        
+        
+    }
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
 }
 
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-
-    [picker dismissViewControllerAnimated:YES completion:NULL];
-    
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo
+{
+    if (error != nil)
+    {
+        NSLog(@"Image Can not be saved");
+    }
+    else
+    {
+        NSLog(@"Successfully saved Image");
+    }
 }
 
 -(void)applicationDidEnterBackground:(id)sender
