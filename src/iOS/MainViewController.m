@@ -620,8 +620,6 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
         if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             UIImageWriteToSavedPhotosAlbum(photoTaken, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
         }
-        
-        
     }
     
     [picker dismissViewControllerAnimated:YES completion:NULL];
