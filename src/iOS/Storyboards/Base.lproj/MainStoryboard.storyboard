@@ -1016,8 +1016,8 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kdW-EH-aiz" userLabel="OneWay">
-                                        <rect key="frame" x="211" y="136" width="73" height="33"/>
+                                    <button contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kdW-EH-aiz" userLabel="OneWay">
+                                        <rect key="frame" x="265" y="136" width="73" height="33"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="One Way">
                                             <color key="titleColor" systemColor="darkTextColor"/>
@@ -1080,6 +1080,59 @@
                                                     <outlet property="text2" destination="qes-iZ-IeF" id="PUj-IF-VgD"/>
                                                 </connections>
                                             </tableViewCell>
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="2" indentationWidth="0.0" reuseIdentifier="LaneTagCell" rowHeight="47" id="L7U-O1-Ohs" userLabel="Lane Tag Cell" customClass="TextPairTableCell">
+                                                <rect key="frame" x="0.0" y="75" width="398" height="47"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L7U-O1-Ohs" id="MBh-cp-MaW">
+                                                    <rect key="frame" x="0.0" y="0.0" width="398" height="47"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Lanes" borderStyle="roundedRect" placeholder="tag" translatesAutoresizingMaskIntoConstraints="NO" id="iAt-oL-bGN" userLabel="Text1" customClass="AutocompleteTextField">
+                                                            <rect key="frame" x="20" y="6.5" width="121" height="34"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" priority="200" constant="121" id="eXV-yF-QbC"/>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="121" id="xyL-qx-kS9"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="cYf-2s-el4" id="l9h-k8-UBl"/>
+                                                            </connections>
+                                                        </textField>
+                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dj0-GW-CGt" userLabel="Text2">
+                                                            <rect key="frame" x="154" y="7" width="27" height="37"/>
+                                                            <color key="backgroundColor" systemColor="tableCellGroupedBackgroundColor"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="27" id="KIR-Je-QZY"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textField>
+                                                        <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="uqT-FI-Nu6">
+                                                            <rect key="frame" x="284" y="8" width="94" height="31"/>
+                                                            <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                                                            <connections>
+                                                                <action selector="LaneStepper:" destination="gMR-Qx-CMq" eventType="valueChanged" id="Th2-gG-7Td"/>
+                                                            </connections>
+                                                        </stepper>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="uqT-FI-Nu6" firstAttribute="top" secondItem="MBh-cp-MaW" secondAttribute="topMargin" constant="-3" id="2bc-bt-hsm"/>
+                                                        <constraint firstAttribute="trailingMargin" secondItem="uqT-FI-Nu6" secondAttribute="trailing" id="7oU-nJ-zZ0"/>
+                                                        <constraint firstItem="iAt-oL-bGN" firstAttribute="centerY" secondItem="uqT-FI-Nu6" secondAttribute="centerY" id="LRZ-Eo-7kB"/>
+                                                        <constraint firstItem="iAt-oL-bGN" firstAttribute="leading" secondItem="MBh-cp-MaW" secondAttribute="leading" constant="20" id="ceT-H3-SKO"/>
+                                                        <constraint firstItem="iAt-oL-bGN" firstAttribute="centerY" secondItem="MBh-cp-MaW" secondAttribute="centerY" id="frj-ld-yOR"/>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="dj0-GW-CGt" secondAttribute="bottom" constant="-8" id="qmm-hF-cEU"/>
+                                                        <constraint firstItem="dj0-GW-CGt" firstAttribute="top" secondItem="MBh-cp-MaW" secondAttribute="topMargin" constant="-4" id="rID-Pi-4tr"/>
+                                                        <constraint firstItem="dj0-GW-CGt" firstAttribute="leading" secondItem="iAt-oL-bGN" secondAttribute="trailing" constant="13" id="z73-yL-nlR"/>
+                                                    </constraints>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="laneStepper" destination="uqT-FI-Nu6" id="NrR-EJ-32r"/>
+                                                    <outlet property="text1" destination="iAt-oL-bGN" id="xjR-uQ-laJ"/>
+                                                    <outlet property="txtValue" destination="dj0-GW-CGt" id="Ckf-1E-r47"/>
+                                                </connections>
+                                            </tableViewCell>
                                         </prototypes>
                                         <sections/>
                                         <connections>
@@ -1097,22 +1150,6 @@
                                             <action selector="closeBtnPressed:" destination="cYf-2s-el4" eventType="touchUpInside" id="Bxx-aa-yyK"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCo-Lu-TFG" userLabel="Reverse">
-                                        <rect key="frame" x="115" y="136" width="65" height="33"/>
-                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <state key="normal" title="Reverse">
-                                            <color key="titleColor" systemColor="darkTextColor"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                <integer key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="reversePressed" destination="cYf-2s-el4" eventType="touchUpInside" id="YSB-Kk-6QD"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXw-jB-CS2">
                                         <rect key="frame" x="352" y="136" width="37" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1126,6 +1163,22 @@
                                         <connections>
                                             <action selector="done" destination="cYf-2s-el4" eventType="touchUpInside" id="Rdw-tN-WZ3"/>
                                             <action selector="saveState" destination="cYf-2s-el4" eventType="touchUpInside" id="kSf-C5-suu"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCo-Lu-TFG" userLabel="Reverse">
+                                        <rect key="frame" x="175" y="136" width="65" height="33"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Reverse">
+                                            <color key="titleColor" systemColor="darkTextColor"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="reversePressed" destination="cYf-2s-el4" eventType="touchUpInside" id="YSB-Kk-6QD"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1152,28 +1205,6 @@
                                     <constraint firstItem="uJZ-Sj-Xb8" firstAttribute="top" secondItem="kdW-EH-aiz" secondAttribute="top" id="q3L-C7-K3w"/>
                                 </constraints>
                             </view>
-                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="uqT-FI-Nu6">
-                                <rect key="frame" x="161" y="232" width="93" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <rect key="contentStretch" x="0.0" y="0.0" width="0.0" height="0.0"/>
-                                <connections>
-                                    <action selector="LaneStepper:" destination="gMR-Qx-CMq" eventType="valueChanged" id="Th2-gG-7Td"/>
-                                    <action selector="laneStepperPressed:" destination="cYf-2s-el4" eventType="valueChanged" id="MR6-zA-5CI"/>
-                                </connections>
-                            </stepper>
-                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dj0-GW-CGt">
-                                <rect key="frame" x="194" y="232" width="27" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="tableCellGroupedBackgroundColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Lanes:" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VS7-64-HQV">
-                                <rect key="frame" x="100" y="148" width="57" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KPW-HP-wjp"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1194,13 +1225,10 @@
                         <outlet property="closeBtn" destination="uJZ-Sj-Xb8" id="I4B-7t-tjU"/>
                         <outlet property="highwayEditorLabel" destination="Wfw-p0-zd9" id="SIV-CR-1TL"/>
                         <outlet property="highwayEditorView" destination="hH4-6i-Cju" id="Wj9-Wa-5Mj"/>
-                        <outlet property="laneStepper" destination="uqT-FI-Nu6" id="U1W-6g-cSe"/>
                         <outlet property="oneWayButton" destination="kdW-EH-aiz" id="yHl-aL-UAE"/>
                         <outlet property="reverseButton" destination="kCo-Lu-TFG" id="GuP-oj-YL3"/>
                         <outlet property="saveButton" destination="JXw-jB-CS2" id="ydS-6f-wtD"/>
-                        <outlet property="stepper" destination="uqT-FI-Nu6" id="0SS-8N-Tih"/>
                         <outlet property="tagTable" destination="rb4-VR-oLO" id="6Og-M3-J2V"/>
-                        <outlet property="txtValue" destination="dj0-GW-CGt" id="Soz-WG-gq4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LPM-LV-6n3" userLabel="First Responder" sceneMemberID="firstResponder"/>

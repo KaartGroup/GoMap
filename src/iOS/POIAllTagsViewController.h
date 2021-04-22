@@ -11,6 +11,12 @@
 @interface TextPairTableCell : UITableViewCell
 @property (assign,nonatomic) IBOutlet    AutocompleteTextField *    text1;
 @property (assign,nonatomic) IBOutlet    AutocompleteTextField *    text2;
+//@property (assign,nonatomic) IBOutlet    AutocompleteTextField *    txtValue;
+@property (strong, nonatomic) IBOutlet UITextField *txtValue;
+@property (assign,nonatomic) IBOutlet    AutocompleteTextField *    lanes;
+@property (strong, nonatomic) IBOutlet UIStepper *laneStepper;
+
+
 @property (assign,nonatomic) IBOutlet    UIButton              * infoButton;
 @end
 

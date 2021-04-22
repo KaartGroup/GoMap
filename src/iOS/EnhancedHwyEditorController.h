@@ -33,6 +33,10 @@
 @interface TextPair: UITableViewCell
 @property (assign, nonatomic) IBOutlet AutocompleteTextField * text1;
 @property (assign, nonatomic) IBOutlet AutocompleteTextField * text2;
+@property (assign, nonatomic) IBOutlet AutocompleteTextField * txtValue;
+@property (assign, nonatomic) IBOutlet AutocompleteTextField * lanes;
+@property (assign, nonatomic) IBOutlet AutocompleteTextField * laneStepper;
+
 @end
 
 
@@ -46,9 +50,13 @@
     IBOutlet UIButton * reverseButton;
     IBOutlet UITableView * tagTable;
     IBOutlet UIButton * saveButton;
-    IBOutlet UIStepper * laneStepper;
+//    IBOutlet UIStepper * laneStepper;
     IBOutlet UIButton * closeBtn;
-    IBOutlet UITextField * txtValue;
+//    IBOutlet UITextField * txtValue;
+    
+    IBOutlet UIStepper * laneStepper;
+    IBOutlet UITextField *txtValue;
+    IBOutlet UITextField * laneText2;
     __weak IBOutlet NSLayoutConstraint *bottomViewConstraint;
 }
 

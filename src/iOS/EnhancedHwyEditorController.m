@@ -29,20 +29,20 @@ typedef enum {
 {
     NSMutableArray        *    _parentWays;
     NSMutableArray        *    _highwayViewArray; //    Array of EnhancedHwyEditorView to Store number of ways
-
+    
     EnhancedHwyEditorView    *    _selectedFromHwy;
     UIButton            *   _uTurnButton;
     OsmRelation         *   _currentUTurnRelation;
-
+    
     NSMutableArray        *    _allRelations;
     NSMutableArray        *    _editedRelations;
-
+    
     OsmWay              *   _selectedWay;
     ONEWAY_STATES         _onewayState;
-
+    
     MapView             *   _mapView;
     EditorMapLayer      *   _editorLayer;
-
+    
     NSInteger               _reverseCount;
     NSInteger               _laneCount;
     NSInteger               _laneValues;
@@ -53,8 +53,8 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     _highwayViewArray = [NSMutableArray new];
-//    mapView = [AppDelegate getAppDelegate].mapView;
-//    AppDelegate * appDelegate = AppDelegate.shared;
+    //    mapView = [AppDelegate getAppDelegate].mapView;
+    //    AppDelegate * appDelegate = AppDelegate.shared;
     MapView * mapView = AppDelegate.shared.mapView;
     _editorLayer = mapView.editorLayer;
     [_editorLayer.mapData beginUndoGrouping];
@@ -76,7 +76,7 @@ typedef enum {
         if ( [tag hasPrefix:@"name"] ){
             [nameTags addObject:[NSMutableArray arrayWithObjects:tag, value, nil]];
         }
-
+        
         if(![_keyValueDict objectForKey:@"lanes"]) {
             _laneCount = laneStepper.value;
         } else {
@@ -111,15 +111,15 @@ typedef enum {
             [_namePresets addObject:custom.tagKey];
         }
     }
-
+    
     if ( ![_keyValueDict objectForKey:@"oneway"]){
         _onewayState = EMPTY;
     } else {
         _onewayState = (ONEWAY_STATES)_selectedWay.isOneWay;
     }
-
+    
     [self setOnewayBtnStyle];
-
+    
     //lanecount for stepper
     if (![_keyValueDict objectForKey:@"lanes"]){
         _laneCount = 0;
@@ -132,15 +132,15 @@ typedef enum {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     [self loadState];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
+    
     TextPair * cell = [tagTable.visibleCells firstObject];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [cell.text2 becomeFirstResponder];
     [_mapView.editControl.bottomAnchor constraintEqualToAnchor:self.highwayEditorView.topAnchor constant:-11].active = YES;
@@ -154,7 +154,7 @@ typedef enum {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    
     [_editorLayer.mapData endUndoGrouping];
 }
 
@@ -162,21 +162,52 @@ typedef enum {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _nameTags.count;
+    return _laneTags.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TextPair * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
-    NSArray * kv = _nameTags[ indexPath.row ];
-    // assign text contents of fields
-    cell.text1.enabled = YES;
-    cell.text2.enabled = YES;
-    cell.text1.text = kv[0];
-    cell.text2.text = kv[1];
-
-    cell.text1.didSelectAutocomplete = ^{ [cell.text2 becomeFirstResponder]; };
-    cell.text2.didSelectAutocomplete = ^{};
-
-    return cell;
+    if (indexPath.section == 0 ){
+        TextPair * cell = [tableView dequeueReusableCellWithIdentifier:@"TagCell" forIndexPath:indexPath];
+        NSArray * kv = _nameTags[ indexPath.row ];
+        //    NSArray * lv = _laneTags[ indexPath.row ];
+        // assign text contents of fields
+        
+        //    cell.label.text = "it works!"
+        
+        cell.text1.enabled = YES;
+        cell.text2.enabled = YES;
+        //    cell.txtValue.enabled = YES;
+        //    cell.lanes.enabled = YES;
+        //    cell.laneStepper.enabled = YES;
+        
+        cell.text1.text = kv[0];
+        cell.text2.text = kv[1];
+        //    cell.txtValue.text = kv[0];
+        //    cell.lanes.text = @"lanes";
+        //    cell.laneStepper.value
+        
+        cell.text1.didSelectAutocomplete = ^{ [cell.text2 becomeFirstResponder]; };
+        cell.text2.didSelectAutocomplete = ^{};
+        
+        return cell;
+    } else if ( indexPath.section == 1 ) {
+        // Lanes
+        if( indexPath.row == _laneTags.count){
+            UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"AddCell" forIndexPath:indexPath];
+            return cell;
+        }
+        TextPair * cell = [tableView dequeueReusableCellWithIdentifier:@"LaneTagCell" forIndexPath:indexPath];
+        NSArray * kv = _laneTags[ indexPath.row ];
+        cell.text1.enabled = NO;
+        cell.text2.enabled = NO;
+        
+//        NSInteger    * laneCount = _stepper[ indexPath.row ];
+        cell.text1.text = @"lanes";//relation.ident.stringValue;
+        cell.text2.text = kv[0];//[relation friendlyDescription];
+        
+        return cell;
+    }
+    
 };
 
 - (IBAction)textFieldReturn:(id)sender {
@@ -185,19 +216,19 @@ typedef enum {
 
 - (IBAction)textFieldEditingDidBegin:(AutocompleteTextField *)textField
 {
-
+    
     UITableViewCell * cell = (id)textField.superview;
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
     TextPair * pair = (id)cell;
-
+    
     NSIndexPath * indexPath = [tagTable indexPathForCell:cell];
-
+    
     if ( indexPath.section == 0 ) {
-
+        
         BOOL isValue = textField == pair.text2;
         NSMutableArray * kv = _tags[ indexPath.row ];
-
+        
         if ( isValue ) {
             // get list of values for current key
             NSString * key = kv[0];
@@ -221,7 +252,7 @@ typedef enum {
 - (void)keyboardWillChangeFrame:(NSNotification *)notification {
     NSDictionary * userInfo = [notification userInfo];
     CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-
+    
     bottomViewConstraint = [_highwayEditorView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-keyboardFrame.size.height];
     bottomViewConstraint.active = YES;
 }
@@ -229,14 +260,14 @@ typedef enum {
 -(NSMutableDictionary *)keyValueDictionary {
     NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithCapacity:_tags.count];
     for ( NSArray * kv in _tags ) {
-
+        
         // strip whitespace around text
         NSString * key = kv[0];
         NSString * val = kv[1];
-
+        
         key = [key stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         val = [val stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
+        
         if ( key.length && val.length ) {
             [dict setObject:val forKey:key];
         }
@@ -249,7 +280,7 @@ typedef enum {
     while ( cell && ![cell isKindOfClass:[UITableViewCell class]])
         cell = (id)cell.superview;
     NSIndexPath * indexPath = [tagTable indexPathForCell:cell];
-
+    
     if ( indexPath.section == 0 ) {
         // edited tags
         TextPair * pair = (id)cell;
@@ -261,7 +292,7 @@ typedef enum {
             }
         }
         BOOL isValue = textField == pair.text2;
-
+        
         if ( isValue ) {
             // new value
             kv[1] = textField.text;
@@ -271,7 +302,7 @@ typedef enum {
             kv[0] = textField.text;
             tagKv[0] = textField.text;
         }
-
+        
         NSMutableDictionary * dict = [self keyValueDictionary];
         saveButton.enabled = [self isTagDictChanged:dict];
     }
@@ -282,7 +313,7 @@ typedef enum {
     UITouch * touch = [touches anyObject];
     CGPoint point = [touch locationInView:_mapView];
     CGPoint editControlPoint = [touch locationInView:_mapView.editControl];
-
+    
     if ( [_mapView.editControl hitTest:editControlPoint withEvent:event]) {
         NSUInteger segmentSize = _mapView.editControl.bounds.size.width / _mapView.editControl.numberOfSegments;
         NSUInteger touchedSegment = editControlPoint.x / segmentSize;
@@ -300,7 +331,7 @@ typedef enum {
         [cell.text2 becomeFirstResponder];
         return;
     }
-
+    
     if ( touch.view != _highwayEditorView ) {
         // continue to pan map
         [self dismissViewControllerAnimated:false completion:nil]; // closes the keyboard
@@ -323,31 +354,31 @@ typedef enum {
             onewayTag = kv;
         index++;
     }
-
+    
     switch (_onewayState) {
         case EMPTY:
             [_tags addObject:[NSMutableArray arrayWithObjects:@"oneway", @"no", nil]];
             _onewayState = NONE;
             break;
-
+            
         case BACKWARD:
             onewayTag[1] = @"no";
             _onewayState = NONE;
             break;
-
+            
         case NONE:
             onewayTag[1] = @"yes";
             _onewayState = FORWARD;
             break;
-
+            
         case FORWARD:
             [_tags removeObject: onewayTag];
             _onewayState = EMPTY;
-
+            
         default:
             break;
     }
-
+    
     [self setOnewayBtnStyle];
     saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
 }
@@ -362,7 +393,7 @@ typedef enum {
         [alertError addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alertError animated:YES completion:nil];
     }
-
+    
     [_editorLayer setNeedsLayout];
     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
         _reverseCount += 1;
@@ -425,11 +456,11 @@ typedef enum {
 - (BOOL)isTagDictChanged:(NSDictionary *)newDictionary
 {
     AppDelegate * appDelegate = AppDelegate.shared;
-
+    
     NSDictionary * tags = appDelegate.mapView.editorLayer.selectedPrimary.tags;
     if ( tags.count == 0 )
         return newDictionary.count != 0;
-
+    
     return ![newDictionary isEqual:tags];
 }
 
@@ -441,4 +472,4 @@ typedef enum {
 }
 
 @end
- 
+
