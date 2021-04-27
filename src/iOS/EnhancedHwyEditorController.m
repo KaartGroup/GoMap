@@ -387,6 +387,8 @@ typedef enum {
     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
         [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
         saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
+    } else {
+        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
     }
 }
 
