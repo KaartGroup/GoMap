@@ -574,12 +574,9 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
         if ([media containsObject:(NSString*)kUTTypeImage] == YES) {
             UIImagePickerController *picker = [[UIImagePickerController alloc] init];
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            //picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
             [picker setMediaTypes:[NSArray arrayWithObject:(NSString *)kUTTypeImage]];
-            
             picker.delegate = self;
             [self presentViewController:picker animated:YES completion:NULL];
-            //[picker release];
             
         }
         else {
