@@ -30,15 +30,15 @@
 @class OsmBaseObject;
 @class PresetKeyUserDefined;
 
+
 @interface TextPair: UITableViewCell
 @property (assign, nonatomic) IBOutlet AutocompleteTextField * text1;
 @property (assign, nonatomic) IBOutlet AutocompleteTextField * text2;
-@property (assign, nonatomic) IBOutlet AutocompleteTextField * txtValue;
-@property (assign, nonatomic) IBOutlet AutocompleteTextField * lanes;
-@property (assign, nonatomic) IBOutlet AutocompleteTextField * laneStepper;
-
 @end
 
+@interface LaneCell: TextPair
+
+@end
 
 @interface EnhancedHwyEditorController : UIViewController
 {
@@ -50,13 +50,9 @@
     IBOutlet UIButton * reverseButton;
     IBOutlet UITableView * tagTable;
     IBOutlet UIButton * saveButton;
-//    IBOutlet UIStepper * laneStepper;
-    IBOutlet UIButton * closeBtn;
-//    IBOutlet UITextField * txtValue;
-    
     IBOutlet UIStepper * laneStepper;
-    IBOutlet UITextField *txtValue;
-    IBOutlet UITextField * laneText2;
+    IBOutlet UIButton * closeBtn;
+    IBOutlet UITextField * txtValue;
     __weak IBOutlet NSLayoutConstraint *bottomViewConstraint;
 }
 
