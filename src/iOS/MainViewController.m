@@ -614,59 +614,6 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
     [self presentViewController:picker animated:YES completion:NULL];
 }
 
-//- (void)saveToAlbum:(UIImage *)image {
-//    NSString *albumName = @"MyAlbum";
-//
-//    void (^saveBlock)(PHAssetCollection *assetCollection) = ^void(PHAssetCollection *assetCollection) {
-//        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-//            PHAssetChangeRequest *assetChangeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-//            PHAssetCollectionChangeRequest *assetCollectionChangeRequest = [PHAssetCollectionChangeRequest changeRequestForAssetCollection:assetCollection];
-//            [assetCollectionChangeRequest addAssets:@[[assetChangeRequest placeholderForCreatedAsset]]];
-//
-//        } completionHandler:^(BOOL success, NSError *error) {
-//            if (!success) {
-//                NSLog(@"Error creating asset: %@", error);
-//            }
-//        }];
-//    };
-//    PHFetchOptions *fetchOptions = [[PHFetchOptions alloc] init];
-//    fetchOptions.predicate = [NSPredicate predicateWithFormat:@"localizedTitle = %@", albumName];
-//    PHFetchResult *fetchResult = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:fetchOptions];
-//    if (fetchResult.count > 0) {
-//        saveBlock(fetchResult.firstObject);
-//    } else {
-//        __block PHObjectPlaceholder *albumPlaceholder;
-//        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-//            PHAssetCollectionChangeRequest *changeRequest = [PHAssetCollectionChangeRequest creationRequestForAssetCollectionWithTitle:albumName];
-//            albumPlaceholder = changeRequest.placeholderForCreatedAssetCollection;
-//
-//        } completionHandler:^(BOOL success, NSError *error) {
-//            if (success) {
-//                PHFetchResult *fetchResults = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:@[albumPlaceholder.localIdentifier] options:nil];
-//                if (fetchResults.count > 0) {
-//                    saveBlock(fetchResults.firstObject);
-//                }
-//            } else {
-//                NSLog(@"Error creating album: %@", error);
-//            }
-//        }];
-//    }
-//}
-
-//- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-//    NSLog(@"Media Info: %@", info);
-//    NSString *mediaType = [info valueForKey:UIImagePickerControllerMediaType];
-//
-//    if([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
-//        UIImage *photoTaken = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-//        //Save Photo to library only if it wasnt already saved i.e. its just been taken
-//        if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
-//            UIImageWriteToSavedPhotosAlbum(photoTaken, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-//        }
-//    }
-//    [picker dismissViewControllerAnimated:YES completion:NULL];
-//}
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
