@@ -85,8 +85,14 @@
 	<string>Your location will be displayed and followed on the map.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location will be displayed and followed on the map.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) photo use</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) photo use</string>
+	<key>Privacy - Camera Usage Description </key>
+	<string>$(PRODUCT_NAME) camera use</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(PRODUCT_NAME) media library use</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
