@@ -365,7 +365,7 @@ typedef enum {
 }
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
-//    if(![_keyValueDict objectForKey:@"lanes"]) {
+    //    if(![_keyValueDict objectForKey:@"lanes"]) {
     //        _laneCount = laneStepper.value;
     //    } else {
     //        _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
@@ -373,21 +373,20 @@ typedef enum {
     //    }
     //    [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
     NSInteger  value = (int)sender.value;
-    value = laneStepper.value;
+    //    value = laneStepper.value;
     NSLog(@"sender value =%i", (int)value);
-    if([_keyValueDict objectForKey:@"lanes"]){
-       _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
-        laneStepper.value = _laneCount;
+    if(![_keyValueDict objectForKey:@"lanes"]){
+        laneStepper.value = _laneCount;//[[_keyValueDict valueForKey:@"lanes"] intValue];
+    } else {
+        _laneCount = laneStepper.value;
     }
-    [_editorLayer setNeedsLayout];
-    [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+    //    [_editorLayer setNeedsLayout];
+    [txtValue setText:[NSString stringWithFormat:@"%i", (int)laneStepper.value]];
     [_editorLayer setNeedsLayout];
     if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
-//        [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+        //        [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
         saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
-    } //else {
-//        saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
-//    }
+    }
 }
 
 - (IBAction)closeBtnPressed:(id)sender {
