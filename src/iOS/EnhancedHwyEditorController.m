@@ -70,11 +70,15 @@ typedef enum {
     _selectedWay = _editorLayer.selectedWay;
     _tags = [NSMutableArray arrayWithCapacity:_selectedWay.tags.count];
     NSMutableArray * nameTags = [[NSMutableArray alloc] init];
+    NSMutableArray * laneTags = [[NSMutableArray alloc] init];
     //enumerating through the tags
     [_keyValueDict enumerateKeysAndObjectsUsingBlock:^(NSString * tag, NSString * value, BOOL *stop) {
         [_tags addObject:[NSMutableArray arrayWithObjects:tag, value, nil]];
         if ( [tag hasPrefix:@"name"] ){
             [nameTags addObject:[NSMutableArray arrayWithObjects:tag, value, nil]];
+        }
+        if ([tag hasPrefix:@"lanes"]){
+            [laneTags addObject:[NSMutableArray arrayWithObjects:tag, value, nil]];
         }
     }];
     //RIGHT HERE
@@ -88,6 +92,19 @@ typedef enum {
         [nameTags addObject:[NSMutableArray arrayWithObjects:@"name", @"", nil]];
         _nameTags = nameTags;
         [_tags addObject:[NSMutableArray arrayWithObjects:@"name", @"", nil]];
+    }
+    
+    
+    if ( laneTags.count > 0 ) {
+        _laneTags = [[laneTags sortedArrayUsingComparator:^NSComparisonResult(NSArray * obj1,NSArray * obj2) {
+            return [obj1[0] compare:obj2[0]];
+        }] mutableCopy];
+    }
+    else {
+        // Add a blank name to add it if it doesn't have one
+        [laneTags addObject:[NSMutableArray arrayWithObjects:@"lanes", @"", nil]];
+        _laneTags = laneTags;
+        [_tags addObject:[NSMutableArray arrayWithObjects:@"lanes", @"", nil]];
     }
     //PresetKeyUserDefined * customPreset
     // Check for `name` presets and add them as options in the list
@@ -103,6 +120,9 @@ typedef enum {
         if ( [custom.tagKey hasPrefix:@"name"] ){
             [_namePresets addObject:custom.tagKey];
         }
+        if ( [custom.tagKey hasPrefix:@"lanes"] ){
+            [_lanePresets addObject:custom.tagKey];
+        }
     }
     
     if ( ![_keyValueDict objectForKey:@"oneway"]){
@@ -114,13 +134,16 @@ typedef enum {
     [self setOnewayBtnStyle];
     
     //lanecount for stepper
-//    if(![_keyValueDict objectForKey:@"lanes"]) {
-//        _laneCount = laneStepper.value;
-//    } else {
-//        _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
-//        _stepper.value = _laneCount;
-//    }
-//    [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
+    // If there is a lanetag set that equal to the textValue and stepper value
+    // Else if empty we need to set it equal to zero
+    // current lane count
+    //    _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
+    if([[_keyValueDict valueForKey:@"lanes"] intValue]) {
+        laneStepper.value = [[_keyValueDict valueForKey:@"lanes"] intValue];
+    } else {
+        laneStepper.value += 1;
+    }
+    [_txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
     [tagTable reloadData];
 }
 
@@ -156,6 +179,7 @@ typedef enum {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _nameTags.count;
+    return _laneTags.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -294,7 +318,6 @@ typedef enum {
         [cell.text2 becomeFirstResponder];
         return;
     }
-    
     if ( touch.view != _highwayEditorView ) {
         // continue to pan map
         [self dismissViewControllerAnimated:false completion:nil]; // closes the keyboard
@@ -365,28 +388,22 @@ typedef enum {
 }
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
-    //    if(![_keyValueDict objectForKey:@"lanes"]) {
-    //        _laneCount = laneStepper.value;
-    //    } else {
-    //        _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
-    //        _stepper.value = _laneCount;
-    //    }
-    //    [txtValue setText:[NSString stringWithFormat:@"%d", (int)laneStepper.value]];
-    NSInteger  value = (int)sender.value;
-    //    value = laneStepper.value;
-    NSLog(@"sender value =%i", (int)value);
-    if(![_keyValueDict objectForKey:@"lanes"]){
-        laneStepper.value = _laneCount;//[[_keyValueDict valueForKey:@"lanes"] intValue];
-    } else {
-        _laneCount = laneStepper.value;
+    self.txtValue.text = [NSString stringWithFormat:@"%d", (int)laneStepper.value];
+    NSLog(@"Lanstepper line 370: %d", (int)laneStepper.value);
+    NSMutableArray * laneTag;
+    NSInteger * index = 0;
+    for ( NSMutableArray * kv in _tags ){
+        if ( [kv[0] isEqualToString:@"lanes"] )
+            laneTag = kv;
+        index++;
     }
-    //    [_editorLayer setNeedsLayout];
-    [txtValue setText:[NSString stringWithFormat:@"%i", (int)laneStepper.value]];
+    NSString * laneString = [NSString stringWithFormat:@"%d", (int)laneStepper.value];
+    laneTag[1] = laneString;
     [_editorLayer setNeedsLayout];
-    if ( ![self isTagDictChanged:[self keyValueDictionary]] ) {
-        //        [txtValue setText:[NSString stringWithFormat:@"%li", (long)value]];
+    if ([self isTagDictChanged:[self keyValueDictionary]]) {
         saveButton.enabled = [self isTagDictChanged:[self keyValueDictionary]];
-    }
+    } else
+        saveButton.enabled = laneStepper.value;
 }
 
 - (IBAction)closeBtnPressed:(id)sender {

@@ -41,6 +41,7 @@
     NSMutableArray    * _tags;
     NSMutableArray    * _nameTags;
     NSMutableArray    * _namePresets;
+    NSMutableArray    * _lanePresets;
     NSMutableArray    * _laneTags;
     IBOutlet UIButton * oneWayButton;
     IBOutlet UIButton * reverseButton;
@@ -48,13 +49,15 @@
     IBOutlet UIButton * saveButton;
     IBOutlet UIStepper * laneStepper;
     IBOutlet UIButton * closeBtn;
-    IBOutlet UITextField * txtValue;
+//    IBOutlet UITextField * txtValue;
     __weak IBOutlet NSLayoutConstraint *bottomViewConstraint;
 }
 
 @property (strong,nonatomic)    NSMutableDictionary *    keyValueDict;
 
 @property (weak, nonatomic) IBOutlet UIStepper *stepper;
+
+@property (strong, nonatomic) IBOutlet UITextField *txtValue;
 
 @property (strong, nonatomic) IBOutlet EnhancedHwyEditorView * highwayEditorView;
 @property (strong, nonatomic) IBOutlet UILabel * highwayEditorLabel;
