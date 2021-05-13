@@ -133,7 +133,11 @@ typedef enum {
     
     [self setOnewayBtnStyle];
     
-    // lanecount for stepper
+    //lanecount for stepper
+    // If there is a lanetag set that equal to the textValue and stepper value
+    // Else if empty we need to set it equal to zero
+    // current lane count
+    //    _laneCount = [[_keyValueDict valueForKey:@"lanes"] intValue];
     if([[_keyValueDict valueForKey:@"lanes"] intValue]) {
         laneStepper.value = [[_keyValueDict valueForKey:@"lanes"] intValue];
     } else {
@@ -385,6 +389,7 @@ typedef enum {
 
 - (IBAction)laneStepperPressed:(UIStepper *)sender {
     self.txtValue.text = [NSString stringWithFormat:@"%d", (int)laneStepper.value];
+    NSLog(@"Lanstepper line 370: %d", (int)laneStepper.value);
     NSMutableArray * laneTag;
     NSInteger * index = 0;
     for ( NSMutableArray * kv in _tags ){
