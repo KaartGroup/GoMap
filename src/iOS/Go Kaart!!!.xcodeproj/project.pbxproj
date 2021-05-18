@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -102,6 +102,8 @@
 		0E39C3EB25E8293C0043463D /* EditorMapLayer+Ocean.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E39C3EA25E8293C0043463D /* EditorMapLayer+Ocean.swift */; };
 		0E3F0C1B261F642D008A869B /* PresetKeyTagCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3F0C1A261F642D008A869B /* PresetKeyTagCase.swift */; };
 		0E5200DF25EC54C500A722BF /* RulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5200DE25EC54C400A722BF /* RulerView.m */; };
+		0E62DD4D26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E62DD4C26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework */; };
+		0E62DD4E26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0E62DD4C26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0E68F27925EEA72E00A9871A /* POI.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E68F27B25EEA72E00A9871A /* POI.storyboard */; };
 		0E80819F25EDEDFD00CF82A8 /* POI-Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E80819E25EDEDFD00CF82A8 /* POI-Icons.xcassets */; };
 		0E839D0925F712010047C2B1 /* HeightViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E839D0625F712010047C2B1 /* HeightViewController.m */; };
@@ -156,6 +158,7 @@
 		64E21EB522651C06004605D7 /* OSMMapDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21EB422651C06004605D7 /* OSMMapDataTestCase.swift */; };
 		64E21EB822651F2D004605D7 /* XCTestCase+UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64E21EB722651F2D004605D7 /* XCTestCase+UserDefaults.swift */; };
 		64F59A50240915840093DCDB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64F59A4F240915840093DCDB /* MainViewController.swift */; };
+		ADA252C4EDB40E51DD1738A1 /* Pods_Go_Kaart__.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33A2FEC71AADB868669A13CA /* Pods_Go_Kaart__.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -174,6 +177,20 @@
 			remoteInfo = "Go Map!!";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0E62DD4F26544D5E0013AC70 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0E62DD4E26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		02072AD51BD46B1700F1CAB4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -356,6 +373,7 @@
 		02F8F4331696004B002A0820 /* NominatimViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NominatimViewController.m; sourceTree = "<group>"; };
 		02FFCE0916A7360B001A5B8A /* NSMutableArray+PartialSort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+PartialSort.h"; path = "../Shared/NSMutableArray+PartialSort.h"; sourceTree = "<group>"; };
 		02FFCE0A16A7360B001A5B8A /* NSMutableArray+PartialSort.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "NSMutableArray+PartialSort.mm"; path = "../Shared/NSMutableArray+PartialSort.mm"; sourceTree = "<group>"; };
+		08C46459BEA2D7D7B2DD1891 /* Pods-Go Kaart!!.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Go Kaart!!.release.xcconfig"; path = "Target Support Files/Pods-Go Kaart!!/Pods-Go Kaart!!.release.xcconfig"; sourceTree = "<group>"; };
 		0E0E6CD325E823B50008BD99 /* OsmTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OsmTags.swift; sourceTree = "<group>"; };
 		0E11092324B67741000CC3FC /* Kaart Final Logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Kaart Final Logo.png"; path = "../../../Kaart Final Logo.png"; sourceTree = "<group>"; };
 		0E28B4A525F2AA3C005FD78C /* apple-app-site-association */ = {isa = PBXFileReference; lastKnownFileType = text; name = "apple-app-site-association"; path = "../apple-app-site-association"; sourceTree = "<group>"; };
@@ -365,6 +383,7 @@
 		0E5200DE25EC54C400A722BF /* RulerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RulerView.m; path = ../Shared/RulerView.m; sourceTree = "<group>"; };
 		0E569CDA25EDEBF90010DDDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../../../../../Desktop/GoMap/src/iOS/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0E569CE425EDEC660010DDDB /* POI-Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "POI-Icons"; path = "../POI-Icons"; sourceTree = "<group>"; };
+		0E62DD4C26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ObjectiveDropboxOfficial.xcframework; path = Carthage/Build/ObjectiveDropboxOfficial.xcframework; sourceTree = "<group>"; };
 		0E634CF6260118A300459ED5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainStoryboard.strings; sourceTree = "<group>"; };
 		0E634CF8260118D400459ED5 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
 		0E634CFA2601190A00459ED5 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/MainStoryboard.strings"; sourceTree = "<group>"; };
@@ -480,6 +499,8 @@
 		0EF9944C249D644E004E82C1 /* EnhancedHwyEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnhancedHwyEditorController.m; sourceTree = "<group>"; };
 		0EF9944E249D6463004E82C1 /* EnhancedHwyEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorController.h; sourceTree = "<group>"; };
 		0EF99452249D6D9C004E82C1 /* EnhancedHwyEditorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnhancedHwyEditorView.h; sourceTree = "<group>"; };
+		33A2FEC71AADB868669A13CA /* Pods_Go_Kaart__.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Go_Kaart__.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D8D95DA8B4D68C3FDF56C20 /* Pods-Go Kaart!!.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Go Kaart!!.debug.xcconfig"; path = "Target Support Files/Pods-Go Kaart!!/Pods-Go Kaart!!.debug.xcconfig"; sourceTree = "<group>"; };
 		64305F7023E7224E00232BB9 /* LocationURLParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationURLParser.h; sourceTree = "<group>"; };
 		64305F7123E7224E00232BB9 /* LocationURLParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationURLParser.m; sourceTree = "<group>"; };
 		64305F7323E723B200232BB9 /* GeoURLParserTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoURLParserTestCase.swift; sourceTree = "<group>"; };
@@ -528,6 +549,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02401F361DE021EE00F32AF5 /* ExternalAccessory.framework in Frameworks */,
+				0E62DD4D26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework in Frameworks */,
 				02EDCC081683EC2D007F9934 /* CFNetwork.framework in Frameworks */,
 				027AD5D219F5A18700120654 /* CoreFoundation.framework in Frameworks */,
 				02ACBA3816713CCB00BB4414 /* CoreGraphics.framework in Frameworks */,
@@ -540,6 +562,7 @@
 				02ACBA3416713CCB00BB4414 /* UIKit.framework in Frameworks */,
 				02A194B219C6A432002338DA /* libsqlite3.0.dylib in Frameworks */,
 				02ACBD191671737300BB4414 /* libxml2.dylib in Frameworks */,
+				ADA252C4EDB40E51DD1738A1 /* Pods_Go_Kaart__.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,6 +660,7 @@
 				64348D09225EA24E00ADE7FB /* GoMapUITests */,
 				02ACBA3216713CCB00BB4414 /* Frameworks */,
 				02ACBA3016713CCB00BB4414 /* Products */,
+				B2AD57891CB07AAC1EE10FBB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -653,6 +677,7 @@
 		02ACBA3216713CCB00BB4414 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E62DD4C26544D5E0013AC70 /* ObjectiveDropboxOfficial.xcframework */,
 				02401F3A1DE157B800F32AF5 /* CoreBluetooth.framework */,
 				02401F351DE021EE00F32AF5 /* ExternalAccessory.framework */,
 				02072AD51BD46B1700F1CAB4 /* StoreKit.framework */,
@@ -672,6 +697,7 @@
 				0277E29316A673CC00456BED /* OpenGLES.framework */,
 				02ACBD1E16717BBB00BB4414 /* QuartzCore.framework */,
 				02ACBA3316713CCB00BB4414 /* UIKit.framework */,
+				33A2FEC71AADB868669A13CA /* Pods_Go_Kaart__.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1018,6 +1044,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		B2AD57891CB07AAC1EE10FBB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4D8D95DA8B4D68C3FDF56C20 /* Pods-Go Kaart!!.debug.xcconfig */,
+				08C46459BEA2D7D7B2DD1891 /* Pods-Go Kaart!!.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1025,9 +1060,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02ACBA6116713CCB00BB4414 /* Build configuration list for PBXNativeTarget "Go Kaart!!" */;
 			buildPhases = (
+				FB760564162A46B5E9C61184 /* [CP] Check Pods Manifest.lock */,
 				02ACBA2B16713CCB00BB4414 /* Sources */,
 				02ACBA2C16713CCB00BB4414 /* Frameworks */,
 				02ACBA2D16713CCB00BB4414 /* Resources */,
+				70A5602A18640BD08F06A5CC /* [CP] Embed Pods Frameworks */,
+				0E62DD4F26544D5E0013AC70 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1177,6 +1215,49 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		70A5602A18640BD08F06A5CC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Go Kaart!!/Pods-Go Kaart!!-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ObjectiveDropboxOfficial.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Go Kaart!!/Pods-Go Kaart!!-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB760564162A46B5E9C61184 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Go Kaart!!-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		02ACBA2B16713CCB00BB4414 /* Sources */ = {
@@ -1602,6 +1683,7 @@
 		};
 		02ACBA6216713CCB00BB4414 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4D8D95DA8B4D68C3FDF56C20 /* Pods-Go Kaart!!.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
@@ -1618,7 +1700,10 @@
 				GCC_PREFIX_HEADER = "Go Map!!-Prefix.pch";
 				INFOPLIST_FILE = "Go Map!!-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
 				PRODUCT_NAME = "Go Kaart!!";
@@ -1635,6 +1720,7 @@
 		};
 		02ACBA6316713CCB00BB4414 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 08C46459BEA2D7D7B2DD1891 /* Pods-Go Kaart!!.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
@@ -1651,7 +1737,10 @@
 				GCC_PREFIX_HEADER = "Go Map!!-Prefix.pch";
 				INFOPLIST_FILE = "Go Map!!-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kaartgroup.GoKaart;
 				PRODUCT_NAME = "Go Kaart!!";
@@ -1690,7 +1779,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMapTests;
@@ -1730,12 +1823,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Go Kaart!! Debug.app/Go Kaart!! Debug";
@@ -1765,7 +1863,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMapUITests;
@@ -1803,12 +1905,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = GoMapUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryceco.GoMapUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Go Map!!";

@@ -1,0 +1,17 @@
+{
+  "commitish" : "6.0.0",
+  "iOS" : [
+    {
+      "hash" : "4c44bf6f28662c56e4c5ebcad65ab735b0dbe72812fd36c5193f5b997b64b634",
+      "name" : "ObjectiveDropboxOfficial",
+      "container" : "ObjectiveDropboxOfficial.xcframework",
+      "identifier" : "ios-arm64_i386_x86_64-simulator"
+    },
+    {
+      "hash" : "5bd23d708a6fcd5887199ef52b467390de3a4be8b3743a547eebd305ebb400c1",
+      "name" : "ObjectiveDropboxOfficial",
+      "container" : "ObjectiveDropboxOfficial.xcframework",
+      "identifier" : "ios-arm64_armv7"
+    }
+  ]
+}
