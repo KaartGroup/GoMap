@@ -77,6 +77,8 @@
                     view = MAPVIEW_MAPNIK;
                 } else if ( [queryItem.value isEqualToString:@"editor"] ) {
                     view = MAPVIEW_EDITOR;
+                } else if ( [queryItem.value isEqualToString:@"aerial+mapnik"]) {
+                    view = MAPVIEW_AERIAL_MAPNIK;
                 }
             } else {
                 // unrecognized parameter
