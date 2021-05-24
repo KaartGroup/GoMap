@@ -478,9 +478,10 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
                     _mapView.viewState = MAPVIEW_EDITORAERIAL;
                 else if ( _mapView.viewState == MAPVIEW_MAPNIK )
                     _mapView.viewState = MAPVIEW_EDITORAERIAL;
+                else if ( _mapView.viewState == MAPVIEW_AERIAL_MAPNIK )
+                    _mapView.viewState = MAPVIEW_EDITORAERIAL;
             }]];
         }
-        
         // add options for changing display
         NSString * prefix = @"🌐 ";
         UIAlertAction * editorOnly = [UIAlertAction actionWithTitle:[prefix stringByAppendingString:NSLocalizedString(@"Editor only",nil)]
@@ -498,7 +499,11 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
                                                               handler:^(UIAlertAction * _Nonnull action) {
             _mapView.viewState = MAPVIEW_EDITORAERIAL;
         }];
-        
+        UIAlertAction * editorAerialWithMapik = [UIAlertAction actionWithTitle:[prefix stringByAppendingString:NSLocalizedString(@"Aerial with Mapnik",nil)]
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * _Nonnull action) {
+            _mapView.viewState = MAPVIEW_AERIAL_MAPNIK;
+        }];
         switch ( _mapView.viewState ) {
             case MAPVIEW_EDITOR:
                 [actionSheet addAction:editorAerial];
@@ -511,6 +516,10 @@ API_AVAILABLE(ios(13.0)) API_AVAILABLE(ios(13.0)){
             case MAPVIEW_AERIAL:
                 [actionSheet addAction:editorAerial];
                 [actionSheet addAction:editorOnly];
+                break;
+            case MAPVIEW_AERIAL_MAPNIK:
+                [actionSheet addAction:editorAerialWithMapik];
+                [actionSheet addAction:aerialOnly];
                 break;
             default:
                 [actionSheet addAction:editorAerial];
