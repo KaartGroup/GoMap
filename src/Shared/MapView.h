@@ -44,6 +44,7 @@ typedef enum _MapViewState {
     MAPVIEW_EDITORAERIAL,
     MAPVIEW_AERIAL,
     MAPVIEW_MAPNIK,
+    MAPVIEW_AERIAL_MAPNIK,
 } MapViewState;
 
 typedef enum _ViewOverlayMask {

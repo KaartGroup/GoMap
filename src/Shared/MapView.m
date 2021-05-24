@@ -901,6 +901,9 @@ static inline MapViewState StateFor(MapViewState state, BOOL override)
         return MAPVIEW_MAPNIK;
     if ( override && state == MAPVIEW_EDITORAERIAL )
         return MAPVIEW_AERIAL;
+    // zoom out to mapik in aerial
+    if ( override && state == MAPVIEW_AERIAL_MAPNIK )
+        return MAPVIEW_MAPNIK;
     return state;
 }
 static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask mask, BOOL zoomedOut)
@@ -965,9 +968,17 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
             _editorLayer.hidden = YES;
             _aerialLayer.hidden = YES;
             _mapnikLayer.hidden = NO;
-            _userInstructionLabel.hidden = _viewState != MAPVIEW_EDITOR && _viewState != MAPVIEW_EDITORAERIAL;
+            _userInstructionLabel.hidden = _viewState != MAPVIEW_EDITOR  && _viewState != MAPVIEW_AERIAL_MAPNIK && _viewState != MAPVIEW_EDITORAERIAL;
             if ( !_userInstructionLabel.hidden )
                 _userInstructionLabel.text = NSLocalizedString(@"Zoom to Edit",nil);
+            break;
+        case MAPVIEW_AERIAL_MAPNIK:
+            _aerialLayer.aerialService = _customAerials.currentAerial;
+            _editorLayer.hidden = NO;
+            _aerialLayer.hidden = NO;
+            _mapnikLayer.hidden = YES;
+            _userInstructionLabel.hidden = YES;
+            _editorLayer.whiteText = YES;
             break;
         case MAPVIEW_NONE:
             // shouldn't occur
