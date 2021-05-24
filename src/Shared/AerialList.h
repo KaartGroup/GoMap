@@ -25,21 +25,26 @@
 @property (readonly) NSData		*	placeholderImage;
 @property (readonly) CGPathRef 		polygon;
 @property (readonly) BOOL			roundZoomUp;
+@property (readonly) NSString	*	startDate;
+@property (readonly) NSString	*	endDate;
 @property (readonly) NSString	*	wmsProjection;
 @property (readonly) NSString	*	attributionString;
 @property (readonly) UIImage	*	attributionIcon;
 @property (readonly) NSString	*	attributionUrl;
 
+
 -(BOOL)isBingAerial;
 -(BOOL)isMapnik;
 -(BOOL)isOsmGpxOverlay;
+-(BOOL)isMaxar;
 
++(NSDate *)dateFromString:(NSString *)string;
 
 -(void)scaleAttributionIconToHeight:(CGFloat)height;
 -(void)loadIconFromWeb:(NSString *)url;
 
--(instancetype)initWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl;
-+(instancetype)aerialWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl;
+-(instancetype)initWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp startDate:(NSString *)startDate endDate:(NSString *)endDate wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl;
++(instancetype)aerialWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp startDate:(NSString *)startDate endDate:(NSString *)endDate wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl;
 +(instancetype)mapnik;
 +(instancetype)gpsTrace;
 +(instancetype)mapboxLocator;
@@ -55,17 +60,8 @@
 	NSMutableArray<AerialService *>	*	_recentlyUsed;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 @property (nonatomic) 	AerialService				*	currentAerial;
 @property (readonly) 	NSDate						*	lastDownloadDate;
-=======
-@property (nonatomic) 	AerialService	*	currentAerial;
-@property (readonly) 	NSDate			*	lastDownloadDate;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-@property (nonatomic) AerialService	*	currentAerial;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 -(void)load;
 -(void)save;

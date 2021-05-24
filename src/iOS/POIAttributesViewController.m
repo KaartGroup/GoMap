@@ -6,14 +6,12 @@
 //  Copyright (c) 2012 Bryce Cogswell. All rights reserved.
 //
 
+#import <SafariServices/SafariServices.h>
 #import "AppDelegate.h"
 #import "EditorMapLayer.h"
 #import "MapView.h"
-#import "OsmObjects.h"
 #import "POIAttributesViewController.h"
 #import "POITabBarController.h"
-#import "WebPageViewController.h"
-
 
 @interface AttributeCustomCell : UITableViewCell
 @property (assign,nonatomic)	IBOutlet UILabel		*	title;
@@ -71,7 +69,6 @@ enum {
 {
 	OsmBaseObject * object = AppDelegate.shared.mapView.editorLayer.selectedPrimary;
 
-<<<<<<< HEAD
 	if ( section == SECTION_METADATA ) {
 		return 6;
 	}
@@ -85,16 +82,6 @@ enum {
 			return object.isWay.nodes.count;	// all nodes
 		}
 	}
-=======
-	AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-	OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
-	if ( object.isNode )
-		return 2;	// longitude/latitude
-	if ( object.isWay )
-		return object.isWay.nodes.count;	// all nodes
-	if ( object.isRelation )
-		return 0;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	return 0;
 }
 
@@ -144,7 +131,6 @@ enum {
 	} else if ( object.isNode ) {
 		if ( indexPath.section == SECTION_NODE_LATLON ) {
 			OsmNode * node = object.isNode;
-<<<<<<< HEAD
 			cell.title.text = NSLocalizedString(@"Lat/Lon",@"coordinates");
 			cell.value.text = [NSString stringWithFormat:@"%f,%f", node.lat, node.lon];
 		}
@@ -157,21 +143,6 @@ enum {
 										: [NSString stringWithFormat:NSLocalizedString(@"%.1f meters, %ld nodes",@"way length if < 10m"), len, nodes];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 		} else if ( indexPath.section == SECTION_WAY_NODES ) {
-=======
-			switch ( indexPath.row ) {
-				case 0:
-					cell.title.text = NSLocalizedString(@"Latitude",nil);
-					cell.value.text = @(node.lat).stringValue;
-					cell.accessoryType	= UITableViewCellAccessoryNone;
-					break;
-				case 1:
-					cell.title.text = NSLocalizedString(@"Longitude",nil);
-					cell.value.text = @(node.lon).stringValue;
-				default:
-					break;
-			}
-		} else if ( object.isWay ) {
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			OsmWay * way = object.isWay;
 			OsmNode * node = way.nodes[ indexPath.row ];
 			cell.title.text = NSLocalizedString(@"Node",nil);
@@ -202,58 +173,34 @@ enum {
 	return indexPath;
 }
 
-<<<<<<< HEAD
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-<<<<<<< HEAD
 	OsmBaseObject * object = AppDelegate.shared.mapView.editorLayer.selectedPrimary;
-=======
-    AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-    OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
     if ( object == nil ) {
         return;
     }
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-	if ( [sender isKindOfClass:[UITableViewCell class]] ) {
-		UITableViewCell * cell = sender;
-		
-		WebPageViewController * web = segue.destinationViewController;
+    NSString *urlString = nil;
 
-		AppDelegate * appDelegate = [AppDelegate getAppDelegate];
-		OsmBaseObject * object = appDelegate.mapView.editorLayer.selectedPrimary;
-		if ( object == nil ) {
-			web.url = nil;
-			return;
-		}
+    if ( indexPath.row == ROW_IDENTIFIER ) {
+        NSString * type = object.isNode ? @"node" : object.isWay ? @"way" : object.isRelation ? @"relation" : @"?";
+        urlString = [NSString stringWithFormat:@"https://www.openstreetmap.org/browse/%@/%@", type, object.ident];
+    } else if ( indexPath.row == ROW_USER ) {
+        urlString = [NSString stringWithFormat:@"https://www.openstreetmap.org/user/%@", object.user];
+    } else if ( indexPath.row == ROW_VERSION ) {
+        NSString * type = object.isNode ? @"node" : object.isWay ? @"way" : object.isRelation ? @"relation" : @"?";
+        urlString = [NSString stringWithFormat:@"https://www.openstreetmap.org/browse/%@/%@/history", type, object.ident];
+    } else if ( indexPath.row == ROW_CHANGESET ) {
+        urlString = [NSString stringWithFormat:@"https://www.openstreetmap.org/browse/changeset/%ld", (long)object.changeset];
+    }
 
-		NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-		if ( indexPath && indexPath.section == 0 ) {
-			if ( indexPath.row == ROW_IDENTIFIER ) {
-				NSString * type = object.isNode ? @"node" : object.isWay ? @"way" : object.isRelation ? @"relation" : @"?";
-				web.title = type.capitalizedString;
-				web.url = [NSString stringWithFormat:@"https://www.openstreetmap.org/browse/%@/%@", type, object.ident];
-			} else if ( indexPath.row == ROW_USER ) {
-				web.title = NSLocalizedString(@"User",nil);
-				web.url = [NSString stringWithFormat:@"https://www.openstreetmap.org/user/%@", object.user];
-			} else if ( indexPath.row == ROW_VERSION ) {
-				web.title = NSLocalizedString(@"History",nil);
-				NSString * type = object.isNode ? @"node" : object.isWay ? @"way" : object.isRelation ? @"relation" : @"?";
-				web.url = [NSString stringWithFormat:@"https://www.openstreetmap.org/browse/%@/%@/history", type, object.ident];
-			} else if ( indexPath.row == ROW_CHANGESET ) {
-				web.title = NSLocalizedString(@"Changeset",nil);
-				web.url = [NSString stringWithFormat:@"https://www.openstreetmap.org/browse/changeset/%ld", (long)object.changeset];
-			} else {
-				assert( NO );
-			}
-		}
+    if ( urlString != nil ) {
+        NSString * encodedUrlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        NSURL * url = [NSURL URLWithString:encodedUrlString];
 
-	}
-	[super prepareForSegue:segue sender:sender];
+        SFSafariViewController * safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+        [self presentViewController:safariViewController animated:YES completion:nil];
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath

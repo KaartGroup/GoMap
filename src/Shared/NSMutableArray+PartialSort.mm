@@ -10,15 +10,7 @@
 #import <algorithm>
 
 #import "NSMutableArray+PartialSort.h"
-<<<<<<< HEAD
-<<<<<<< HEAD
 #import "RenderInfo.h"
-=======
-=======
-#import "OsmObjects.h"
->>>>>>> c5a8eed4... Revert "Lanestepper"
-
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 
 @implementation NSMutableArray (PartialSort)

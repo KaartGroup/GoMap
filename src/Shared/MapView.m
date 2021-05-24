@@ -7,6 +7,7 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import <SafariServices/SafariServices.h>
 
 #import "iosapi.h"
 
@@ -23,16 +24,8 @@
 #import "OsmNotesDatabase.h"
 #import "OsmMapData.h"
 #import "OsmMapData+Edit.h"
-<<<<<<< HEAD
 #import "OsmMember.h"
-<<<<<<< HEAD
 #import "RulerView.h"
-=======
-=======
-#import "OsmObjects.h"
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#import "RulerLayer.h"
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "SpeechBalloonView.h"
 #import "TapAndDragGesture.h"
 #import "TurnRestrictController.h"
@@ -43,35 +36,17 @@
 #import "LocationBallLayer.h"
 #import "MainViewController.h"
 #import "PushPinView.h"
-#import "WebPageViewController.h"
 #else
 #import "HtmlErrorWindow.h"
 #endif
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 static const CGFloat Z_AERIAL			= -100;
-=======
-<<<<<<< HEAD
-#define FRAMERATE_TEST    0
-=======
-#define FRAMERATE_TEST	0
->>>>>>> c5a8eed4... Revert "Lanestepper"
-
-
-<<<<<<< HEAD
-static const CGFloat Z_AERIAL            = -100;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-static const CGFloat Z_AERIAL			= -100;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 static const CGFloat Z_NONAME           = -99;
 static const CGFloat Z_MAPNIK			= -98;
 static const CGFloat Z_LOCATOR			= -50;
 static const CGFloat Z_GPSTRACE			= -40;
-<<<<<<< HEAD
 static const CGFloat Z_EDITOR			= -20;
 static const CGFloat Z_GPX				= -15;
 //static const CGFloat Z_BUILDINGS		= -18;
@@ -91,31 +66,6 @@ static const CGFloat Z_FLASH			= 110;
 
 @interface MapView ()
 @property (strong,nonatomic) IBOutlet UIVisualEffectView	*	statusBarBackground;
-=======
-#if USE_SCENEKIT
-static const CGFloat Z_BUILDINGS3D		= -30;
-#endif
-static const CGFloat Z_EDITOR			= -20;
-static const CGFloat Z_GPX				= -15;
-//static const CGFloat Z_BUILDINGS		= -18;
-static const CGFloat Z_RULER			= -5;	// ruler is below buttons
-static const CGFloat Z_ROTATEGRAPHIC	= -3;
-//static const CGFloat Z_BING_LOGO		= 2;
-static const CGFloat Z_BLINK			= 4;
-static const CGFloat Z_BALL				= 5;
-static const CGFloat Z_TOOLBAR			= 90;
-static const CGFloat Z_PUSHPIN			= 91;
-static const CGFloat Z_CROSSHAIRS		= 100;
-static const CGFloat Z_FLASH			= 110;
-
-
-
-
-
-
-@interface MapView ()
-@property (strong,nonatomic) IBOutlet UIView	*	statusBarBackground;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 @end
 
 @implementation MapView
@@ -144,33 +94,17 @@ const CGFloat kEditControlCornerRadius = 4;
 #else
 	self = [super initWithFrame:frame];
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 	if (self) {
-=======
-    
-    if (self) {
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 #if !TARGET_OS_IPHONE
 		self.wantsLayer = YES;
 #endif
-<<<<<<< HEAD
 		self.layer.masksToBounds = YES;
 		if (@available(iOS 13.0, *)) {
 			self.backgroundColor = [UIColor systemGray6Color];
 		} else {
 			self.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1.0];
 		}
-=======
-
-	if (self) {
-#if !TARGET_OS_IPHONE
-		self.wantsLayer = YES;
-#endif
-		self.layer.masksToBounds = YES;
-		self.backgroundColor = UIColor.whiteColor;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 		_screenFromMapTransform = OSMTransformIdentity();
 		_birdsEyeDistance = 1000.0;
@@ -204,76 +138,24 @@ const CGFloat kEditControlCornerRadius = 4;
 		_gpsTraceLayer.aerialService = [AerialService gpsTrace];
 		_gpsTraceLayer.hidden = YES;
 		[bg addObject:_gpsTraceLayer];
-<<<<<<< HEAD
-=======
-        self.layer.masksToBounds = YES;
-        self.backgroundColor = UIColor.whiteColor;
-        
-        _screenFromMapTransform = OSMTransformIdentity();
-        _birdsEyeDistance = 1000.0;
-        
-        [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-                                                                  @"view.scale"                : @(nan("")),
-                                                                  @"view.latitude"            : @(nan("")),
-                                                                  @"view.longitude"            : @(nan("")),
-                                                                  @"mapViewState"            : @(MAPVIEW_EDITORAERIAL),
-                                                                  @"mapViewEnableBirdsEye"    : @(NO),
-                                                                  @"mapViewEnableRotation"    : @(YES),
-                                                                  @"automaticCacheManagement": @(YES)
-                                                                  }];
-        
-        // this option needs to be set before the editor is initialized
-        self.enableAutomaticCacheManagement    = [[NSUserDefaults standardUserDefaults] boolForKey:@"automaticCacheManagement"];
-        
-        // get aerial database
-        self.customAerials = [AerialList new];
-        
-        NSMutableArray * bg = [NSMutableArray new];
-        
-        _locatorLayer  = [[MercatorTileLayer alloc] initWithMapView:self];
-        _locatorLayer.zPosition = Z_LOCATOR;
-        _locatorLayer.aerialService = [AerialService mapboxLocator];
-        _locatorLayer.hidden = YES;
-        [bg addObject:_locatorLayer];
-        
-        _gpsTraceLayer = [[MercatorTileLayer alloc] initWithMapView:self];
-        _gpsTraceLayer.zPosition = Z_GPSTRACE;
-        _gpsTraceLayer.aerialService = [AerialService gpsTrace];
-        _gpsTraceLayer.hidden = YES;
-        [bg addObject:_gpsTraceLayer];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
         
         _noNameLayer = [[MercatorTileLayer alloc] initWithMapView:self];
         _noNameLayer.zPosition = Z_NONAME;
         _noNameLayer.aerialService = [AerialService noName];
         _noNameLayer.hidden = YES;
         [bg addObject:_noNameLayer];
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 		_aerialLayer = [[MercatorTileLayer alloc] initWithMapView:self];
 		_aerialLayer.zPosition = Z_AERIAL;
 		_aerialLayer.opacity = 0.75;
 		_aerialLayer.aerialService = self.customAerials.currentAerial;
 		_aerialLayer.hidden = YES;
-<<<<<<< HEAD
-=======
-		_aerialLayer.backgroundColor = UIColor.lightGrayColor.CGColor;	// this color is displayed while waiting for tiles to download
->>>>>>> c5a8eed4... Revert "Lanestepper"
 		[bg addObject:_aerialLayer];
 
 		_mapnikLayer = [[MercatorTileLayer alloc] initWithMapView:self];
 		_mapnikLayer.aerialService = [AerialService mapnik];
 		_mapnikLayer.zPosition = Z_MAPNIK;
 		_mapnikLayer.hidden = YES;
-<<<<<<< HEAD
-=======
-		_mapnikLayer.backgroundColor = UIColor.lightGrayColor.CGColor;	// this color is displayed while waiting for tiles to download
->>>>>>> c5a8eed4... Revert "Lanestepper"
 		[bg addObject:_mapnikLayer];
 
 		_editorLayer = [[EditorMapLayer alloc] initWithMapView:self];
@@ -285,7 +167,6 @@ const CGFloat kEditControlCornerRadius = 4;
 		_gpxLayer.hidden = YES;
 		[bg addObject:_gpxLayer];
 
-<<<<<<< HEAD
 		_backgroundLayers = [NSArray arrayWithArray:bg];
 		for ( CALayer * layer in _backgroundLayers ) {
 			[self.layer addSublayer:layer];
@@ -323,139 +204,11 @@ const CGFloat kEditControlCornerRadius = 4;
 			[self.layer addSublayer:_crossHairs];
 		}
 
-=======
-        
-        _aerialLayer = [[MercatorTileLayer alloc] initWithMapView:self];
-        _aerialLayer.zPosition = Z_AERIAL;
-        _aerialLayer.opacity = 0.75;
-        _aerialLayer.aerialService = self.customAerials.currentAerial;
-        _aerialLayer.hidden = YES;
-        _aerialLayer.backgroundColor = UIColor.lightGrayColor.CGColor;    // this color is displayed while waiting for tiles to download
-        [bg addObject:_aerialLayer];
-        
-        _mapnikLayer = [[MercatorTileLayer alloc] initWithMapView:self];
-        _mapnikLayer.aerialService = [AerialService mapnik];
-        _mapnikLayer.zPosition = Z_MAPNIK;
-        _mapnikLayer.hidden = YES;
-        _mapnikLayer.backgroundColor = UIColor.lightGrayColor.CGColor;    // this color is displayed while waiting for tiles to download
-        [bg addObject:_mapnikLayer];
-        
-        _editorLayer = [[EditorMapLayer alloc] initWithMapView:self];
-        _editorLayer.zPosition = Z_EDITOR;
-        [bg addObject:_editorLayer];
-        
-        _gpxLayer = [[GpxLayer alloc] initWithMapView:self];
-        _gpxLayer.zPosition = Z_GPX;
-        _gpxLayer.hidden = YES;
-        [bg addObject:_gpxLayer];
-        
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#if USE_SCENEKIT
-		_buildings3D = [[Buildings3DView alloc] initWithFrame:self.bounds];
-		_buildings3D.mapView = self;
-		[self addSubview:_buildings3D];
-		_buildings3D.layer.zPosition = Z_BUILDINGS3D;
-#endif
-<<<<<<< HEAD
-        
-        _backgroundLayers = [NSArray arrayWithArray:bg];
-        for ( CALayer * layer in _backgroundLayers ) {
-            [self.layer addSublayer:layer];
-        }
-        
-        _rulerLayer = [[RulerLayer alloc] init];
-        _rulerLayer.mapView = self;
-        _rulerLayer.zPosition = Z_RULER;
-        [self.layer addSublayer:_rulerLayer];
-        
-        
-        if ( YES ) {
-            // implement crosshairs
-            _crossHairs = [CAShapeLayer new];
-            UIBezierPath * path = [UIBezierPath bezierPath];
-            CGFloat radius = 10;
-            [path moveToPoint:CGPointMake(-radius, 0)];
-            [path addLineToPoint:CGPointMake(radius, 0)];
-            [path moveToPoint:CGPointMake(0, -radius)];
-            [path addLineToPoint:CGPointMake(0, radius)];
-            _crossHairs.anchorPoint    = CGPointMake(0.5, 0.5);
-            _crossHairs.path        = path.CGPath;
-            _crossHairs.strokeColor = [UIColor colorWithRed:1.0 green:1.0 blue:0.5 alpha:1.0].CGColor;
-            _crossHairs.bounds        = CGRectMake(-radius, -radius, 2*radius, 2*radius);
-            _crossHairs.lineWidth    = 2.0;
-            _crossHairs.zPosition    = Z_CROSSHAIRS;
-            
-            path = [UIBezierPath new];
-            CGFloat shadowWidth = 1.0;
-            UIBezierPath * p1 = [UIBezierPath bezierPathWithRect:CGRectMake(-(radius+shadowWidth), -shadowWidth, 2*(radius+shadowWidth), 2*shadowWidth)];
-            UIBezierPath * p2 = [UIBezierPath bezierPathWithRect:CGRectMake(-shadowWidth, -(radius+shadowWidth), 2*shadowWidth, 2*(radius+shadowWidth))];
-            [path appendPath:p1];
-            [path appendPath:p2];
-            _crossHairs.shadowColor        = UIColor.blackColor.CGColor;
-            _crossHairs.shadowOpacity    = 1.0;
-            _crossHairs.shadowPath        = path.CGPath;
-            _crossHairs.shadowRadius    = 0;
-            _crossHairs.shadowOffset    = CGSizeMake(0,0);
-            
-            _crossHairs.position = CGRectCenter( self.bounds );
-            [self.layer addSublayer:_crossHairs];
-        }
-        
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-		
-		_backgroundLayers = [NSArray arrayWithArray:bg];
-		for ( CALayer * layer in _backgroundLayers ) {
-			[self.layer addSublayer:layer];
-		}
-
-		_rulerLayer = [[RulerLayer alloc] init];
-		_rulerLayer.mapView = self;
-		_rulerLayer.zPosition = Z_RULER;
-		[self.layer addSublayer:_rulerLayer];
-
-
-		if ( YES ) {
-			// implement crosshairs
-			_crossHairs = [CAShapeLayer new];
-			UIBezierPath * path = [UIBezierPath bezierPath];
-			CGFloat radius = 10;
-			[path moveToPoint:CGPointMake(-radius, 0)];
-			[path addLineToPoint:CGPointMake(radius, 0)];
-			[path moveToPoint:CGPointMake(0, -radius)];
-			[path addLineToPoint:CGPointMake(0, radius)];
-			_crossHairs.anchorPoint	= CGPointMake(0.5, 0.5);
-			_crossHairs.path		= path.CGPath;
-			_crossHairs.strokeColor = [UIColor colorWithRed:1.0 green:1.0 blue:0.5 alpha:1.0].CGColor;
-			_crossHairs.bounds		= CGRectMake(-radius, -radius, 2*radius, 2*radius);
-			_crossHairs.lineWidth	= 2.0;
-			_crossHairs.zPosition	= Z_CROSSHAIRS;
-
-			path = [UIBezierPath new];
-			CGFloat shadowWidth = 1.0;
-			UIBezierPath * p1 = [UIBezierPath bezierPathWithRect:CGRectMake(-(radius+shadowWidth), -shadowWidth, 2*(radius+shadowWidth), 2*shadowWidth)];
-			UIBezierPath * p2 = [UIBezierPath bezierPathWithRect:CGRectMake(-shadowWidth, -(radius+shadowWidth), 2*shadowWidth, 2*(radius+shadowWidth))];
-			[path appendPath:p1];
-			[path appendPath:p2];
-			_crossHairs.shadowColor		= UIColor.blackColor.CGColor;
-			_crossHairs.shadowOpacity	= 1.0;
-			_crossHairs.shadowPath		= path.CGPath;
-			_crossHairs.shadowRadius	= 0;
-			_crossHairs.shadowOffset	= CGSizeMake(0,0);
-
-			_crossHairs.position = CGRectCenter( self.bounds );
-			[self.layer addSublayer:_crossHairs];
-		}
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if 0
 		_voiceAnnouncement = [VoiceAnnouncement new];
 		_voiceAnnouncement.mapView = self;
 		_voiceAnnouncement.radius = 30;	// meters
-<<<<<<< HEAD
 #endif
-<<<<<<< HEAD
 
 #if 0	// no evidence this help things
 		for ( CALayer * layer in _backgroundLayers ) {
@@ -497,140 +250,23 @@ const CGFloat kEditControlCornerRadius = 4;
 			} else {
 				[self removePin];
 			}
-=======
-        
-#if 0    // no evidence this help things
-        for ( CALayer * layer in _backgroundLayers ) {
-            layer.drawsAsynchronously = YES;
-        }
-        _rulerLayer.drawsAsynchronously    = YES;
-=======
-#endif
-
-#if 0	// no evidence this help things
-		for ( CALayer * layer in _backgroundLayers ) {
-			layer.drawsAsynchronously = YES;
-		}
-		_rulerLayer.drawsAsynchronously	= YES;
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#endif
-
-#if !TARGET_OS_IPHONE
-		[self setFrame:frame];
-#endif
-
-#if TARGET_OS_IPHONE
-<<<<<<< HEAD
-<<<<<<< HEAD
-        _editorLayer.mapData.undoCommentCallback = ^(BOOL undo,NSDictionary * context) {
-            
-            if ( self.silentUndo )
-                return;
-            
-            NSString      * title     = undo ? NSLocalizedString(@"Undo",nil) : NSLocalizedString(@"Redo",nil);
-            NSString      * action     = context[@"comment"];
-            NSData          * location = context[@"location"];
-            
-            if ( location.length == sizeof(OSMTransform) ) {
-                const OSMTransform * transform = (OSMTransform *)[location bytes];
-                self.screenFromMapTransform = *transform;
-            }
-            
-            _editorLayer.selectedRelation     = context[ @"selectedRelation" ];
-            _editorLayer.selectedWay         = context[ @"selectedWay" ];
-            _editorLayer.selectedNode        = context[ @"selectedNode" ];
-            
-            NSString * pushpin = context[@"pushpin"];
-            if ( pushpin && _editorLayer.selectedPrimary ) {
-                // since we don't record the pushpin location until after a drag has begun we need to re-center on the object:
-                CGPoint pt = CGPointFromString(pushpin);
-                CLLocationCoordinate2D loc = [self longitudeLatitudeForScreenPoint:pt birdsEye:YES];
-                OSMPoint pos = [_editorLayer.selectedPrimary pointOnObjectForPoint:OSMPointMake(loc.longitude, loc.latitude)];
-                pt = [self screenPointForLatitude:pos.y longitude:pos.x birdsEye:YES];
-                // place pushpin
-                [self placePushpinAtPoint:pt object:_editorLayer.selectedPrimary];
-            } else {
-                [self removePin];
-            }
-            NSString * message = [NSString stringWithFormat:@"%@ %@", title, action];
-            [self flashMessage:message];
-        };
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-		_editorLayer.mapData.undoCommentCallback = ^(BOOL undo,NSDictionary * context) {
-
-			if ( self.silentUndo )
-				return;
-
-			NSString 	 * title 	= undo ? NSLocalizedString(@"Undo",nil) : NSLocalizedString(@"Redo",nil);
-			NSString 	 * action 	= context[@"comment"];
-			NSData 		 * location = context[@"location"];
-
-			if ( location.length == sizeof(OSMTransform) ) {
-				const OSMTransform * transform = (OSMTransform *)[location bytes];
-				self.screenFromMapTransform = *transform;
-			}
-
-			_editorLayer.selectedRelation 	= context[ @"selectedRelation" ];
-			_editorLayer.selectedWay 		= context[ @"selectedWay" ];
-			_editorLayer.selectedNode		= context[ @"selectedNode" ];
-
-			NSString * pushpin = context[@"pushpin"];
-			if ( pushpin && _editorLayer.selectedPrimary ) {
-				// since we don't record the pushpin location until after a drag has begun we need to re-center on the object:
-				CGPoint pt = CGPointFromString(pushpin);
-				CLLocationCoordinate2D loc = [self longitudeLatitudeForScreenPoint:pt birdsEye:YES];
-				OSMPoint pos = [_editorLayer.selectedPrimary pointOnObjectForPoint:OSMPointMake(loc.longitude, loc.latitude)];
-				pt = [self screenPointForLatitude:pos.y longitude:pos.x birdsEye:YES];
-				// place pushpin
-				[self placePushpinAtPoint:pt object:_editorLayer.selectedPrimary];
-			} else {
-				[self removePin];
-			}
-			NSString * message = [NSString stringWithFormat:@"%@ %@", title, action];
-			[self flashMessage:message];
-		};
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #endif
 			NSString * message = [NSString stringWithFormat:@"%@ %@", title, action];
 			[self flashMessage:message];
 		};
-=======
-#endif
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	}
 	return self;
 }
 
 -(void)awakeFromNib
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	[super awakeFromNib];
 
-=======
-    [super awakeFromNib];
-    
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	[super awakeFromNib];
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if TARGET_OS_IPHONE
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:UIApplicationWillResignActiveNotification object:NULL];
 #else
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillTerminate:) name:NSApplicationWillTerminateNotification object:[NSApplication sharedApplication]];
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	_userInstructionLabel.layer.cornerRadius	= 5;
 	_userInstructionLabel.layer.masksToBounds	= YES;
@@ -638,37 +274,13 @@ const CGFloat kEditControlCornerRadius = 4;
 	_userInstructionLabel.textColor				= UIColor.whiteColor;
 	_userInstructionLabel.hidden = YES;
 
-<<<<<<< HEAD
-=======
-    
-    _userInstructionLabel.layer.cornerRadius    = 5;
-    _userInstructionLabel.layer.masksToBounds    = YES;
-    _userInstructionLabel.backgroundColor        = [UIColor colorWithWhite:0.0 alpha:0.3];
-    _userInstructionLabel.textColor                = UIColor.whiteColor;
-    _userInstructionLabel.hidden = YES;
-    
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 #if TARGET_OS_IPHONE
 	_progressIndicator.color = NSColor.greenColor;
 #endif
-<<<<<<< HEAD
 
 	_locationManagerExtraneousNotification = YES;	// flag that we're going to receive a bogus notification from CL
 	_locationManager = [[CLLocationManager alloc] init];
 	_locationManager.delegate = self;
-=======
-    
-    _locationManager = [[CLLocationManager alloc] init];
-    _locationManager.delegate = self;
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-#if TARGET_OS_IPHONE
-	_progressIndicator.color = NSColor.greenColor;
-#endif
-
-	_locationManager = [[CLLocationManager alloc] init];
-	_locationManager.delegate = self;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if TARGET_OS_IPHONE
 	_locationManager.pausesLocationUpdatesAutomatically = NO;
 	_locationManager.allowsBackgroundLocationUpdates = self.gpsInBackground && self.enableGpxLogging;
@@ -715,7 +327,6 @@ const CGFloat kEditControlCornerRadius = 4;
 		[self addGestureRecognizer:scrollWheelGesture];
 	}
 #endif
-<<<<<<< HEAD
 
 	_notesDatabase			= [OsmNotesDatabase new];
 	_notesDatabase.mapData	= _editorLayer.mapData;
@@ -724,55 +335,13 @@ const CGFloat kEditControlCornerRadius = 4;
 	// observe changes to aerial visibility so we can show/hide bing logo
 	[_aerialLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
 	[_editorLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
-=======
-    
-    // set up action button
-    _editControl.hidden = YES;
-    _editControl.selected = NO;
-    _editControl.selectedSegmentIndex = UISegmentedControlNoSegment;
-    [_editControl setTitleTextAttributes:@{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] }
-                                forState:UIControlStateNormal];
-    _editControl.layer.zPosition = Z_TOOLBAR;
-    
-    // long press for selecting from multiple objects
-    UILongPressGestureRecognizer * longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-    longPress.delegate = self;
-    [self addGestureRecognizer:longPress];
-    
-    // two-finger rotation
-    UIRotationGestureRecognizer * rotationGesture = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotationGesture:)];
-    rotationGesture.delegate = self;
-    [self addGestureRecognizer:rotationGesture];
-    
-    // long-press on + for adding nodes via taps
-    _addNodeButtonLongPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(addNodeButtonLongPressHandler:)];
-    _addNodeButtonLongPressGestureRecognizer.minimumPressDuration = 0.001;
-    _addNodeButtonLongPressGestureRecognizer.delegate = self;
-    [self.addNodeButton addGestureRecognizer:_addNodeButtonLongPressGestureRecognizer];
-    
-    _notesDatabase            = [OsmNotesDatabase new];
-    _notesDatabase.mapData    = _editorLayer.mapData;
-    _notesViewDict            = [NSMutableDictionary new];
-    
-    // make help button have rounded corners
-    _helpButton.layer.cornerRadius = 10.0;
-    
-    // observe changes to aerial visibility so we can show/hide bing logo
-    [_aerialLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
-    [_editorLayer addObserver:self forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:NULL];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 #if !TARGET_OS_IPHONE
 	[self.window setAcceptsMouseMovedEvents:YES];
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	_editorLayer.whiteText = !_aerialLayer.hidden;
 
 	// center button
-<<<<<<< HEAD
 	_centerOnGPSButton.hidden = YES;
 
 	// compass button
@@ -793,75 +362,12 @@ const CGFloat kEditControlCornerRadius = 4;
 	_tapAndDragGesture = [[TapAndDragGesture alloc] initWithTarget:self action:@selector(handleTapAndDragGesture:)];
 	_tapAndDragGesture.delegate = self;
 	[self addGestureRecognizer:_tapAndDragGesture];
-=======
-    
-    _editorLayer.whiteText = !_aerialLayer.hidden;
-    
-    // center button
-    _centerOnGPSButton.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
-    _centerOnGPSButton.layer.cornerRadius = 5;
-    _centerOnGPSButton.layer.borderWidth = 1.0;
-    _centerOnGPSButton.layer.borderColor = UIColor.blueColor.CGColor;
-    _centerOnGPSButton.hidden = YES;
-    
-    // compass button
-    //self.compassButton.hidden = YES;
-    self.compassButton.clipsToBounds = NO;
-    self.compassButton.contentMode = UIViewContentModeCenter;
-    
-=======
-	_centerOnGPSButton.backgroundColor = [UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5];
-	_centerOnGPSButton.layer.cornerRadius = 5;
-	_centerOnGPSButton.layer.borderWidth = 1.0;
-	_centerOnGPSButton.layer.borderColor = UIColor.blueColor.CGColor;
-	_centerOnGPSButton.hidden = YES;
-
-	// compass button
-	//self.compassButton.hidden = YES;
-	self.compassButton.clipsToBounds = NO;
-	self.compassButton.contentMode = UIViewContentModeCenter;
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#if 0
-	// Support zoom via tap and drag
-	_tapAndDragGesture = [[TapAndDragGesture alloc] initWithTarget:self action:@selector(handleTapAndDragGesture:)];
-	_tapAndDragGesture.delegate = self;
-	[self addGestureRecognizer:_tapAndDragGesture];
 #endif
-
-#if 0
-<<<<<<< HEAD
-    // check for mail periodically and update application badge
-    _mailTimer = dispatch_source_create( DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue() );
-    if ( _mailTimer ) {
-        dispatch_source_set_event_handler(_mailTimer, ^{
-            
-            NSString * url = [OSM_API_URL stringByAppendingFormat:@"api/0.6/user/details"];
-            [_editorLayer.mapData putRequest:url method:@"GET" xml:nil completion:^(NSData *postData,NSString * postErrorMessage) {
-                if ( postData && postErrorMessage == nil ) {
-                    NSString * xmlText = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
-                    NSError * error = nil;
-                    NSXMLDocument * xmlDoc = [[NSXMLDocument alloc] initWithXMLString:xmlText options:0 error:&error];
-                    for ( NSXMLElement * element in [xmlDoc.rootElement nodesForXPath:@"./user/messages/received" error:nil] ) {
-                        NSString * unread = [element attributeForName:@"unread"].stringValue;
-                        [UIApplication sharedApplication].applicationIconBadgeNumber = unread.integerValue +1;
-                        NSLog(@"update badge");
-                    }
-                }
-            }];
-        } );
-        dispatch_source_set_timer( _mailTimer, DISPATCH_TIME_NOW, 120*NSEC_PER_SEC, 10*NSEC_PER_SEC );
-        dispatch_resume( _mailTimer );
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-#endif
-<<<<<<< HEAD
 
 	// these need to be loaded late because assigning to them changes the view
 	self.viewState				= (MapViewState)	[[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewState"];
 	self.viewOverlayMask		= (ViewOverlayMask) [[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewOverlays"];
 
-<<<<<<< HEAD
 	self.enableRotation			= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableRotation"];
 	self.enableBirdsEye			= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBirdsEye"];
 	self.enableUnnamedRoadHalo	= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableUnnamedRoadHalo"];
@@ -871,10 +377,6 @@ const CGFloat kEditControlCornerRadius = 4;
 	_countryCodeForLocation = [[NSUserDefaults standardUserDefaults] objectForKey:@"countryCodeForLocation"];
 
 	[self updateAerialAttributionButton];
-=======
-=======
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 -(void)viewDidAppear
@@ -940,31 +442,6 @@ const CGFloat kEditControlCornerRadius = 4;
 		pivot.position = CGPointMake(radius, radius);
 		[layer addSublayer:pivot];
 	}
-=======
-	// check for mail periodically and update application badge
-	_mailTimer = dispatch_source_create( DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue() );
-	if ( _mailTimer ) {
-		dispatch_source_set_event_handler(_mailTimer, ^{
-
-			NSString * url = [OSM_API_URL stringByAppendingFormat:@"api/0.6/user/details"];
-			[_editorLayer.mapData putRequest:url method:@"GET" xml:nil completion:^(NSData *postData,NSString * postErrorMessage) {
-				if ( postData && postErrorMessage == nil ) {
-					NSString * xmlText = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
-					NSError * error = nil;
-					NSXMLDocument * xmlDoc = [[NSXMLDocument alloc] initWithXMLString:xmlText options:0 error:&error];
-					for ( NSXMLElement * element in [xmlDoc.rootElement nodesForXPath:@"./user/messages/received" error:nil] ) {
-						NSString * unread = [element attributeForName:@"unread"].stringValue;
-						[UIApplication sharedApplication].applicationIconBadgeNumber = unread.integerValue +1;
-						NSLog(@"update badge");
-					}
-				}
-			}];
-		} );
-		dispatch_source_set_timer( _mailTimer, DISPATCH_TIME_NOW, 120*NSEC_PER_SEC, 10*NSEC_PER_SEC );
-		dispatch_resume( _mailTimer );
-	}
-#endif
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 -(BOOL)automatedFramerateTestActive
 {
@@ -1028,185 +505,6 @@ const CGFloat kEditControlCornerRadius = 4;
 		self.fpsLabel.showFPS = NO;
 		[displayLink removeName:NAME];
 	}
-=======
--(void)viewDidAppear
-{
-<<<<<<< HEAD
-<<<<<<< HEAD
-    static BOOL first = YES;
-    if ( !first )
-        return;
-    first = NO;
-    
-    // these need to be loaded late because assigning to them changes the view
-    self.viewState                = (MapViewState)    [[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewState"];
-    self.viewOverlayMask        = (ViewOverlayMask) [[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewOverlays"];
-    
-    self.enableRotation            = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableRotation"];
-    self.enableBirdsEye            = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBirdsEye"];
-    self.enableUnnamedRoadHalo    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableUnnamedRoadHalo"];
-    self.enableGpxLogging        = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBreadCrumb"];
-    self.enableTurnRestriction    = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableTurnRestriction"];
-    self.enableEnhancedHwyEditor = [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableEnhancedHwyEditor"];
-    
-    // get current location
-    double scale        = [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.scale"];
-    double latitude        = [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.latitude"];
-    double longitude    = [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.longitude"];
-    
-    _countryCodeForLocation = [[NSUserDefaults standardUserDefaults] objectForKey:@"countryCodeForLocation"];
-    
-#if 1
-    if ( !isnan(latitude) && !isnan(longitude) && !isnan(scale) ) {
-        [self setTransformForLatitude:latitude longitude:longitude scale:scale];
-    } else {
-        OSMRect rc = OSMRectFromCGRect( self.layer.frame );
-        self.screenFromMapTransform = OSMTransformMakeTranslation( rc.origin.x+rc.size.width/2 - 128, rc.origin.y+rc.size.height/2 - 128);
-        // turn on GPS which will move us to current location
-        self.gpsState = GPS_STATE_LOCATION;
-    }
-#endif
-    
-    // get notes
-    [self updateNotesFromServerWithDelay:0];
-    
-    [self updateAerialAttributionButton];
-    
-#if FRAMERATE_TEST
-    // automaatically scroll view for frame rate testing
-    OSMTransform t = { 161658.59853698246, 0, 0, 161658.59853698246, -6643669.8581485003, -14441173.300930388 };
-    self.screenFromMapTransform = t;
-    __block int side = 0, distance = 0;
-    __weak MapView * weakSelf = self;
-    DisplayLink * displayLink = [DisplayLink shared];
-    [displayLink addName:@"autoScroll" block:^{
-        int dx = 0, dy = 0;
-        switch ( side ) {
-            case 0:
-                dx = 1;
-                break;
-            case 1:
-                dy = 1;
-                break;
-            case 2:
-                dx = -1;
-                break;
-            case 3:
-                dy = -1;
-                break;
-        }
-        if ( ++distance > 30 ) {
-            side = (side+1) % 4;
-            distance = 0;
-        }
-        [weakSelf adjustOriginBy:CGPointMake(dx,dy)];
-    }];
-#endif
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	static BOOL first = YES;
-	if ( !first )
-		return;
-	first = NO;
-
-	// these need to be loaded late because assigning to them changes the view
-	self.viewState				= (MapViewState)	[[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewState"];
-	self.viewOverlayMask		= (ViewOverlayMask) [[NSUserDefaults standardUserDefaults] integerForKey:@"mapViewOverlays"];
-
-	self.enableRotation			= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableRotation"];
-	self.enableBirdsEye			= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBirdsEye"];
-	self.enableUnnamedRoadHalo	= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableUnnamedRoadHalo"];
-	self.enableGpxLogging		= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableBreadCrumb"];
-	self.enableTurnRestriction	= [[NSUserDefaults standardUserDefaults] boolForKey:@"mapViewEnableTurnRestriction"];
-
-	// get current location
-	double scale		= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.scale"];
-	double latitude		= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.latitude"];
-	double longitude	= [[NSUserDefaults standardUserDefaults] doubleForKey:@"view.longitude"];
-	
-	_countryCodeForLocation = [[NSUserDefaults standardUserDefaults] objectForKey:@"countryCodeForLocation"];
-
-#if 1
-	if ( !isnan(latitude) && !isnan(longitude) && !isnan(scale) ) {
-		[self setTransformForLatitude:latitude longitude:longitude scale:scale];
-	} else {
-		OSMRect rc = OSMRectFromCGRect( self.layer.frame );
-		self.screenFromMapTransform = OSMTransformMakeTranslation( rc.origin.x+rc.size.width/2 - 128, rc.origin.y+rc.size.height/2 - 128);
-		// turn on GPS which will move us to current location
-		self.gpsState = GPS_STATE_LOCATION;
-	}
-#endif
-
-	// get notes
-	[self updateNotesFromServerWithDelay:0];
-
-	[self updateAerialAttributionButton];
-	
-#if FRAMERATE_TEST
-	// automaatically scroll view for frame rate testing
-	OSMTransform t = { 161658.59853698246, 0, 0, 161658.59853698246, -6643669.8581485003, -14441173.300930388 };
-	self.screenFromMapTransform = t;
-	__block int side = 0, distance = 0;
-	__weak MapView * weakSelf = self;
-	DisplayLink * displayLink = [DisplayLink shared];
-<<<<<<< HEAD
-
-	if ( enable == [displayLink hasName:NAME] ) {
-		// nothing to do
-	} else if ( enable ) {
-		// automaatically scroll view for frame rate testing
-		self.fpsLabel.showFPS = YES;
-
-		OSMTransform t = { 161658.59853698246, 0, 0, 161658.59853698246, -6643669.8581485003, -14441173.300930388 };
-		self.screenFromMapTransform = t;
-		__block CGFloat angle = 1.5*M_PI;
-		__weak MapView * weakSelf = self;
-		[displayLink addName:NAME block:^{
-			// circle
-			CGFloat x1 = cos(angle);
-			CGFloat y1 = sin(angle);
-			angle += M_PI/60;
-			CGFloat x2 = cos(angle);
-			CGFloat y2 = sin(angle);
-			CGFloat dx = (x2 - x1) * 100;
-			CGFloat dy = (y2 - y1) * 100;
-			[weakSelf adjustOriginBy:CGPointMake(dx,dy)];
-		}];
-	} else {
-		self.fpsLabel.showFPS = NO;
-		[displayLink removeName:NAME];
-	}
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-	[displayLink addName:@"autoScroll" block:^{
-		int dx = 0, dy = 0;
-		switch ( side ) {
-			case 0:
-				dx = 1;
-				break;
-			case 1:
-				dy = 1;
-				break;
-			case 2:
-				dx = -1;
-				break;
-			case 3:
-				dy = -1;
-				break;
-		}
-		if ( ++distance > 30 ) {
-			side = (side+1) % 4;
-			distance = 0;
-		}
-		[weakSelf adjustOriginBy:CGPointMake(dx,dy)];
-	}];
-#endif
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (BOOL)acceptsFirstResponder
@@ -1237,8 +535,6 @@ const CGFloat kEditControlCornerRadius = 4;
 
 -(void)save
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	// save defaults first
 	OSMPoint center = OSMPointFromCGPoint( self.crossHairs.position );
 	center = [self mapPointFromScreenPoint:center birdsEye:NO];
@@ -1247,14 +543,6 @@ const CGFloat kEditControlCornerRadius = 4;
 #if 0 && DEBUG
 	assert( scale > 1.0 );
 #endif
-=======
-	// save defaults first
-	CGRect rc = self.layer.bounds;
-	OSMPoint center = { rc.origin.x + rc.size.width/2, rc.origin.y + rc.size.height/2 };
-	center = [self mapPointFromScreenPoint:center birdsEye:NO];
-	center = LongitudeLatitudeFromMapPoint( center );
-	double scale = OSMTransformScaleX(self.screenFromMapTransform);
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	[[NSUserDefaults standardUserDefaults] setDouble:scale					forKey:@"view.scale"];
 	[[NSUserDefaults standardUserDefaults] setDouble:center.y				forKey:@"view.latitude"];
 	[[NSUserDefaults standardUserDefaults] setDouble:center.x				forKey:@"view.longitude"];
@@ -1278,54 +566,15 @@ const CGFloat kEditControlCornerRadius = 4;
 
 	// then save data
 	[_editorLayer save];
-<<<<<<< HEAD
-=======
-    // save defaults first
-    CGRect rc = self.layer.bounds;
-    OSMPoint center = { rc.origin.x + rc.size.width/2, rc.origin.y + rc.size.height/2 };
-    center = [self mapPointFromScreenPoint:center birdsEye:NO];
-    center = LongitudeLatitudeFromMapPoint( center );
-    double scale = OSMTransformScaleX(self.screenFromMapTransform);
-    [[NSUserDefaults standardUserDefaults] setDouble:scale                    forKey:@"view.scale"];
-    [[NSUserDefaults standardUserDefaults] setDouble:center.y                forKey:@"view.latitude"];
-    [[NSUserDefaults standardUserDefaults] setDouble:center.x                forKey:@"view.longitude"];
-    
-    [[NSUserDefaults standardUserDefaults] setInteger:self.viewState        forKey:@"mapViewState"];
-    [[NSUserDefaults standardUserDefaults] setInteger:self.viewOverlayMask    forKey:@"mapViewOverlays"];
-    
-    [[NSUserDefaults standardUserDefaults] setBool:self.enableRotation            forKey:@"mapViewEnableRotation"];
-    [[NSUserDefaults standardUserDefaults] setBool:self.enableBirdsEye            forKey:@"mapViewEnableBirdsEye"];
-    [[NSUserDefaults standardUserDefaults] setBool:self.enableUnnamedRoadHalo    forKey:@"mapViewEnableUnnamedRoadHalo"];
-    [[NSUserDefaults standardUserDefaults] setBool:self.enableGpxLogging        forKey:@"mapViewEnableBreadCrumb"];
-    [[NSUserDefaults standardUserDefaults] setBool:self.enableTurnRestriction    forKey:@"mapViewEnableTurnRestriction"];
-    [[NSUserDefaults standardUserDefaults]
-        setBool:self.enableEnhancedHwyEditor
-        forKey:@"mapViewEnableEnhancedHwyEditor"];
-    [[NSUserDefaults standardUserDefaults] setBool:self.enableAutomaticCacheManagement    forKey:@"automaticCacheManagement"];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:_countryCodeForLocation     forKey:@"countryCodeForLocation"];
-    
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [self.customAerials save];
-    [self.gpxLayer saveActiveTrack];
-    
-    // then save data
-    [_editorLayer save];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 -(void)applicationWillTerminate :(NSNotification *)notification
 {
 	[_voiceAnnouncement removeAll];
 	[self save];
-<<<<<<< HEAD
 }
 
 -(void)layoutSubviews
 {
-<<<<<<< HEAD
 	[super layoutSubviews];
 
 	CGRect bounds = self.bounds;
@@ -1339,93 +588,13 @@ const CGFloat kEditControlCornerRadius = 4;
 	_crossHairs.position = CGRectCenter( bounds );
 
 	_statusBarBackground.hidden = [UIApplication sharedApplication].statusBarHidden;
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)setBounds:(CGRect)bounds
 {
-<<<<<<< HEAD
 	// adjust bounds so we're always centered on 0,0
 	bounds = CGRectMake( -bounds.size.width/2, -bounds.size.height/2, bounds.size.width, bounds.size.height );
 	[super setBounds:bounds];
-=======
-    [super setFrame:rect];
-    
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.0];
-=======
-	[super setFrame:rect];
-
-	[CATransaction begin];
-	[CATransaction setAnimationDuration:0.0];
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#if TARGET_OS_IPHONE
-	CGRect rc = CGRectMake(10, rect.size.height - 80, 150, 30);
-	if (@available(iOS 11.0, *)) {
-		rc.origin.y -= self.safeAreaInsets.bottom;
-		rc.origin.x += self.safeAreaInsets.left;
-	}
-	_rulerLayer.frame = rc;
-#else
-	_rulerLayer.frame = CGRectMake(10, rect.size.height - 40, 150, 30);
-#endif
-<<<<<<< HEAD
-    
-    //    _buildingsLayer.frame = rect;
-    
-    CGSize oldSize = _editorLayer.bounds.size;
-    if ( oldSize.width ) {
-        CGSize newSize = rect.size;
-        CGPoint delta = { (newSize.width - oldSize.width)/2, (newSize.height - oldSize.height)/2 };
-        [self adjustOriginBy:delta];
-    }
-    
-    for ( CALayer * layer in _backgroundLayers ) {
-        if ( [layer isKindOfClass:[MercatorTileLayer class]] ) {
-            layer.anchorPoint = CGPointMake(0.5,0.5);
-            layer.frame = self.layer.bounds;
-        } else {
-            layer.position = self.layer.position;
-            layer.bounds = self.layer.bounds;
-        }
-    }
-    _buildings3D.frame = self.layer.bounds;
-    
-    _crossHairs.position = CGRectCenter( rect );
-    
-    _statusBarBackground.hidden = [UIApplication sharedApplication].statusBarHidden;
-    
-    [CATransaction commit];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-
-//	_buildingsLayer.frame = rect;
-
-	CGSize oldSize = _editorLayer.bounds.size;
-	if ( oldSize.width ) {
-		CGSize newSize = rect.size;
-		CGPoint delta = { (newSize.width - oldSize.width)/2, (newSize.height - oldSize.height)/2 };
-		[self adjustOriginBy:delta];
-	}
-
-	for ( CALayer * layer in _backgroundLayers ) {
-		if ( [layer isKindOfClass:[MercatorTileLayer class]] ) {
-			layer.anchorPoint = CGPointMake(0.5,0.5);
-			layer.frame = self.layer.bounds;
-		} else {
-			layer.position = self.layer.position;
-			layer.bounds = self.layer.bounds;
-		}
-	}
-	_buildings3D.frame = self.layer.bounds;
-
-	_crossHairs.position = CGRectCenter( rect );
-
-	_statusBarBackground.hidden = [UIApplication sharedApplication].statusBarHidden;
-
-	[CATransaction commit];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 #pragma mark Utility
@@ -1455,15 +624,10 @@ const CGFloat kEditControlCornerRadius = 4;
 {
 	UIAlertController * alertError = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
 	[alertError addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-<<<<<<< HEAD
 	[self.mainViewController presentViewController:alertError animated:YES completion:nil];
 }
 
-<<<<<<< HEAD
 -(NSAttributedString *)htmlAsAttributedString:(NSString *)html textColor:(UIColor *)textColor backgroundColor:(UIColor *)backColor
-=======
--(NSAttributedString *)htmlAsAttributedString:(NSString *)html textColor:(UIColor *)textColor
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	if ( [html hasPrefix:@"<"] ) {
 		NSDictionary<NSAttributedStringDocumentReadingOptionKey,id> * d1 = @{
@@ -1478,10 +642,7 @@ const CGFloat kEditControlCornerRadius = 4;
 			NSMutableAttributedString * s = [[NSMutableAttributedString alloc] initWithAttributedString:attrText];
 			// change text color
 			[s addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, s.length)];
-<<<<<<< HEAD
 			[s addAttribute:NSBackgroundColorAttributeName value:backColor range:NSMakeRange(0, s.length)];
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			// center align
 			NSMutableParagraphStyle * paragraphStyle = [NSMutableParagraphStyle new];
 			paragraphStyle.alignment = NSTextAlignmentCenter;
@@ -1495,8 +656,6 @@ const CGFloat kEditControlCornerRadius = 4;
 -(void)flashMessage:(NSString *)message duration:(NSTimeInterval)duration
 {
 #if TARGET_OS_IPHONE
-<<<<<<< HEAD
-<<<<<<< HEAD
 	const CGFloat MAX_ALPHA = 0.8;
 
 	NSAttributedString * attrText = [self htmlAsAttributedString:message textColor:UIColor.whiteColor backgroundColor:UIColor.blackColor];
@@ -1529,122 +688,6 @@ const CGFloat kEditControlCornerRadius = 4;
 			}
 		}];
 	});
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    const CGFloat MAX_ALPHA = 0.8;
-    
-    if ( _flashLabel == nil ) {
-        _flashLabel = [UILabel new];
-        _flashLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
-        _flashLabel.textAlignment = NSTextAlignmentCenter;
-        _flashLabel.textColor = UIColor.whiteColor;
-        _flashLabel.backgroundColor = UIColor.blackColor;
-        _flashLabel.layer.cornerRadius = 15;
-        _flashLabel.layer.masksToBounds = YES;
-        _flashLabel.layer.zPosition = Z_FLASH;
-        _flashLabel.hidden = YES;
-        [self addSubview:_flashLabel];
-    }
-    
-    _flashLabel.text = message;
-    
-    // set size/position
-    [_flashLabel sizeToFit];
-    CGRect rc = _flashLabel.frame;
-    rc.origin.x = self.bounds.origin.x + (self.bounds.size.width - rc.size.width) / 2;
-    rc.origin.y = self.bounds.origin.y + self.bounds.size.height/4 + (self.bounds.size.height - rc.size.height) / 2;
-    rc = CGRectInset(rc, -20, -20);
-    _flashLabel.frame = rc;
-    
-    if ( _flashLabel.hidden ) {
-        // animate in
-        _flashLabel.alpha = 0.0;
-        _flashLabel.hidden = NO;
-        [UIView animateWithDuration:0.25 animations:^{
-            _flashLabel.alpha = MAX_ALPHA;
-        }];
-    } else {
-        // already displayed
-        [_flashLabel.layer removeAllAnimations];
-        _flashLabel.alpha = MAX_ALPHA;
-    }
-    
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [UIView animateWithDuration:0.25 animations:^{
-            _flashLabel.alpha = 0.0;
-        } completion:^(BOOL finished){
-            if ( finished && ((CALayer *)_flashLabel.layer.presentationLayer).opacity == 0.0 ) {
-                _flashLabel.hidden = YES;
-            }
-        }];
-    });
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
-	[self.viewController presentViewController:alertError animated:YES completion:nil];
-}
-
--(void)flashMessage:(NSString *)message duration:(NSTimeInterval)duration
-{
-#if TARGET_OS_IPHONE
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	const CGFloat MAX_ALPHA = 0.8;
-
-	if ( _flashLabel == nil ) {
-		_flashLabel = [UILabel new];
-		_flashLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle3];
-		_flashLabel.textAlignment = NSTextAlignmentCenter;
-		_flashLabel.textColor = UIColor.whiteColor;
-		_flashLabel.backgroundColor = UIColor.blackColor;
-		_flashLabel.layer.cornerRadius = 15;
-		_flashLabel.layer.masksToBounds = YES;
-		_flashLabel.layer.zPosition = Z_FLASH;
-		_flashLabel.hidden = YES;
-		[self addSubview:_flashLabel];
-	}
-
-	_flashLabel.text = message;
-
-	// set size/position
-	[_flashLabel sizeToFit];
-	CGRect rc = _flashLabel.frame;
-	rc.origin.x = self.bounds.origin.x + (self.bounds.size.width - rc.size.width) / 2;
-	rc.origin.y = self.bounds.origin.y + self.bounds.size.height/4 + (self.bounds.size.height - rc.size.height) / 2;
-	rc = CGRectInset(rc, -20, -20);
-	_flashLabel.frame = rc;
-
-	if ( _flashLabel.hidden ) {
-		// animate in
-		_flashLabel.alpha = 0.0;
-		_flashLabel.hidden = NO;
-		[UIView animateWithDuration:0.25 animations:^{
-			_flashLabel.alpha = MAX_ALPHA;
-		}];
-	} else {
-		// already displayed
-		[_flashLabel.layer removeAllAnimations];
-		_flashLabel.alpha = MAX_ALPHA;
-	}
-
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC);
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[UIView animateWithDuration:0.25 animations:^{
-			_flashLabel.alpha = 0.0;
-		} completion:^(BOOL finished){
-			if ( finished && ((CALayer *)_flashLabel.layer.presentationLayer).opacity == 0.0 ) {
-				_flashLabel.hidden = YES;
-			}
-		}];
-	});
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #endif
 };
 
@@ -1655,61 +698,10 @@ const CGFloat kEditControlCornerRadius = 4;
 
 -(void)presentError:(NSError *)error flash:(BOOL)flash
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( _lastErrorDate == nil || [[NSDate date] timeIntervalSinceDate:_lastErrorDate] > 3.0 ) {
 
 		NSString * text = error.localizedDescription;
 
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    if ( _lastErrorDate == nil || [[NSDate date] timeIntervalSinceDate:_lastErrorDate] > 3.0 ) {
-        
-        NSString * text = error.localizedDescription;
-        
-        if ( [error.domain isEqualToString:@"HTTP"] && error.code >= 400 && error.code < 500
-            && error.localizedDescription.length > 0 && [error.localizedDescription hasPrefix:@"<"] )
-        {
-            // present HTML error code
-            WebPageViewController * webController = [[WebPageViewController alloc] initWithNibName:@"WebPageView" bundle:nil];
-            [webController view];
-            [[webController.navBar.items lastObject] setTitle:NSLocalizedString(@"Error",nil)];
-            [webController.webView loadHTMLString:error.localizedDescription baseURL:nil];
-            [self.viewController presentViewController:webController animated:YES completion:nil];
-            _lastErrorDate = [NSDate date];
-            return;
-        }
-        
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	if ( _lastErrorDate == nil || [[NSDate date] timeIntervalSinceDate:_lastErrorDate] > 3.0 ) {
-
-		NSString * text = error.localizedDescription;
-
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-		if ( [error.domain isEqualToString:@"HTTP"] && error.code >= 400 && error.code < 500
-			&& error.localizedDescription.length > 0 && [error.localizedDescription hasPrefix:@"<"] )
-		{
-			// present HTML error code
-			WebPageViewController * webController = [[WebPageViewController alloc] initWithNibName:@"WebPageView" bundle:nil];
-			[webController view];
-			[[webController.navBar.items lastObject] setTitle:NSLocalizedString(@"Error",nil)];
-			[webController.webView loadHTMLString:error.localizedDescription baseURL:nil];
-			[self.viewController presentViewController:webController animated:YES completion:nil];
-			_lastErrorDate = [NSDate date];
-			return;
-		}
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if 0
 		id ignorable = [error.userInfo objectForKey:@"Ignorable"];
 		if ( ignorable )
@@ -1717,9 +709,6 @@ const CGFloat kEditControlCornerRadius = 4;
 #endif
 
 #if TARGET_OS_IPHONE
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		BOOL isNetworkError = NO;
 		NSString * title = NSLocalizedString(@"Error",nil);
 		NSString * ignoreButton = nil;
@@ -1756,100 +745,6 @@ const CGFloat kEditControlCornerRadius = 4;
 			}
 			[self.mainViewController presentViewController:alertError animated:YES completion:nil];
 		}
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-        BOOL isNetworkError = NO;
-        NSString * title = NSLocalizedString(@"Error",nil);
-        NSString * ignoreButton = nil;
-        if ( [[error userInfo] valueForKey:@"NSErrorFailingURLKey"] )
-            isNetworkError = YES;
-        NSError * underError = [[error userInfo] objectForKey:@"NSUnderlyingError"];
-        if ( [underError isKindOfClass:[NSError class]] ) {
-            if ( [underError.domain isEqualToString:(NSString *)kCFErrorDomainCFNetwork] )
-                isNetworkError = YES;
-        }
-        if ( isNetworkError ) {
-            if ( _ignoreNetworkErrorsUntilDate && [[NSDate date] timeIntervalSinceDate:_ignoreNetworkErrorsUntilDate] >= 0 )
-                _ignoreNetworkErrorsUntilDate = nil;
-            if ( _ignoreNetworkErrorsUntilDate )
-                return;
-            title = NSLocalizedString(@"Network error",nil);
-            ignoreButton = NSLocalizedString(@"Ignore",nil);
-        }
-        
-        // don't let message be too long
-        if ( text.length > 1000 ) {
-            NSMutableString * newText = [NSMutableString stringWithString:text];
-            [newText deleteCharactersInRange:NSMakeRange(1000, text.length-1000)];
-            [newText appendString:@"..."];
-            text = newText;
-        }
-        
-        if ( flash ) {
-            [self flashMessage:text duration:0.9];
-        } else {
-            UIAlertController * alertError = [UIAlertController alertControllerWithTitle:title message:text preferredStyle:UIAlertControllerStyleAlert];
-            [alertError addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-            if ( ignoreButton ) {
-                [alertError addAction:[UIAlertAction actionWithTitle:ignoreButton style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                    // ignore network errors for a while
-                    _ignoreNetworkErrorsUntilDate = [[NSDate date] dateByAddingTimeInterval:5*60.0];
-                }]];
-            }
-            [self.viewController presentViewController:alertError animated:YES completion:nil];
-        }
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-		BOOL isNetworkError = NO;
-		NSString * title = NSLocalizedString(@"Error",nil);
-		NSString * ignoreButton = nil;
-		if ( [[error userInfo] valueForKey:@"NSErrorFailingURLKey"] )
-			isNetworkError = YES;
-		NSError * underError = [[error userInfo] objectForKey:@"NSUnderlyingError"];
-		if ( [underError isKindOfClass:[NSError class]] ) {
-			if ( [underError.domain isEqualToString:(NSString *)kCFErrorDomainCFNetwork] )
-				isNetworkError = YES;
-		}
-		if ( isNetworkError ) {
-			if ( _ignoreNetworkErrorsUntilDate && [[NSDate date] timeIntervalSinceDate:_ignoreNetworkErrorsUntilDate] >= 0 )
-				_ignoreNetworkErrorsUntilDate = nil;
-			if ( _ignoreNetworkErrorsUntilDate )
-				return;
-			title = NSLocalizedString(@"Network error",nil);
-			ignoreButton = NSLocalizedString(@"Ignore",nil);
-		}
-
-		// don't let message be too long
-		if ( text.length > 1000 ) {
-			NSMutableString * newText = [NSMutableString stringWithString:text];
-			[newText deleteCharactersInRange:NSMakeRange(1000, text.length-1000)];
-			[newText appendString:@"..."];
-			text = newText;
-		}
-
-		if ( flash ) {
-			[self flashMessage:text duration:0.9];
-		} else {
-			UIAlertController * alertError = [UIAlertController alertControllerWithTitle:title message:text preferredStyle:UIAlertControllerStyleAlert];
-			[alertError addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-			if ( ignoreButton ) {
-				[alertError addAction:[UIAlertAction actionWithTitle:ignoreButton style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-					// ignore network errors for a while
-					_ignoreNetworkErrorsUntilDate = [[NSDate date] dateByAddingTimeInterval:5*60.0];
-				}]];
-			}
-			[self.viewController presentViewController:alertError animated:YES completion:nil];
-		}
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #else
 		if ( [text.uppercaseString hasPrefix:@"<!DOCTYPE HTML"] ) {
 			_htmlErrorWindow = [[HtmlErrorWindow alloc] initWithHtml:text];
@@ -1872,19 +767,11 @@ const CGFloat kEditControlCornerRadius = 4;
 	if ( uploadCount > 1 && countLog10 == floor(countLog10) ) {
 		NSString * title = [NSString stringWithFormat:NSLocalizedString(@"You've uploaded %ld changesets with this version of Go Map!!\n\nRate this app?",nil), (long)uploadCount];
         UIAlertController * alertViewRateApp = [UIAlertController alertControllerWithTitle:title message:NSLocalizedString(@"Rating this app makes it easier for other mappers to discover it and increases the visibility of OpenStreetMap.",nil) preferredStyle:UIAlertControllerStyleAlert];
-<<<<<<< HEAD
         [alertViewRateApp addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Maybe later...",@"rate the app later") 	style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
         [alertViewRateApp addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"I'll do it!",@"rate the app now")    	style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
 			[self showInAppStore];
         }]];
         [self.mainViewController presentViewController:alertViewRateApp animated:YES completion:nil];
-=======
-        [alertViewRateApp addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Maybe later...",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-        [alertViewRateApp addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"I'll do it!",nil)    style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-			[self showInAppStore];
-        }]];
-        [self.viewController presentViewController:alertViewRateApp animated:YES completion:nil];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	}
 }
 -(void)showInAppStore
@@ -1892,11 +779,7 @@ const CGFloat kEditControlCornerRadius = 4;
 #if 1
 	NSString * urlText = [NSString stringWithFormat:@"itms-apps://itunes.apple.com/app/id%@", @592990211];
 	NSURL * url = [NSURL URLWithString:urlText];
-<<<<<<< HEAD
 	[[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
-=======
-	[[UIApplication sharedApplication] openURL:url];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #else
 	SKStoreProductViewController * spvc = [SKStoreProductViewController new];
 	spvc.delegate = self; //self is the view controller to present spvc
@@ -1915,58 +798,20 @@ const CGFloat kEditControlCornerRadius = 4;
 
 -(IBAction)requestAerialServiceAttribution:(id)sender
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	AerialService * aerial = self.aerialLayer.aerialService;
 	if ( aerial.isBingAerial ) {
 		// present bing metadata
 		[self.mainViewController performSegueWithIdentifier:@"BingMetadataSegue" sender:self];
-=======
-<<<<<<< HEAD
-    AerialService * aerial = self.aerialLayer.aerialService;
-    if ( aerial.isBingAerial ) {
-        // present bing metadata
-        [self.viewController performSegueWithIdentifier:@"BingMetadataSegue" sender:self];
-    } else if ( aerial.attributionUrl.length > 0 ) {
-        // open the attribution url
-        WebPageViewController * webController = [[WebPageViewController alloc] initWithNibName:@"WebPageView" bundle:nil];
-        webController.url = aerial.attributionUrl;
-        webController.title = NSLocalizedString(@"Imagery Attribution",nil);
-        [self.viewController presentViewController:webController animated:YES completion:nil];
-    }
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	AerialService * aerial = self.aerialLayer.aerialService;
-	if ( aerial.isBingAerial ) {
-		// present bing metadata
-		[self.viewController performSegueWithIdentifier:@"BingMetadataSegue" sender:self];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	} else if ( aerial.attributionUrl.length > 0 ) {
 		// open the attribution url
-<<<<<<< HEAD
 		NSURL * url = [NSURL URLWithString:aerial.attributionUrl];
 		SFSafariViewController * safariViewController = [[SFSafariViewController alloc] initWithURL:url];
-<<<<<<< HEAD
 		[self.mainViewController presentViewController:safariViewController animated:YES completion:nil];
 	}
-=======
-		[self.viewController presentViewController:safariViewController animated:YES completion:nil];
-	}
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-		WebPageViewController * webController = [[WebPageViewController alloc] initWithNibName:@"WebPageView" bundle:nil];
-		webController.url = aerial.attributionUrl;
-		webController.title = NSLocalizedString(@"Imagery Attribution",nil);
-		[self.viewController presentViewController:webController animated:YES completion:nil];
-	}
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)updateCountryCodeForLocationUsingNominatim
 {
-<<<<<<< HEAD
 	if ( self.viewStateZoomedOut )
 		return;
 
@@ -1978,9 +823,6 @@ const CGFloat kEditControlCornerRadius = 4;
 	}
 	_countryCodeLocation = loc;
 
-=======
-	CLLocationCoordinate2D loc = [self longitudeLatitudeForScreenPoint:self.center birdsEye:YES];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	NSString * url = [NSString stringWithFormat:@"https://nominatim.openstreetmap.org/reverse?zoom=13&addressdetails=1&format=json&lat=%f&lon=%f",loc.latitude,loc.longitude];
 	NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
 		if ( data.length ) {
@@ -1988,10 +830,6 @@ const CGFloat kEditControlCornerRadius = 4;
 			if ( json ) {
 				NSString * code = json[ @"address" ][ @"country_code" ];
 				if ( code ) {
-<<<<<<< HEAD
-=======
-					NSLog(@"country = %@\n",code);
->>>>>>> c5a8eed4... Revert "Lanestepper"
 					dispatch_async(dispatch_get_main_queue(), ^{
 						_countryCodeForLocation = code;
 					});
@@ -2008,10 +846,6 @@ const CGFloat kEditControlCornerRadius = 4;
 
 -(void)startObjectRotation
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	_isRotateObjectMode	= YES;
 	_rotateObjectCenter	= _editorLayer.selectedNode ? _editorLayer.selectedNode.location
 						: _editorLayer.selectedWay ? _editorLayer.selectedWay.centerPoint
@@ -2033,32 +867,6 @@ const CGFloat kEditControlCornerRadius = 4;
 	_rotateObjectOverlay.fillColor = [UIColor colorWithRed:0.0 green:1.0 blue:1.0 alpha:0.4].CGColor;
 	_rotateObjectOverlay.zPosition = Z_ROTATEGRAPHIC;
 	[self.layer addSublayer:_rotateObjectOverlay];
-<<<<<<< HEAD
-=======
-    _isRotateObjectMode    = YES;
-    _rotateObjectCenter    = _editorLayer.selectedNode ? _editorLayer.selectedNode.location
-    : _editorLayer.selectedWay ? _editorLayer.selectedWay.centerPoint
-    : _editorLayer.selectedRelation ? _editorLayer.selectedRelation.centerPoint
-    : OSMPointMake(0,0);
-    [self removePin];
-    _rotateObjectOverlay = [[CAShapeLayer alloc] init];
-    CGFloat radiusInner = 70;
-    CGFloat radiusOuter = 90;
-    CGFloat arrowWidth = 60;
-    CGPoint center = [self screenPointForLatitude:_rotateObjectCenter.y longitude:_rotateObjectCenter.x birdsEye:YES];
-    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:center radius:radiusInner startAngle:M_PI/2 endAngle:M_PI clockwise:NO];
-    [path addLineToPoint:CGPointMake(center.x-(radiusOuter+radiusInner)/2+arrowWidth/2,center.y)];
-    [path addLineToPoint:CGPointMake(center.x-(radiusOuter+radiusInner)/2, center.y+arrowWidth/sqrt(2.0))];
-    [path addLineToPoint:CGPointMake(center.x-(radiusOuter+radiusInner)/2-arrowWidth/2,center.y)];
-    [path addArcWithCenter:center radius:radiusOuter startAngle:M_PI endAngle:M_PI/2 clockwise:YES];
-    [path closePath];
-    _rotateObjectOverlay.path = path.CGPath;
-    _rotateObjectOverlay.fillColor = [UIColor colorWithRed:0.0 green:1.0 blue:1.0 alpha:0.4].CGColor;
-    _rotateObjectOverlay.zPosition = Z_ROTATEGRAPHIC;
-    [self.layer addSublayer:_rotateObjectOverlay];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 -(void)endObjectRotation
 {
@@ -2105,10 +913,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(void)setViewState:(MapViewState)state overlays:(ViewOverlayMask)overlays zoomedOut:(BOOL)zoomedOut
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( _viewState == state && _viewOverlayMask == overlays && _viewStateZoomedOut == zoomedOut )
 		return;
 
@@ -2127,7 +931,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 	_locatorLayer.hidden  = (newOverlays & VIEW_OVERLAY_LOCATOR) == 0;
 	_gpsTraceLayer.hidden = (newOverlays & VIEW_OVERLAY_GPSTRACE) == 0;
-<<<<<<< HEAD
     _noNameLayer.hidden   = (newOverlays & VIEW_OVERLAY_NONAME) == 0;
 
 	switch (newState) {
@@ -2178,126 +981,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	[_mainViewController updateUndoRedoButtonState];
 	[self updateAerialAttributionButton];
 	self.addNodeButton.hidden = _editorLayer.hidden;
-=======
-    if ( _viewState == state && _viewOverlayMask == overlays && _viewStateZoomedOut == zoomedOut )
-        return;
-    
-    MapViewState oldState = StateFor(_viewState,_viewStateZoomedOut);
-    MapViewState newState = StateFor( state, zoomedOut );
-    ViewOverlayMask oldOverlays = OverlaysFor(_viewState, _viewOverlayMask, _viewStateZoomedOut);
-    ViewOverlayMask newOverlays = OverlaysFor(state, overlays, zoomedOut);
-    _viewState             = state;
-    _viewOverlayMask     = overlays;
-    _viewStateZoomedOut = zoomedOut;
-    if ( newState == oldState && newOverlays == oldOverlays )
-        return;
-    
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.5];
-    
-    _locatorLayer.hidden  = (newOverlays & VIEW_OVERLAY_LOCATOR) == 0;
-    _gpsTraceLayer.hidden = (newOverlays & VIEW_OVERLAY_GPSTRACE) == 0;
-    _noNameLayer.hidden   = (newOverlays & VIEW_OVERLAY_NONAME) == 0;
-    
-    switch (newState) {
-        case MAPVIEW_EDITOR:
-            _editorLayer.whiteText = NO;
-            _editorLayer.hidden = NO;
-            _aerialLayer.hidden = YES;
-            _mapnikLayer.hidden = YES;
-            _userInstructionLabel.hidden = YES;
-            break;
-        case MAPVIEW_EDITORAERIAL:
-            _editorLayer.whiteText = YES;
-            _aerialLayer.aerialService = _customAerials.currentAerial;
-            _editorLayer.hidden = NO;
-            _aerialLayer.hidden = NO;
-            _mapnikLayer.hidden = YES;
-            _userInstructionLabel.hidden = YES;
-            _aerialLayer.opacity = 0.75;
-            break;
-        case MAPVIEW_AERIAL:
-            _aerialLayer.aerialService = _customAerials.currentAerial;
-            _editorLayer.hidden = YES;
-            _aerialLayer.hidden = NO;
-            _mapnikLayer.hidden = YES;
-            _userInstructionLabel.hidden = YES;
-            _aerialLayer.opacity = 1.0;
-            break;
-        case MAPVIEW_MAPNIK:
-            _editorLayer.hidden = YES;
-            _aerialLayer.hidden = YES;
-            _mapnikLayer.hidden = NO;
-            _userInstructionLabel.hidden = _viewState != MAPVIEW_EDITOR && _viewState != MAPVIEW_EDITORAERIAL;
-            if ( !_userInstructionLabel.hidden )
-                _userInstructionLabel.text = NSLocalizedString(@"Zoom to Edit",nil);
-            break;
-        case MAPVIEW_NONE:
-            // shouldn't occur
-            _editorLayer.hidden = YES;
-            _aerialLayer.hidden = YES;
-            _mapnikLayer.hidden = YES;
-            break;
-    }
-    [self updateNotesFromServerWithDelay:0];
-    
-    [CATransaction commit];
-    
-    // enable/disable editing buttons based on visibility
-    [_viewController updateUndoRedoButtonState];
-    [self updateAerialAttributionButton];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-    _noNameLayer.hidden   = (newOverlays & VIEW_OVERLAY_NONAME) == 0;
-
-	switch (newState) {
-		case MAPVIEW_EDITOR:
-			_editorLayer.whiteText = NO;
-			_editorLayer.hidden = NO;
-			_aerialLayer.hidden = YES;
-			_mapnikLayer.hidden = YES;
-			_userInstructionLabel.hidden = YES;
-			break;
-		case MAPVIEW_EDITORAERIAL:
-			_editorLayer.whiteText = YES;
-			_aerialLayer.aerialService = _customAerials.currentAerial;
-			_editorLayer.hidden = NO;
-			_aerialLayer.hidden = NO;
-			_mapnikLayer.hidden = YES;
-			_userInstructionLabel.hidden = YES;
-			_aerialLayer.opacity = 0.75;
-			break;
-		case MAPVIEW_AERIAL:
-			_aerialLayer.aerialService = _customAerials.currentAerial;
-			_editorLayer.hidden = YES;
-			_aerialLayer.hidden = NO;
-			_mapnikLayer.hidden = YES;
-			_userInstructionLabel.hidden = YES;
-			_aerialLayer.opacity = 1.0;
-			break;
-		case MAPVIEW_MAPNIK:
-			_editorLayer.hidden = YES;
-			_aerialLayer.hidden = YES;
-			_mapnikLayer.hidden = NO;
-			_userInstructionLabel.hidden = _viewState != MAPVIEW_EDITOR && _viewState != MAPVIEW_EDITORAERIAL;
-			if ( !_userInstructionLabel.hidden )
-				_userInstructionLabel.text = NSLocalizedString(@"Zoom to Edit",nil);
-			break;
-		case MAPVIEW_NONE:
-			// shouldn't occur
-			_editorLayer.hidden = YES;
-			_aerialLayer.hidden = YES;
-			_mapnikLayer.hidden = YES;
-			break;
-	}
-	[self updateNotesFromServerWithDelay:0];
-
-	[CATransaction commit];
-
-	// enable/disable editing buttons based on visibility
-	[_viewController updateUndoRedoButtonState];
-	[self updateAerialAttributionButton];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 -(MapViewState)viewState
 {
@@ -2342,8 +1025,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 }
 -(void)setEnableGpxLogging:(BOOL)enableBreadCrumb
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( _enableGpxLogging != enableBreadCrumb ) {
 		_enableGpxLogging = enableBreadCrumb;
 
@@ -2351,35 +1032,7 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 		_locationManager.allowsBackgroundLocationUpdates = self.gpsInBackground && self.enableGpxLogging;
 	}
-=======
-    if ( _enableGpxLogging != enableBreadCrumb ) {
-        _enableGpxLogging = enableBreadCrumb;
-        
-        _gpxLayer.hidden = !self.enableGpxLogging;
-        
-        _locationManager.allowsBackgroundLocationUpdates = self.gpsInBackground && self.enableGpxLogging;
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 }
-
--(void)setEnableTurnRestriction:(BOOL)enableTurnRestriction
-{
-	if ( _enableTurnRestriction != enableTurnRestriction ) {
-		_enableTurnRestriction = enableTurnRestriction;
-		[_editorLayer.mapData clearCachedProperties];    // reset layers associated with objects
-		[_editorLayer setNeedsLayout];
-=======
-	if ( _enableGpxLogging != enableBreadCrumb ) {
-		_enableGpxLogging = enableBreadCrumb;
-
-		_gpxLayer.hidden = !self.enableGpxLogging;
-
-		_locationManager.allowsBackgroundLocationUpdates = self.gpsInBackground && self.enableGpxLogging;
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	}
-}
-<<<<<<< HEAD
-=======
 
 -(void)setEnableTurnRestriction:(BOOL)enableTurnRestriction
 {
@@ -2389,29 +1042,15 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		[_editorLayer setNeedsLayout];
 	}
 }
-#pragma mark Coordinate Transforms
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
 
 
 #pragma mark Coordinate Transforms
 
 -(void)setScreenFromMapTransform:(OSMTransform)t
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( OSMTransformEqual(t, _screenFromMapTransform) )
 		return;
 
-=======
-    if ( OSMTransformEqual(t, _screenFromMapTransform) )
-        return;
-    
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	if ( OSMTransformEqual(t, _screenFromMapTransform) )
-		return;
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if TARGET_OS_IPHONE
 	// save pushpinView coordinates
 	CLLocationCoordinate2D pp = { 0 };
@@ -2444,16 +1083,11 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		t = OSMTransformTranslate(t, 0, mul*mapSize/scale);
 	}
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	// update transform
 	_screenFromMapTransform = t;
 
 	// determine if we've zoomed out enough to disable editing
-<<<<<<< HEAD
 	OSMRect bbox = [self screenLongitudeLatitude];
 	double area = SurfaceArea(bbox);
 	BOOL isZoomedOut = area > 2.0*1000*1000;
@@ -2466,37 +1100,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 	[self updateCountryCodeForLocationUsingNominatim];
 
-=======
-    
-    // update transform
-    _screenFromMapTransform = t;
-    
-    // determine if we've zoomed out enough to disable editing
-    CGPoint center = CGRectCenter(self.bounds);
-    CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:center birdsEye:YES];
-    double area = MetersPerDegree( latLon.latitude );
-    OSMRect rcMap = [self boundingMapRectForScreen];
-    area = area*area * rcMap.size.width * rcMap.size.height;
-    self.viewStateZoomedOut = area > 2.0*1000*1000;
-    
-    [_rulerLayer updateDisplay];
-    [self updateMouseCoordinates];
-    [self updateUserLocationIndicator:nil];
-    
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	CGPoint center = CGRectCenter(self.bounds);
-	CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:center birdsEye:YES];
-	double area = MetersPerDegree( latLon.latitude );
-	OSMRect rcMap = [self boundingMapRectForScreen];
-	area = area*area * rcMap.size.width * rcMap.size.height;
-	self.viewStateZoomedOut = area > 2.0*1000*1000;
-
-	[_rulerLayer updateDisplay];
-	[self updateMouseCoordinates];
-	[self updateUserLocationIndicator:nil];
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if TARGET_OS_IPHONE
 	// update pushpin location
 	if ( _pushpinView ) {
@@ -2526,30 +1129,12 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(OSMPoint)mapPointFromScreenPoint:(OSMPoint)point birdsEye:(BOOL)birdsEye
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( _birdsEyeRotation && birdsEye ) {
 		CGPoint center = CGRectCenter(self.layer.bounds);
 		point = FromBirdsEye( point, center, _birdsEyeDistance, _birdsEyeRotation );
 	}
 	point = OSMPointApplyTransform( point, self.mapFromScreenTransform );
-<<<<<<< HEAD
 	return point;
-=======
-    if ( _birdsEyeRotation && birdsEye ) {
-        CGPoint center = CGRectCenter(self.layer.bounds);
-        point = FromBirdsEye( point, center, _birdsEyeDistance, _birdsEyeRotation );
-    }
-    point = OSMPointApplyTransform( point, self.mapFromScreenTransform );
-    
-    return point;
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-
-	return point;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(OSMPoint)screenPointFromMapPoint:(OSMPoint)point birdsEye:(BOOL)birdsEye
@@ -2564,10 +1149,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(CGPoint)wrapScreenPoint:(CGPoint)pt
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( YES /*fabs(_screenFromMapTransform.a) < 16 && fabs(_screenFromMapTransform.c) < 16*/ ) {
 		// only need to do this if we're zoomed out all the way: pick the best world map on which to display location
 
@@ -2575,61 +1156,22 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		OSMPoint unitX = UnitX(_screenFromMapTransform);
 		OSMPoint unitY = { -unitX.y, unitX.x };
 		double mapSize = 256 * OSMTransformScaleX(_screenFromMapTransform);
-<<<<<<< HEAD
 		if ( pt.x >= rc.origin.x+rc.size.width ) {
-=======
-		if ( pt.x > rc.origin.x+rc.size.width ) {
->>>>>>> c5a8eed4... Revert "Lanestepper"
 			pt.x -= mapSize*unitX.x;
 			pt.y -= mapSize*unitX.y;
 		} else if ( pt.x < rc.origin.x ) {
 			pt.x += mapSize*unitX.x;
 			pt.y += mapSize*unitX.y;
 		}
-<<<<<<< HEAD
 		if ( pt.y >= rc.origin.y+rc.size.height ) {
 			pt.x -= mapSize*unitY.x;
 			pt.y -= mapSize*unitY.y;
 		} else if ( pt.y < rc.origin.y ) {
-=======
-		if ( pt.y > rc.origin.y+rc.size.height ) {
-			pt.x -= mapSize*unitY.x;
-			pt.y -= mapSize*unitY.y;
-		} else if ( pt.y < 0 ) {
->>>>>>> c5a8eed4... Revert "Lanestepper"
 			pt.x += mapSize*unitY.x;
 			pt.y += mapSize*unitY.y;
 		}
 	}
 	return pt;
-<<<<<<< HEAD
-=======
-    if ( YES /*fabs(_screenFromMapTransform.a) < 16 && fabs(_screenFromMapTransform.c) < 16*/ ) {
-        // only need to do this if we're zoomed out all the way: pick the best world map on which to display location
-        
-        CGRect rc = self.layer.bounds;
-        OSMPoint unitX = UnitX(_screenFromMapTransform);
-        OSMPoint unitY = { -unitX.y, unitX.x };
-        double mapSize = 256 * OSMTransformScaleX(_screenFromMapTransform);
-        if ( pt.x > rc.origin.x+rc.size.width ) {
-            pt.x -= mapSize*unitX.x;
-            pt.y -= mapSize*unitX.y;
-        } else if ( pt.x < rc.origin.x ) {
-            pt.x += mapSize*unitX.x;
-            pt.y += mapSize*unitX.y;
-        }
-        if ( pt.y > rc.origin.y+rc.size.height ) {
-            pt.x -= mapSize*unitY.x;
-            pt.y -= mapSize*unitY.y;
-        } else if ( pt.y < 0 ) {
-            pt.x += mapSize*unitY.x;
-            pt.y += mapSize*unitY.y;
-        }
-    }
-    return pt;
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(OSMRect)mapRectFromScreenRect:(OSMRect)rect
@@ -2652,7 +1194,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(double)metersPerPixel
 {
-<<<<<<< HEAD
 	CGPoint p1 = _crossHairs.position;
 	CGPoint p2 = { p1.x+1.0, p1.y };
 	CLLocationCoordinate2D c1 = [self longitudeLatitudeForScreenPoint:p1 birdsEye:NO];
@@ -2661,22 +1202,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	OSMPoint o2 = { c2.longitude, c2.latitude };
 	double meters = GreatCircleDistance( o1, o2 );
 	return meters;
-=======
-	OSMRect screenRect = OSMRectFromCGRect( self.layer.bounds );
-	OSMRect rc = [self mapRectFromScreenRect:screenRect];
-	OSMPoint southwest = { rc.origin.x, rc.origin.y + rc.size.height };
-	OSMPoint northeast = { rc.origin.x + rc.size.width, rc.origin.y };
-	southwest = LongitudeLatitudeFromMapPoint(southwest);
-	northeast = LongitudeLatitudeFromMapPoint(northeast);
-	// if the map is zoomed to the top/bottom boundary then the y-axis will be crazy
-	if ( southwest.y > northeast.y ) {
-		northeast.y = southwest.y;
-		screenRect.size.height = 0;
-	}
-	double meters = GreatCircleDistance( southwest, northeast );
-	double pixels = hypot(screenRect.size.width,screenRect.size.height);
-	return meters/pixels;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(OSMRect)boundingScreenRectForMapRect:(OSMRect)mapRect
@@ -2764,7 +1289,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	OSMPoint pt = MapPointForLatitudeLongitude( latitude, longitude );
 	pt = [self screenPointFromMapPoint:pt birdsEye:birdsEye];
 	return CGPointFromOSMPoint(pt);
-<<<<<<< HEAD
 }
 
 -(void)setTransformForLatitude:(double)latitude longitude:(double)longitude
@@ -2773,13 +1297,10 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	CGPoint center = _crossHairs.position;
 	CGPoint delta = { center.x - point.x, center.y - point.y };
 	[self adjustOriginBy:delta];
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)setTransformForLatitude:(double)latitude longitude:(double)longitude scale:(double)scale
 {
-<<<<<<< HEAD
 	// translate
 	[self setTransformForLatitude:latitude longitude:longitude];
 
@@ -2791,38 +1312,16 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 {
 	double scale = 360/(widthDegrees / 2);
 	[self setTransformForLatitude:latitude longitude:longitude scale:scale];
-=======
-#if 1
-	OSMPoint center = MapPointForLatitudeLongitude( latitude, longitude );
-	[self setMapCenter:center scale:scale];
-#else
-	CGPoint point = [self screenPointForLatitude:latitude longitude:longitude];
-	CGPoint center = CGRectCenter( self.layer.bounds );
-
-	CGPoint delta = { center.x - point.x, center.y - point.y };
-	double ratio = scale / OSMTransformScaleX(_screenFromMapTransform);
-
-	[self adjustOriginBy:delta];
-	[self adjustZoomBy:ratio aroundScreenPoint:center];
-#endif
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 }
 
 -(void)setMapLocation:(MapLocation *)location
 {
-<<<<<<< HEAD
 	double zoom = location.zoom ?: 18.0;
 	double scale = pow(2,zoom);
 	[self setTransformForLatitude:location.latitude longitude:location.longitude scale:scale];
 	if ( location.viewState != MAPVIEW_NONE ) {
 		self.viewState = location.viewState;
 	}
-=======
-	CGPoint point = [self screenPointForLatitude:latitude longitude:longitude birdsEye:NO];
-	CGPoint center = CGRectCenter( self.layer.bounds );
-	CGPoint delta = { center.x - point.x, center.y - point.y };
-	[self adjustOriginBy:delta];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)setTransformForLatitude:(double)latitude longitude:(double)longitude zoom:(double)zoom
@@ -2833,13 +1332,8 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(double)zoom
 {
-<<<<<<< HEAD
 	double scaleX = OSMTransformScaleX( _screenFromMapTransform );
 	return log2(scaleX);
-=======
-	double scale = 360/(widthDegrees / 2);
-	[self setTransformForLatitude:latitude longitude:longitude scale:scale];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
@@ -2870,17 +1364,7 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 -(void)progressIncrement
 {
 	assert( _progressActive >= 0 );
-<<<<<<< HEAD
 	_progressActive++;
-=======
-	if ( _progressActive++ == 0 && animate ) {
-#if TARGET_OS_IPHONE
-		[_progressIndicator startAnimating];
-#else
-		[_progressIndicator startAnimation:self];
-#endif
-	}
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 -(void)progressDecrement
 {
@@ -2913,17 +1397,10 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 }
 - (void)setGpsState:(GPS_STATE)gpsState
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( gpsState != _gpsState ) {
 		// update collection of GPX points
 		if ( _gpsState == GPS_STATE_NONE && gpsState != GPS_STATE_NONE ) {
 			// because recording GPX tracks is cheap we record them every time GPS is enabled
-=======
-	if ( gpsState != _gpsState ) {
-		// update collection of GPX points
-		if ( _gpsState == GPS_STATE_NONE && gpsState != GPS_STATE_NONE ) {
->>>>>>> c5a8eed4... Revert "Lanestepper"
 			[_gpxLayer startNewTrack];
 		} else if ( gpsState == GPS_STATE_NONE ) {
 			[_gpxLayer endActiveTrack];
@@ -2958,48 +1435,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 			self.locating = NO;
 		}
 	}
-<<<<<<< HEAD
-=======
-    if ( gpsState != _gpsState ) {
-        // update collection of GPX points
-        if ( _gpsState == GPS_STATE_NONE && gpsState != GPS_STATE_NONE ) {
-            [_gpxLayer startNewTrack];
-        } else if ( gpsState == GPS_STATE_NONE ) {
-            [_gpxLayer endActiveTrack];
-        }
-        
-        if ( gpsState == GPS_STATE_HEADING ) {
-            // rotate to heading
-            CGPoint center = CGRectCenter(self.bounds);
-            double screenAngle = OSMTransformRotation( _screenFromMapTransform );
-            double heading = [self headingForCLHeading:_locationManager.heading];
-            [self animateRotationBy:-(screenAngle+heading) aroundPoint:center];
-        } else if ( gpsState == GPS_STATE_LOCATION ) {
-            // orient toward north
-            CGPoint center = CGRectCenter(self.bounds);
-            double rotation = OSMTransformRotation( _screenFromMapTransform );
-            [self animateRotationBy:-rotation aroundPoint:center];
-        } else {
-            // keep whatever rotation we had
-        }
-        
-        if ( gpsState == GPS_STATE_NONE ) {
-            _centerOnGPSButton.hidden = YES;
-            _voiceAnnouncement.enabled = NO;
-        } else {
-            _voiceAnnouncement.enabled = YES;
-        }
-        
-        _gpsState = gpsState;
-        if ( _gpsState != GPS_STATE_NONE ) {
-            self.locating = YES;
-        } else {
-            self.locating = NO;
-        }
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)setUserOverrodeLocationPosition:(BOOL)userOverrodeLocationPosition
@@ -3020,10 +1455,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 }
 -(void)setGpsInBackground:(BOOL)gpsInBackground
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	[[NSUserDefaults standardUserDefaults] setBool:gpsInBackground forKey:USER_DEFAULTS_GPX_BACKGROUND_TRACKING];
 
 	_locationManager.allowsBackgroundLocationUpdates = gpsInBackground && self.enableGpxLogging;
@@ -3034,26 +1465,10 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 			[_locationManager  requestAlwaysAuthorization];
 		}
 	}
-<<<<<<< HEAD
-=======
-    [[NSUserDefaults standardUserDefaults] setBool:gpsInBackground forKey:USER_DEFAULTS_GPX_BACKGROUND_TRACKING];
-    
-    _locationManager.allowsBackgroundLocationUpdates = gpsInBackground && self.enableGpxLogging;
-    
-    if ( gpsInBackground ) {
-        // ios 8 and later:
-        if ( [_locationManager respondsToSelector:@selector(requestAlwaysAuthorization)] ) {
-            [_locationManager  requestAlwaysAuthorization];
-        }
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)setLocating:(BOOL)locating
 {
-<<<<<<< HEAD
 	if ( _locating == locating )
 		return;
 	_locating = locating;
@@ -3081,31 +1496,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		self.userOverrodeLocationPosition	= NO;
 		self.userOverrodeLocationZoom		= NO;
 		[_locationManager startUpdatingLocation];
-=======
-    if ( _locating == locating )
-        return;
-    _locating = locating;
-    
-    if ( locating ) {
-        
-        CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-        if ( status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied ) {
-            NSString * appName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
-            NSString * title = [NSString stringWithFormat:NSLocalizedString(@"Turn On Location Services to Allow %@ to Determine Your Location",nil),appName];
-            [self showAlert:title message:nil];
-            self.gpsState = GPS_STATE_NONE;
-            return;
-        }
-        
-        // ios 8 and later:
-        if ( [_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)] ) {
-            [_locationManager requestWhenInUseAuthorization];
-        }
-        
-        self.userOverrodeLocationPosition    = NO;
-        self.userOverrodeLocationZoom        = NO;
-        [_locationManager startUpdatingLocation];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 #if TARGET_OS_IPHONE
 		[_locationManager startUpdatingHeading];
 #endif
@@ -3146,27 +1536,12 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 -(IBAction)centerOnGPS:(id)sender
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( _gpsState == GPS_STATE_NONE )
 		return;
 
 	self.userOverrodeLocationPosition = NO;
 	CLLocation * location = _locationManager.location;
 	[self setTransformForLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
-<<<<<<< HEAD
-=======
-    if ( _gpsState == GPS_STATE_NONE )
-        return;
-    
-    self.userOverrodeLocationPosition = NO;
-    CLLocation * location = _locationManager.location;
-    [self setTransformForLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(IBAction)compassPressed:(id)sender
@@ -3186,10 +1561,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 - (void)updateUserLocationIndicator:(CLLocation *)location
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( _locationBallLayer ) {
 		// set new position
 		CLLocationCoordinate2D coord = location ? location.coordinate : _locationManager.location.coordinate;
@@ -3204,25 +1575,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 			pixels = 100.0;
 		_locationBallLayer.radiusInPixels = pixels;
 	}
-<<<<<<< HEAD
-=======
-    if ( _locationBallLayer ) {
-        // set new position
-        CLLocationCoordinate2D coord = location ? location.coordinate : _locationManager.location.coordinate;
-        CGPoint point = [self screenPointForLatitude:coord.latitude longitude:coord.longitude birdsEye:YES];
-        point = [self wrapScreenPoint:point];
-        _locationBallLayer.position = point;
-        
-        // set location accuracy
-        CLLocationAccuracy meters = _locationManager.location.horizontalAccuracy;
-        CGFloat pixels = meters / [self metersPerPixel];
-        if ( pixels == 0.0 )
-            pixels = 100.0;
-        _locationBallLayer.radiusInPixels = pixels;
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (double)headingForCLHeading:(CLHeading *)clHeading
@@ -3264,10 +1616,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	static double smoothHeading = 0.0;
 	double accuracy = newHeading.headingAccuracy;
 	double heading = [self headingForCLHeading:newHeading];
@@ -3290,41 +1638,10 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 			[[DisplayLink shared] removeName:@"smoothHeading"];
 		}
 	}];
-<<<<<<< HEAD
-=======
-    static double smoothHeading = 0.0;
-    double accuracy = newHeading.headingAccuracy;
-    double heading = [self headingForCLHeading:newHeading];
-    
-    [[DisplayLink shared] addName:@"smoothHeading" block:^{
-        double delta = heading - smoothHeading;
-        if ( delta > M_PI ) {
-            delta -= 2*M_PI;
-        } else if ( delta < -M_PI ) {
-            delta += 2*M_PI;
-        }
-        delta *= 0.15;
-        if ( fabs(delta) < 0.001 ) {
-            smoothHeading = heading;
-        } else {
-            smoothHeading += delta;
-        }
-        [self updateHeadingSmoothed:smoothHeading accuracy:accuracy];
-        if ( heading == smoothHeading ) {
-            [[DisplayLink shared] removeName:@"smoothHeading"];
-        }
-    }];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (void)locationUpdatedTo:(CLLocation *)newLocation
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( _gpsState == GPS_STATE_NONE ) {
 		// sometimes we get a notification after turning off notifications
 		DLog(@"discard location notification");
@@ -3357,50 +1674,9 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		self.locating = NO;
 	}
 
-<<<<<<< HEAD
-=======
-    if ( _gpsState == GPS_STATE_NONE ) {
-        // sometimes we get a notification after turning off notifications
-        DLog(@"discard location notification");
-        return;
-    }
-    
-    if ( [newLocation.timestamp compare:[NSDate dateWithTimeIntervalSinceNow:-10.0]] < 0 ) {
-        // its old data
-        DLog(@"discard old GPS data: %@, %@\n",newLocation.timestamp, [NSDate date]);
-        return;
-    }
-    
-    // check if we moved an appreciable distance
-    double delta = hypot( newLocation.coordinate.latitude - _currentLocation.coordinate.latitude,
-                         newLocation.coordinate.longitude - _currentLocation.coordinate.longitude);
-    delta *= MetersPerDegree( newLocation.coordinate.latitude );
-    if ( _locationBallLayer && delta < 0.1 && fabs(newLocation.horizontalAccuracy - _currentLocation.horizontalAccuracy) < 1.0 )
-        return;
-    _currentLocation = [newLocation copy];
-    
-    if ( _voiceAnnouncement && !_editorLayer.hidden ) {
-        [_voiceAnnouncement announceForLocation:newLocation.coordinate];
-    }
-    
-    if ( _gpxLayer.activeTrack ) {
-        [_gpxLayer addPoint:newLocation];
-    }
-    
-    if ( self.gpsState == GPS_STATE_NONE ) {
-        self.locating = NO;
-    }
-    
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 #if TARGET_OS_IPHONE
 	CLLocationCoordinate2D pp = [self longitudeLatitudeForScreenPoint:_pushpinView.arrowPoint birdsEye:NO];
 #endif
-<<<<<<< HEAD
-=======
-#if TARGET_OS_IPHONE
-	CLLocationCoordinate2D pp = [self longitudeLatitudeForScreenPoint:_pushpinView.arrowPoint birdsEye:NO];
-#endif
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	if ( !_userOverrodeLocationPosition ) {
 		// move view to center on new location
@@ -3411,28 +1687,9 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 			[self setTransformForLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude width:widthDegrees];
 		}
 	}
-<<<<<<< HEAD
-=======
-    
-    if ( !_userOverrodeLocationPosition ) {
-        // move view to center on new location
-        if ( _userOverrodeLocationZoom ) {
-            [self setTransformForLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude];
-        } else {
-            double widthDegrees = 20 /*meters*/ / EarthRadius * 360;
-            [self setTransformForLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude width:widthDegrees];
-        }
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
 #if TARGET_OS_IPHONE
 	_pushpinView.arrowPoint = [self screenPointForLatitude:pp.latitude longitude:pp.longitude birdsEye:NO];
 #endif
-<<<<<<< HEAD
-=======
-#if TARGET_OS_IPHONE
-	_pushpinView.arrowPoint = [self screenPointForLatitude:pp.latitude longitude:pp.longitude birdsEye:NO];
-#endif
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	if ( _locationBallLayer == nil ) {
 		_locationBallLayer 				= [LocationBallLayer new];
@@ -3442,20 +1699,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		[self.layer addSublayer:_locationBallLayer];
 	}
 	[self updateUserLocationIndicator:newLocation];
-<<<<<<< HEAD
-=======
-    
-    if ( _locationBallLayer == nil ) {
-        _locationBallLayer                 = [LocationBallLayer new];
-        _locationBallLayer.zPosition     = Z_BALL;
-        _locationBallLayer.heading         = 0.0;
-        _locationBallLayer.showHeading     = YES;
-        [self.layer addSublayer:_locationBallLayer];
-    }
-    [self updateUserLocationIndicator:newLocation];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
@@ -3472,31 +1715,7 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	MainViewController * controller = self.mainViewController;
-=======
-<<<<<<< HEAD
-    MapViewController * controller = self.viewController;
-    [controller setGpsState:GPS_STATE_NONE];
-    
-    if ( ![self isLocationSpecified] ) {
-        // go home
-        [self setTransformForLatitude:47.6858 longitude:-122.1917 width:0.01];
-    }
-    
-    NSString * text = [NSString stringWithFormat:NSLocalizedString(@"Ensure Location Services is enabled and you have granted this application access.\n\nError: %@",nil),
-                       error ? error.localizedDescription : NSLocalizedString(@"Location services timed out.",nil)];
-    text = [NSLocalizedString(@"The current location cannot be determined: ",nil) stringByAppendingString:text];
-    if ( error ) {
-        error = [NSError errorWithDomain:@"Location" code:100 userInfo:@{ NSLocalizedDescriptionKey : text, NSUnderlyingErrorKey : error} ];
-    } else {
-        error = [NSError errorWithDomain:@"Location" code:100 userInfo:@{ NSLocalizedDescriptionKey : text} ];
-    }
-    [self presentError:error flash:NO];
-=======
-	MapViewController * controller = self.viewController;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	if ( error.code == kCLErrorDenied ) {
 		[controller setGpsState:GPS_STATE_NONE];
 		if ( ![self isLocationSpecified] ) {
@@ -3508,32 +1727,12 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 		text = [NSLocalizedString(@"The current location cannot be determined: ",nil) stringByAppendingString:text];
 		error = [NSError errorWithDomain:@"Location" code:100 userInfo:@{ NSLocalizedDescriptionKey : text} ];
 		[self presentError:error flash:NO];
-=======
-	MapViewController * controller = self.viewController;
-	[controller setGpsState:GPS_STATE_NONE];
-	
-	if ( ![self isLocationSpecified] ) {
-		// go home
-		[self setTransformForLatitude:47.6858 longitude:-122.1917 width:0.01];
-	}
-	
-	NSString * text = [NSString stringWithFormat:NSLocalizedString(@"Ensure Location Services is enabled and you have granted this application access.\n\nError: %@",nil),
-					   error ? error.localizedDescription : NSLocalizedString(@"Location services timed out.",nil)];
-	text = [NSLocalizedString(@"The current location cannot be determined: ",nil) stringByAppendingString:text];
-	if ( error ) {
-		error = [NSError errorWithDomain:@"Location" code:100 userInfo:@{ NSLocalizedDescriptionKey : text, NSUnderlyingErrorKey : error} ];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	} else {
+		// driving through a tunnel or something
+		NSString * text = NSLocalizedString(@"Location unavailable",nil);
 		error = [NSError errorWithDomain:@"Location" code:100 userInfo:@{ NSLocalizedDescriptionKey : text} ];
+		[self presentError:error flash:YES];
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-	[self presentError:error flash:NO];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
@@ -3542,15 +1741,10 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 -(void)placePushpinForSelection
 {
 	OsmBaseObject * selection = _editorLayer.selectedPrimary;
-<<<<<<< HEAD
 	if ( selection == nil ) {
 		[self removePin];
 		return;
 	}
-=======
-	if ( selection == nil )
-		return;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	OSMPoint loc = selection.selectionPoint;
 	CGPoint point = [self screenPointForLatitude:loc.y longitude:loc.x birdsEye:YES];
 	[self placePushpinAtPoint:point object:selection];
@@ -3564,10 +1758,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 - (IBAction)undo:(id)sender
 {
 #if TARGET_OS_IPHONE
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( _editorLayer.hidden ) {
 		[self flashMessage:NSLocalizedString(@"Editing layer not visible",nil)];
 		return;
@@ -3579,34 +1769,10 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	}
 
 	[self removePin];
-<<<<<<< HEAD
 #endif
 
 	[_editorLayer.mapData undo];
 	[_editorLayer setNeedsLayout];
-=======
-    if ( _editorLayer.hidden ) {
-        [self flashMessage:NSLocalizedString(@"Editing layer not visible",nil)];
-        return;
-    }
-    // if just dropped a pin then undo removes the pin
-    if ( _pushpinView && _editorLayer.selectedPrimary == nil ) {
-        [self removePin];
-        return;
-    }
-    
-    [self removePin];
-#endif
-    
-    [_editorLayer.mapData undo];
-    [_editorLayer setNeedsLayout];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-#endif
-
-	[_editorLayer.mapData undo];
-	[_editorLayer setNeedsLayout];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (IBAction)redo:(id)sender
@@ -3618,21 +1784,9 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	}
 	[self removePin];
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 	[_editorLayer.mapData redo];
 	[_editorLayer setNeedsLayout];
-=======
-    
-    [_editorLayer.mapData redo];
-    [_editorLayer setNeedsLayout];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-
-	[_editorLayer.mapData redo];
-	[_editorLayer setNeedsLayout];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
@@ -3648,7 +1802,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 {
 }
 
-<<<<<<< HEAD
 -(void)adjustOriginBy:(CGPoint)delta
 {
 	if ( delta.x == 0.0 && delta.y == 0.0 )
@@ -3659,50 +1812,10 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 	OSMTransform o = OSMTransformMakeTranslation(delta.x, delta.y);
 	OSMTransform t = OSMTransformConcat( _screenFromMapTransform, o );
 	self.screenFromMapTransform = t;
-=======
--(void)setMapCenter:(OSMPoint)mapCenter scale:(double)newScale
-{
-	// translate
-	OSMPoint point = [self screenPointFromMapPoint:mapCenter birdsEye:NO];
-	CGPoint center = CGRectCenter( self.layer.bounds );
-
-	CGPoint delta = { center.x - point.x, center.y - point.y };
-	[self adjustOriginBy:delta];
-
-	double ratio = newScale / OSMTransformScaleX(_screenFromMapTransform);
-	[self adjustZoomBy:ratio aroundScreenPoint:center];
-}
-
--(void)adjustOriginBy:(CGPoint)delta
-{
-<<<<<<< HEAD
-    if ( delta.x == 0.0 && delta.y == 0.0 )
-        return;
-    
-    [self refreshNoteButtonsFromDatabase];
-    
-    OSMTransform o = OSMTransformMakeTranslation(delta.x, delta.y);
-    OSMTransform t = OSMTransformConcat( _screenFromMapTransform, o );
-    self.screenFromMapTransform = t;
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	if ( delta.x == 0.0 && delta.y == 0.0 )
-		return;
-
-	[self refreshNoteButtonsFromDatabase];
-
-	OSMTransform o = OSMTransformMakeTranslation(delta.x, delta.y);
-	OSMTransform t = OSMTransformConcat( _screenFromMapTransform, o );
-	self.screenFromMapTransform = t;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)adjustZoomBy:(CGFloat)ratio aroundScreenPoint:(CGPoint)zoomCenter
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( _isRotateObjectMode )
 		return;
 
@@ -3719,60 +1832,16 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 
 	[self refreshNoteButtonsFromDatabase];
 
-<<<<<<< HEAD
-=======
-	if ( log2(scale) < 13 && log2(ratio*scale) >= 13 ) {
-		// we zoomed in, so fetch local country code
-		[self updateCountryCodeForLocationUsingNominatim];
-	}
-	
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	OSMPoint offset = [self mapPointFromScreenPoint:OSMPointFromCGPoint(zoomCenter) birdsEye:NO];
 	OSMTransform t = _screenFromMapTransform;
 	t = OSMTransformTranslate( t, offset.x, offset.y );
 	t = OSMTransformScale( t, ratio );
 	t = OSMTransformTranslate( t, -offset.x, -offset.y );
 	self.screenFromMapTransform = t;
-<<<<<<< HEAD
-=======
-    if ( _isRotateObjectMode )
-        return;
-    
-    const double maxZoomIn = 1 << 30;
-    if ( ratio == 1.0 )
-        return;
-    double scale = OSMTransformScaleX(_screenFromMapTransform);
-    if ( ratio * scale < 1.0 ) {
-        ratio = 1.0 / scale;
-    }
-    if ( ratio * scale > maxZoomIn ) {
-        ratio = maxZoomIn / scale;
-    }
-    
-    [self refreshNoteButtonsFromDatabase];
-    
-    if ( log2(scale) < 13 && log2(ratio*scale) >= 13 ) {
-        // we zoomed in, so fetch local country code
-        [self updateCountryCodeForLocationUsingNominatim];
-    }
-    
-    OSMPoint offset = [self mapPointFromScreenPoint:OSMPointFromCGPoint(zoomCenter) birdsEye:NO];
-    OSMTransform t = _screenFromMapTransform;
-    t = OSMTransformTranslate( t, offset.x, offset.y );
-    t = OSMTransformScale( t, ratio );
-    t = OSMTransformTranslate( t, -offset.x, -offset.y );
-    self.screenFromMapTransform = t;
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)rotateBy:(CGFloat)angle aroundScreenPoint:(CGPoint)zoomCenter
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( angle == 0.0 )
 		return;
 
@@ -3796,34 +1865,6 @@ static inline ViewOverlayMask OverlaysFor(MapViewState state, ViewOverlayMask ma
 			_locationBallLayer.heading = screenAngle + heading - M_PI/2;
 		}
 	}
-<<<<<<< HEAD
-=======
-    if ( angle == 0.0 )
-        return;
-    
-    [self refreshNoteButtonsFromDatabase];
-    
-    OSMPoint offset = [self mapPointFromScreenPoint:OSMPointFromCGPoint(zoomCenter) birdsEye:NO];
-    OSMTransform t = _screenFromMapTransform;
-    t = OSMTransformTranslate( t, offset.x, offset.y );
-    t = OSMTransformRotate( t, angle );
-    t = OSMTransformTranslate( t, -offset.x, -offset.y );
-    self.screenFromMapTransform = t;
-    
-    double screenAngle = OSMTransformRotation( _screenFromMapTransform );
-    _compassButton.transform = CGAffineTransformMakeRotation(screenAngle);
-    if ( _locationBallLayer ) {
-        if ( _gpsState == GPS_STATE_HEADING && fabs(_locationBallLayer.heading - -M_PI/2) < 0.0001 ) {
-            // don't pin location ball to North until we've animated our rotation to north
-            _locationBallLayer.heading = -M_PI/2;
-        } else {
-            double heading = [self headingForCLHeading:_locationManager.heading];
-            _locationBallLayer.heading = screenAngle + heading - M_PI/2;
-        }
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 static NSString * const DisplayLinkHeading	= @"Heading";
@@ -3886,10 +1927,6 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 #else
 	double currentRotation = _birdsEyeRotation;
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( currentRotation+angle > maxRotation )
 		angle = maxRotation - currentRotation;
 	if ( currentRotation+angle < 0 )
@@ -3899,46 +1936,17 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 	OSMPoint offset = [self mapPointFromScreenPoint:OSMPointFromCGPoint(center) birdsEye:NO];
 
 	t = OSMTransformTranslate( t, offset.x, offset.y );
-<<<<<<< HEAD
-=======
-    if ( currentRotation+angle > maxRotation )
-        angle = maxRotation - currentRotation;
-    if ( currentRotation+angle < 0 )
-        angle = -currentRotation;
-    
-    CGPoint center = CGRectCenter( self.bounds );
-    OSMPoint offset = [self mapPointFromScreenPoint:OSMPointFromCGPoint(center) birdsEye:NO];
-    
-    t = OSMTransformTranslate( t, offset.x, offset.y );
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if TRANSFORM_3D
 	t = CATransform3DRotate(t, delta, 1.0, 0.0, 0.0);
 #else
 	_birdsEyeRotation += angle;
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	t = OSMTransformTranslate( t, -offset.x, -offset.y );
 	self.screenFromMapTransform = t;
 
 	if ( _locationBallLayer ) {
 		[self updateUserLocationIndicator:nil];
 	}
-<<<<<<< HEAD
-=======
-    t = OSMTransformTranslate( t, -offset.x, -offset.y );
-    self.screenFromMapTransform = t;
-    
-    if ( _locationBallLayer ) {
-        [self updateUserLocationIndicator:nil];
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)rotateToNorth
@@ -3952,10 +1960,6 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 #pragma mark Key presses
 
 /**
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
  Offers the option to either merge tags or replace them with the copied tags.
  @param sender nil
  */
@@ -3963,8 +1967,6 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 {
     NSDictionary * copyPasteTags = [[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"];
     if ( copyPasteTags.count == 0 ) {
-<<<<<<< HEAD
-<<<<<<< HEAD
 		[self showAlert:NSLocalizedString(@"No tags to paste",nil) message:nil];
 		return;
     }
@@ -3986,108 +1988,10 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 		[_editorLayer pasteTagsReplace:_editorLayer.selectedPrimary];
 		[self refreshPushpinText];
 	}
-=======
-=======
-        [self showAlert:NSLocalizedString(@"No tags to paste",nil) message:nil];
-        return;
-    }
-    
-    if ( _editorLayer.selectedPrimary.tags.count > 0 ) {
-        NSString * question = [NSString stringWithFormat:@"Pasting %lu tag(s)", copyPasteTags.count];
-        UIAlertController * alertPaste = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Paste",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
-        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Merge Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
-            [_editorLayer mergeTags:_editorLayer.selectedPrimary];
-            [self refreshPushpinText];
-        }]];
-        [alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Replace Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
-            [_editorLayer replaceTags:_editorLayer.selectedPrimary];
-            [self refreshPushpinText];
-        }]];
-        [self.viewController presentViewController:alertPaste animated:YES completion:nil];
-    } else {
-        [_editorLayer replaceTags:_editorLayer.selectedPrimary];
-        [self refreshPushpinText];
-=======
-		[self showAlert:NSLocalizedString(@"No tags to paste",nil) message:nil];
-		return;
->>>>>>> c5a8eed4... Revert "Lanestepper"
-    }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-/**
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
- Offers the option to copy all tags, copy the name, or copy name and classification
- in the case of a highway
- @param sender nil
- */
--(IBAction)copy:(id)sender
-{
-    if ( _editorLayer.selectedPrimary.tags.count < 1 ) {
-        [self showAlert:NSLocalizedString(@"The object does contain any tags",nil) message:nil];
-        return;
-    }
-    else {
-        NSString * question = [NSString stringWithFormat:@"Copying Tags"];
-        UIAlertController * alertCopy = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Copy",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
-        [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-        if ( !_editorLayer.selectedWay.isOneWay ){
-            [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy All Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
-                [_editorLayer copyTags:_editorLayer.selectedPrimary];
-                [self refreshPushpinText];
-            }]];
-        }
-        if ( _editorLayer.selectedPrimary.tags[@"name"] ){
-            [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy Name",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
-                [_editorLayer copyName:_editorLayer.selectedPrimary];
-                [self refreshPushpinText];
-            }]];
-            if ( _editorLayer.selectedWay.tags[@"highway"] ){
-                [alertCopy addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Copy Name & Classification",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
-                    [_editorLayer copyNameAndClass:_editorLayer.selectedPrimary];
-                    [self refreshPushpinText];
-                }]];
-            }
-        }
-        [self.viewController presentViewController:alertCopy animated:YES completion:nil];
-    }
-<<<<<<< HEAD
->>>>>>> fe5d2ba4... added copyName and copyName&Class functionality
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	if ( _editorLayer.selectedPrimary.tags.count > 0 ) {
-		NSString * question = [NSString stringWithFormat:@"Pasting %lu tag(s)", copyPasteTags.count];
-		UIAlertController * alertPaste = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Paste",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
-		[alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-		[alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Merge Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
-			[_editorLayer mergeTags:_editorLayer.selectedPrimary];
-			[self refreshPushpinText];
-		}]];
-		[alertPaste addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Replace Tags",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * alertAction) {
-			[_editorLayer replaceTags:_editorLayer.selectedPrimary];
-			[self refreshPushpinText];
-		}]];
-		[self.viewController presentViewController:alertPaste animated:YES completion:nil];
-	} else {
-		[_editorLayer replaceTags:_editorLayer.selectedPrimary];
-		[self refreshPushpinText];
-	}
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(IBAction)delete:(id)sender
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	void(^deleteHandler)(UIAlertAction * action) = ^(UIAlertAction * action) {
 		NSString * error = nil;
 		EditAction canDelete = [_editorLayer canDeleteSelectedObject:&error];
@@ -4139,65 +2043,7 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 		[alertDelete addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
 		[alertDelete addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete",nil) style:UIAlertActionStyleDestructive handler:deleteHandler]];
 	}
-<<<<<<< HEAD
 	[self.mainViewController presentViewController:alertDelete animated:YES completion:nil];
-=======
-    void(^deleteHandler)(UIAlertAction * action) = ^(UIAlertAction * action) {
-        NSString * error = nil;
-        EditAction canDelete = [_editorLayer canDeleteSelectedObject:&error];
-        if ( canDelete ) {
-            canDelete();
-            CGPoint pos = _pushpinView.arrowPoint;
-            [self removePin];
-            if ( _editorLayer.selectedPrimary ) {
-                pos = [self pointOnObject:_editorLayer.selectedPrimary forPoint:pos];
-                [self placePushpinAtPoint:pos object:_editorLayer.selectedPrimary];
-            }
-        } else {
-            [self showAlert:NSLocalizedString(@"Delete failed",nil) message:error];
-        }
-    };
-    
-    
-    UIAlertController *    alertDelete;
-    if ( _editorLayer.selectedRelation.isMultipolygon && _editorLayer.selectedPrimary.isWay ) {
-        // delete way from relation
-        alertDelete = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete",nil) message:NSLocalizedString(@"Member of multipolygon relation",nil) preferredStyle:UIAlertControllerStyleActionSheet];
-        [alertDelete addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-        [alertDelete addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete completely",nil) style:UIAlertActionStyleDefault handler:deleteHandler]];
-        [alertDelete addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Detach from relation",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            NSString * error = nil;
-            EditAction canRemove = [_editorLayer.mapData canRemoveObject:_editorLayer.selectedPrimary fromRelation:_editorLayer.selectedRelation error:&error];
-            if ( canRemove ) {
-                canRemove();
-                _editorLayer.selectedRelation = nil;
-                [self refreshPushpinText];
-            } else {
-                [self showAlert:NSLocalizedString(@"Delete failed",nil) message:error];
-            }
-        }]];
-        
-        // compute location for action sheet to originate
-        CGRect button = self.editControl.bounds;
-        CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;    // hack because we can't get the frame for an individual segment
-        button.origin.x += button.size.width - 2*segmentWidth;
-        button.size.width = segmentWidth;
-        alertDelete.popoverPresentationController.sourceView = self.editControl;
-        alertDelete.popoverPresentationController.sourceRect = button;
-        
-    } else {
-        // regular delete
-        NSString * name = [_editorLayer.selectedPrimary friendlyDescription];
-        NSString * question = [NSString stringWithFormat:@"Delete %@?",name];
-        alertDelete = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Delete",nil) message:question preferredStyle:UIAlertControllerStyleAlert];
-        [alertDelete addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-        [alertDelete addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete",nil) style:UIAlertActionStyleDestructive handler:deleteHandler]];
-    }
-    [self.viewController presentViewController:alertDelete animated:YES completion:nil];
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	[self.viewController presentViewController:alertDelete animated:YES completion:nil];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)keyDown:(NSEvent *)event
@@ -4225,7 +2071,6 @@ static NSString * const DisplayLinkHeading	= @"Heading";
 
 #pragma mark Edit Actions
 
-<<<<<<< HEAD
 NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 {
 	switch (action) {
@@ -4248,86 +2093,10 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 		case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", @"Edit action");
 	};
 	return nil;
-=======
-typedef enum {
-	// used by edit control:
-	ACTION_EDITTAGS,
-	ACTION_ADDNOTE,
-	ACTION_DELETE,
-	ACTION_MORE,
-	// used for action sheet edits:
-	ACTION_SPLIT,
-	ACTION_RECTANGULARIZE,
-	ACTION_STRAIGHTEN,
-	ACTION_REVERSE,
-	ACTION_DUPLICATE,
-	ACTION_ROTATE,
-	ACTION_JOIN,
-	ACTION_DISCONNECT,
-	ACTION_CIRCULARIZE,
-	ACTION_HEIGHT,
-	ACTION_COPYTAGS,
-	ACTION_PASTETAGS,
-	ACTION_RESTRICT,
-	ACTION_CREATE_RELATION
-} EDIT_ACTION;
-
-NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
-{
-<<<<<<< HEAD
-    switch (action) {
-        case ACTION_SPLIT:            return NSLocalizedString(@"Split",nil);
-        case ACTION_RECTANGULARIZE:    return NSLocalizedString(@"Make Rectangular",nil);
-        case ACTION_STRAIGHTEN:        return NSLocalizedString(@"Straighten",nil);
-        case ACTION_REVERSE:        return NSLocalizedString(@"Reverse",nil);
-        case ACTION_DUPLICATE:        return NSLocalizedString(@"Duplicate",nil);
-        case ACTION_ROTATE:            return NSLocalizedString(@"Rotate",nil);
-        case ACTION_CIRCULARIZE:    return NSLocalizedString(@"Make Circular",nil);
-        case ACTION_JOIN:            return NSLocalizedString(@"Join",nil);
-        case ACTION_DISCONNECT:        return NSLocalizedString(@"Disconnect",nil);
-        case ACTION_COPYTAGS:        return NSLocalizedString(@"Copy Tags",nil);
-        case ACTION_PASTETAGS:        return NSLocalizedString(@"Paste",nil);
-        case ACTION_EDITTAGS:        return NSLocalizedString(@"Tags", nil);
-        case ACTION_ADDNOTE:        return NSLocalizedString(@"Add Note", nil);
-        case ACTION_DELETE:            return NSLocalizedString(@"Delete",nil);
-        case ACTION_MORE:            return NSLocalizedString(@"More...",nil);
-        case ACTION_HEIGHT:            return NSLocalizedString(@"Measure Height", nil);
-        case ACTION_RESTRICT:        return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
-        case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
-    };
-    return nil;
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
-=======
-	switch (action) {
-		case ACTION_SPLIT:			return NSLocalizedString(@"Split",nil);
-		case ACTION_RECTANGULARIZE:	return NSLocalizedString(@"Make Rectangular",nil);
-		case ACTION_STRAIGHTEN:		return NSLocalizedString(@"Straighten",nil);
-		case ACTION_REVERSE:		return NSLocalizedString(@"Reverse",nil);
-		case ACTION_DUPLICATE:		return NSLocalizedString(@"Duplicate",nil);
-		case ACTION_ROTATE:			return NSLocalizedString(@"Rotate",nil);
-		case ACTION_CIRCULARIZE:	return NSLocalizedString(@"Make Circular",nil);
-		case ACTION_JOIN:			return NSLocalizedString(@"Join",nil);
-		case ACTION_DISCONNECT:		return NSLocalizedString(@"Disconnect",nil);
-		case ACTION_COPYTAGS:		return NSLocalizedString(@"Copy Tags",nil);
-		case ACTION_PASTETAGS:		return NSLocalizedString(@"Paste",nil);
-		case ACTION_EDITTAGS:		return NSLocalizedString(@"Tags", nil);
-		case ACTION_ADDNOTE:		return NSLocalizedString(@"Add Note", nil);
-		case ACTION_DELETE:			return NSLocalizedString(@"Delete",nil);
-		case ACTION_MORE:			return NSLocalizedString(@"More...",nil);
-		case ACTION_HEIGHT:			return NSLocalizedString(@"Measure Height", nil);
-		case ACTION_RESTRICT:		return abbrev ? NSLocalizedString(@"Restrict", nil) : NSLocalizedString(@"Turn Restrictions", nil);
-		case ACTION_CREATE_RELATION:return NSLocalizedString(@"Create Relation", nil);
-	};
-	return nil;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (void)updateEditControl
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	BOOL show = _pushpinView || _editorLayer.selectedPrimary;
 	_editControl.hidden = !show;
 	if ( show ) {
@@ -4345,20 +2114,14 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
 				else
 					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
-<<<<<<< HEAD
 			else
 				self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
-=======
-				else
-					self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 		}
 		[_editControl removeAllSegments];
 		for ( NSNumber * action in _editControlActions ) {
 			NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
 			[_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
 		}
-<<<<<<< HEAD
 		// mark segment labels as adjustsFontSizeToFitWidth
 		for ( UIView * segment in _editControl.subviews ) {
 			for ( UILabel * label in segment.subviews ) {
@@ -4368,120 +2131,10 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 			}
 		}
 	}
-=======
-    BOOL show = _pushpinView || _editorLayer.selectedPrimary;
-    _editControl.hidden = !show;
-    BOOL split = _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
-    NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
-    BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
-    if ( show ) {
-        if ( _editorLayer.selectedPrimary == nil ) {
-            // brand new node
-            if ( _editorLayer.canPasteTags )
-                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
-            else
-                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
-        } else {
-            if ( _editorLayer.selectedPrimary.isRelation )
-                if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
-                else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
-                else
-                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
-                else {
-                    if (_editorLayer.selectedNode && split)
-                        if(restriction)
-                            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_SPLIT), @(ACTION_DELETE), @(ACTION_RESTRICT), @(ACTION_MORE)];
-                        else
-                            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_DELETE), @(ACTION_SPLIT), @(ACTION_MORE)];
-                        else
-                            if (restriction)
-                                self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT), @(ACTION_MORE)];
-                            else
-                                if (!_editorLayer.selectedWay.isClosed && _editorLayer.selectedWay.isOneWay)
-                                    if ( [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", nil]] ||  [[[[NSUserDefaults standardUserDefaults] objectForKey:@"copyPasteTags"] allKeys] isEqualToArray:[NSArray arrayWithObjects:@"name", @"highway", nil]])
-                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
-                                    else
-                                        self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_REVERSE), @(ACTION_DELETE), @(ACTION_MORE) ];
-                                else
-                                    self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_COPYTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
-                }
-        }
-        [_editControl removeAllSegments];
-        for ( NSNumber * action in _editControlActions ) {
-            NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
-            [_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
-        }
-    }
-<<<<<<< HEAD
-//    Same as main repo
-//    BOOL show = _pushpinView || _editorLayer.selectedPrimary;
-//    _editControl.hidden = !show;
-//    if ( show ) {
-//        if ( _editorLayer.selectedPrimary == nil ) {
-//            // brand new node
-//            if ( _editorLayer.canPasteTags )
-//            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
-//            else
-//            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
-//        } else {
-//            if ( _editorLayer.selectedPrimary.isRelation )
-//            if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-//            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
-//            else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-//            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
-//            else
-//            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
-//            else
-//            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
-//        }
-//        [_editControl removeAllSegments];
-//        for ( NSNumber * action in _editControlActions ) {
-//            NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
-//            [_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
-//        }
-//    }
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways
-=======
-    //    Same as main repo
-    //    BOOL show = _pushpinView || _editorLayer.selectedPrimary;
-    //    _editControl.hidden = !show;
-    //    if ( show ) {
-    //        if ( _editorLayer.selectedPrimary == nil ) {
-    //            // brand new node
-    //            if ( _editorLayer.canPasteTags )
-    //            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE), @(ACTION_PASTETAGS) ];
-    //            else
-    //            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_ADDNOTE) ];
-    //        } else {
-    //            if ( _editorLayer.selectedPrimary.isRelation )
-    //            if ( _editorLayer.selectedPrimary.isRelation.isRestriction )
-    //            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_RESTRICT) ];
-    //            else if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon )
-    //            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_MORE) ];
-    //            else
-    //            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS) ];
-    //            else
-    //            self.editControlActions = @[ @(ACTION_EDITTAGS), @(ACTION_PASTETAGS), @(ACTION_DELETE), @(ACTION_MORE) ];
-    //        }
-    //        [_editControl removeAllSegments];
-    //        for ( NSNumber * action in _editControlActions ) {
-    //            NSString * title = ActionTitle( (EDIT_ACTION)action.integerValue, YES );
-    //            [_editControl insertSegmentWithTitle:title atIndex:_editControl.numberOfSegments animated:NO];
-    //        }
-    //    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	}
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (void)presentEditActionSheet:(id)sender
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	NSArray * actionList = nil;
 	if ( _editorLayer.selectedWay ) {
 		if ( _editorLayer.selectedNode ) {
@@ -4544,396 +2197,24 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	button.size.width = segmentWidth;
 	actionSheet.popoverPresentationController.sourceView = self.editControl;
 	actionSheet.popoverPresentationController.sourceRect = button;
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    NSArray * actionList = nil;
-    if ( _editorLayer.selectedWay ) {
-        if ( _editorLayer.selectedNode ) {
-            // node in way
-            NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
-            BOOL disconnect        = parentWays.count > 1 || _editorLayer.selectedNode.hasInterestingTags;
-            //            BOOL split             = _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
-            BOOL join             = parentWays.count > 1;
-            //            BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
-            
-            NSMutableArray * a = [NSMutableArray arrayWithObjects:@(ACTION_COPYTAGS), nil];
-            if ( disconnect )
-                [a addObject:@(ACTION_DISCONNECT)];
-            //            if ( split )
-            //                [a addObject:@(ACTION_SPLIT)];
-            if ( join )
-                [a addObject:@(ACTION_JOIN)];
-            [a addObject:@(ACTION_ROTATE)];
-            //            if ( restriction )
-            //                [a addObject:@(ACTION_RESTRICT)];
-            //            [a addObject:@(ACTION_HEIGHT)];
-            actionList = [NSArray arrayWithArray:a];
-        } else {
-            if ( _editorLayer.selectedWay.isClosed ) {
-                // polygon
-                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE) ];
-            } else {
-                // line
-                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE) ];
-            }
-        }
-    } else if ( _editorLayer.selectedNode ) {
-        // node
-        actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
-    } else if ( _editorLayer.selectedRelation ) {
-        // relation
-        if ( _editorLayer.selectedRelation.isMultipolygon ) {
-            actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
-        } else {
-            actionList = @[ @(ACTION_COPYTAGS) ];
-        }
-    } else {
-        // nothing selected
-        return;
-    }
-    UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    for ( NSNumber * value in actionList ) {
-        NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
-        [actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-            [self performEditAction: (EDIT_ACTION)value.integerValue];
-        }]];
-    }
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-    [self.viewController presentViewController:actionSheet animated:YES completion:nil];
-    // compute location for action sheet to originate
-    CGRect button = self.editControl.bounds;
-    CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;    // hack because we can't get the frame for an individual segment
-    button.origin.x += button.size.width - segmentWidth;
-    button.size.width = segmentWidth;
-    actionSheet.popoverPresentationController.sourceView = self.editControl;
-    actionSheet.popoverPresentationController.sourceRect = button;
-<<<<<<< HEAD
-<<<<<<< HEAD
-    
-<<<<<<< HEAD
-<<<<<<< HEAD
-//    Same as main repo
-//    NSArray * actionList = nil;
-//    if ( _editorLayer.selectedWay ) {
-//        if ( _editorLayer.selectedNode ) {
-//            // node in way
-//            NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
-//            BOOL disconnect        = parentWays.count > 1 || _editorLayer.selectedNode.hasInterestingTags;
-//            BOOL split             = _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
-//            BOOL join             = parentWays.count > 1;
-//            BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
-//
-//            NSMutableArray * a = [NSMutableArray arrayWithObject:@(ACTION_COPYTAGS)];
-//            if ( disconnect )
-//            [a addObject:@(ACTION_DISCONNECT)];
-//            if ( split )
-//            [a addObject:@(ACTION_SPLIT)];
-//            if ( join )
-//            [a addObject:@(ACTION_JOIN)];
-//            [a addObject:@(ACTION_ROTATE)];
-//            if ( restriction )
-//            [a addObject:@(ACTION_RESTRICT)];
-//            [a addObject:@(ACTION_HEIGHT)];
-//            actionList = [NSArray arrayWithArray:a];
-//        } else {
-//            if ( _editorLayer.selectedWay.isClosed ) {
-//                // polygon
-//                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE), @(ACTION_CREATE_RELATION) ];
-//            } else {
-//                // line
-//                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE), @(ACTION_CREATE_RELATION) ];
-//            }
-//        }
-//    } else if ( _editorLayer.selectedNode ) {
-//        // node
-//        actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
-//    } else if ( _editorLayer.selectedRelation ) {
-//        // relation
-//        if ( _editorLayer.selectedRelation.isMultipolygon ) {
-//            actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
-//        } else {
-//            actionList = @[ @(ACTION_COPYTAGS) ];
-//        }
-//    } else {
-//        // nothing selected
-//        return;
-//    }
-//    UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-//    for ( NSNumber * value in actionList ) {
-//        NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
-//        [actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-//            [self performEditAction:(EDIT_ACTION)value.integerValue];
-//        }]];
-//    }
-//    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-//    [self.viewController presentViewController:actionSheet animated:YES completion:nil];
-//
-//    // compute location for action sheet to originate
-//    CGRect button = self.editControl.bounds;
-//    CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;    // hack because we can't get the frame for an individual segment
-//    button.origin.x += button.size.width - segmentWidth;
-//    button.size.width = segmentWidth;
-//    actionSheet.popoverPresentationController.sourceView = self.editControl;
-//    actionSheet.popoverPresentationController.sourceRect = button;
->>>>>>> e0edefd1... Added Kaart specific edit tags for nodes in ways
-=======
-    //    Same as main repo
-=======
-    /*
-    Same as main repo
-     */
->>>>>>> fe5d2ba4... added copyName and copyName&Class functionality
-    //    NSArray * actionList = nil;
-    //    if ( _editorLayer.selectedWay ) {
-    //        if ( _editorLayer.selectedNode ) {
-    //            // node in way
-    //            NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
-    //            BOOL disconnect        = parentWays.count > 1 || _editorLayer.selectedNode.hasInterestingTags;
-    //            BOOL split             = _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
-    //            BOOL join             = parentWays.count > 1;
-    //            BOOL restriction    = _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
-    //
-    //            NSMutableArray * a = [NSMutableArray arrayWithObject:@(ACTION_COPYTAGS)];
-    //            if ( disconnect )
-    //            [a addObject:@(ACTION_DISCONNECT)];
-    //            if ( split )
-    //            [a addObject:@(ACTION_SPLIT)];
-    //            if ( join )
-    //            [a addObject:@(ACTION_JOIN)];
-    //            [a addObject:@(ACTION_ROTATE)];
-    //            if ( restriction )
-    //            [a addObject:@(ACTION_RESTRICT)];
-    //            [a addObject:@(ACTION_HEIGHT)];
-    //            actionList = [NSArray arrayWithArray:a];
-    //        } else {
-    //            if ( _editorLayer.selectedWay.isClosed ) {
-    //                // polygon
-    //                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE), @(ACTION_CREATE_RELATION) ];
-    //            } else {
-    //                // line
-    //                actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE), @(ACTION_CREATE_RELATION) ];
-    //            }
-    //        }
-    //    } else if ( _editorLayer.selectedNode ) {
-    //        // node
-    //        actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
-    //    } else if ( _editorLayer.selectedRelation ) {
-    //        // relation
-    //        if ( _editorLayer.selectedRelation.isMultipolygon ) {
-    //            actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
-    //        } else {
-    //            actionList = @[ @(ACTION_COPYTAGS) ];
-    //        }
-    //    } else {
-    //        // nothing selected
-    //        return;
-    //    }
-    //    UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    //    for ( NSNumber * value in actionList ) {
-    //        NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
-    //        [actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-    //            [self performEditAction:(EDIT_ACTION)value.integerValue];
-    //        }]];
-    //    }
-    //    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-    //    [self.viewController presentViewController:actionSheet animated:YES completion:nil];
-    //
-    //    // compute location for action sheet to originate
-    //    CGRect button = self.editControl.bounds;
-    //    CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;    // hack because we can't get the frame for an individual segment
-    //    button.origin.x += button.size.width - segmentWidth;
-    //    button.size.width = segmentWidth;
-    //    actionSheet.popoverPresentationController.sourceView = self.editControl;
-    //    actionSheet.popoverPresentationController.sourceRect = button;
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	NSArray * actionList = nil;
-	if ( _editorLayer.selectedWay ) {
-		if ( _editorLayer.selectedNode ) {
-			// node in way
-			NSArray * parentWays = [_editorLayer.mapData waysContainingNode:_editorLayer.selectedNode];
-            BOOL disconnect		= parentWays.count > 1 || _editorLayer.selectedNode.hasInterestingTags;
-			BOOL split 			= _editorLayer.selectedWay.isClosed || (_editorLayer.selectedNode != _editorLayer.selectedWay.nodes[0] && _editorLayer.selectedNode != _editorLayer.selectedWay.nodes.lastObject);
-			BOOL join 			= parentWays.count > 1;
-			BOOL restriction	= _enableTurnRestriction && _editorLayer.selectedWay.tags[@"highway"] && parentWays.count > 1;
-			
-			NSMutableArray * a = [NSMutableArray arrayWithObjects:@(ACTION_COPYTAGS), nil];
-            
-			if ( disconnect )
-				[a addObject:@(ACTION_DISCONNECT)];
-			if ( split )
-				[a addObject:@(ACTION_SPLIT)];
-			if ( join )
-				[a addObject:@(ACTION_JOIN)];
-			[a addObject:@(ACTION_ROTATE)];
-			if ( restriction )
-				[a addObject:@(ACTION_RESTRICT)];
-			[a addObject:@(ACTION_HEIGHT)];
-			actionList = [NSArray arrayWithArray:a];
-		} else {
-			if ( _editorLayer.selectedWay.isClosed ) {
-				// polygon
-				actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_ROTATE), @(ACTION_DUPLICATE), @(ACTION_CIRCULARIZE), @(ACTION_RECTANGULARIZE), @(ACTION_CREATE_RELATION) ];
-			} else {
-				// line
-				actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE), @(ACTION_STRAIGHTEN), @(ACTION_REVERSE), @(ACTION_CREATE_RELATION) ];
-			}
-		}
-	} else if ( _editorLayer.selectedNode ) {
-		// node
-		actionList = @[ @(ACTION_COPYTAGS), @(ACTION_HEIGHT), @(ACTION_DUPLICATE) ];
-	} else if ( _editorLayer.selectedRelation ) {
-		// relation
-		if ( _editorLayer.selectedRelation.isMultipolygon ) {
-			actionList = @[ @(ACTION_COPYTAGS), @(ACTION_ROTATE), @(ACTION_DUPLICATE) ];
-		} else {
-			actionList = @[ @(ACTION_COPYTAGS), @(ACTION_PASTETAGS) ];
-		}
-	} else {
-		// nothing selected
-		return;
-	}
-	UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Perform Action",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-	for ( NSNumber * value in actionList ) {
-		NSString * title = ActionTitle( (EDIT_ACTION)value.integerValue, NO );
-		[actionSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-			[self performEditAction:(EDIT_ACTION)value.integerValue];
-		}]];
-	}
-	[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-	[self.viewController presentViewController:actionSheet animated:YES completion:nil];
-
-	// compute location for action sheet to originate
-	CGRect button = self.editControl.bounds;
-	CGFloat segmentWidth = button.size.width / self.editControl.numberOfSegments;	// hack because we can't get the frame for an individual segment
-	button.origin.x += button.size.width - segmentWidth;
-	button.size.width = segmentWidth;
-	actionSheet.popoverPresentationController.sourceView = self.editControl;
-	actionSheet.popoverPresentationController.sourceRect = button;
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
 -(IBAction)editControlAction:(id)sender
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	// get the selected button: has to be done before modifying the node/way selection
 	UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
 	NSInteger segment = segmentedControl.selectedSegmentIndex;
 
 	if ( segment < _editControlActions.count ) {
-<<<<<<< HEAD
 		EDIT_ACTION action = (EDIT_ACTION)_editControlActions[ segment ].integerValue;
 		[self performEditAction:action];
 	}
 	segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
-=======
-    // get the selected button: has to be done before modifying the node/way selection
-    UISegmentedControl * segmentedControl = (UISegmentedControl *) sender;
-    NSInteger segment = segmentedControl.selectedSegmentIndex;
-    
-    if ( segment < _editControlActions.count ) {
-        NSNumber * actionNum = _editControlActions[ segment ];
-        EDIT_ACTION action = (EDIT_ACTION)actionNum.integerValue;
-        
-        // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-        switch ( action ) {
-            case ACTION_RECTANGULARIZE:
-            case ACTION_STRAIGHTEN:
-            case ACTION_REVERSE:
-            case ACTION_DUPLICATE:
-            case ACTION_ROTATE:
-            case ACTION_CIRCULARIZE:
-            case ACTION_COPYTAGS:
-            case ACTION_PASTETAGS:
-            case ACTION_EDITTAGS:
-            case ACTION_CREATE_RELATION:
-                if ( self.editorLayer.selectedWay &&
-                    self.editorLayer.selectedNode &&
-                    self.editorLayer.selectedNode.tags.count == 0 &&
-                    self.editorLayer.selectedWay.tags.count == 0 &&
-                    !self.editorLayer.selectedWay.isMultipolygonMember )
-                {
-                    // promote the selection to the way
-                    self.editorLayer.selectedNode = nil;
-                    [self refreshPushpinText];
-                }
-                break;
-            case ACTION_SPLIT:
-            case ACTION_JOIN:
-            case ACTION_DISCONNECT:
-            case ACTION_RESTRICT:
-            case ACTION_ADDNOTE:
-            case ACTION_DELETE:
-            case ACTION_MORE:
-            case ACTION_HEIGHT:
-                break;
-        }
-        
-        [self performEditAction:action];
-    }
-    segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-		NSNumber * actionNum = _editControlActions[ segment ];
-		EDIT_ACTION action = (EDIT_ACTION)actionNum.integerValue;
-
-		// if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-		switch ( action ) {
-			case ACTION_RECTANGULARIZE:
-			case ACTION_STRAIGHTEN:
-			case ACTION_REVERSE:
-			case ACTION_DUPLICATE:
-			case ACTION_ROTATE:
-			case ACTION_CIRCULARIZE:
-			case ACTION_COPYTAGS:
-			case ACTION_PASTETAGS:
-			case ACTION_EDITTAGS:
-			case ACTION_CREATE_RELATION:
-				if ( self.editorLayer.selectedWay &&
-					self.editorLayer.selectedNode &&
-					self.editorLayer.selectedNode.tags.count == 0 &&
-					self.editorLayer.selectedWay.tags.count == 0 &&
-					!self.editorLayer.selectedWay.isMultipolygonMember )
-				{
-					// promote the selection to the way
-					self.editorLayer.selectedNode = nil;
-					[self refreshPushpinText];
-				}
-				break;
-			case ACTION_SPLIT:
-			case ACTION_JOIN:
-			case ACTION_DISCONNECT:
-			case ACTION_RESTRICT:
-			case ACTION_ADDNOTE:
-			case ACTION_DELETE:
-			case ACTION_MORE:
-			case ACTION_HEIGHT:
-				break;
-		}
-
-		[self performEditAction:action];
-	}
-	segmentedControl.selectedSegmentIndex = UISegmentedControlNoSegment;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)performEditAction:(EDIT_ACTION)action
 {
-<<<<<<< HEAD
 	// if trying to edit a node in a way that has no tags assume user wants to edit the way instead
 	switch ( action ) {
 		case ACTION_RECTANGULARIZE:
@@ -4970,20 +2251,8 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	NSString * error = nil;
 	switch (action) {
 		case ACTION_COPYTAGS:
-<<<<<<< HEAD
-<<<<<<< HEAD
 			if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
 				error = NSLocalizedString(@"The object does not contain any tags",nil);
-=======
-//            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
-//                error = NSLocalizedString(@"The object does contain any tags",nil);
-            [self copy:nil];
-            break;
->>>>>>> 5a3e6532... initial (rather large) commit for enhanced highway editor feature. Initial UI built, Tanner to build lanes functionality
-=======
-			if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
-				error = NSLocalizedString(@"The object does contain any tags",nil);
->>>>>>> c5a8eed4... Revert "Lanestepper"
 			break;
 		case ACTION_PASTETAGS:
 			if ( _editorLayer.selectedPrimary == nil ) {
@@ -5111,18 +2380,13 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 			{
 				void (^create)(NSString * type) = ^(NSString * type){
 					OsmRelation * relation = [_editorLayer.mapData createRelation];
-<<<<<<< HEAD
 					NSMutableDictionary * tags = [_editorLayer.selectedPrimary.tags mutableCopy];
-<<<<<<< HEAD
 					if ( tags == nil )
 						tags = [NSMutableDictionary new];
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 					tags[ @"type"] = type;
-=======
-					NSDictionary * tags = @{ @"type" : type };
->>>>>>> c5a8eed4... Revert "Lanestepper"
 					[_editorLayer.mapData setTags:tags forObject:relation];
+					[_editorLayer.mapData setTags:nil forObject:_editorLayer.selectedPrimary];
+
 					EditAction add = [_editorLayer.mapData canAddObject:_editorLayer.selectedPrimary toRelation:relation withRole:@"outer" error:nil];
 					add();
 					_editorLayer.selectedNode = nil;
@@ -5137,8 +2401,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 				[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Multipolygon", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action2) {
 					create(@"multipolygon");
 				}]];
-<<<<<<< HEAD
-<<<<<<< HEAD
 				[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
 
 				// compute location for action sheet to originate. This will be the uppermost node in the polygon
@@ -5158,258 +2420,24 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 	[self.editorLayer setNeedsLayout];
 	[self refreshPushpinText];
-=======
-    NSString * error = nil;
-    switch (action) {
-        case ACTION_COPYTAGS:
-//            if ( ! [_editorLayer copyTags:_editorLayer.selectedPrimary] )
-//                error = NSLocalizedString(@"The object does contain any tags",nil);
-            [self copy:nil];
-            break;
-        case ACTION_PASTETAGS:
-            if ( _editorLayer.selectedPrimary == nil ) {
-                // pasting to brand new object, so we need to create it first
-                [self setTagsForCurrentObject:@{}];
-            }
-            if ( _editorLayer.selectedWay && _editorLayer.selectedNode && _editorLayer.selectedWay.tags.count == 0 ) {
-                // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-                _editorLayer.selectedNode = nil;
-                [self refreshPushpinText];
-            }
-            if ( ! [_editorLayer pasteTags:_editorLayer.selectedPrimary] )
-                error = NSLocalizedString(@"No tags to paste",nil);
-            break;
-        case ACTION_REPLACETAGS:
-            if ( _editorLayer.selectedPrimary == nil ) {
-                // pasting to brand new object, so we need to create it first
-                [self setTagsForCurrentObject:@{}];
-            }
-            if ( _editorLayer.selectedWay && _editorLayer.selectedNode && _editorLayer.selectedWay.tags.count == 0 ) {
-                // if trying to edit a node in a way that has no tags assume user wants to edit the way instead
-                _editorLayer.selectedNode = nil;
-                [self refreshPushpinText];
-            }
-            if ( ! [_editorLayer replaceTags:_editorLayer.selectedPrimary] )
-                error = NSLocalizedString(@"No tags to replace",nil);
-            break;
-        case ACTION_DUPLICATE:
-        {
-            OsmBaseObject * newObject = [_editorLayer duplicateObject:_editorLayer.selectedPrimary];
-            if ( newObject == nil ) {
-                error = NSLocalizedString(@"Could not duplicate object",nil);
-            } else {
-                _editorLayer.selectedNode        = newObject.isNode;
-                _editorLayer.selectedWay        = newObject.isWay;
-                _editorLayer.selectedRelation    = newObject.isRelation;
-                [self placePushpinForSelection];
-            }
-        }
-            break;
-        case ACTION_ROTATE:
-            if ( _editorLayer.selectedWay == nil && !_editorLayer.selectedRelation.isMultipolygon ) {
-                error = NSLocalizedString(@"Only ways/multipolygons can be rotated", nil);
-            } else {
-                [self startObjectRotation];
-            }
-            break;
-        case ACTION_RECTANGULARIZE:
-        {
-            if ( _editorLayer.selectedWay.ident.longLongValue >= 0  &&  !OSMRectContainsRect( self.screenLongitudeLatitude, _editorLayer.selectedWay.boundingBox ) ) {
-                error = NSLocalizedString(@"The selected way must be completely visible", nil);    // avoid bugs where nodes are deleted from other objects
-            } else {
-                EditAction rect = [_editorLayer.mapData canOrthogonalizeWay:_editorLayer.selectedWay error:&error];
-                if ( rect )
-                    rect();
-            }
-        }
-            break;
-        case ACTION_REVERSE:
-        {
-            EditAction reverse = [_editorLayer.mapData canReverseWay:_editorLayer.selectedWay error:&error];
-            if ( reverse )
-                reverse();
-        }
-            break;
-        case ACTION_JOIN:
-        {
-            EditAction join = [_editorLayer.mapData canJoinWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
-            if ( join )
-                join();
-        }
-            break;
-        case ACTION_DISCONNECT:
-        {
-            EditActionReturnNode disconnect = [_editorLayer.mapData canDisconnectWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
-            if ( disconnect ) {
-                _editorLayer.selectedNode = disconnect();
-                [self placePushpinForSelection];
-            }
-        }
-            break;
-        case ACTION_SPLIT:
-        {
-            EditActionReturnWay split = [_editorLayer.mapData canSplitWay:_editorLayer.selectedWay atNode:_editorLayer.selectedNode error:&error];
-            if ( split )
-                split();
-        }
-            break;
-        case ACTION_STRAIGHTEN:
-        {
-            if ( _editorLayer.selectedWay.ident.longLongValue >= 0  &&  !OSMRectContainsRect( self.screenLongitudeLatitude, _editorLayer.selectedWay.boundingBox ) ) {
-                error = NSLocalizedString(@"The selected way must be completely visible", nil);    // avoid bugs where nodes are deleted from other objects
-            } else {
-                EditAction straighten = [_editorLayer.mapData canStraightenWay:_editorLayer.selectedWay error:&error];
-                if ( straighten )
-                    straighten();
-            }
-        }
-            break;
-        case ACTION_CIRCULARIZE:
-        {
-            EditAction circle = [_editorLayer.mapData canCircularizeWay:_editorLayer.selectedWay error:&error];
-            if ( circle )
-                circle();
-        }
-            break;
-        case ACTION_HEIGHT:
-            if ( self.gpsState != GPS_STATE_NONE ) {
-                [self.viewController performSegueWithIdentifier:@"CalculateHeightSegue" sender:nil];
-            } else {
-                error = NSLocalizedString(@"This action requires GPS to be turned on",nil);
-            }
-            break;
-        case ACTION_EDITTAGS:
-            [self presentTagEditor:nil];
-            break;
-        case ACTION_ADDNOTE:
-        {
-            CLLocationCoordinate2D pos = [self longitudeLatitudeForScreenPoint:_pushpinView.arrowPoint birdsEye:YES];
-            OsmNote * note = [[OsmNote alloc] initWithLat:pos.latitude lon:pos.longitude];
-            [self.viewController performSegueWithIdentifier:@"NotesSegue" sender:note];
-            [self removePin];
-        }
-            break;
-        case ACTION_DELETE:
-            [self delete:nil];
-            break;
-        case ACTION_MORE:
-            [self presentEditActionSheet:nil];
-            break;
-        case ACTION_RESTRICT:
-            [self restrictOptionSelected];
-            break;
-        case ACTION_CREATE_RELATION:
-        {
-            void (^create)(NSString * type) = ^(NSString * type){
-                OsmRelation * relation = [_editorLayer.mapData createRelation];
-                NSDictionary * tags = @{ @"type" : type };
-                [_editorLayer.mapData setTags:tags forObject:relation];
-                EditAction add = [_editorLayer.mapData canAddObject:_editorLayer.selectedPrimary toRelation:relation withRole:@"outer" error:nil];
-                add();
-                _editorLayer.selectedNode = nil;
-                _editorLayer.selectedWay = nil;
-                _editorLayer.selectedRelation = relation;
-                [self.editorLayer setNeedsLayout];
-                [self refreshPushpinText];
-                [self showAlert:NSLocalizedString(@"Adding members:",nil)
-                        message:NSLocalizedString(@"To add another member to the relation 'long press' on the way to be added",nil)];
-            };
-            UIAlertController * actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Create Relation Type",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Multipolygon", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action2) {
-                create(@"multipolygon");
-            }]];
-=======
-<<<<<<< HEAD
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#if 0
-				[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Building", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action2) {
-					create(@"building");
-				}]];
-#endif
-<<<<<<< HEAD
-            [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-            
-            // compute location for action sheet to originate. This will be the uppermost node in the polygon
-            OSMRect box = _editorLayer.selectedPrimary.boundingBox;
-            box = [MapView mapRectForLatLonRect:box];
-            OSMRect rc = [self boundingScreenRectForMapRect:box];
-            actionSheet.popoverPresentationController.sourceView = self;
-            actionSheet.popoverPresentationController.sourceRect = CGRectFromOSMRect(rc);
-            [self.viewController presentViewController:actionSheet animated:YES completion:nil];
-            return;
-        }
-            break;
-    }
-    if ( error ) {
-        [self showAlert:error message:nil];
-    }
-    
-    [self.editorLayer setNeedsLayout];
-    [self refreshPushpinText];
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-				[actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-
-				// compute location for action sheet to originate. This will be the uppermost node in the polygon
-				OSMRect box = _editorLayer.selectedPrimary.boundingBox;
-				box = [MapView mapRectForLatLonRect:box];
-				OSMRect rc = [self boundingScreenRectForMapRect:box];
-				actionSheet.popoverPresentationController.sourceView = self;
-				actionSheet.popoverPresentationController.sourceRect = CGRectFromOSMRect(rc);
-				[self.viewController presentViewController:actionSheet animated:YES completion:nil];
-				return;
-			}
-			break;
-	}
-	if ( error ) {
-		[self showAlert:error message:nil];
-	}
-
-	[self.editorLayer setNeedsLayout];
-	[self refreshPushpinText];
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(IBAction)presentTagEditor:(id)sender
 {
-<<<<<<< HEAD
 	[self.mainViewController performSegueWithIdentifier:@"poiSegue" sender:nil];
-=======
-	[self.viewController performSegueWithIdentifier:@"poiSegue" sender:nil];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
 // Turn restriction panel
 -(void)restrictOptionSelected
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	void (^showRestrictionEditor)(void) = ^{
 		TurnRestrictController * myVc = [_mainViewController.storyboard instantiateViewControllerWithIdentifier:@"TurnRestrictController"];
-=======
-	void (^showRestrictionEditor)(void) = ^{
-		TurnRestrictController * myVc = [_viewController.storyboard instantiateViewControllerWithIdentifier:@"TurnRestrictController"];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 		myVc.centralNode 			= self.editorLayer.selectedNode;
 		myVc.parentViewCenter		= CGRectCenter(self.layer.bounds);
 		myVc.screenFromMapTransform = _screenFromMapTransform;
 		myVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-<<<<<<< HEAD
 		[_mainViewController presentViewController:myVc animated:YES completion:nil];
-=======
-		[_viewController presentViewController:myVc animated:YES completion:nil];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 		// if GPS is running don't keep moving around
 		self.userOverrodeLocationPosition = YES;
@@ -5442,11 +2470,7 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 				showRestrictionEditor();
 			}]];
 			[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-<<<<<<< HEAD
 			[self.mainViewController presentViewController:alert animated:YES completion:nil];
-=======
-			[self.viewController presentViewController:alert animated:YES completion:nil];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 		} else {
 			showRestrictionEditor();
 		}
@@ -5476,80 +2500,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	} else if ( self.editorLayer.selectedPrimary.isNode ) {
 		restrictionEditWarning( self.editorLayer.selectedNode );
 	}
-<<<<<<< HEAD
-=======
-    void (^showRestrictionEditor)(void) = ^{
-        TurnRestrictController * myVc = [_viewController.storyboard instantiateViewControllerWithIdentifier:@"TurnRestrictController"];
-        myVc.centralNode             = self.editorLayer.selectedNode;
-        myVc.parentViewCenter        = CGRectCenter(self.layer.bounds);
-        myVc.screenFromMapTransform = _screenFromMapTransform;
-        myVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-        [_viewController presentViewController:myVc animated:YES completion:nil];
-        
-        // if GPS is running don't keep moving around
-        self.userOverrodeLocationPosition = YES;
-        
-        // scroll view so intersection stays visible
-        CGRect rc = myVc.viewWithTitle.frame;
-        int mid = rc.origin.y/2;
-        CGPoint pt = self.pushpinView.arrowPoint;
-        CGPoint delta = { self.bounds.size.width/2 - pt.x, mid - pt.y };
-        [self adjustOriginBy:delta];
-    };
-    
-    // check if this is a fancy relation type we don't support well
-    void (^restrictionEditWarning)(OsmNode *) = ^(OsmNode * viaNode) {
-        BOOL warn = NO;
-        for ( OsmRelation * relation in viaNode.parentRelations ) {
-            if ( relation.isRestriction ) {
-                NSString * type = relation.tags[ @"type" ];
-                if ( [type hasPrefix:@"restriction:"] || relation.tags[@"except"] ) {
-                    warn = YES;
-                }
-            }
-        }
-        if ( warn ) {
-            UIAlertController * alert = [UIAlertController alertControllerWithTitle:@"Unsupported turn restriction type"
-                                                                            message:@"One or more turn restrictions connected to this node have extended properties that will not be displayed.\n\n"
-                                         @"Modififying these restrictions may destroy important information."
-                                                                     preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Edit restrictions",nil) style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
-                showRestrictionEditor();
-            }]];
-            [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-            [self.viewController presentViewController:alert animated:YES completion:nil];
-        } else {
-            showRestrictionEditor();
-        }
-    };
-    
-    
-    // if we currently have a relation selected then select the via node instead
-    if ( self.editorLayer.selectedPrimary.isRelation ) {
-        OsmRelation * relation = self.editorLayer.selectedPrimary.isRelation;
-        OsmWay * fromWay = [relation memberByRole:@"from"].ref;
-        OsmNode * viaNode = [relation memberByRole:@"via"].ref;
-        
-        if ( ![viaNode isKindOfClass:[OsmNode class]] ) {
-            // not supported yet
-            [self showAlert:NSLocalizedString(@"Unsupported turn restriction type",nil)
-                    message:NSLocalizedString(@"This app does not yet support editing turn restrictions without a node as the 'via' member",nil)];
-            return;
-        }
-        
-        self.editorLayer.selectedWay = [fromWay isKindOfClass:[OsmWay class]] ? fromWay : nil;
-        self.editorLayer.selectedNode = [viaNode isKindOfClass:[OsmNode class]] ? viaNode : nil;
-        if ( self.editorLayer.selectedNode ) {
-            [self placePushpinForSelection];
-            restrictionEditWarning( self.editorLayer.selectedNode );
-        }
-        
-    } else if ( self.editorLayer.selectedPrimary.isNode ) {
-        restrictionEditWarning( self.editorLayer.selectedNode );
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
@@ -5591,9 +2541,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(OsmBaseObject *)dragConnectionForNode:(OsmNode *)node segment:(NSInteger *)segment
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	assert( node.isNode );
 	assert( _editorLayer.selectedWay );
 
@@ -5620,88 +2567,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 										ignoreList:ignoreList
 										   segment:segment];
 	return hit;
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    assert( node.isNode );
-    assert( _editorLayer.selectedWay );
-    
-    OsmWay * way = _editorLayer.selectedWay;
-    
-#if 0
-    // only do this checks if we want to be extra cautious
-    if ( node != way.nodes[0] && node != way.nodes.lastObject )
-        return nil;
-    if ( node.wayCount > 1 )
-        return nil;
-#endif
-    
-    NSArray * ignoreList = nil;
-    NSInteger index = [way.nodes indexOfObject:node];
-    NSArray * parentWays = node.wayCount == 1 ? @[ way ] : [_editorLayer.mapData waysContainingNode:node];
-    if ( way.nodes.count < 3 ) {
-        ignoreList = [parentWays arrayByAddingObjectsFromArray:way.nodes];
-    } else if ( index == 0 ) {
-        // if end-node then okay to connect to self-nodes except for adjacent
-        ignoreList = [parentWays arrayByAddingObjectsFromArray:@[ way.nodes[0], way.nodes[1], way.nodes[2] ]];
-    } else if ( index == way.nodes.count-1 ) {
-        // if end-node then okay to connect to self-nodes except for adjacent
-        ignoreList = [parentWays arrayByAddingObjectsFromArray:@[ way.nodes[index], way.nodes[index-1], way.nodes[index-2] ]];
-    } else {
-        // if middle node then never connect to self
-        ignoreList = [way.nodes arrayByAddingObjectsFromArray:parentWays];
-    }
-    OsmBaseObject * hit = [_editorLayer osmHitTest:_pushpinView.arrowPoint
-                                            radius:DragConnectHitTestRadius
-                                         testNodes:YES
-                                        ignoreList:ignoreList
-                                           segment:segment];
-    return hit;
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	assert( node.isNode );
-	assert( _editorLayer.selectedWay );
-
-	OsmWay * way = _editorLayer.selectedWay;
-
-#if 0
-	// only do this checks if we want to be extra cautious
-	if ( node != way.nodes[0] && node != way.nodes.lastObject )
-		return nil;
-	if ( node.wayCount > 1 )
-		return nil;
-#endif
-
-	NSArray * ignoreList = nil;
-	NSInteger index = [way.nodes indexOfObject:node];
-	NSArray * parentWays = node.wayCount == 1 ? @[ way ] : [_editorLayer.mapData waysContainingNode:node];
-	if ( way.nodes.count < 3 ) {
-		ignoreList = [parentWays arrayByAddingObjectsFromArray:way.nodes];
-	} else if ( index == 0 ) {
-		// if end-node then okay to connect to self-nodes except for adjacent
-		ignoreList = [parentWays arrayByAddingObjectsFromArray:@[ way.nodes[0], way.nodes[1], way.nodes[2] ]];
-	} else if ( index == way.nodes.count-1 ) {
-		// if end-node then okay to connect to self-nodes except for adjacent
-		ignoreList = [parentWays arrayByAddingObjectsFromArray:@[ way.nodes[index], way.nodes[index-1], way.nodes[index-2] ]];
-	} else {
-		// if middle node then never connect to self
-		ignoreList = [way.nodes arrayByAddingObjectsFromArray:parentWays];
-	}
-	OsmBaseObject * hit = [_editorLayer osmHitTest:_pushpinView.arrowPoint
-											  radius:DragConnectHitTestRadius
-										   testNodes:YES
-										  ignoreList:ignoreList
-											 segment:segment];
-	return hit;
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)removePin
@@ -5715,9 +2580,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(void)placePushpinAtPoint:(CGPoint)point object:(OsmBaseObject *)object
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	// drop in center of screen
 	[self removePin];
 
@@ -5989,519 +2851,17 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 		// do animation if creating a new object
 		[_pushpinView animateMoveFrom:CGPointMake(self.bounds.origin.x+self.bounds.size.width,self.bounds.origin.y)];
 	}
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    // drop in center of screen
-    [self removePin];
-    
-#if 1
-    for ( NSString * feature in [object.tags[@"GoMap"] componentsSeparatedByString:@";"] ) {
-        if ( [feature isEqualToString:@"showtouchcircles"] ) {
-            MyApplication * app = (id)[UIApplication sharedApplication];
-            app.showTouchCircles = YES;
-        } else if ( [feature isEqualToString:@"fps"] ) {
-            self.fpsLabel.showFPS = YES;
-        }
-    }
-#endif
-    
-    _confirmDrag = NO;
-    
-    _pushpinView = [PushPinView new];
-    _pushpinView.text = object ? object.friendlyDescription : NSLocalizedString(@"(new object)",nil);
-    _pushpinView.layer.zPosition = Z_PUSHPIN;
-    
-    _pushpinView.arrowPoint = point;
-    
-    __weak MapView * weakSelf = self;
-    if ( object ) {
-        _pushpinView.dragCallback = ^(UIGestureRecognizerState state, CGFloat dx, CGFloat dy, UIGestureRecognizer * gesture ) {
-            MapView * strongSelf = weakSelf;
-            if ( strongSelf == nil )
-                return;
-            switch ( state ) {
-                case UIGestureRecognizerStateBegan:
-                    [strongSelf.editorLayer.mapData beginUndoGrouping];
-                    _pushpinDragTotalMove    = CGPointMake(0,0);
-                    _gestureDidMove            = NO;
-                    break;
-                    
-                case UIGestureRecognizerStateCancelled:
-                case UIGestureRecognizerStateFailed:
-                    DLog(@"Gesture ended with cancel/fail\n");
-                    // fall through so we properly terminate gesture
-                case UIGestureRecognizerStateEnded:
-                {
-                    [strongSelf.editorLayer.mapData endUndoGrouping];
-                    [[DisplayLink shared] removeName:@"dragScroll"];
-                    
-                    BOOL isRotate = strongSelf->_isRotateObjectMode;
-                    if ( isRotate ) {
-                        [strongSelf endObjectRotation];
-                    }
-                    [strongSelf unblinkObject];
-                    
-                    if ( object.isWay ) {
-                        [strongSelf->_editorLayer.mapData updateParentMultipolygonRelationRolesForWay:object.isWay];
-                    } else if ( strongSelf.editorLayer.selectedWay && object.isNode ) {
-                        [strongSelf->_editorLayer.mapData updateParentMultipolygonRelationRolesForWay:strongSelf.editorLayer.selectedWay];
-                    }
-                    
-                    if ( strongSelf.editorLayer.selectedWay && object.isNode ) {
-                        // dragging a node that is part of a way
-                        OsmNode * dragNode = object.isNode;
-                        OsmWay  * dragWay = strongSelf.editorLayer.selectedWay;
-                        NSInteger segment;
-                        OsmBaseObject * hit = [strongSelf dragConnectionForNode:dragNode segment:&segment];
-                        if ( hit.isNode ) {
-                            // replace dragged node with hit node
-                            NSString * error = nil;
-                            EditActionReturnNode merge = [strongSelf.editorLayer.mapData canMergeNode:dragNode intoNode:hit.isNode error:&error];
-                            if ( merge == nil ) {
-                                [strongSelf showAlert:error message:nil];
-                                return;
-                            }
-                            hit = merge();
-                            if ( dragWay.isArea ) {
-                                strongSelf.editorLayer.selectedNode = nil;
-                                CGPoint pt = [strongSelf screenPointForLatitude:hit.isNode.lat longitude:hit.isNode.lon birdsEye:YES];
-                                [strongSelf placePushpinAtPoint:pt object:dragWay];
-                            } else {
-                                strongSelf.editorLayer.selectedNode = hit.isNode;
-                                [strongSelf placePushpinForSelection];
-                            }
-                        } else if ( hit.isWay ) {
-                            // add new node to hit way
-                            OSMPoint pt = [hit pointOnObjectForPoint:dragNode.location];
-                            [strongSelf.editorLayer.mapData setLongitude:pt.x latitude:pt.y forNode:dragNode];
-                            NSString * error = nil;
-                            EditActionWithNode add = [strongSelf.editorLayer canAddNodeToWay:hit.isWay atIndex:segment+1 error:&error];
-                            if ( add ) {
-                                add(dragNode);
-                            } else {
-                                [strongSelf showAlert:NSLocalizedString(@"Error connecting to way",nil) message:error];
-                            }
-                        }
-                        return;
-                    }
-                    if ( isRotate )
-                        break;
-                    if ( strongSelf.editorLayer.selectedWay && strongSelf.editorLayer.selectedWay.tags.count == 0 && strongSelf.editorLayer.selectedWay.parentRelations.count == 0 )
-                        break;
-                    if ( strongSelf.editorLayer.selectedWay && strongSelf.editorLayer.selectedNode )
-                        break;
-                    if ( strongSelf->_confirmDrag ) {
-                        strongSelf->_confirmDrag = NO;
-                        
-                        UIAlertController *    alertMove = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm move",nil) message:NSLocalizedString(@"Move selected object?",nil) preferredStyle:UIAlertControllerStyleAlert];
-                        [alertMove addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Undo",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-                            // cancel move
-                            [strongSelf->_editorLayer.mapData undo];
-                            [strongSelf->_editorLayer.mapData removeMostRecentRedo];
-                            strongSelf->_editorLayer.selectedNode = nil;
-                            strongSelf->_editorLayer.selectedWay = nil;
-                            strongSelf->_editorLayer.selectedRelation = nil;
-                            [strongSelf removePin];
-                            [strongSelf->_editorLayer setNeedsLayout];
-                        }]];
-                        [alertMove addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Move",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                            // okay
-                        }]];
-                        [strongSelf.viewController presentViewController:alertMove animated:YES completion:nil];
-                    }
-                }
-                    break;
-                    
-                case UIGestureRecognizerStateChanged:
-                {
-                    // define the drag function
-                    void (^dragObject)(CGFloat dragx, CGFloat dragy) = ^(CGFloat dragx, CGFloat dragy) {
-                        // don't accumulate undo moves
-                        strongSelf->_pushpinDragTotalMove.x += dragx;
-                        strongSelf->_pushpinDragTotalMove.y += dragy;
-                        if ( strongSelf->_gestureDidMove ) {
-                            [strongSelf.editorLayer.mapData endUndoGrouping];
-                            strongSelf.silentUndo = YES;
-                            NSDictionary * dict = [strongSelf.editorLayer.mapData undo];
-                            strongSelf.silentUndo = NO;
-                            [strongSelf.editorLayer.mapData beginUndoGrouping];
-                            if ( dict ) {
-                                // maintain the original pin location:
-                                [strongSelf.editorLayer.mapData registerUndoCommentContext:dict];
-                            }
-                        }
-                        strongSelf->_gestureDidMove = YES;
-                        
-                        // move all dragged nodes
-                        if ( strongSelf->_isRotateObjectMode ) {
-                            // rotate object
-                            double delta = -(strongSelf->_pushpinDragTotalMove.x + strongSelf->_pushpinDragTotalMove.y) / 100;
-                            CGPoint axis = [strongSelf screenPointForLatitude:strongSelf->_rotateObjectCenter.y longitude:strongSelf->_rotateObjectCenter.x birdsEye:YES];
-                            for ( OsmNode * node in object.isNode ? strongSelf.editorLayer.selectedWay.nodeSet : object.nodeSet ) {
-                                CGPoint pt = [strongSelf screenPointForLatitude:node.lat longitude:node.lon birdsEye:YES];
-                                OSMPoint diff = { pt.x - axis.x, pt.y - axis.y };
-                                double radius = hypot( diff.x, diff.y );
-                                double angle = atan2( diff.y, diff.x );
-                                angle += delta;
-                                OSMPoint new = { axis.x + radius * cos(angle), axis.y + radius * sin(angle) };
-                                CGPoint dist = { new.x - pt.x, -(new.y - pt.y) };
-                                [strongSelf.editorLayer adjustNode:node byDistance:dist];
-                            }
-                            
-                        } else {
-                            // drag object
-                            CGPoint delta = { strongSelf->_pushpinDragTotalMove.x, -strongSelf->_pushpinDragTotalMove.y };
-                            for ( OsmNode * node in object.nodeSet ) {
-                                [strongSelf.editorLayer adjustNode:node byDistance:delta];
-                            }
-                        }
-                        
-                        // do hit testing for connecting to other objects
-                        if ( strongSelf.editorLayer.selectedWay && object.isNode ) {
-                            NSInteger segment;
-                            OsmBaseObject * hit = [strongSelf dragConnectionForNode:(id)object segment:&segment];
-                            if ( hit.isWay || hit.isNode ) {
-                                [strongSelf blinkObject:hit segment:segment];
-                            } else {
-                                [strongSelf unblinkObject];
-                            }
-                        }
-                    };
-                    
-                    // scroll screen if too close to edge
-                    const CGFloat MinDistanceSide = 40.0;
-                    const CGFloat MinDistanceTop = MinDistanceSide + 10.0;
-                    const CGFloat MinDistanceBottom = MinDistanceSide + 120.0;
-                    CGPoint arrow = strongSelf.pushpinView.arrowPoint;
-                    CGRect screen = strongSelf.bounds;
-                    const CGFloat SCROLL_SPEED = 10.0;
-                    CGFloat scrollx = 0, scrolly = 0;
-                    
-                    if ( arrow.x < screen.origin.x + MinDistanceSide )
-                        scrollx = -SCROLL_SPEED;
-                    else if ( arrow.x > screen.origin.x + screen.size.width - MinDistanceSide )
-                        scrollx = SCROLL_SPEED;
-                    if ( arrow.y < screen.origin.y + MinDistanceTop )
-                        scrolly = -SCROLL_SPEED;
-                    else if ( arrow.y > screen.origin.y + screen.size.height - MinDistanceBottom )
-                        scrolly = SCROLL_SPEED;
-                    
-                    if ( scrollx || scrolly ) {
-                        // scroll the screen to keep pushpin centered
-                        DisplayLink * displayLink = [DisplayLink shared];
-                        __block NSTimeInterval prevTime = CACurrentMediaTime();
-                        [displayLink addName:@"dragScroll" block:^{
-                            NSTimeInterval now = CACurrentMediaTime();
-                            NSTimeInterval duration = now - prevTime;
-                            prevTime = now;
-                            CGFloat sx = scrollx * duration * 60.0;    // scale to 60 FPS assumption, need to move farther if framerate is slow
-                            CGFloat sy = scrolly * duration * 60.0;
-                            [strongSelf adjustOriginBy:CGPointMake(-sx,-sy)];
-                            dragObject( sx, sy );
-                            // update position of pushpin
-                            CGPoint pt = CGPointWithOffset( weakSelf.pushpinView.arrowPoint, sx, sy );
-                            strongSelf.pushpinView.arrowPoint = pt;
-                            // update position of blink layer
-                            pt = CGPointWithOffset( _blinkLayer.position, -sx, -sy );
-                            strongSelf->_blinkLayer.position = pt;
-                        }];
-                    } else {
-                        [[DisplayLink shared] removeName:@"dragScroll"];
-                    }
-                    
-                    // move the object
-                    dragObject( dx, dy );
-                }
-                    break;
-                default:
-                    break;
-            }
-        };
-    }
-    
-    [self updateEditControl];
-    
-    if ( object == nil ) {
-        _pushpinView.placeholderImage = [UIImage imageNamed:@"question.png"];
-    }
-    
-    [self addSubview:_pushpinView];
-    
-    if ( object == nil ) {
-        // do animation if creating a new object
-        [_pushpinView animateMoveFrom:CGPointMake(self.bounds.origin.x+self.bounds.size.width,self.bounds.origin.y)];
-    }
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	// drop in center of screen
-	[self removePin];
-
-#if 1
-	for ( NSString * feature in [object.tags[@"GoMap"] componentsSeparatedByString:@";"] ) {
-		if ( [feature isEqualToString:@"showtouchcircles"] ) {
-			MyApplication * app = (id)[UIApplication sharedApplication];
-			app.showTouchCircles = YES;
-		} else if ( [feature isEqualToString:@"fps"] ) {
-			self.fpsLabel.showFPS = YES;
-		}
-	}
-#endif
-
-	_confirmDrag = NO;
-
-	_pushpinView = [PushPinView new];
-	_pushpinView.text = object ? object.friendlyDescription : NSLocalizedString(@"(new object)",nil);
-	_pushpinView.layer.zPosition = Z_PUSHPIN;
-
-	_pushpinView.arrowPoint = point;
-
-	__weak MapView * weakSelf = self;
-	if ( object ) {
-		_pushpinView.dragCallback = ^(UIGestureRecognizerState state, CGFloat dx, CGFloat dy, UIGestureRecognizer * gesture ) {
-			MapView * strongSelf = weakSelf;
-			if ( strongSelf == nil )
-				return;
-			switch ( state ) {
-				case UIGestureRecognizerStateBegan:
-					[strongSelf.editorLayer.mapData beginUndoGrouping];
-					_pushpinDragTotalMove	= CGPointMake(0,0);
-					_gestureDidMove			= NO;
-					break;
-
-				case UIGestureRecognizerStateCancelled:
-				case UIGestureRecognizerStateFailed:
-					DLog(@"Gesture ended with cancel/fail\n");
-					// fall through so we properly terminate gesture
-				case UIGestureRecognizerStateEnded:
-					{
-						[strongSelf.editorLayer.mapData endUndoGrouping];
-						[[DisplayLink shared] removeName:@"dragScroll"];
-
-						BOOL isRotate = strongSelf->_isRotateObjectMode;
-						if ( isRotate ) {
-							[strongSelf endObjectRotation];
-						}
-						[strongSelf unblinkObject];
-
-						if ( object.isWay ) {
-							[strongSelf->_editorLayer.mapData updateParentMultipolygonRelationRolesForWay:object.isWay];
-						} else if ( strongSelf.editorLayer.selectedWay && object.isNode ) {
-							[strongSelf->_editorLayer.mapData updateParentMultipolygonRelationRolesForWay:strongSelf.editorLayer.selectedWay];
-						}
-
-						if ( strongSelf.editorLayer.selectedWay && object.isNode ) {
-							// dragging a node that is part of a way
-							OsmNode * dragNode = object.isNode;
-							OsmWay  * dragWay = strongSelf.editorLayer.selectedWay;
-							NSInteger segment;
-							OsmBaseObject * hit = [strongSelf dragConnectionForNode:dragNode segment:&segment];
-							if ( hit.isNode ) {
-								// replace dragged node with hit node
-								NSString * error = nil;
-								EditActionReturnNode merge = [strongSelf.editorLayer.mapData canMergeNode:dragNode intoNode:hit.isNode error:&error];
-								if ( merge == nil ) {
-									[strongSelf showAlert:error message:nil];
-									return;
-								}
-								hit = merge();
-								if ( dragWay.isArea ) {
-									strongSelf.editorLayer.selectedNode = nil;
-									CGPoint pt = [strongSelf screenPointForLatitude:hit.isNode.lat longitude:hit.isNode.lon birdsEye:YES];
-									[strongSelf placePushpinAtPoint:pt object:dragWay];
-								} else {
-									strongSelf.editorLayer.selectedNode = hit.isNode;
-									[strongSelf placePushpinForSelection];
-								}
-							} else if ( hit.isWay ) {
-								// add new node to hit way
-								OSMPoint pt = [hit pointOnObjectForPoint:dragNode.location];
-								[strongSelf.editorLayer.mapData setLongitude:pt.x latitude:pt.y forNode:dragNode];
-								NSString * error = nil;
-								EditActionWithNode add = [strongSelf.editorLayer canAddNodeToWay:hit.isWay atIndex:segment+1 error:&error];
-								if ( add ) {
-									add(dragNode);
-								} else {
-									[strongSelf showAlert:NSLocalizedString(@"Error connecting to way",nil) message:error];
-								}
-							}
-							return;
-						}
-						if ( isRotate )
-							break;
-						if ( strongSelf.editorLayer.selectedWay && strongSelf.editorLayer.selectedWay.tags.count == 0 && strongSelf.editorLayer.selectedWay.parentRelations.count == 0 )
-							break;
-						if ( strongSelf.editorLayer.selectedWay && strongSelf.editorLayer.selectedNode )
-							break;
-						if ( strongSelf->_confirmDrag ) {
-							strongSelf->_confirmDrag = NO;
-
-							UIAlertController *	alertMove = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm move",nil) message:NSLocalizedString(@"Move selected object?",nil) preferredStyle:UIAlertControllerStyleAlert];
-							[alertMove addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Undo",nil) style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-								// cancel move
-								[strongSelf->_editorLayer.mapData undo];
-								[strongSelf->_editorLayer.mapData removeMostRecentRedo];
-								strongSelf->_editorLayer.selectedNode = nil;
-								strongSelf->_editorLayer.selectedWay = nil;
-								strongSelf->_editorLayer.selectedRelation = nil;
-								[strongSelf removePin];
-								[strongSelf->_editorLayer setNeedsLayout];
-							}]];
-							[alertMove addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Move",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-								// okay
-							}]];
-							[strongSelf.viewController presentViewController:alertMove animated:YES completion:nil];
-						}
-					}
-					break;
-					
-				case UIGestureRecognizerStateChanged:
-					{
-						// define the drag function
-						void (^dragObject)(CGFloat dragx, CGFloat dragy) = ^(CGFloat dragx, CGFloat dragy) {
-							// don't accumulate undo moves
-							strongSelf->_pushpinDragTotalMove.x += dragx;
-							strongSelf->_pushpinDragTotalMove.y += dragy;
-							if ( strongSelf->_gestureDidMove ) {
-								[strongSelf.editorLayer.mapData endUndoGrouping];
-								strongSelf.silentUndo = YES;
-								NSDictionary * dict = [strongSelf.editorLayer.mapData undo];
-								strongSelf.silentUndo = NO;
-								[strongSelf.editorLayer.mapData beginUndoGrouping];
-								if ( dict ) {
-									// maintain the original pin location:
-									[strongSelf.editorLayer.mapData registerUndoCommentContext:dict];
-								}
-							}
-							strongSelf->_gestureDidMove = YES;
-
-							// move all dragged nodes
-							if ( strongSelf->_isRotateObjectMode ) {
-								// rotate object
-								double delta = -(strongSelf->_pushpinDragTotalMove.x + strongSelf->_pushpinDragTotalMove.y) / 100;
-								CGPoint axis = [strongSelf screenPointForLatitude:strongSelf->_rotateObjectCenter.y longitude:strongSelf->_rotateObjectCenter.x birdsEye:YES];
-								for ( OsmNode * node in object.isNode ? strongSelf.editorLayer.selectedWay.nodeSet : object.nodeSet ) {
-									CGPoint pt = [strongSelf screenPointForLatitude:node.lat longitude:node.lon birdsEye:YES];
-									OSMPoint diff = { pt.x - axis.x, pt.y - axis.y };
-									double radius = hypot( diff.x, diff.y );
-									double angle = atan2( diff.y, diff.x );
-									angle += delta;
-									OSMPoint new = { axis.x + radius * cos(angle), axis.y + radius * sin(angle) };
-									CGPoint dist = { new.x - pt.x, -(new.y - pt.y) };
-									[strongSelf.editorLayer adjustNode:node byDistance:dist];
-								}
-
-							} else {
-								// drag object
-								CGPoint delta = { strongSelf->_pushpinDragTotalMove.x, -strongSelf->_pushpinDragTotalMove.y };
-								for ( OsmNode * node in object.nodeSet ) {
-									[strongSelf.editorLayer adjustNode:node byDistance:delta];
-								}
-							}
-
-							// do hit testing for connecting to other objects
-							if ( strongSelf.editorLayer.selectedWay && object.isNode ) {
-								NSInteger segment;
-								OsmBaseObject * hit = [strongSelf dragConnectionForNode:(id)object segment:&segment];
-								if ( hit.isWay || hit.isNode ) {
-									[strongSelf blinkObject:hit segment:segment];
-								} else {
-									[strongSelf unblinkObject];
-								}
-							}
-						};
-
-						// scroll screen if too close to edge
-						const CGFloat MinDistanceSide = 40.0;
-						const CGFloat MinDistanceTop = MinDistanceSide + 10.0;
-						const CGFloat MinDistanceBottom = MinDistanceSide + 120.0;
-						CGPoint arrow = strongSelf.pushpinView.arrowPoint;
-						CGRect screen = strongSelf.bounds;
-						const CGFloat SCROLL_SPEED = 10.0;
-						CGFloat scrollx = 0, scrolly = 0;
-
-						if ( arrow.x < screen.origin.x + MinDistanceSide )
-							scrollx = -SCROLL_SPEED;
-						else if ( arrow.x > screen.origin.x + screen.size.width - MinDistanceSide )
-							scrollx = SCROLL_SPEED;
-						if ( arrow.y < screen.origin.y + MinDistanceTop )
-							scrolly = -SCROLL_SPEED;
-						else if ( arrow.y > screen.origin.y + screen.size.height - MinDistanceBottom )
-							scrolly = SCROLL_SPEED;
-
-						if ( scrollx || scrolly ) {
-							// scroll the screen to keep pushpin centered
-							DisplayLink * displayLink = [DisplayLink shared];
-							__block NSTimeInterval prevTime = CACurrentMediaTime();
-							[displayLink addName:@"dragScroll" block:^{
-								NSTimeInterval now = CACurrentMediaTime();
-								NSTimeInterval duration = now - prevTime;
-								prevTime = now;
-								CGFloat sx = scrollx * duration * 60.0;	// scale to 60 FPS assumption, need to move farther if framerate is slow
-								CGFloat sy = scrolly * duration * 60.0;
-								[strongSelf adjustOriginBy:CGPointMake(-sx,-sy)];
-								dragObject( sx, sy );
-								// update position of pushpin
-								CGPoint pt = CGPointWithOffset( weakSelf.pushpinView.arrowPoint, sx, sy );
-								strongSelf.pushpinView.arrowPoint = pt;
-								// update position of blink layer
-								pt = CGPointWithOffset( _blinkLayer.position, -sx, -sy );
-								strongSelf->_blinkLayer.position = pt;
-							}];
-						} else {
-							[[DisplayLink shared] removeName:@"dragScroll"];
-						}
-
-						// move the object
-						dragObject( dx, dy );
-					}
-					break;
-				default:
-					break;
-			}
-		};
-	}
-
-	[self updateEditControl];
-
-	if ( object == nil ) {
-		_pushpinView.placeholderImage = [UIImage imageNamed:@"question.png"];
-	}
-	
-	[self addSubview:_pushpinView];
-
-	if ( object == nil ) {
-		// do animation if creating a new object
-		[_pushpinView animateMoveFrom:CGPointMake(self.bounds.origin.x+self.bounds.size.width,self.bounds.origin.y)];
-	}
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (void)refreshPushpinText
 {
 	NSString * text = _editorLayer.selectedPrimary.friendlyDescription;
-<<<<<<< HEAD
 	text = text ?: NSLocalizedString(@"(new object)",nil);
-=======
-	text = text ?: @"(new object)";
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	_pushpinView.text = text;
 }
 
 -(void)extendSelectedWayToPoint:(CGPoint)newPoint
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( !_pushpinView )
 		return;
 	OsmWay * way = _editorLayer.selectedWay;
@@ -6642,159 +3002,11 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 		addNodeToWay( node2 );
 		[self placePushpinForSelection];
 	}
-<<<<<<< HEAD
-=======
-    if ( !_pushpinView )
-        return;
-    OsmWay * way = _editorLayer.selectedWay;
-    OsmNode * node = _editorLayer.selectedNode;
-    CGPoint arrowPoint = _pushpinView.arrowPoint;
-    
-    if ( way && !node ) {
-        // insert a new node into way at point
-        CLLocationCoordinate2D pt = [self longitudeLatitudeForScreenPoint:arrowPoint birdsEye:YES];
-        OSMPoint pt2 = { pt.longitude, pt.latitude };
-        NSInteger segment = [way segmentClosestToPoint:pt2];
-        NSString * error = nil;
-        EditActionWithNode add = [_editorLayer canAddNodeToWay:way atIndex:segment+1 error:&error];
-        if ( add ) {
-            OsmNode * newNode = [_editorLayer createNodeAtPoint:arrowPoint];
-            add(newNode);
-            _editorLayer.selectedNode = newNode;
-            [self placePushpinForSelection];
-        } else {
-            [self showAlert:NSLocalizedString(@"Error",nil) message:error];
-        }
-        
-    } else {
-        
-        if ( node && way && way.nodes.count && (way.isClosed || (node != way.nodes[0] && node != way.nodes.lastObject)) ) {
-            // both a node and way are selected but selected node is not an endpoint (or way is closed), so we will create a new way from that node
-            way = [_editorLayer createWayWithNode:node];
-        } else {
-            if ( node == nil ) {
-                node = [_editorLayer createNodeAtPoint:arrowPoint];
-            }
-            if ( way == nil ) {
-                way = [_editorLayer createWayWithNode:node];
-            }
-        }
-        NSInteger prevIndex = [way.nodes indexOfObject:node];
-        NSInteger nextIndex = prevIndex;
-        if ( nextIndex == way.nodes.count - 1 )
-            ++nextIndex;
-        // add new node at point
-        OsmNode * prevPrevNode = way.nodes.count >= 2 ? way.nodes[way.nodes.count-2] : nil;
-        CGPoint prevPrevPoint = prevPrevNode ? [self screenPointForLatitude:prevPrevNode.lat longitude:prevPrevNode.lon birdsEye:YES] : CGPointMake(0,0);
-        
-        if ( hypot( arrowPoint.x-newPoint.x, arrowPoint.y-newPoint.y) > 10.0 &&
-            (prevPrevNode==nil || hypot( prevPrevPoint.x-newPoint.x, prevPrevPoint.y-newPoint.y) > 10.0 ) )
-        {
-            // it's far enough from previous point to use
-        } else {
-            
-            // compute a good place for next point
-            if ( way.nodes.count < 2 ) {
-                // create 2nd point in the direction of the center of the screen
-                BOOL vert = fabs(arrowPoint.x - newPoint.x) < fabs(arrowPoint.y - newPoint.y);
-                if ( vert ) {
-                    newPoint.x = arrowPoint.x;
-                    newPoint.y = fabs(newPoint.y-arrowPoint.y) < 30 ? arrowPoint.y + 60 : 2*newPoint.y - arrowPoint.y;
-                } else {
-                    newPoint.x = fabs(newPoint.x-arrowPoint.x) < 30 ? arrowPoint.x + 60 : 2*newPoint.x - arrowPoint.x;
-                    newPoint.y = arrowPoint.y;
-                }
-            } else if ( way.nodes.count == 2 ) {
-                // create 3rd point 90 degrees from first 2
-                OsmNode * n1 = way.nodes[1-prevIndex];
-                CGPoint p1 = [self screenPointForLatitude:n1.lat longitude:n1.lon birdsEye:YES];
-                CGPoint delta = { p1.x - arrowPoint.x, p1.y - arrowPoint.y };
-                double len = hypot( delta.x, delta.y );
-                if ( len > 100 ) {
-                    delta.x *= 100/len;
-                    delta.y *= 100/len;
-                }
-                OSMPoint np1 = { arrowPoint.x - delta.y, arrowPoint.y + delta.x };
-                OSMPoint np2 = { arrowPoint.x + delta.y, arrowPoint.y - delta.x };
-                if ( DistanceFromPointToPoint(np1, OSMPointFromCGPoint(newPoint)) < DistanceFromPointToPoint(np2, OSMPointFromCGPoint(newPoint)) )
-                    newPoint = CGPointMake(np1.x,np1.y);
-                else
-                    newPoint = CGPointMake(np2.x, np2.y);
-            } else {
-                // create 4th point and beyond following angle of previous 3
-                OsmNode * n1 = prevIndex == 0 ? way.nodes[1] : way.nodes[prevIndex-1];
-                OsmNode * n2 = prevIndex == 0 ? way.nodes[2] : way.nodes[prevIndex-2];
-                CGPoint p1 = [self screenPointForLatitude:n1.lat longitude:n1.lon birdsEye:YES];
-                CGPoint p2 = [self screenPointForLatitude:n2.lat longitude:n2.lon birdsEye:YES];
-                OSMPoint d1 = { arrowPoint.x - p1.x, arrowPoint.y - p1.y };
-                OSMPoint d2 = { p1.x - p2.x, p1.y - p2.y };
-                double a1 = atan2( d1.y, d1.x );
-                double a2 = atan2( d2.y, d2.x );
-                double dist = hypot( d1.x, d1.y );
-                // if previous angle was 90 degrees then match length of first leg to make a rectangle
-                if ( (way.nodes.count == 3 || way.nodes.count == 4) && fabs(fmod(fabs(a1-a2),M_PI)-M_PI/2) < 0.1 ) {
-                    dist = hypot(d2.x, d2.y);
-                } else if ( dist > 100 )
-                    dist = 100;
-                a1 += a1 - a2;
-                newPoint = CGPointMake( arrowPoint.x + dist*cos(a1), arrowPoint.y + dist*sin(a1) );
-            }
-            // make sure selected point is on-screen
-            CGRect rc = self.bounds;
-            rc.origin.x += 20;
-            rc.origin.y += 20;
-            rc.size.width -= 40;
-            rc.size.height -= 190+20;
-            newPoint.x = MAX( newPoint.x, rc.origin.x );
-            newPoint.x = MIN( newPoint.x, rc.origin.x+rc.size.width);
-            newPoint.y = MAX( newPoint.y, rc.origin.y );
-            newPoint.y = MIN( newPoint.y, rc.origin.y+rc.size.height);
-        }
-        
-        if ( way.nodes.count >= 2 ) {
-            OsmNode * start = prevIndex == 0 ? way.nodes.lastObject : way.nodes[0];
-            CGPoint s = [self screenPointForLatitude:start.lat longitude:start.lon birdsEye:YES];
-            double d = hypot( s.x - newPoint.x, s.y - newPoint.y );
-            if ( d < 3.0 ) {
-                // join first to last
-                NSString * error = nil;
-                EditActionWithNode action = [_editorLayer canAddNodeToWay:way atIndex:nextIndex error:&error];
-                if ( action ) {
-                    action(start);
-                    _editorLayer.selectedWay = way;
-                    _editorLayer.selectedNode = nil;
-                    [self placePushpinAtPoint:s object:way];
-                } else {
-                    // don't bother showing an error message
-                }
-                return;
-            }
-        }
-        
-        
-        NSString * error = nil;
-        EditActionWithNode addNodeToWay = [_editorLayer canAddNodeToWay:way atIndex:nextIndex error:&error];
-        if ( !addNodeToWay ) {
-            [self showAlert:NSLocalizedString(@"Can't extend way",nil) message:error];
-            return;
-        }
-        OsmNode * node2 = [_editorLayer createNodeAtPoint:newPoint];
-        _editorLayer.selectedWay = way;        // set selection before perfoming add-node action so selection is recorded in undo stack
-        _editorLayer.selectedNode = node2;
-        addNodeToWay( node2 );
-        [self placePushpinForSelection];
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 #endif
 
 -(void)dropPinAtPoint:(CGPoint)dropPoint
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( _editorLayer.hidden ) {
 		[self flashMessage:NSLocalizedString(@"Editing layer not visible",nil)];
 		return;
@@ -6842,112 +3054,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 		[self placePushpinAtPoint:dropPoint object:nil];
 	}
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    if ( _editorLayer.hidden ) {
-        [self flashMessage:NSLocalizedString(@"Editing layer not visible",nil)];
-        return;
-    }
-    if ( _pushpinView ) {
-        
-        BOOL (^offscreenWarning)(void) = ^{
-            if ( !CGRectContainsPoint( self.bounds, _pushpinView.arrowPoint ) ) {
-                // pushpin is off screen
-                [self flashMessage:NSLocalizedString(@"Selected object is off screen",nil)];
-                return YES;
-            } else {
-                return NO;
-            }
-        };
-        
-        if ( _editorLayer.selectedWay && _editorLayer.selectedNode ) {
-            // already editing a way so try to extend it
-            if ( offscreenWarning() )
-                return;
-            [self extendSelectedWayToPoint:dropPoint];
-        } else if ( _editorLayer.selectedPrimary == nil && _pushpinView ) {
-            // just dropped a pin, so convert it into a way
-            [self extendSelectedWayToPoint:dropPoint];
-        } else if ( _editorLayer.selectedWay && _editorLayer.selectedNode == nil ) {
-            // add a new node to a way at location of pushpin
-            if ( offscreenWarning() )
-                return;
-            [self extendSelectedWayToPoint:dropPoint];
-        } else if ( _editorLayer.selectedPrimary.isNode ) {
-            // nothing selected, or just a single node selected, so drop a new pin
-            goto drop_pin;
-        }
-        
-    } else {
-        
-    drop_pin:
-        // drop a new pin
-        
-        // remove current selection
-        _editorLayer.selectedNode = nil;
-        _editorLayer.selectedWay = nil;
-        _editorLayer.selectedRelation = nil;
-        
-        [self placePushpinAtPoint:dropPoint object:nil];
-    }
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	if ( _editorLayer.hidden ) {
-		[self flashMessage:NSLocalizedString(@"Editing layer not visible",nil)];
-		return;
-	}
-	if ( _pushpinView ) {
-
-		BOOL (^offscreenWarning)(void) = ^{
-			if ( !CGRectContainsPoint( self.bounds, _pushpinView.arrowPoint ) ) {
-				// pushpin is off screen
-				[self flashMessage:NSLocalizedString(@"Selected object is off screen",nil)];
-				return YES;
-			} else {
-				return NO;
-			}
-		};
-		
-		if ( _editorLayer.selectedWay && _editorLayer.selectedNode ) {
-			// already editing a way so try to extend it
-			if ( offscreenWarning() )
-				return;
-			[self extendSelectedWayToPoint:dropPoint];
-		} else if ( _editorLayer.selectedPrimary == nil && _pushpinView ) {
-			// just dropped a pin, so convert it into a way
-			[self extendSelectedWayToPoint:dropPoint];
-		} else if ( _editorLayer.selectedWay && _editorLayer.selectedNode == nil ) {
-			// add a new node to a way at location of pushpin
-			if ( offscreenWarning() )
-				return;
-			[self extendSelectedWayToPoint:dropPoint];
-		} else if ( _editorLayer.selectedPrimary.isNode ) {
-			// nothing selected, or just a single node selected, so drop a new pin
-			goto drop_pin;
-		}
-
-	} else {
-
-	drop_pin:
-		// drop a new pin
-
-		// remove current selection
-		_editorLayer.selectedNode = nil;
-		_editorLayer.selectedWay = nil;
-		_editorLayer.selectedRelation = nil;
-
-		[self placePushpinAtPoint:dropPoint object:nil];
-	}
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (void)setTagsForCurrentObject:(NSDictionary *)tags
@@ -6982,14 +3088,10 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(void)blinkObject:(OsmBaseObject *)object segment:(NSInteger)segment
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( object == nil ) {
 		[self unblinkObject];
 		return;
 	}
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	if ( object == _blinkObject && segment == _blinkSegment )
 		return;
 	[_blinkLayer removeFromSuperlayer];
@@ -6997,10 +3099,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	_blinkSegment = segment;
 
 	// create a layer for the object
-<<<<<<< HEAD
-=======
-	_blinkLayer = [CAShapeLayer layer];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	CGMutablePathRef path = CGPathCreateMutable();
 	if ( object.isNode ) {
 		OsmNode * node = (id)object;
@@ -7010,7 +3108,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 		CGPathAddEllipseInRect(path, NULL, rect);
 	} else if ( object.isWay ) {
 		OsmWay * way = (id)object;
-<<<<<<< HEAD
 		if ( segment >= 0 ) {
 			assert( way.nodes.count >= segment+2 );
 			OsmNode * n1 = way.nodes[segment];
@@ -7062,79 +3159,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	CGPathRelease(path);
 
 	[self.layer addSublayer:_blinkLayer];
-=======
-    if ( object == _blinkObject && segment == _blinkSegment )
-        return;
-    [_blinkLayer removeFromSuperlayer];
-    _blinkObject = object;
-    _blinkSegment = segment;
-    
-    // create a layer for the object
-    _blinkLayer = [CAShapeLayer layer];
-    CGMutablePathRef path = CGPathCreateMutable();
-    if ( object.isNode ) {
-        OsmNode * node = (id)object;
-        CGPoint center = [self screenPointForLatitude:node.lat longitude:node.lon birdsEye:YES];
-        CGRect rect = CGRectMake(center.x, center.y, 0, 0);
-        rect = CGRectInset( rect, -10, -10 );
-        CGPathAddEllipseInRect(path, NULL, rect);
-    } else if ( object.isWay ) {
-        OsmWay * way = (id)object;
-        assert( way.nodes.count >= segment+2 );
-        OsmNode * n1 = way.nodes[segment];
-        OsmNode * n2 = way.nodes[segment+1];
-        CGPoint p1 = [self screenPointForLatitude:n1.lat longitude:n1.lon birdsEye:YES];
-        CGPoint p2 = [self screenPointForLatitude:n2.lat longitude:n2.lon birdsEye:YES];
-        CGPathMoveToPoint(path, NULL, p1.x, p1.y);
-        CGPathAddLineToPoint(path, NULL, p2.x, p2.y);
-    } else {
-        assert(NO);
-    }
-    _blinkLayer.path = path;
-    _blinkLayer.fillColor    = NULL;
-    _blinkLayer.lineWidth    = 3.0;
-    _blinkLayer.frame        = self.bounds;
-    _blinkLayer.zPosition    = Z_BLINK;
-    _blinkLayer.strokeColor    = NSColor.whiteColor.CGColor;
-    _blinkLayer.lineDashPhase = 0.0;
-    _blinkLayer.lineDashPattern = @[ @(3), @(3) ];
-    [self.layer addSublayer:_blinkLayer];
-    CABasicAnimation * dashAnimation = [CABasicAnimation animationWithKeyPath:@"lineDashPhase"];
-    dashAnimation.fromValue    = @(0.0);
-    dashAnimation.toValue    = @(10.0);
-    dashAnimation.duration    = 0.20;
-    dashAnimation.repeatCount = 100000;
-    [_blinkLayer addAnimation:dashAnimation forKey:@"linePhase"];
-    CGPathRelease(path);
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-		assert( way.nodes.count >= segment+2 );
-		OsmNode * n1 = way.nodes[segment];
-		OsmNode * n2 = way.nodes[segment+1];
-		CGPoint p1 = [self screenPointForLatitude:n1.lat longitude:n1.lon birdsEye:YES];
-		CGPoint p2 = [self screenPointForLatitude:n2.lat longitude:n2.lon birdsEye:YES];
-		CGPathMoveToPoint(path, NULL, p1.x, p1.y);
-		CGPathAddLineToPoint(path, NULL, p2.x, p2.y);
-	} else {
-		assert(NO);
-	}
-	_blinkLayer.path = path;
-	_blinkLayer.fillColor	= NULL;
-	_blinkLayer.lineWidth	= 3.0;
-	_blinkLayer.frame		= self.bounds;
-	_blinkLayer.zPosition	= Z_BLINK;
-	_blinkLayer.strokeColor	= NSColor.whiteColor.CGColor;
-	_blinkLayer.lineDashPhase = 0.0;
-	_blinkLayer.lineDashPattern = @[ @(3), @(3) ];
-	[self.layer addSublayer:_blinkLayer];
-	CABasicAnimation * dashAnimation = [CABasicAnimation animationWithKeyPath:@"lineDashPhase"];
-	dashAnimation.fromValue	= @(0.0);
-	dashAnimation.toValue	= @(10.0);
-	dashAnimation.duration	= 0.20;
-	dashAnimation.repeatCount = 100000;
-	[_blinkLayer addAnimation:dashAnimation forKey:@"linePhase"];
-	CGPathRelease(path);
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
@@ -7155,10 +3179,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 
 -(void)refreshNoteButtonsFromDatabase
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	dispatch_async(dispatch_get_main_queue(), ^{	// need this to disable implicit animation
 
 		[UIView performWithoutAnimation:^{
@@ -7228,88 +3248,10 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 			[_notesDatabase reset];
 		}
 	});
-<<<<<<< HEAD
-=======
-    dispatch_async(dispatch_get_main_queue(), ^{    // need this to disable implicit animation
-        
-        [UIView performWithoutAnimation:^{
-            // if a button is no longer in the notes database then it got resolved and can go away
-            NSMutableArray * remove = [NSMutableArray new];
-            for ( NSNumber * tag in _notesViewDict ) {
-                if ( [_notesDatabase noteForTag:tag.integerValue] == nil ) {
-                    [remove addObject:tag];
-                }
-            }
-            for ( NSNumber * tag in remove ) {
-                UIButton * button = _notesViewDict[tag];
-                [_notesViewDict removeObjectForKey:tag];
-                [button removeFromSuperview];
-            }
-            
-            // update new and existing buttons
-            [_notesDatabase enumerateNotes:^(OsmNote *note) {
-                UIButton * button = _notesViewDict[ @(note.tagId) ];
-                if ( _viewOverlayMask & VIEW_OVERLAY_NOTES ) {
-                    
-                    // hide unwanted keep right buttons
-                    if ( note.isKeepRight && [_notesDatabase isIgnored:note] ) {
-                        [button removeFromSuperview];
-                        return;
-                    }
-                    
-                    if ( button == nil ) {
-                        button = [UIButton buttonWithType:UIButtonTypeCustom];
-                        [button addTarget:self action:@selector(noteButtonPress:) forControlEvents:UIControlEventTouchUpInside];
-                        button.bounds                    = CGRectMake(0, 0, 20, 20);
-                        button.layer.cornerRadius        = 5;
-                        button.layer.backgroundColor    = UIColor.blueColor.CGColor;
-                        button.layer.borderColor        = UIColor.whiteColor.CGColor;
-                        button.titleLabel.font            = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-                        button.titleLabel.textColor        = UIColor.whiteColor;
-                        button.titleLabel.textAlignment    = NSTextAlignmentCenter;
-                        NSString * title = note.isFixme ? @"F" : note.isWaypoint ? @"W" : note.isKeepRight ? @"R" : @"N";
-                        [button setTitle:title forState:UIControlStateNormal];
-                        button.tag = note.tagId;
-                        [self addSubview:button];
-                        [_notesViewDict setObject:button forKey:@(note.tagId)];
-                    }
-                    
-                    if ( [note.status isEqualToString:@"closed"] ) {
-                        [button removeFromSuperview];
-                    } else if ( note.isFixme && [self.editorLayer.mapData objectWithExtendedIdentifier:note.noteId].tags[@"fixme"] == nil ) {
-                        [button removeFromSuperview];
-                    } else {
-                        double offsetX = note.isKeepRight || note.isFixme ? 0.00001 : 0.0;
-                        CGPoint pos = [self screenPointForLatitude:note.lat longitude:note.lon+offsetX birdsEye:YES];
-                        if ( isinf(pos.x) || isinf(pos.y) )
-                            return;
-                        
-                        CGRect rc = button.bounds;
-                        rc = CGRectOffset( rc, pos.x-rc.size.width/2, pos.y-rc.size.height/2 );
-                        button.frame = rc;
-                    }
-                } else {
-                    [button removeFromSuperview];
-                    [_notesViewDict removeObjectForKey:@(note.tagId)];
-                }
-            }];
-        }];
-        
-        if ( (_viewOverlayMask & VIEW_OVERLAY_NOTES) == 0 ) {
-            [_notesDatabase reset];
-        }
-    });
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(void)noteButtonPress:(id)sender
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	UIButton * button = sender;
 	OsmNote * note = [_notesDatabase noteForTag:button.tag];
 	if ( note == nil )
@@ -7331,7 +3273,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 		OsmNoteComment * comment = note.comments.lastObject;
 		NSString * title = note.isWaypoint ? @"Waypoint" : @"Keep Right";
 
-<<<<<<< HEAD
 		// use regular alertview
 		NSString * text = comment.text;
 		NSRange r1 = [text rangeOfString:@"<a "];
@@ -7366,101 +3307,6 @@ NSString * ActionTitle( EDIT_ACTION action, BOOL abbrev )
 	} else {
 		[self.mainViewController performSegueWithIdentifier:@"NotesSegue" sender:note];
 	}
-=======
-    UIButton * button = sender;
-    OsmNote * note = [_notesDatabase noteForTag:button.tag];
-    if ( note == nil )
-        return;
-    
-    if ( note.isWaypoint || note.isKeepRight ) {
-        if ( !_editorLayer.hidden ) {
-            OsmBaseObject * object = [_editorLayer.mapData objectWithExtendedIdentifier:note.noteId];
-            if ( object ) {
-                _editorLayer.selectedNode        = object.isNode;
-                _editorLayer.selectedWay        = object.isWay;
-                _editorLayer.selectedRelation    = object.isRelation;
-                
-                OSMPoint pt = [object pointOnObjectForPoint:OSMPointMake(note.lon, note.lat)];
-                CGPoint point = [self screenPointForLatitude:pt.y longitude:pt.x birdsEye:YES];
-                [self placePushpinAtPoint:point object:object];
-            }
-        }
-        OsmNoteComment * comment = note.comments.lastObject;
-        NSString * title = note.isWaypoint ? @"Waypoint" : @"Keep Right";
-        
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#if 0
-		// use our custom alertview
-		HtmlAlertViewController * alert = [self.viewController.storyboard instantiateViewControllerWithIdentifier:@"HtmlAlert"];
-		[self.window addSubview:alert.view];
-		alert.heading.text			= title;
-		alert.htmlText				= comment.text;
-		_alertKeepRight = (id)alert;	// so we don't get deallocated
-		__weak HtmlAlertViewController * weakAlert = alert;
-		[alert addButton:@"OK" callback:^{
-			[weakAlert.view removeFromSuperview];
-			_alertKeepRight = nil;
-		}];
-		[alert addButton:@"Ignore" callback:^{
-			// they want to hide this button from now on
-			[_notesDatabase ignoreNote:_currentNote];
-			[self refreshNoteButtonsFromDatabase];
-			_editorLayer.selectedNode = nil;
-			_editorLayer.selectedWay = nil;
-			_editorLayer.selectedRelation = nil;
-			[self removePin];
-			[weakAlert.view removeFromSuperview];
-			_alertKeepRight = nil;
-		}];
-#else
-		// use regular alertview
-		NSString * text = comment.text;
-		NSRange r1 = [text rangeOfString:@"<a "];
-		if ( r1.length > 0 ) {
-			NSRange r2 = [text rangeOfString:@"\">"];
-			if ( r2.length > 0 ) {
-				text = [text stringByReplacingCharactersInRange:NSMakeRange(r1.location,r2.location+r2.length-r1.location) withString:@""];
-				text = [text stringByReplacingOccurrencesOfString:@"</a>" withString:@""];
-			}
-		}
-		text = [text stringByReplacingOccurrencesOfString:@"&quot;" withString:@"\""];
-
-		UIAlertController * alertKeepRight = [UIAlertController alertControllerWithTitle:title message:text preferredStyle:UIAlertControllerStyleAlert];
-		[alertKeepRight addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil)	  style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {}]];
-		[alertKeepRight addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Ignore",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-			// they want to hide this button from now on
-			[_notesDatabase ignoreNote:note];
-			[self refreshNoteButtonsFromDatabase];
-			_editorLayer.selectedNode = nil;
-			_editorLayer.selectedWay = nil;
-			_editorLayer.selectedRelation = nil;
-			[self removePin];
- 		}]];
-		[self.viewController presentViewController:alertKeepRight animated:YES completion:nil];
-#endif
-<<<<<<< HEAD
-    } else if ( note.isFixme ) {
-        OsmBaseObject * object = [_editorLayer.mapData objectWithExtendedIdentifier:note.noteId];
-        _editorLayer.selectedNode        = object.isNode;
-        _editorLayer.selectedWay        = object.isWay;
-        _editorLayer.selectedRelation    = object.isRelation;
-        [self presentTagEditor:nil];
-    } else {
-        [self.viewController performSegueWithIdentifier:@"NotesSegue" sender:note];
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	} else if ( note.isFixme ) {
-		OsmBaseObject * object = [_editorLayer.mapData objectWithExtendedIdentifier:note.noteId];
-		_editorLayer.selectedNode		= object.isNode;
-		_editorLayer.selectedWay		= object.isWay;
-		_editorLayer.selectedRelation	= object.isRelation;
-		[self presentTagEditor:nil];
-	} else {
-		[self.viewController performSegueWithIdentifier:@"NotesSegue" sender:note];
-	}
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 #pragma mark Gestures
@@ -7473,10 +3319,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 // disable gestures inside toolbar buttons
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	// http://stackoverflow.com/questions/3344341/uibutton-inside-a-view-that-has-a-uitapgesturerecognizer
 	UIView * view = touch.view;
 	while ( view ) {
@@ -7493,27 +3335,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 	}
 
 	return YES; // handle the touch
-<<<<<<< HEAD
-=======
-    // http://stackoverflow.com/questions/3344341/uibutton-inside-a-view-that-has-a-uitapgesturerecognizer
-    UIView * view = touch.view;
-    while ( view ) {
-        if ( [view isKindOfClass:[UIControl class]] || [view isKindOfClass:[UIToolbar class]] )
-            break;
-        view = view.superview;
-    }
-    if ( view ) {
-        // we touched a button, slider, or other UIControl
-        if ( gestureRecognizer == _addNodeButtonLongPressGestureRecognizer ) {
-            return YES;
-        }
-        return NO; // ignore the touch
-    }
-    
-    return YES; // handle the touch
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
@@ -7529,10 +3350,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)pan
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	self.userOverrodeLocationPosition = YES;
 
 	if ( pan.state == UIGestureRecognizerStateBegan ) {
@@ -7541,19 +3358,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 		[displayLink removeName:DisplayLinkPanning];
 	} else if ( pan.state == UIGestureRecognizerStateChanged ) {
 		// move pan
-<<<<<<< HEAD
-=======
-    self.userOverrodeLocationPosition = YES;
-    
-    if ( pan.state == UIGestureRecognizerStateBegan ) {
-        // start pan
-        DisplayLink * displayLink = [DisplayLink shared];
-        [displayLink removeName:DisplayLinkPanning];
-    } else if ( pan.state == UIGestureRecognizerStateChanged ) {
-        // move pan
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #if SHOW_3D
 		// multi-finger drag to initiate 3-D view
 		if ( self.enableBirdsEye && pan.numberOfTouches == 3 ) {
@@ -7563,10 +3367,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 			return;
 		}
 #endif
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 		CGPoint translation = [pan translationInView:self];
 		[self adjustOriginBy:translation];
 		[pan setTranslation:CGPointMake(0,0) inView:self];
@@ -7603,7 +3403,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 	} else {
 		DLog( @"pan gesture %d", (int)pan.state);
 	}
-<<<<<<< HEAD
 }
 - (void)handlePinchGesture:(UIPinchGestureRecognizer *)pinch
 {
@@ -7642,98 +3441,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 	} else if ( tapAndDrag.state == UIGestureRecognizerStateEnded ) {
 		[self updateNotesFromServerWithDelay:0];
 	}
-=======
-        CGPoint translation = [pan translationInView:self];
-        [self adjustOriginBy:translation];
-        [pan setTranslation:CGPointMake(0,0) inView:self];
-    } else if (pan.state == UIGestureRecognizerStateEnded || pan.state == UIGestureRecognizerStateCancelled ) {    // cancelled occurs when we throw an error dialog
-        double duration = 0.5;
-        
-        // finish pan with inertia
-        CGPoint initialVelecity = [pan velocityInView:self];
-        if ( hypot(initialVelecity.x,initialVelecity.y) < 100.0 ) {
-            // don't use inertia for small movements because it interferes with dropping the pin precisely
-        } else {
-            CFTimeInterval startTime = CACurrentMediaTime();
-            __weak MapView * weakSelf = self;
-            __weak DisplayLink * displayLink = [DisplayLink shared];
-            [displayLink addName:DisplayLinkPanning block:^{
-                MapView * myself = weakSelf;
-                if ( myself ) {
-                    double timeOffset = CACurrentMediaTime() - startTime;
-                    if ( timeOffset >= duration ) {
-                        [displayLink removeName:DisplayLinkPanning];
-                    } else {
-                        CGPoint translation;
-                        double t = timeOffset / duration;    // time [0..1]
-                        translation.x = (1-t) * initialVelecity.x * displayLink.duration;
-                        translation.y = (1-t) * initialVelecity.y * displayLink.duration;
-                        [myself adjustOriginBy:translation];
-                    }
-                }
-            }];
-        }
-        [self updateNotesFromServerWithDelay:duration];
-    } else if ( pan.state == UIGestureRecognizerStateFailed ) {
-        DLog( @"pan gesture failed" );
-    } else {
-        DLog( @"pan gesture %d", (int)pan.state);
-    }
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-}
-- (void)handlePinchGesture:(UIPinchGestureRecognizer *)pinch
-{
-	if ( pinch.state == UIGestureRecognizerStateChanged ) {
-		self.userOverrodeLocationZoom = YES;
-
-		DisplayLink * displayLink = [DisplayLink shared];
-		[displayLink removeName:DisplayLinkPanning];
-
-		CGPoint zoomCenter = [pinch locationInView:self];
-		[self adjustZoomBy:pinch.scale aroundScreenPoint:zoomCenter];
-
-		[pinch setScale:1.0];
-	} else if ( pinch.state == UIGestureRecognizerStateEnded ) {
-		[self updateNotesFromServerWithDelay:0];
-	}
-}
-- (void)handleTapAndDragGesture:(TapAndDragGesture *)tapAndDrag
-{
-<<<<<<< HEAD
-    // do single-finger zooming
-    if ( tapAndDrag.state == UIGestureRecognizerStateChanged ) {
-        self.userOverrodeLocationZoom = YES;
-        
-        DisplayLink * displayLink = [DisplayLink shared];
-        [displayLink removeName:DisplayLinkPanning];
-        
-        CGPoint delta = [tapAndDrag translationInView:self];
-        double scale = 1 + delta.y * 0.01;
-        CGPoint zoomCenter = CGRectCenter( [self bounds] );
-        [self adjustZoomBy:scale aroundScreenPoint:zoomCenter];
-        
-    } else if ( tapAndDrag.state == UIGestureRecognizerStateEnded ) {
-        [self updateNotesFromServerWithDelay:0];
-    }
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-	// do single-finger zooming
-	if ( tapAndDrag.state == UIGestureRecognizerStateChanged ) {
-		self.userOverrodeLocationZoom = YES;
-
-		DisplayLink * displayLink = [DisplayLink shared];
-		[displayLink removeName:DisplayLinkPanning];
-
-		CGPoint delta = [tapAndDrag translationInView:self];
-		double scale = 1 + delta.y * 0.01;
-		CGPoint zoomCenter = CGRectCenter( [self bounds] );
-		[self adjustZoomBy:scale aroundScreenPoint:zoomCenter];
-
-	} else if ( tapAndDrag.state == UIGestureRecognizerStateEnded ) {
-		[self updateNotesFromServerWithDelay:0];
-	}
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 - (IBAction)handleTapGesture:(UITapGestureRecognizer *)tap
 {
@@ -7755,18 +3462,12 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 			break;
 		case UIGestureRecognizerStateEnded:
 			if ( CACurrentMediaTime() - _addNodeButtonTimestamp < 0.5 ) {
-<<<<<<< HEAD
 				// treat as tap, but make sure it occured inside the button
 				CGPoint touch = [recognizer locationInView:recognizer.view];
 				if ( CGRectContainsPoint( recognizer.view.bounds, touch ) ) {
 					CGPoint point = _crossHairs.position;
 					[self dropPinAtPoint:point];
 				}
-=======
-				// treat as tap
-				CGPoint point = CGRectCenter( self.bounds );
-				[self dropPinAtPoint:point];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 			}
 			_addNodeButtonTimestamp = 0.0;
 			break;
@@ -7782,9 +3483,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 // long press on map allows selection of various objects near the location
 - (IBAction)handleLongPressGesture:(UILongPressGestureRecognizer *)longPress
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( longPress.state == UIGestureRecognizerStateBegan && !_editorLayer.hidden ) {
 		CGPoint point = [longPress locationInView:self];
 
@@ -7866,167 +3564,10 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 		multiSelectSheet.popoverPresentationController.sourceView = self;
 		multiSelectSheet.popoverPresentationController.sourceRect = rc;
 	}
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    if ( longPress.state == UIGestureRecognizerStateBegan && !_editorLayer.hidden ) {
-        CGPoint point = [longPress locationInView:self];
-        
-        NSArray * objects = [self.editorLayer osmHitTestMultiple:point radius:DefaultHitTestRadius];
-        if ( objects.count == 0 )
-            return;
-        
-        // special case for adding members to relations:
-        if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon ) {
-            NSArray * ways = [objects filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmBaseObject * obj, id bindings) {
-                return obj.isWay != nil;
-            }]];
-            if ( ways.count == 1 ) {
-                UIAlertController * confirm = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add way to multipolygon?",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-                void (^addMmember)(NSString *) = ^(NSString * role) {
-                    NSString * error = nil;
-                    EditAction add = [_editorLayer.mapData canAddObject:ways.lastObject toRelation:_editorLayer.selectedRelation withRole:role error:&error];
-                    if ( add ) {
-                        add();
-                        [self flashMessage:NSLocalizedString(@"added to multipolygon relation",nil)];
-                        [_editorLayer setNeedsLayout];
-                    } else {
-                        [self showAlert:NSLocalizedString(@"Error",nil) message:error];
-                    }
-                };
-                [confirm addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add outer member",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    addMmember(@"outer");
-                }]];
-                [confirm addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add inner member",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    addMmember(@"inner");
-                }]];
-                [confirm addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-                [self.viewController presentViewController:confirm animated:YES completion:nil];
-            }
-            return;
-        }
-        
-        UIAlertController * multiSelectSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Select Object",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-        for ( OsmBaseObject * object in objects ) {
-            NSString * title = object.friendlyDescription;
-            [multiSelectSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                // processing for selecting one of multipe objects
-                [_editorLayer setSelectedNode:nil];
-                [_editorLayer setSelectedWay:nil];
-                [_editorLayer setSelectedRelation:nil];
-                if ( object.isNode ) {
-                    for ( OsmBaseObject * obj in objects ) {
-                        if ( obj.isWay && [obj.isWay.nodes containsObject:object] ) {
-                            // select the way containing the node, then select the node in the way
-                            [_editorLayer setSelectedWay:obj.isWay];
-                            break;
-                        }
-                    }
-                    [_editorLayer setSelectedNode:object.isNode];
-                } else if ( object.isWay ) {
-                    [_editorLayer setSelectedWay:object.isWay];
-                } else if ( object.isRelation ) {
-                    [_editorLayer setSelectedRelation:object.isRelation];
-                }
-                CGPoint pos = [self pointOnObject:object forPoint:point];
-                [self placePushpinAtPoint:pos object:object];
-            }]];
-        }
-        [multiSelectSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-        [self.viewController presentViewController:multiSelectSheet animated:YES completion:nil];
-        // set position
-        CGRect rc = { point.x, point.y, 0, 0 };
-        multiSelectSheet.popoverPresentationController.sourceView = self;
-        multiSelectSheet.popoverPresentationController.sourceRect = rc;
-    }
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	if ( longPress.state == UIGestureRecognizerStateBegan && !_editorLayer.hidden ) {
-		CGPoint point = [longPress locationInView:self];
-
-		NSArray * objects = [self.editorLayer osmHitTestMultiple:point radius:DefaultHitTestRadius];
-		if ( objects.count == 0 )
-			return;
-
-		// special case for adding members to relations:
-		if ( _editorLayer.selectedPrimary.isRelation.isMultipolygon ) {
-			NSArray * ways = [objects filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmBaseObject * obj, id bindings) {
-				return obj.isWay != nil;
-			}]];
-			if ( ways.count == 1 ) {
-				UIAlertController * confirm = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Add way to multipolygon?",nil) message:nil preferredStyle:UIAlertControllerStyleAlert];
-				void (^addMmember)(NSString *) = ^(NSString * role) {
-					NSString * error = nil;
-					EditAction add = [_editorLayer.mapData canAddObject:ways.lastObject toRelation:_editorLayer.selectedRelation withRole:role error:&error];
-					if ( add ) {
-						add();
-						[self flashMessage:NSLocalizedString(@"added to multipolygon relation",nil)];
-						[_editorLayer setNeedsLayout];
-					} else {
-						[self showAlert:NSLocalizedString(@"Error",nil) message:error];
-					}
-				};
-				[confirm addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add outer member",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-					addMmember(@"outer");
-				}]];
-				[confirm addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Add inner member",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-					addMmember(@"inner");
-				}]];
-				[confirm addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-				[self.viewController presentViewController:confirm animated:YES completion:nil];
-			}
-			return;
-		}
-
-		UIAlertController * multiSelectSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Select Object",nil) message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-		for ( OsmBaseObject * object in objects ) {
-			NSString * title = object.friendlyDescription;
-			[multiSelectSheet addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-				// processing for selecting one of multipe objects
-				[_editorLayer setSelectedNode:nil];
-				[_editorLayer setSelectedWay:nil];
-				[_editorLayer setSelectedRelation:nil];
-				if ( object.isNode ) {
-					for ( OsmBaseObject * obj in objects ) {
-						if ( obj.isWay && [obj.isWay.nodes containsObject:object] ) {
-							// select the way containing the node, then select the node in the way
-							[_editorLayer setSelectedWay:obj.isWay];
-							break;
-						}
-					}
-					[_editorLayer setSelectedNode:object.isNode];
-				} else if ( object.isWay ) {
-					[_editorLayer setSelectedWay:object.isWay];
-				} else if ( object.isRelation ) {
-					[_editorLayer setSelectedRelation:object.isRelation];
-				}
-				CGPoint pos = [self pointOnObject:object forPoint:point];
-				[self placePushpinAtPoint:pos object:object];
-			}]];
-		}
-		[multiSelectSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil) style:UIAlertActionStyleCancel handler:nil]];
-		[self.viewController presentViewController:multiSelectSheet animated:YES completion:nil];
-		// set position
-		CGRect rc = { point.x, point.y, 0, 0 };
-		multiSelectSheet.popoverPresentationController.sourceView = self;
-		multiSelectSheet.popoverPresentationController.sourceRect = rc;
-	}
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (IBAction)handleRotationGesture:(UIRotationGestureRecognizer *)rotationGesture
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( _isRotateObjectMode ) {
 		// Rotate object on screen
 		if ( rotationGesture.state == UIGestureRecognizerStateBegan ) {
@@ -8081,136 +3622,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 			[self updateNotesFromServerWithDelay:0];
 		}
 	}
-=======
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    if ( _isRotateObjectMode ) {
-        // Rotate object on screen
-        if ( rotationGesture.state == UIGestureRecognizerStateBegan ) {
-            [_editorLayer.mapData beginUndoGrouping];
-            _gestureDidMove = NO;
-        } else if ( rotationGesture.state == UIGestureRecognizerStateChanged ) {
-            if ( _gestureDidMove ) {
-                // don't allows undo list to accumulate
-                [_editorLayer.mapData endUndoGrouping];
-                self.silentUndo = YES;
-                [_editorLayer.mapData undo];
-                self.silentUndo = NO;
-                [_editorLayer.mapData beginUndoGrouping];
-            }
-            _gestureDidMove = YES;
-            
-            CGFloat delta = rotationGesture.rotation;
-            CGPoint    axis = [self screenPointForLatitude:_rotateObjectCenter.y longitude:_rotateObjectCenter.x birdsEye:YES];
-            OsmBaseObject * rotatedObject = _editorLayer.selectedRelation ?: _editorLayer.selectedWay;
-            for ( OsmNode * node in rotatedObject.nodeSet ) {
-                CGPoint pt = [self screenPointForLatitude:node.lat longitude:node.lon birdsEye:YES];
-                OSMPoint diff = { pt.x - axis.x, pt.y - axis.y };
-                double radius = hypot( diff.x, diff.y );
-                double angle = atan2( diff.y, diff.x );
-                angle += delta;
-                OSMPoint new = { axis.x + radius * cos(angle), axis.y + radius * sin(angle) };
-                CGPoint dist = { new.x - pt.x, -(new.y - pt.y) };
-                [_editorLayer adjustNode:node byDistance:dist];
-            }
-        } else {
-            // ended
-            [self endObjectRotation];
-            [_editorLayer.mapData endUndoGrouping];
-        }
-        return;
-    }
-    
-    // Rotate screen
-    if ( self.enableRotation ) {
-        if ( rotationGesture.state == UIGestureRecognizerStateBegan ) {
-            // ignore
-#if FRAMERATE_TEST
-            DisplayLink * displayLink = [DisplayLink shared];
-            [displayLink removeName:@"autoScroll"];
-#endif
-        } else if ( rotationGesture.state == UIGestureRecognizerStateChanged ) {
-            CGPoint centerPoint = [rotationGesture locationInView:self];
-            CGFloat angle = rotationGesture.rotation;
-            [self rotateBy:angle aroundScreenPoint:centerPoint];
-            rotationGesture.rotation = 0.0;
-            
-            if ( _gpsState == GPS_STATE_HEADING ) {
-                _gpsState = GPS_STATE_LOCATION;
-            }
-        } else if ( rotationGesture.state == UIGestureRecognizerStateEnded ) {
-            [self updateNotesFromServerWithDelay:0];
-        }
-    }
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	if ( _isRotateObjectMode ) {
-		// Rotate object on screen
-		if ( rotationGesture.state == UIGestureRecognizerStateBegan ) {
-			[_editorLayer.mapData beginUndoGrouping];
-			_gestureDidMove = NO;
-		} else if ( rotationGesture.state == UIGestureRecognizerStateChanged ) {
-			if ( _gestureDidMove ) {
-				// don't allows undo list to accumulate
-				[_editorLayer.mapData endUndoGrouping];
-				self.silentUndo = YES;
-				[_editorLayer.mapData undo];
-				self.silentUndo = NO;
-				[_editorLayer.mapData beginUndoGrouping];
-			}
-			_gestureDidMove = YES;
-
-			CGFloat delta = rotationGesture.rotation;
-			CGPoint	axis = [self screenPointForLatitude:_rotateObjectCenter.y longitude:_rotateObjectCenter.x birdsEye:YES];
-			OsmBaseObject * rotatedObject = _editorLayer.selectedRelation ?: _editorLayer.selectedWay;
-			for ( OsmNode * node in rotatedObject.nodeSet ) {
-				CGPoint pt = [self screenPointForLatitude:node.lat longitude:node.lon birdsEye:YES];
-				OSMPoint diff = { pt.x - axis.x, pt.y - axis.y };
-				double radius = hypot( diff.x, diff.y );
-				double angle = atan2( diff.y, diff.x );
-				angle += delta;
-				OSMPoint new = { axis.x + radius * cos(angle), axis.y + radius * sin(angle) };
-				CGPoint dist = { new.x - pt.x, -(new.y - pt.y) };
-				[_editorLayer adjustNode:node byDistance:dist];
-			}
-		} else {
-			// ended
-			[self endObjectRotation];
-			[_editorLayer.mapData endUndoGrouping];
-		}
-		return;
-	}
-
-	// Rotate screen
-	if ( self.enableRotation ) {
-		if ( rotationGesture.state == UIGestureRecognizerStateBegan ) {
-			// ignore
-#if FRAMERATE_TEST
-			DisplayLink * displayLink = [DisplayLink shared];
-			[displayLink removeName:@"autoScroll"];
-#endif
-		} else if ( rotationGesture.state == UIGestureRecognizerStateChanged ) {
-			CGPoint centerPoint = [rotationGesture locationInView:self];
-			CGFloat angle = rotationGesture.rotation;
-			[self rotateBy:angle aroundScreenPoint:centerPoint];
-			rotationGesture.rotation = 0.0;
-			
-			if ( _gpsState == GPS_STATE_HEADING ) {
-				_gpsState = GPS_STATE_LOCATION;
-			}
-		} else if ( rotationGesture.state == UIGestureRecognizerStateEnded ) {
-			[self updateNotesFromServerWithDelay:0];
-		}
-	}
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 
@@ -8224,7 +3635,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 
 - (void)handleScrollWheelGesture:(UIPanGestureRecognizer *)pan
 {
-<<<<<<< HEAD
 	if ( pan.state == UIGestureRecognizerStateChanged ) {
 		CGPoint delta 	= [pan translationInView:self];
 		CGPoint center 	= [pan locationInView:self];
@@ -8236,8 +3646,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 
 - (void)singleClick:(CGPoint)point
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	OsmBaseObject * hit = nil;
 
 	// disable rotation if in action
@@ -8325,192 +3733,6 @@ static NSString * const DisplayLinkPanning	= @"Panning";
 {
 	// right-click is equivalent to holding + and clicking
 	[self dropPinAtPoint:location];
-=======
-=======
-<<<<<<< HEAD
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-    OsmBaseObject * hit = nil;
-    
-    // disable rotation if in action
-    if ( _isRotateObjectMode ) {
-        [self endObjectRotation];
-    }
-    
-    
-    if ( _editorLayer.selectedWay ) {
-        // check for selecting node inside way
-        hit = [_editorLayer osmHitTestNodeInSelectedWay:point radius:DefaultHitTestRadius];
-    }
-    if ( hit ) {
-        _editorLayer.selectedNode = (id)hit;
-        
-    } else {
-        
-        // hit test anything
-        hit = [_editorLayer osmHitTest:point radius:DefaultHitTestRadius testNodes:NO ignoreList:nil segment:NULL];
-        if ( hit ) {
-            if ( hit.isNode ) {
-                _editorLayer.selectedNode = (id)hit;
-                _editorLayer.selectedWay = nil;
-                _editorLayer.selectedRelation = nil;
-            } else if ( hit.isWay ) {
-                if ( _editorLayer.selectedRelation.isMultipolygon && [hit.isWay.parentRelations containsObject:_editorLayer.selectedRelation] ) {
-                    // selecting way inside previously selected relation
-                    _editorLayer.selectedNode = nil;
-                    _editorLayer.selectedWay = (id)hit;
-                } else if ( hit.parentRelations.count > 0 ) {
-                    // select relation the way belongs to
-                    NSArray * relations = [hit.parentRelations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmRelation * relation, id bindings) {
-                        return relation.isMultipolygon;
-                    }]];
-                    OsmRelation * relation = relations.count > 0 ? relations[0] : nil;
-                    if ( relation ) {
-                        hit = relation;    // convert hit to relation
-                        _editorLayer.selectedNode = nil;
-                        _editorLayer.selectedWay = nil;
-                        _editorLayer.selectedRelation = (id)hit;
-                    } else {
-                        _editorLayer.selectedNode = nil;
-                        _editorLayer.selectedWay = (id)hit;
-                        _editorLayer.selectedRelation = nil;
-                    }
-                } else {
-                    _editorLayer.selectedNode = nil;
-                    _editorLayer.selectedWay = (id)hit;
-                    _editorLayer.selectedRelation = nil;
-                }
-            } else {
-                _editorLayer.selectedNode = nil;
-                _editorLayer.selectedWay = nil;
-                _editorLayer.selectedRelation = (id)hit;
-            }
-        } else {
-            _editorLayer.selectedNode = nil;
-            _editorLayer.selectedWay = nil;
-            _editorLayer.selectedRelation = nil;
-        }
-        
-        if ( _enableEnhancedHwyEditor && _editorLayer.selectedWay ) {
-            [self presentEnhancedHwyEditor: point];
-        }
-    }
-    
-    [self removePin];
-    
-    if ( _editorLayer.selectedPrimary ) {
-        // adjust tap point to touch object
-        CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:point birdsEye:YES];
-        OSMPoint pt = { latLon.longitude, latLon.latitude };
-        pt = [_editorLayer.selectedPrimary pointOnObjectForPoint:pt];
-        point = [self screenPointForLatitude:pt.y longitude:pt.x birdsEye:YES];
-        
-        [self placePushpinAtPoint:point object:_editorLayer.selectedPrimary];
-        
-        if ( _editorLayer.selectedPrimary.isWay || _editorLayer.selectedPrimary.isRelation ) {
-            // if they later try to drag this way ask them if they really wanted to
-            _confirmDrag = (_editorLayer.selectedPrimary.modifyCount == 0);
-        }
-    }
-<<<<<<< HEAD
->>>>>>> eba9e17d... added replace tag edit options to main edit controls
-=======
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	OsmBaseObject * hit = nil;
-
-	// disable rotation if in action
-	if ( _isRotateObjectMode ) {
-		[self endObjectRotation];
-	}
-
-
-	if ( _editorLayer.selectedWay ) {
-		// check for selecting node inside way
-		hit = [_editorLayer osmHitTestNodeInSelectedWay:point radius:DefaultHitTestRadius];
-	}
-	if ( hit ) {
-		_editorLayer.selectedNode = (id)hit;
-
-	} else {
-
-		// hit test anything
-		hit = [_editorLayer osmHitTest:point radius:DefaultHitTestRadius testNodes:NO ignoreList:nil segment:NULL];
-		if ( hit ) {
-			if ( hit.isNode ) {
-				_editorLayer.selectedNode = (id)hit;
-				_editorLayer.selectedWay = nil;
-				_editorLayer.selectedRelation = nil;
-			} else if ( hit.isWay ) {
-				if ( _editorLayer.selectedRelation.isMultipolygon && [hit.isWay.parentRelations containsObject:_editorLayer.selectedRelation] ) {
-					// selecting way inside previously selected relation
-					_editorLayer.selectedNode = nil;
-					_editorLayer.selectedWay = (id)hit;
-				} else if ( hit.parentRelations.count > 0 ) {
-					// select relation the way belongs to
-					NSArray * relations = [hit.parentRelations filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmRelation * relation, id bindings) {
-						return relation.isMultipolygon;
-					}]];
-					OsmRelation * relation = relations.count > 0 ? relations[0] : nil;
-					if ( relation ) {
-						hit = relation;	// convert hit to relation
-						_editorLayer.selectedNode = nil;
-						_editorLayer.selectedWay = nil;
-						_editorLayer.selectedRelation = (id)hit;
-					} else {
-						_editorLayer.selectedNode = nil;
-						_editorLayer.selectedWay = (id)hit;
-						_editorLayer.selectedRelation = nil;
-					}
-				} else {
-					_editorLayer.selectedNode = nil;
-					_editorLayer.selectedWay = (id)hit;
-					_editorLayer.selectedRelation = nil;
-				}
-			} else {
-				_editorLayer.selectedNode = nil;
-				_editorLayer.selectedWay = nil;
-				_editorLayer.selectedRelation = (id)hit;
-			}
-		} else {
-			_editorLayer.selectedNode = nil;
-			_editorLayer.selectedWay = nil;
-			_editorLayer.selectedRelation = nil;
-		}
-	}
-
-	[self removePin];
-
-	if ( _editorLayer.selectedPrimary ) {
-		// adjust tap point to touch object
-		CLLocationCoordinate2D latLon = [self longitudeLatitudeForScreenPoint:point birdsEye:YES];
-		OSMPoint pt = { latLon.longitude, latLon.latitude };
-		pt = [_editorLayer.selectedPrimary pointOnObjectForPoint:pt];
-		point = [self screenPointForLatitude:pt.y longitude:pt.x birdsEye:YES];
-
-		[self placePushpinAtPoint:point object:_editorLayer.selectedPrimary];
-
-		if ( _editorLayer.selectedPrimary.isWay || _editorLayer.selectedPrimary.isRelation ) {
-			// if they later try to drag this way ask them if they really wanted to
-			_confirmDrag = (_editorLayer.selectedPrimary.modifyCount == 0);
-		}
-	}
-}
-
-- (void)presentViewControllerForMeasuringHeight {
-    if ( self.gpsState == GPS_STATE_NONE ) {
-        NSString *errorMessage = NSLocalizedString(@"This action requires GPS to be turned on",nil);
-        
-        [self showAlert:errorMessage message:nil];
-    } else if ([AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo] == AVAuthorizationStatusDenied) {
-        NSString *title = NSLocalizedString(@"Unable to access the camera", "");
-        NSString *message = NSLocalizedString(@"In order to measure height, please enable camera access in the app's settings.", "");
-        
-        [self askUserToOpenSettingsWithAlertTitle:title message:message];
-    } else {
-        [self.viewController performSegueWithIdentifier:@"CalculateHeightSegue" sender:nil];
-    }
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 
 @end

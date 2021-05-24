@@ -67,16 +67,9 @@ static NSString * TMS_PROJECTION_NAME = @"(TMS)";
 																	url:url
 																maxZoom:[zoomField.text integerValue]
 																roundUp:YES
-<<<<<<< HEAD
 															  startDate:nil
 																endDate:nil
-<<<<<<< HEAD
 																wmsProjection:projection
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-																wmsProjection:nil
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 																polygon:NULL
 											   				attribString:nil
 												 			attribIcon:nil

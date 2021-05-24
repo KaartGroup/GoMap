@@ -21,10 +21,7 @@
 	IBOutlet UISwitch *	_gpxLoggingSwitch;
 	IBOutlet UISwitch * _turnRestrictionSwitch;
 	IBOutlet UISwitch * _objectFiltersSwitch;
-<<<<<<< HEAD
 	IBOutlet UIButton *	_addButtonPosition;
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(IBAction)chooseAddButtonPosition:(id)sender;

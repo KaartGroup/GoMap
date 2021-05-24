@@ -17,10 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 	IBOutlet UITableViewCell	*	_sendMailCell;
 	IBOutlet UITableViewCell    *   _testFlightCell;
 	IBOutlet UITableViewCell	*	_githubCell;
-<<<<<<< HEAD
 	IBOutlet UITableViewCell	*	_weblateCell;
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 }
 @end
 

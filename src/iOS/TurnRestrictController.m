@@ -14,7 +14,7 @@
 #import "OsmNotesDatabase.h"
 #import "OsmMapData.h"
 #import "OsmMapData+Edit.h"
-#import "OsmObjects.h"
+#import "OsmMember.h"
 
 
 @interface TurnRestrictController ()
@@ -64,16 +64,8 @@
 	_viewWithTitle.layer.cornerRadius 	= 3;
 
 	// get highways that contain selection
-<<<<<<< HEAD
 	OsmMapData * mapData = AppDelegate.shared.mapView.editorLayer.mapData;
-=======
-	OsmMapData * mapData = [AppDelegate getAppDelegate].mapView.editorLayer.mapData;
-<<<<<<< HEAD
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	NSArray<OsmWay *> * parentWays = [mapData waysContainingNode:_centralNode];
-=======
-	NSArray * parentWays = [mapData waysContainingNode:_centralNode];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	parentWays = [parentWays filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(OsmWay * way, NSDictionary *bindings) {
 		return way.tags[@"highway"] != nil;
 	}]];

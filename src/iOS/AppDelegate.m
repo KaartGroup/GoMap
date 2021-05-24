@@ -16,17 +16,7 @@
 #import "KeyChain.h"
 #import "OsmMapData.h"
 #import "MapView.h"
-<<<<<<< HEAD
 #import "MainViewController.h"
-=======
-#import "MapViewController.h"
-<<<<<<< HEAD
-#import "URLParserResult.h"
-#import "GeoURLParser.h"
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 @implementation AppDelegate
 
@@ -49,7 +39,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-<<<<<<< HEAD
 #if 0	// This code sets the screen size as mandated for Mac App Store screen shots
 	CGSize size = { 640 * (1440.0/752) * (1440.0/1337) * (1440.0/1431), 640 * (900.0/752) * (900.0/877) * (900.0/898) + 1 };
 	for ( UIWindowScene * scene in UIApplication.sharedApplication.connectedScenes ) {
@@ -60,10 +49,6 @@
 
 	NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
 
-=======
-	NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	// save the app version so we can detect upgrades
 	NSString * prevVersion = [defaults objectForKey:@"appVersion"];
 	if ( ![prevVersion isEqualToString:self.appVersion] ) {
@@ -78,7 +63,6 @@
 
 	[self removePlaintextCredentialsFromUserDefaults];
 
-<<<<<<< HEAD
 	// self.externalGPS = [[ExternalGPS alloc] init];
 
 	NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
@@ -97,19 +81,6 @@
 		return [self application:application openURL:url options:@{}];
 	}
 	return NO;
-=======
-	[DownloadThreadPool setUserAgent:[NSString stringWithFormat:@"%@/%@", self.appName, self.appVersion]];
-
-	// self.externalGPS = [[ExternalGPS alloc] init];
-
-	NSURL * url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-	if ( url ) {
-		// somebody handed us a URL to open
-		return [self application:application openURL:url options:@{}];
-	}
-
-	return YES;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 /**
@@ -122,57 +93,15 @@
 
 -(void)setMapLocation:(MapLocation *)location
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		[self.mapView setMapLocation:location];
 	});
-=======
-<<<<<<< HEAD
-    double delayInSeconds = 0.1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        double metersPerDegree = MetersPerDegree( lat );
-        double minMeters = 50;
-        double widthDegrees = widthDegrees = minMeters / metersPerDegree;
-        if ( zoom != 0 ) {
-            widthDegrees = 360.0 / pow(2,zoom);
-        }
-        [self.mapView setTransformForLatitude:lat longitude:lon width:widthDegrees];
-        if ( view != MAPVIEW_NONE ) {
-            self.mapView.viewState = view;
-        }
-    });
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	double delayInSeconds = 0.1;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		double metersPerDegree = MetersPerDegree( lat );
-		double minMeters = 50;
-		double widthDegrees = widthDegrees = minMeters / metersPerDegree;
-		if ( zoom != 0 ) {
-			widthDegrees = 360.0 / pow(2,zoom);
-		}
-		[self.mapView setTransformForLatitude:lat longitude:lon width:widthDegrees];
-		if ( view != MAPVIEW_NONE ) {
-			self.mapView.viewState = view;
-		}
-	});
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	if ( url.isFileURL && [url.pathExtension isEqualToString:@"gpx"] ) {
 		// Load GPX
 		NSError * error = nil;
@@ -182,212 +111,12 @@
 		double delayInSeconds = 1.0;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-=======
-<<<<<<< HEAD
-    if ( [url.absoluteString hasPrefix:@"geo:"] ) {
-        // geo:47.75538,-122.15979?z=18
-        double lat = 0, lon = 0, zoom = 0;
-        NSScanner * scanner = [NSScanner scannerWithString:url.absoluteString];
-        [scanner scanString:@"geo:" intoString:NULL];
-        [scanner scanDouble:&lat];
-        [scanner scanString:@"," intoString:NULL];
-        [scanner scanDouble:&lon];
-        while ( [scanner scanString:@";" intoString:NULL] ) {
-            NSMutableCharacterSet * nonSemicolon = [[NSCharacterSet characterSetWithCharactersInString:@";"] mutableCopy];
-            [nonSemicolon invert];
-            [scanner scanCharactersFromSet:nonSemicolon intoString:NULL];
-        }
-        if ( [scanner scanString:@"?" intoString:NULL] && [scanner scanString:@"z=" intoString:NULL] ) {
-            [scanner scanDouble:&zoom];
-        }
-        [self setMapLatitude:lat longitude:lon zoom:zoom view:MAPVIEW_NONE];
-    }
-
-    // open to longitude/latitude
-    if ( [url.absoluteString hasPrefix:@"gomaposm://?"] ) {
-
-        NSArray * params = [url.query componentsSeparatedByString:@"&"];
-        BOOL hasCenter = NO, hasZoom = NO;
-        double lat = 0, lon = 0, zoom = 0;
-        MapViewState view = MAPVIEW_NONE;
-
-        for ( NSString * param in params ) {
-            NSScanner * scanner = [NSScanner scannerWithString:param];
-
-            if ( [scanner scanString:@"center=" intoString:NULL] ) {
-
-                // scan center
-                BOOL ok = YES;
-                if ( ![scanner scanDouble:&lat] )
-                    ok = NO;
-                if ( ![scanner scanString:@"," intoString:NULL] )
-                    ok = NO;
-                if ( ![scanner scanDouble:&lon] )
-                    ok = NO;
-                hasCenter = ok;
-
-            } else if ( [scanner scanString:@"zoom=" intoString:NULL] ) {
-
-                // scan zoom
-                BOOL ok = YES;
-                if ( ![scanner scanDouble:&zoom] )
-                    ok = NO;
-                hasZoom = ok;
-
-            } else if ( [scanner scanString:@"view=" intoString:NULL] ) {
-
-                // scan view
-                if ( [scanner scanString:@"aerial+editor" intoString:NULL] ) {
-                    view = MAPVIEW_EDITORAERIAL;
-                } else if ( [scanner scanString:@"aerial" intoString:NULL] ) {
-                    view = MAPVIEW_AERIAL;
-                } else if ( [scanner scanString:@"mapnik" intoString:NULL] ) {
-                    view = MAPVIEW_MAPNIK;
-                } else if ( [scanner scanString:@"editor" intoString:NULL] ) {
-                    view = MAPVIEW_EDITOR;
-                }
-
-            } else {
-                // unrecognized parameter
-            }
-        }
-        if ( hasCenter ) {
-            [self setMapLatitude:lat longitude:lon zoom:(hasZoom?zoom:0) view:view];
-        } else {
-            UIAlertController * alertView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Invalid URL",nil) message:url.absoluteString preferredStyle:UIAlertControllerStyleAlert];
-            [alertView addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-            [self.mapView.viewController presentViewController:alertView animated:YES completion:nil];
-        }
-    }
-
-    // GPX support
-    if ( url.isFileURL && [url.pathExtension isEqualToString:@"gpx"] ) {
-
-        // Process the URL
-
-        double delayInSeconds = 1.0;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            NSData * data = [NSData dataWithContentsOfURL:url];
-            BOOL ok = [self.mapView.gpxLayer loadGPXData:data center:YES];
-            if ( !ok ) {
-                UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Open URL",nil)
-                                                                                message:NSLocalizedString(@"Sorry, an error occurred while loading the GPX file",nil)
-                                                                         preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-                [self.mapView.viewController presentViewController:alert animated:YES completion:nil];
-            }
-        });
-
-        // Indicate that we have successfully opened the URL
-        return YES;
-    }
-    return NO;
-=======
-    GeoURLParser *geoURLParser = [GeoURLParser new];
-    URLParserResult *parserResult = [geoURLParser parseURL:url];
-    
-    if (parserResult) {
-        [self setMapLatitude:parserResult.latitude
-                   longitude:parserResult.longitude
-                        zoom:parserResult.zoom
-                        view:parserResult.viewState];
-    }
-=======
-	if ( [url.absoluteString hasPrefix:@"geo:"] ) {
-		// geo:47.75538,-122.15979?z=18
-		double lat = 0, lon = 0, zoom = 0;
-		NSScanner * scanner = [NSScanner scannerWithString:url.absoluteString];
-		[scanner scanString:@"geo:" intoString:NULL];
-		[scanner scanDouble:&lat];
-		[scanner scanString:@"," intoString:NULL];
-		[scanner scanDouble:&lon];
-		while ( [scanner scanString:@";" intoString:NULL] ) {
-			NSMutableCharacterSet * nonSemicolon = [[NSCharacterSet characterSetWithCharactersInString:@";"] mutableCopy];
-			[nonSemicolon invert];
-			[scanner scanCharactersFromSet:nonSemicolon intoString:NULL];
-		}
-		if ( [scanner scanString:@"?" intoString:NULL] && [scanner scanString:@"z=" intoString:NULL] ) {
-			[scanner scanDouble:&zoom];
-		}
-		[self setMapLatitude:lat longitude:lon zoom:zoom view:MAPVIEW_NONE];
-	}
->>>>>>> c5a8eed4... Revert "Lanestepper"
-
-	// open to longitude/latitude
-	if ( [url.absoluteString hasPrefix:@"gomaposm://?"] ) {
-
-		NSArray * params = [url.query componentsSeparatedByString:@"&"];
-		BOOL hasCenter = NO, hasZoom = NO;
-		double lat = 0, lon = 0, zoom = 0;
-		MapViewState view = MAPVIEW_NONE;
-
-		for ( NSString * param in params ) {
-			NSScanner * scanner = [NSScanner scannerWithString:param];
-
-			if ( [scanner scanString:@"center=" intoString:NULL] ) {
-
-				// scan center
-				BOOL ok = YES;
-				if ( ![scanner scanDouble:&lat] )
-					ok = NO;
-				if ( ![scanner scanString:@"," intoString:NULL] )
-					ok = NO;
-				if ( ![scanner scanDouble:&lon] )
-					ok = NO;
-				hasCenter = ok;
-
-			} else if ( [scanner scanString:@"zoom=" intoString:NULL] ) {
-
-				// scan zoom
-				BOOL ok = YES;
-				if ( ![scanner scanDouble:&zoom] )
-					ok = NO;
-				hasZoom = ok;
-
-			} else if ( [scanner scanString:@"view=" intoString:NULL] ) {
-
-				// scan view
-				if ( [scanner scanString:@"aerial+editor" intoString:NULL] ) {
-					view = MAPVIEW_EDITORAERIAL;
-				} else if ( [scanner scanString:@"aerial" intoString:NULL] ) {
-					view = MAPVIEW_AERIAL;
-				} else if ( [scanner scanString:@"mapnik" intoString:NULL] ) {
-					view = MAPVIEW_MAPNIK;
-				} else if ( [scanner scanString:@"editor" intoString:NULL] ) {
-					view = MAPVIEW_EDITOR;
-				}
-
-			} else {
-				// unrecognized parameter
-			}
-		}
-		if ( hasCenter ) {
-			[self setMapLatitude:lat longitude:lon zoom:(hasZoom?zoom:0) view:view];
-		} else {
-			UIAlertController * alertView = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Invalid URL",nil) message:url.absoluteString preferredStyle:UIAlertControllerStyleAlert];
-			[alertView addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-			[self.mapView.viewController presentViewController:alertView animated:YES completion:nil];
-		}
-	}
-
-	// GPX support
-	if ( url.isFileURL && [url.pathExtension isEqualToString:@"gpx"] ) {
-
-		// Process the URL
-
-		double delayInSeconds = 1.0;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			NSData * data = [NSData dataWithContentsOfURL:url];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			BOOL ok = [self.mapView.gpxLayer loadGPXData:data center:YES];
 			if ( !ok ) {
 				UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Open URL",nil)
 																				message:NSLocalizedString(@"Sorry, an error occurred while loading the GPX file",nil)
 																		 preferredStyle:UIAlertControllerStyleAlert];
 				[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleCancel handler:nil]];
-<<<<<<< HEAD
 				[self.mapView.mainViewController presentViewController:alert animated:YES completion:nil];
 			}
 		});
@@ -411,20 +140,6 @@
 		}
 	}
 	return NO;
-=======
-				[self.mapView.viewController presentViewController:alert animated:YES completion:nil];
-			}
-		});
-
-		// Indicate that we have successfully opened the URL
-		return YES;
-	}
-	return NO;
-<<<<<<< HEAD
->>>>>>> master
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 - (NSString *)appName
@@ -452,13 +167,8 @@
 	// set app badge if edits are pending
 	NSInteger pendingEdits = [self.mapView.editorLayer.mapData modificationCount];
 	if ( pendingEdits ) {
-<<<<<<< HEAD
 		[UNUserNotificationCenter.currentNotificationCenter requestAuthorizationWithOptions:UNAuthorizationOptionBadge completionHandler:^(BOOL granted, NSError * _Nullable error) {
 		}];
-=======
-		UIUserNotificationSettings * settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge categories:nil];
-		[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 	}
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:pendingEdits];
 	
@@ -488,7 +198,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-<<<<<<< HEAD
 }
 
 + (void)askUserToAllowLocationAccess:(UIViewController *)parentVC
@@ -525,8 +234,6 @@
 	if (openSettingsURL) {
 		[[UIApplication sharedApplication] openURL:openSettingsURL options:@{} completionHandler:nil];
 	}
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 @end

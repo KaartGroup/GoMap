@@ -6,13 +6,12 @@
 //  Copyright (c) 2012 Bryce Cogswell. All rights reserved.
 //
 
+#import <SafariServices/SafariServices.h>
 #import "AppDelegate.h"
 #import "EditorMapLayer.h"
 #import "OsmMapData.h"
 #import "MapView.h"
 #import "NearbyMappersViewController.h"
-#import "WebPageViewController.h"
-
 
 @implementation NearbyMappersViewController
 
@@ -34,16 +33,11 @@
 	}];
 }
 
-<<<<<<< HEAD
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
 	if ( _mappers.count == 0 ) {
-<<<<<<< HEAD
 		UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Data",@"Alert title")
-=======
-		UIAlertController * alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"No Data",nil)
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 																		message:NSLocalizedString(@"Ensure the editor view is visible and displays objects in the local area",nil)
 																 preferredStyle:UIAlertControllerStyleAlert];
 		[alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -54,8 +48,6 @@
 	}
 }
 
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -67,6 +59,8 @@
 {
     return 	_mappers.count;
 }
+
+#pragma mark - Table view delegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -81,21 +75,16 @@
     return cell;
 }
 
-#pragma mark - Table view delegate
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell * cell = sender;
-	NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-	OsmUserStatistics * stats = [_mappers objectAtIndex:indexPath.row];
-	NSString * user = stats.user;
+    OsmUserStatistics * stats = [_mappers objectAtIndex:indexPath.row];
+    NSString * user = stats.user;
+    NSString * urlString = [NSString stringWithFormat:@"https://www.openstreetmap.org/user/%@", user];
+    NSString * encodedUrlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    NSURL * url = [NSURL URLWithString:encodedUrlString];
 
-	WebPageViewController * web = segue.destinationViewController;
-	web.title = NSLocalizedString(@"User",nil);
-	web.url = [NSString stringWithFormat:@"https://www.openstreetmap.org/user/%@", user];
-
-	[super prepareForSegue:segue sender:sender];
+    SFSafariViewController * safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
-
 
 @end

@@ -21,10 +21,6 @@
 @class QuadMap;
 
 #define SHOW_3D	1
-<<<<<<< HEAD
-=======
-#define USE_SCENEKIT 0
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 static const CGFloat DefaultHitTestRadius = 10.0;	// how close to an object do we need to tap to select it
 static const CGFloat DragConnectHitTestRadius = DefaultHitTestRadius * 0.6;	// how close to an object do we need to drag a node to connect to it
@@ -33,8 +29,6 @@ extern const double MinIconSizeInPixels;
 
 @interface EditorMapLayer : CALayer<NSCoding>
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	CGSize									_iconSize;
 	double									_highwayScale;
 	NSMutableArray<OsmBaseObject *>		*	_shownObjects;
@@ -42,29 +36,6 @@ extern const double MinIconSizeInPixels;
 	NSMutableArray<CALayer *>			*	_highlightLayers;
 	BOOL									_isPerformingLayout;
 	CATransformLayer					*	_baseLayer;
-=======
-    CGSize                    _iconSize;
-    double                    _highwayScale;
-=======
-	CGSize					_iconSize;
-	double					_highwayScale;
->>>>>>> c5a8eed4... Revert "Lanestepper"
-
-	NSMutableSet		*	_nameDrawSet;
-
-	NSMutableArray		*	_shownObjects;
-	NSMutableSet		*	_fadingOutSet;
-
-	NSMutableArray		*	_highlightLayers;
-
-	BOOL					_isPerformingLayout;
-
-<<<<<<< HEAD
-    CATransformLayer    *    _baseLayer;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-	CATransformLayer	*	_baseLayer;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 @property (assign,nonatomic)	BOOL			enableObjectFilters;	// turn all filters on/on
@@ -92,16 +63,13 @@ extern const double MinIconSizeInPixels;
 @property (readonly,nonatomic)	OsmBaseObject		*	selectedPrimary;	// way or node, but not a node in a selected way
 @property (readonly,nonatomic)	OsmMapData			*	mapData;
 @property (assign,nonatomic)	BOOL					addNodeInProgress;
-<<<<<<< HEAD
 @property (readonly)			BOOL					atVisibleObjectLimit;
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 - (id)initWithMapView:(MapView *)mapView;
 - (void)didReceiveMemoryWarning;
 
-- (OsmBaseObject *)osmHitTest:(CGPoint)point radius:(CGFloat)radius testNodes:(BOOL)testNodes ignoreList:(NSArray *)ignoreList segment:(NSInteger *)segment;
-- (NSArray *)osmHitTestMultiple:(CGPoint)point radius:(CGFloat)radius ;
+- (OsmBaseObject *)osmHitTest:(CGPoint)point radius:(CGFloat)radius isDragConnect:(BOOL)isDragConnect ignoreList:(NSArray<OsmBaseObject *> *)ignoreList segment:(NSInteger *)segment;
+- (NSArray<OsmBaseObject *> *)osmHitTestMultiple:(CGPoint)point radius:(CGFloat)radius ;
 - (OsmNode *)osmHitTestNodeInSelectedWay:(CGPoint)point radius:(CGFloat)radius ;
 
 - (void)updateMapLocation;
@@ -121,15 +89,9 @@ extern const double MinIconSizeInPixels;
 
 
 - (BOOL)copyTags:(OsmBaseObject *)object;
-<<<<<<< HEAD
 - (void)pasteTagsMerge:(OsmBaseObject *)object;
 - (BOOL)canPasteTags;
 - (void)pasteTagsReplace:(OsmBaseObject *)object;
-=======
-- (void)mergeTags:(OsmBaseObject *)object;
-- (BOOL)canPasteTags;
-- (void)replaceTags:(OsmBaseObject *)object;
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 
 - (void)save;

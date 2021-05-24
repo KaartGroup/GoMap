@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Bryce Cogswell. All rights reserved.
 //
 
+#import <zlib.h>
+
 #if TARGET_OS_IPHONE
 #import "DDXML.h"
 #import "../iOS/AppDelegate.h"
@@ -16,10 +18,9 @@
 #import "DLog.h"
 #import "DownloadThreadPool.h"
 #import "MapView.h"
-#import "NetworkStatus.h"
 #import "OsmMapData.h"
 #import "OsmMapData+Edit.h"
-#import "OsmObjects.h"
+#import "OsmMember.h"
 #import "QuadMap.h"
 #import "UndoManager.h"
 #import "VectorMath.h"
@@ -56,6 +57,8 @@ NSString * OSM_API_URL;
 @property (readonly,nonnull)    NSDate *            previousDiscardDate;
 
 @end
+
+
 
 @implementation OsmMapData
 
@@ -146,9 +149,6 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 	
 	[self.userDefaults setObject:hostname forKey:OSM_SERVER_KEY];
 	OSM_API_URL = hostname;
-	
-	NSURL * url = [NSURL URLWithString:OSM_API_URL];
-	_serverNetworkStatus = [NetworkStatus networkStatusWithHostName:url.host];
 }
 
 -(NSString *)getServer
@@ -176,17 +176,10 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 }
 
 
-
--(OSMRect)rootRect
-{
-	return _spatial.rootQuad.rect;
-}
-
-
-+(NSSet *)tagsToAutomaticallyStrip
++(NSSet<NSString *> *)tagsToAutomaticallyStrip
 {
 	static dispatch_once_t onceToken;
-	static NSSet * s_ignoreSet = nil;
+	static NSSet<NSString *> * s_ignoreSet = nil;
 	dispatch_once(&onceToken, ^{
 		s_ignoreSet = [NSSet setWithObjects:
 				@"tiger:upload_uuid",
@@ -266,9 +259,9 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 	}
 }
 
--(NSArray *)waysContainingNode:(OsmNode *)node
+-(NSArray<OsmWay *> *)waysContainingNode:(OsmNode *)node
 {
-	__block NSMutableArray * a = [NSMutableArray new];
+	__block NSMutableArray<OsmWay *> * a = [NSMutableArray new];
 	[_ways enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident, OsmWay * w, BOOL *stop) {
 		if ( [w.nodes containsObject:node] )
 			[a addObject:w];
@@ -295,14 +288,14 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 
 - (void)enumerateObjectsUsingBlock:(void (^)(OsmBaseObject * obj))block
 {
-	[_nodes enumerateKeysAndObjectsUsingBlock:^(NSString * ident,OsmNode * node,BOOL * stop){
+	[_nodes enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident,OsmNode * node,BOOL * stop){
 		block( node );
 	}];
-	[_ways enumerateKeysAndObjectsUsingBlock:^(NSString * ident,OsmWay * way,BOOL * stop) {
+	[_ways enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident,OsmWay * way,BOOL * stop) {
 		block( way );
 	}];
-	[_relations enumerateKeysAndObjectsUsingBlock:^(NSString * ident,OsmNode * node,BOOL * stop){
-		block( node );
+	[_relations enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident,OsmRelation * relation,BOOL * stop){
+		block( relation );
 	}];
 }
 - (void)enumerateObjectsInRegion:(OSMRect)bbox block:(void (^)(OsmBaseObject * obj))block
@@ -322,22 +315,22 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 }
 
 
--(NSMutableSet *)tagValuesForKey:(NSString *)key
+-(NSMutableSet<NSString *> *)tagValuesForKey:(NSString *)key
 {
-	NSMutableSet * set = [NSMutableSet set];
-	[_nodes enumerateKeysAndObjectsUsingBlock:^(NSString * ident, OsmBaseObject * object, BOOL *stop) {
+	NSMutableSet<NSString *> * set = [NSMutableSet set];
+	[_nodes enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident, OsmBaseObject * object, BOOL *stop) {
 		NSString * value = [object.tags objectForKey:key];
 		if ( value ) {
 			[set addObject:value];
 		}
 	}];
-	[_ways enumerateKeysAndObjectsUsingBlock:^(NSString * ident, OsmBaseObject * object, BOOL *stop) {
+	[_ways enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident, OsmBaseObject * object, BOOL *stop) {
 		NSString * value = [object.tags objectForKey:key];
 		if ( value ) {
 			[set addObject:value];
 		}
 	}];
-	[_relations enumerateKeysAndObjectsUsingBlock:^(NSString * ident, OsmBaseObject * object, BOOL *stop) {
+	[_relations enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident, OsmBaseObject * object, BOOL *stop) {
 		NSString * value = [object.tags objectForKey:key];
 		if ( value ) {
 			[set addObject:value];
@@ -346,7 +339,7 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 
 	// special case for street names
 	if ( [key isEqualToString:@"addr:street"] ) {
-		[_ways enumerateKeysAndObjectsUsingBlock:^(NSString * ident, OsmBaseObject * object, BOOL *stop) {
+		[_ways enumerateKeysAndObjectsUsingBlock:^(NSNumber * ident, OsmBaseObject * object, BOOL *stop) {
 			NSString * value = [object.tags objectForKey:@"highway"];
 			if ( value ) {
 				value = [object.tags objectForKey:@"name"];
@@ -360,9 +353,9 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 }
 
 
--(NSArray *)userStatisticsForRegion:(OSMRect)rect
+-(NSArray<OsmUserStatistics *> *)userStatisticsForRegion:(OSMRect)rect
 {
-	NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+	NSMutableDictionary<NSString *, OsmUserStatistics *> * dict = [NSMutableDictionary dictionary];
 
 	[self enumerateObjectsInRegion:rect block:^(OsmBaseObject * base) {
 		NSDate * date = [base dateForTimestamp];
@@ -416,11 +409,6 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 
 #pragma mark Editing
 
--(void)registerUndoWithTarget:(id)target selector:(SEL)selector objects:(NSArray *)objects
-{
-	[_undoManager registerUndoWithTarget:target selector:selector objects:objects];
-}
-
 -(void)incrementModifyCount:(OsmBaseObject *)object
 {
 	[_undoManager registerUndoWithTarget:self selector:@selector(incrementModifyCount:) objects:@[object]];
@@ -436,10 +424,7 @@ static EditorMapLayer * g_EditorMapLayerForArchive = nil;
 static NSString * StringTruncatedTo255( NSString * s )
 {
 	if ( s.length > 255 )
-		s = [s substringToIndex:256];
-	while ( [s lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > 255 ) {
-		s = [s substringToIndex:s.length-1];
-	}
+		s = [s substringToIndex:255];
 	return s;
 }
 static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
@@ -453,7 +438,7 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 	return newDict;
 }
 
--(void)setTags:(NSDictionary *)dict forObject:(OsmBaseObject *)object
+-(void)setTags:(NSDictionary<NSString *, NSString *> *)dict forObject:(OsmBaseObject *)object
 {
 	dict = DictWithTagsTruncatedTo255( dict );
 
@@ -1050,9 +1035,9 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 {
 	if ( newData ) {
 
-		NSMutableArray * newNodes = [NSMutableArray new];
-		NSMutableArray * newWays = [NSMutableArray new];
-		NSMutableArray * newRelations = [NSMutableArray new];
+		NSMutableArray<OsmNode *> * newNodes = [NSMutableArray new];
+		NSMutableArray<OsmWay *> * newWays = [NSMutableArray new];
+		NSMutableArray<OsmRelation *> * newRelations = [NSMutableArray new];
 
 		[newData->_nodes enumerateKeysAndObjectsUsingBlock:^(NSNumber * key,OsmNode * node,BOOL * stop){
 			OsmNode * current = [_nodes objectForKey:key];
@@ -1121,7 +1106,13 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 
 		// store new nodes in database
 		if ( downloaded ) {
-			[self sqlSaveNodes:newNodes saveWays:newWays saveRelations:newRelations deleteNodes:nil deleteWays:nil deleteRelations:nil isUpdate:NO];
+			[self sqlSaveNodes:newNodes
+                      saveWays:newWays
+                 saveRelations:newRelations
+                   deleteNodes:nil
+                    deleteWays:nil
+               deleteRelations:nil
+                      isUpdate:NO];
 
 			// purge old data
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -1188,38 +1179,8 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 	return output;
 }
 
-<<<<<<< HEAD
 
 - (NSData *)gzippedData:(NSData *)input
-<<<<<<< HEAD
-=======
-{
-	const int CHUNK = 65536;
-	z_stream stream = { 0 };
-    stream.avail_in = (uint)input.length;
-    stream.next_in = (unsigned char *)input.bytes;
-    if ( deflateInit2(&stream, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 31, 8, Z_DEFAULT_STRATEGY) != Z_OK )
-		return nil;
-	NSMutableData *output = [NSMutableData dataWithLength:CHUNK];
-	while ( stream.avail_out == 0 ) {
-		if ( stream.total_out >= output.length ) {
-			output.length += CHUNK;
-		}
-		stream.next_out = (uint8_t *)output.mutableBytes + stream.total_out;
-		stream.avail_out = (uInt)(output.length - stream.total_out);
-		deflate(&stream, Z_FINISH);
-	}
-	deflateEnd(&stream);
-	output.length = stream.total_out;
-
-    return output;
-}
-
-
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
--(void)putRequest:(NSString *)url method:(NSString *)method xml:(NSXMLDocument *)xml completion:(void(^)(NSData * data,NSString * error))completion
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	const int CHUNK = 65536;
 	z_stream stream = { 0 };
@@ -1249,8 +1210,10 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 	[request setHTTPMethod:method];
 	if ( xml ) {
 		NSData * data = [xml XMLDataWithOptions:0];
+		data = [self gzippedData:data];
 		[request setHTTPBody:data];
-		[request setValue:@"application/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+		[request setValue:@"text/xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+		[request setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
 	}
 	[request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
 	// request.timeoutInterval = 15*60;
@@ -1630,7 +1593,7 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 }
 
 // create a new changeset to upload to
--(void)createChangesetWithComment:(NSString *)comment imagery:(NSString *)imagery completion:(void(^)(NSString * changesetID, NSString * errorMessage))completion
+-(void)createChangesetWithComment:(NSString *)comment source:(NSString *)source imagery:(NSString *)imagery completion:(void(^)(NSString * changesetID, NSString * errorMessage))completion
 {
 	AppDelegate * appDelegate = AppDelegate.shared;
 	NSString * creator = [NSString stringWithFormat:@"%@ %@", appDelegate.appName, appDelegate.appVersion];
@@ -1639,6 +1602,8 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		tags[@"comment"] = comment;
 	if ( imagery.length )
 		tags[@"imagery_used"] = imagery;
+	if ( source.length )
+		tags[@"source"] = source;
 	NSXMLDocument * xmlCreate = [OsmMapData createXmlWithType:@"changeset" tags:tags];
 	NSString * url = [OSM_API_URL stringByAppendingString:@"api/0.6/changeset/create"];
 	[self putRequest:url method:@"PUT" xml:xmlCreate completion:^(NSData * putData,NSString * putErrorMessage){
@@ -1662,9 +1627,9 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 }
 
 // upload xml generated by mapData
-- (void)uploadChangesetWithComment:(NSString *)comment imagery:(NSString *)imagery completion:(void(^)(NSString * errorMessage))completion
+- (void)uploadChangesetWithComment:(NSString *)comment source:(NSString *)source imagery:(NSString *)imagery completion:(void(^)(NSString * errorMessage))completion
 {
-	[self createChangesetWithComment:comment imagery:imagery completion:^(NSString *changesetID, NSString *errorMessage) {
+	[self createChangesetWithComment:comment source:source imagery:imagery completion:^(NSString *changesetID, NSString *errorMessage) {
 		if ( changesetID ) {
 			[self uploadChangeset:changesetID retries:20 completion:completion];
 		} else {
@@ -1674,9 +1639,9 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 }
 
 // upload xml edited by user
-- (void)uploadChangesetXml:(NSXMLDocument *)xmlChanges comment:(NSString *)comment imagery:(NSString *)imagery completion:(void(^)(NSString * error))completion
+- (void)uploadChangesetXml:(NSXMLDocument *)xmlChanges comment:(NSString *)comment source:(NSString *)source imagery:(NSString *)imagery completion:(void(^)(NSString * error))completion
 {
-	[self createChangesetWithComment:comment imagery:imagery completion:^(NSString *changesetID, NSString *errorMessage) {
+	[self createChangesetWithComment:comment source:source imagery:imagery completion:^(NSString *changesetID, NSString *errorMessage) {
 		if ( changesetID ) {
 			[OsmMapData updateChangesetXml:xmlChanges withChangesetID:changesetID];
 			[self uploadChangesetXML:xmlChanges changesetID:changesetID retries:0 completion:completion];
@@ -1735,10 +1700,16 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 #else
 	NSFont * font = [NSFont labelFontOfSize:12];
 #endif
+    
+    UIColor *foregroundColor = UIColor.blackColor;
+    if (@available(iOS 13.0, *)) {
+        foregroundColor = UIColor.labelColor;
+    }
+    
 	NSString * text = [NSString stringWithFormat:@"\t\t%@ = %@\n",
 					   [tag attributeForName:@"k"].stringValue,
 					   [tag attributeForName:@"v"].stringValue];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:text attributes:@{ NSFontAttributeName : font }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:text attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 }
 -(void)updateString:(NSMutableAttributedString *)string withMember:(NSXMLElement *)tag
 {
@@ -1747,11 +1718,17 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 #else
 	NSFont * font = [NSFont labelFontOfSize:12];
 #endif
+    
+    UIColor *foregroundColor = UIColor.blackColor;
+    if (@available(iOS 13.0, *)) {
+        foregroundColor = UIColor.labelColor;
+    }
+    
 	NSString * text = [NSString stringWithFormat:@"\t\t%@ %@: \"%@\"\n",
 					   [tag attributeForName:@"type"].stringValue,
 					   [tag attributeForName:@"ref"].stringValue,
 					   [tag attributeForName:@"role"].stringValue];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:text attributes:@{ NSFontAttributeName : font }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:text attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 }
 
 -(void)updateString:(NSMutableAttributedString *)string withNode:(NSXMLElement *)node
@@ -1761,9 +1738,14 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 #else
 	NSFont * font = [NSFont labelFontOfSize:12];
 #endif
+    
+    UIColor *foregroundColor = UIColor.blackColor;
+    if (@available(iOS 13.0, *)) {
+        foregroundColor = UIColor.labelColor;
+    }
 
 	NSString * nodeName = [node attributeForName:@"id"].stringValue;
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tNode " attributes:@{ NSFontAttributeName : font }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tNode " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:nodeName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"n" stringByAppendingString:nodeName] }]];
@@ -1790,30 +1772,19 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 #else
 	NSFont * font = [NSFont labelFontOfSize:12];
 #endif
+    
+    UIColor *foregroundColor = UIColor.blackColor;
+    if (@available(iOS 13.0, *)) {
+        foregroundColor = UIColor.labelColor;
+    }
 
 	NSString * wayName = [way attributeForName:@"id"].stringValue;
-<<<<<<< HEAD
-<<<<<<< HEAD
     [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tWay ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:wayName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"w" stringByAppendingString:wayName] }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d nodes)\n",nil),nodeCount]
-=======
-    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tWay " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
-=======
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tWay " attributes:@{ NSFontAttributeName : font }]];
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:wayName
-																   attributes:@{ NSFontAttributeName : font,
-																				 NSLinkAttributeName : [@"w" stringByAppendingString:wayName] }]];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d nodes)\n",nodeCount]
-<<<<<<< HEAD
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
-=======
-																   attributes:@{ NSFontAttributeName : font }]];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	for ( NSXMLElement * tag in way.children ) {
 		if ( [tag.name isEqualToString:@"tag"] ) {
@@ -1839,30 +1810,19 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 #else
 	NSFont * font = [NSFont labelFontOfSize:12];
 #endif
+    
+    UIColor *foregroundColor = UIColor.blackColor;
+    if (@available(iOS 13.0, *)) {
+        foregroundColor = UIColor.labelColor;
+    }
 
 	NSString * relationName = [relation attributeForName:@"id"].stringValue;
-<<<<<<< HEAD
-<<<<<<< HEAD
     [string appendAttributedString:[[NSAttributedString alloc] initWithString:NSLocalizedString(@"\tRelation ",nil) attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:relationName
 																   attributes:@{ NSFontAttributeName : font,
 																				 NSLinkAttributeName : [@"r" stringByAppendingString:relationName] }]];
 	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:NSLocalizedString(@" (%d members)\n",nil),memberCount]
-=======
-    [string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tRelation " attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
-=======
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:@"\tRelation " attributes:@{ NSFontAttributeName : font }]];
->>>>>>> c5a8eed4... Revert "Lanestepper"
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:relationName
-																   attributes:@{ NSFontAttributeName : font,
-																				 NSLinkAttributeName : [@"r" stringByAppendingString:relationName] }]];
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (%d members)\n",memberCount]
-<<<<<<< HEAD
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
                                                                    attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
-=======
-																   attributes:@{ NSFontAttributeName : font }]];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	for ( NSXMLElement * tag in relation.children ) {
 		if ( [tag.name isEqualToString:@"tag"] ) {
@@ -1878,13 +1838,18 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 {
 	if ( objects.count == 0 )
 		return;
+    
+    UIColor *foregroundColor = UIColor.blackColor;
+    if (@available(iOS 13.0, *)) {
+        foregroundColor = UIColor.labelColor;
+    }
 
 #if TARGET_OS_IPHONE
 	UIFont * font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
 #else
 	NSFont * font = [NSFont labelFontOfSize:12];
 #endif
-	[string appendAttributedString:[[NSAttributedString alloc] initWithString:header attributes:@{ NSFontAttributeName : font }]];
+    [string appendAttributedString:[[NSAttributedString alloc] initWithString:header attributes:@{ NSFontAttributeName : font, NSForegroundColorAttributeName: foregroundColor }]];
 	for ( NSXMLElement * object in objects ) {
 		if ( [object.name isEqualToString:@"node"] ) {
 			[self updateString:string withNode:object];
@@ -1928,28 +1893,6 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		return nil;
 	return [xml XMLStringWithOptions:NSXMLNodePrettyPrint];
 }
-
--(NSString *)changesetAsHtml
-{
-#if 1 || TARGET_OS_IPHONE
-	return nil;
-#else
-	NSXMLDocument * xml = [self createXmlWithChangeset:@"0"];
-	if ( xml == nil )
-		return nil;
-	// get XSLT code
-	// http://www.w3schools.com/xml/tryxslt.asp?xmlfile=simple&xsltfile=simple
-	NSString *xsltPath = [[NSBundle mainBundle] pathForResource:@"changeset" ofType:@"xsl"];
-	assert(xsltPath);
-	NSURL * xsltUrl = [NSURL fileURLWithPath:xsltPath];
-	// transform through XSLT
-	NSXMLDocument * htmlDoc = (NSXMLDocument *)[xml objectByApplyingXSLTAtURL:xsltUrl arguments:nil error:nil];
-	// put in WebFrame
-	NSString * html = htmlDoc.XMLString;
-	return html;
-#endif
-}
-
 
 #pragma mark Save/Restore
 
@@ -2123,11 +2066,11 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		if ( [object isKindOfClass:[OsmBaseObject class]] ) {
 
 			if ( object.isNode ) {
-				[_nodes setObject:object forKey:object.ident];
+				[_nodes setObject:object.isNode forKey:object.ident];
 			} else if ( object.isWay ) {
-				[_ways setObject:object forKey:object.ident];
+				[_ways setObject:object.isWay forKey:object.ident];
 			} else if ( object.isRelation ) {
-				[_relations setObject:object forKey:object.ident];
+				[_relations setObject:object.isRelation forKey:object.ident];
 			} else {
 				assert(NO);
 			}
@@ -2206,9 +2149,13 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 	return ok;
 }
 
--(void)sqlSaveNodes:(NSArray *)saveNodes saveWays:(NSArray *)saveWays saveRelations:(NSArray *)saveRelations
-		deleteNodes:(NSArray *)deleteNodes deleteWays:(NSArray *)deleteWays deleteRelations:(NSArray *)deleteRelations
-		   isUpdate:(BOOL)isUpdate
+-(void)sqlSaveNodes:(NSArray<OsmNode *> *)saveNodes
+           saveWays:(NSArray<OsmWay *> *)saveWays
+      saveRelations:(NSArray<OsmRelation *> *)saveRelations
+        deleteNodes:(NSArray<OsmNode *> *)deleteNodes
+         deleteWays:(NSArray<OsmWay *> *)deleteWays
+    deleteRelations:(NSArray<OsmRelation *> *)deleteRelations
+           isUpdate:(BOOL)isUpdate
 {
 	if ( saveNodes.count + saveWays.count + saveRelations.count + deleteNodes.count + deleteWays.count + deleteRelations.count == 0 )
 		return;
@@ -2219,7 +2166,13 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		{
 			Database * db = [Database new];
 			[db createTables];
-			ok = [db saveNodes:saveNodes saveWays:saveWays saveRelations:saveRelations deleteNodes:deleteNodes deleteWays:deleteWays deleteRelations:deleteRelations isUpdate:isUpdate];
+			ok = [db saveNodes:saveNodes
+                      saveWays:saveWays
+                 saveRelations:saveRelations
+                   deleteNodes:deleteNodes
+                    deleteWays:deleteWays
+               deleteRelations:deleteRelations
+                      isUpdate:isUpdate];
 			if ( !ok ) {
 				[Database deleteDatabaseWithName:nil];
 			}
@@ -2320,7 +2273,7 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 			if ( ! [_region nodesAreCovered:way.nodes] ) {
 				[removeWays addObject:ident];
 				for ( OsmNode * node in way.nodes ) {
-					assert( node.wayCount > 0 );
+					DbgAssert( node.wayCount > 0 );
 					[node setWayCount:node.wayCount-1 undo:nil];
 				}
 			}
@@ -2379,9 +2332,9 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 	NSLog(@"Discard sweep time = %f\n",t);
 
 	// make a copy of items to save because the dictionary might get updated by the time the Database block runs
-	NSArray * saveNodes 	= [_nodes allValues];
-	NSArray * saveWays 		= [_ways allValues];
-	NSArray * saveRelations = [_relations allValues];
+	NSArray<OsmNode *> * saveNodes 	= [_nodes allValues];
+	NSArray<OsmWay *> * saveWays 		= [_ways allValues];
+	NSArray<OsmRelation *> * saveRelations = [_relations allValues];
 	
 	dispatch_async(Database.dispatchQueue, ^{
 		
@@ -2393,8 +2346,13 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 			Database * db2 = [[Database alloc] initWithName:@"tmp"];
 			tmpPath = db2.path;
 			[db2 createTables];
-			[db2 saveNodes:saveNodes saveWays:saveWays saveRelations:saveRelations
-			   deleteNodes:nil deleteWays:nil deleteRelations:nil isUpdate:NO];
+			[db2 saveNodes:saveNodes
+                  saveWays:saveWays
+             saveRelations:saveRelations
+               deleteNodes:nil
+                deleteWays:nil
+           deleteRelations:nil
+                  isUpdate:NO];
 		}
 		
 		NSString * realPath = [Database databasePathWithName:nil];
@@ -2419,33 +2377,39 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 // after uploading a changeset we have to update the SQL database to reflect the changes the server replied with
 -(void)updateSql:(NSDictionary *)sqlUpdate
 {
-	NSMutableArray * insertNode		= [NSMutableArray new];
-	NSMutableArray * insertWay		= [NSMutableArray new];
-	NSMutableArray * insertRelation	= [NSMutableArray new];
-	NSMutableArray * deleteNode		= [NSMutableArray new];
-	NSMutableArray * deleteWay		= [NSMutableArray new];
-	NSMutableArray * deleteRelation	= [NSMutableArray new];
+	NSMutableArray<OsmNode *> * insertNode		= [NSMutableArray new];
+	NSMutableArray<OsmWay *> * insertWay		= [NSMutableArray new];
+    NSMutableArray<OsmRelation *> * insertRelation    = [NSMutableArray new];
+	NSMutableArray<OsmNode *> * deleteNode		= [NSMutableArray new];
+	NSMutableArray<OsmWay *> * deleteWay		= [NSMutableArray new];
+	NSMutableArray<OsmRelation *> * deleteRelation	= [NSMutableArray new];
 	[sqlUpdate enumerateKeysAndObjectsUsingBlock:^(OsmBaseObject * object, NSNumber * insert, BOOL *stop) {
 		if ( object.isNode ) {
 			if ( insert.boolValue )
-				[insertNode addObject:object];
+				[insertNode addObject:object.isNode];
 			else
-				[deleteNode addObject:object];
+				[deleteNode addObject:object.isNode];
 		} else if ( object.isWay ) {
 			if ( insert.boolValue )
-				[insertWay addObject:object];
+				[insertWay addObject:object.isWay];
 			else
-				[deleteWay addObject:object];
+				[deleteWay addObject:object.isWay];
 		} else if ( object.isRelation ) {
 			if ( insert.boolValue )
-				[insertRelation addObject:object];
+				[insertRelation addObject:object.isRelation];
 			else
-				[deleteRelation addObject:object];
+				[deleteRelation addObject:object.isRelation];
 		} else {
 			assert(NO);
 		}
 	}];
-	[self sqlSaveNodes:insertNode saveWays:insertWay saveRelations:insertRelation deleteNodes:deleteNode deleteWays:deleteWay deleteRelations:deleteRelation isUpdate:YES];
+	[self sqlSaveNodes:insertNode
+              saveWays:insertWay
+         saveRelations:insertRelation
+           deleteNodes:deleteNode
+            deleteWays:deleteWay
+       deleteRelations:deleteRelation
+              isUpdate:YES];
 }
 
 
@@ -2494,22 +2458,11 @@ static NSDictionary * DictWithTagsTruncatedTo255( NSDictionary * tags )
 		// merge info from SQL database
 		Database * db = [Database new];
 		@try {
-<<<<<<< HEAD
 			NSMutableDictionary<NSNumber *, OsmNode *> * newNodes			= [db querySqliteNodes];
 			NSAssert(newNodes,nil);
 			NSMutableDictionary<NSNumber *, OsmWay *> * newWays				= [db querySqliteWays];
-=======
-			Database * db = [Database new];
-			NSMutableDictionary * newNodes		= [db querySqliteNodes];
-			NSAssert(newNodes,nil);
-<<<<<<< HEAD
-			NSMutableDictionary<NSNumber *, OsmWay *> * newWays		= [db querySqliteWays];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-			NSMutableDictionary * newWays		= [db querySqliteWays];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 			NSAssert(newWays,nil);
-			NSMutableDictionary * newRelations	= [db querySqliteRelations];
+			NSMutableDictionary<NSNumber *, OsmRelation *> * newRelations	= [db querySqliteRelations];
 			NSAssert(newRelations,nil);
 			@try {
 				OsmMapData * newData = [[OsmMapData alloc] init];

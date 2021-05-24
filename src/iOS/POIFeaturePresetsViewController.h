@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-<<<<<<< HEAD
 #import "POIFeaturePickerViewController.h"
 
 @class OsmBaseObject;
@@ -22,23 +21,6 @@
 	BOOL							_isEditing;
 }
 @property (nonatomic) 	PresetGroup	*	drillDownGroup;
-=======
-#import "CommonPresetList.h"
-#import "POIFeaturePickerViewController.h"
-
-@class OsmBaseObject;
-@class CommonPresetList;
-
-@interface POIFeaturePresetsViewController : UITableViewController<UITextFieldDelegate,POITypeViewControllerDelegate>
-{
-	CommonPresetList			*	_tags;
-	IBOutlet UIBarButtonItem	*	_saveButton;
-	BOOL							_keyboardShowing;
-	CommonPresetFeature			*	_selectedFeature;	// the feature selected by the user, not derived from tags (e.g. Address)
-	BOOL							_childPushed;
-}
-@property (nonatomic) 	CommonPresetGroup	*	drillDownGroup;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 - (IBAction)textFieldReturn:(id)sender;
 

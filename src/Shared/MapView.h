@@ -213,6 +213,8 @@ typedef enum {
 @property (assign,nonatomic)	BOOL							enableTurnRestriction;
 @property (assign,nonatomic)	BOOL							enableAutomaticCacheManagement;
 
+@property (assign,nonatomic)	BOOL							automatedFramerateTestActive;
+
 @property (readonly,nonatomic)	CAShapeLayer				*	crossHairs;
 
 @property (readonly,nonatomic)	NSString					*	countryCodeForLocation;

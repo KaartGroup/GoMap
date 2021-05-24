@@ -12,7 +12,6 @@
 
 #import "OsmNotesDatabase.h"
 #import "OsmMapData.h"
-#import "OsmObjects.h"
 
 
 static NSArray * FixMeList = nil;
@@ -405,19 +404,11 @@ static NSInteger g_nextTagID = 1;
 
 -(void)updateNote:(OsmNote *)note close:(BOOL)close comment:(NSString *)comment completion:(void(^)(OsmNote * newNote, NSString * errorMessage))completion
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
 	NSMutableCharacterSet * allowedChars = [NSCharacterSet.URLQueryAllowedCharacterSet mutableCopy];
 	[allowedChars removeCharactersInString:@"+;&"];
 	comment = [comment stringByAddingPercentEncodingWithAllowedCharacters:allowedChars];
 
 	NSMutableString * url = [[OSM_API_URL stringByAppendingString:@"api/0.6/notes"] mutableCopy];
-=======
-	comment = [comment stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-	comment = [comment stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 
 	if ( note.comments == nil ) {
 		// brand new note

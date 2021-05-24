@@ -8,6 +8,7 @@
 
 #import "iosapi.h"
 #import "AerialList.h"
+#import "aes.h"
 #import <CommonCrypto/CommonDigest.h>
 
 static NSString * CUSTOMAERIALLIST_KEY = @"AerialList";
@@ -19,13 +20,13 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 #define OSM_GPS_TRACE_IDENTIFIER	@"OsmGpsTraceIdentifier"
 #define MAPBOX_LOCATOR_IDENTIFIER	@"MapboxLocatorIdentifier"
 #define NO_NAME_IDENTIFIER          @"No Name Identifier"
+#define MAXAR_PREMIUM_IDENTIFIER	@"Maxar-Premium"
+#define MAXAR_STANDARD_IDENTIFIER	@"Maxar-Standard"
 
 
 
 @implementation AerialService
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 @synthesize placeholderImage = _placeholderImage;
 
 +(NSArray<NSString *> *)supportedProjections
@@ -59,17 +60,6 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			   attribString:(NSString *)attribString
 				 attribIcon:(UIImage *)attribIcon
 				  attribUrl:(NSString *)attribUrl
-=======
--(instancetype)initWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url
-					maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
-				  startDate:(NSString *)startDate
-					endDate:(NSString *)endDate
-=======
--(instancetype)initWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
->>>>>>> c5a8eed4... Revert "Lanestepper"
-			  wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon
-			   attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	self = [super init];
 	if ( self ) {
@@ -82,17 +72,17 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 		_url				= url ?: @"";
 		_maxZoom			= (int32_t)maxZoom ?: 21;
 		_roundZoomUp 		= roundUp;
+		_startDate			= startDate;
+		_endDate			= endDate;
 		_wmsProjection		= projection;
 		_polygon			= CGPathCreateCopy( polygon );
-		_attributionString 	= attribString;
+		_attributionString 	= attribString.length ? attribString : name;
 		_attributionIcon	= attribIcon;
 		_attributionUrl		= attribUrl;
 	}
 	return self;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 +(instancetype)aerialWithName:(NSString *)name
 				   identifier:(NSString *)identifier
 						  url:(NSString *)url
@@ -118,23 +108,6 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 								  attribString:attribString
 									attribIcon:attribIcon
 									 attribUrl:attribUrl];
-=======
-+(instancetype)aerialWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url
-					  maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
-					startDate:(NSString *)startDate
-					  endDate:(NSString *)endDate
-				wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon
-				 attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl
-{
-	return [[AerialService alloc] initWithName:name identifier:identifier url:url maxZoom:maxZoom roundUp:roundUp startDate:startDate endDate:endDate wmsProjection:projection polygon:polygon attribString:attribString attribIcon:attribIcon attribUrl:attribUrl];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-+(instancetype)aerialWithName:(NSString *)name identifier:(NSString *)identifier url:(NSString *)url maxZoom:(NSInteger)maxZoom roundUp:(BOOL)roundUp
-				wmsProjection:(NSString *)projection polygon:(CGPathRef)polygon
-				 attribString:(NSString *)attribString attribIcon:(UIImage *)attribIcon attribUrl:(NSString *)attribUrl
-{
-	return [[AerialService alloc] initWithName:name identifier:identifier url:url maxZoom:maxZoom roundUp:roundUp wmsProjection:projection polygon:polygon attribString:attribString attribIcon:attribIcon attribUrl:attribUrl];
->>>>>>> c5a8eed4... Revert "Lanestepper"
 }
 
 -(BOOL)isBingAerial
@@ -149,6 +122,46 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 {
 	return [self.identifier isEqualToString:OSM_GPS_TRACE_IDENTIFIER];
 }
+-(BOOL)isMaxar
+{
+	return [self.identifier isEqualToString:MAXAR_PREMIUM_IDENTIFIER] ||
+		   [self.identifier isEqualToString:MAXAR_STANDARD_IDENTIFIER];
+}
+
+
++(NSDate *)dateFromString:(NSString *)string
+{
+	static NSArray * formatterList;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		NSDateFormatter * formatterYYYYMMDD = [NSDateFormatter new];
+		formatterYYYYMMDD.dateFormat = @"yyyy-MM-dd";
+		formatterYYYYMMDD.timeZone	 = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+		NSDateFormatter * formatterYYYYMM = [NSDateFormatter new];
+		formatterYYYYMM.dateFormat = @"yyyy-MM";
+		formatterYYYYMM.timeZone	 = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+		NSDateFormatter * formatterYYYY = [NSDateFormatter new];
+		formatterYYYY.dateFormat = @"yyyy";
+		formatterYYYY.timeZone	 = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+		formatterList = @[
+			formatterYYYYMMDD,
+			formatterYYYYMM,
+			formatterYYYY
+		];
+	});
+	if ( string == nil )
+		return nil;
+	for ( NSDateFormatter * formatter in formatterList ) {
+		NSDate * date = [formatter dateFromString:string];
+		if ( date )
+			return date;
+	}
+	return nil;
+}
+
 
 +(AerialService *)defaultBingAerial
 {
@@ -160,6 +173,8 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 										 url:@"https://ecn.{switch:t0,t1,t2,t3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=587&key=" BING_MAPS_KEY
 									 maxZoom:21
 									 roundUp:YES
+								   startDate:nil
+									 endDate:nil
 								  wmsProjection:nil
 									 polygon:NULL
 								attribString:@""
@@ -169,7 +184,6 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	return bing;
 }
 
-<<<<<<< HEAD
 
 +(AerialService *)maxarPremiumAerial
 {
@@ -201,13 +215,8 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		NSString * url = @"eZ5AGZGcRQyKahl/+UTyIm+vENuJECB4Hvu4ytCzjBoCBDeRMbsOkaQ7zD5rUAYfRDaQwnQRiqE4lj0KYTenPe1d1spljlcYgvYRsqjEtYp6AhCoBPO4Rz6d0Z9enlPqPj7KCvxyOcB8A/+3HkYjpMGMEcvA6oeSX9I0RH/PS9mdAZEC5TmU3odUJQ0hNzczrKtUDmNujrTNfFVHhZZWPLEVZUC9cE94VF/AJkoIigdmXooJ+5UcPtH/uzc6NbOb";
-<<<<<<< HEAD
 		service = [AerialService aerialWithName:@"Maxar Standard Aerial"
 								  identifier:MAXAR_STANDARD_IDENTIFIER
-=======
-		service = [AerialService aerialWithName:MAXAR_STANDARD_IDENTIFIER
-								  identifier:@"Maxar-Standard"
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 										 url:[aes decryptString:url]
 									 maxZoom:21
 									 roundUp:YES
@@ -223,8 +232,6 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	return service;
 }
 
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
 +(instancetype)mapnik
 {
 	static AerialService * service = nil;
@@ -235,6 +242,8 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 											url:@"https://{switch:a,b,c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 									   maxZoom:19
 										roundUp:NO
+									  startDate:nil
+										endDate:nil
 									 wmsProjection:nil
 										polygon:NULL
 								   attribString:nil
@@ -253,6 +262,8 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 											url:@"https://gps-{switch:a,b,c}.tile.openstreetmap.org/lines/{z}/{x}/{y}.png"
 										maxZoom:20
 										roundUp:NO
+									  startDate:nil
+										endDate:nil
 									 wmsProjection:nil
 										polygon:NULL
 								   attribString:nil
@@ -271,6 +282,8 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 											url:@"https://api.mapbox.com/styles/v1/openstreetmap/ckasmteyi1tda1ipfis6wqhuq/tiles/256/{zoom}/{x}/{y}{@2x}?access_token=pk.eyJ1IjoiYnJ5Y2VjbyIsImEiOiJja212YzlybTkwM28xMm9waGFtcmdiNzgyIn0.jdhZilCebOXBDoTuzmTYRA"
 										maxZoom:20
 										roundUp:NO
+									  startDate:nil
+										endDate:nil
 									 wmsProjection:nil
 										polygon:NULL
 								   attribString:nil
@@ -289,6 +302,8 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
                                             url:@"https://tile{switch:2,3}.poole.ch/noname/{zoom}/{x}/{y}.png"
                                         maxZoom:25
                                         roundUp:NO
+										startDate:nil
+										endDate:nil
                                   wmsProjection:nil
                                         polygon:NULL
                                    attribString:nil
@@ -300,21 +315,11 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 
 -(NSDictionary *)dictionary
 {
-<<<<<<< HEAD
 	return @{ @"name" 		: _name,
 			  @"url" 		: _url,
 			  @"zoom" 		: @(_maxZoom),
 			  @"roundUp" 	: @(_roundZoomUp),
-<<<<<<< HEAD
 			  @"projection"	: _wmsProjection ?: @""
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-	return @{ @"name" : _name,
-			  @"url" : _url,
-			  @"zoom" : @(_maxZoom),
-			  @"roundUp" : @(_roundZoomUp)
->>>>>>> c5a8eed4... Revert "Lanestepper"
 			  };
 }
 -(instancetype)initWithDictionary:(NSDictionary *)dict
@@ -338,16 +343,9 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 						  url:url
 					  maxZoom:[dict[@"zoom"] integerValue]
 					  roundUp:[dict[@"roundUp"] boolValue]
-<<<<<<< HEAD
 					startDate:nil
 					  endDate:nil
-<<<<<<< HEAD
 				wmsProjection:projection
-=======
-=======
->>>>>>> c5a8eed4... Revert "Lanestepper"
-				   wmsProjection:nil
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 					  polygon:NULL
 				 attribString:nil
 				   attribIcon:nil
@@ -394,7 +392,14 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	if ( _attributionIcon && fabs(_attributionIcon.size.height - height) > 0.1 ) {
 		CGFloat scale = _attributionIcon.size.height / height;
 #if TARGET_OS_IPHONE
-		_attributionIcon = [[UIImage alloc] initWithCGImage:_attributionIcon.CGImage scale:scale orientation:_attributionIcon.imageOrientation];
+		CGSize size = _attributionIcon.size;
+		size.height /= scale;
+		size.width  /= scale;
+		UIGraphicsBeginImageContext(size);
+		[_attributionIcon drawInRect:CGRectMake(0.0, 0.0, size.width, size.height)];
+		UIImage * imageCopy = UIGraphicsGetImageFromCurrentImageContext();
+		UIGraphicsEndImageContext();
+		_attributionIcon = imageCopy;
 #else
 		NSSize size = { _attributionIcon.size.width * scale, _attributionIcon.size.height * scale };
 		NSImage * result = [[NSImage alloc] initWithSize:size];
@@ -417,7 +422,9 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	NSURLSessionDataTask * task = [[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * data, NSURLResponse * response, NSError * error) {
 		if ( data ) {
 			UIImage * image = [[NSImage alloc] initWithData:data];
-			_attributionIcon = image;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				_attributionIcon = image;
+			});
 		}
 	}];
 	[task resume];
@@ -451,7 +458,7 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 -(NSArray *)builtinServices
 {
 	return @[
-			 [AerialService defaultBingAerial],
+			 [AerialService defaultBingAerial]
 		 ];
 }
 
@@ -518,15 +525,18 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 	for ( NSDictionary * entry in featureArray ) {
 
 		@try {
+
 			if ( isGeoJSON && ![entry[@"type"] isEqualToString:@"Feature"] ) {
 				NSLog(@"Aerial: skipping type %@", entry[@"type"]);
 				continue;
 			}
 			NSDictionary * properties = isGeoJSON ? entry[@"properties"] : entry;
 			NSString * 	name 				= properties[@"name"];
+			if ( [name hasPrefix:@"Maxar "] ) {
+				// we special case their imagery because they require a special key
+				continue;
+			}
 			NSString * 	identifier			= properties[@"id"];
-<<<<<<< HEAD
-<<<<<<< HEAD
 			NSString *  category			= properties[@"category"];
 			if ( categories[category] == nil ) {
 				if ( [identifier isEqualToString:@"OpenTopoMap"] ) {
@@ -536,24 +546,11 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 					continue;
 				}
 			}
-=======
-			if ( identifier.length == 0 || blacklist[identifier] )
-				continue;
-			NSString *  category			= properties[@"category"];
-			if ( category && ![category isEqualToString:@"photo"] )
-				continue;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			NSString *	startDateString		= properties[@"start_date"];
 			NSString *	endDateString		= properties[@"end_date"];
 			NSDate 	 *  endDate   = [AerialService dateFromString:endDateString];
 			if ( endDate && [endDate timeIntervalSinceNow] < -20*365.0*24*60*60 )
-=======
-			if ( identifier.length == 0 || blacklist[identifier] ) {
-				NSLog(@"Aerial: skipping %@", identifier);
->>>>>>> c5a8eed4... Revert "Lanestepper"
 				continue;
-			}
-			NSString *	endDate				= properties[@"end_date"];
 			NSString * 	type 				= properties[@"type"];
 			NSArray  *	projections			= properties[@"available_projections"];
 			NSString * 	url 				= properties[@"url"];
@@ -562,41 +559,11 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			NSString * 	attribString 		= properties[@"attribution"][@"text"];
 			NSString * 	attribUrl 			= properties[@"attribution"][@"url"];
 			NSInteger	overlay				= [properties[@"overlay"] integerValue];
-<<<<<<< HEAD
 			NSNumber * supported = supportedTypes[ type ];
 			if ( supported == nil ) {
 				NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
 				continue;
 			} else if ( supported.boolValue == NO ) {
-=======
-			NSArray  * 	polygonPoints 		= nil;
-			BOOL		isMultiPolygon		= NO;	// a GeoJSON multipolygon, which has an extra layer of nesting
-			if ( isGeoJSON ) {
-				NSDictionary * 	geometry = entry[@"geometry"];
-				if ( [geometry isKindOfClass:[NSDictionary class]] ) {
-					polygonPoints = geometry[@"coordinates"];
-					isMultiPolygon = [geometry[@"type"] isEqualToString:@"MultiPolygon"];
-				}
-			} else {
-				polygonPoints = properties[@"extent"][@"polygon"];
-			}
-
-			if ( endDate.length ) {
-				NSInteger year = [endDate integerValue];
-				if ( year > 0 ) {
-					NSDate * date = [NSDate dateWithTimeIntervalSince1970:(year-1970)*365.25*24*60*60];
-					if ( date && [date timeIntervalSinceNow] < -20*365.0*24*60*60 )
-						continue;
-				}
-			}
-			if ( !([type isEqualToString:@"tms"] || [type isEqualToString:@"wms"]) ) {
-				if ( ![knownUnsupported containsObject:type] )
-<<<<<<< HEAD
-					NSLog(@"Aerial: unsupported type %@: %@\n",type,name);
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-					NSLog(@"unsupported %@\n",type);
->>>>>>> c5a8eed4... Revert "Lanestepper"
 				continue;
 			}
 			if ( overlay ) {
@@ -605,7 +572,7 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			}
 			if ( !( [url hasPrefix:@"http:"] || [url hasPrefix:@"https:"]) ) {
 				// invalid url
-				NSLog(@"skip url = %@\n",url);
+				NSLog(@"Aerial: bad url %@: %@\n",url,name);
 				continue;
 			}
 
@@ -677,7 +644,20 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 					}
 				}
 			}
-			AerialService * service = [AerialService aerialWithName:name identifier:identifier url:url maxZoom:maxZoom roundUp:YES wmsProjection:projection polygon:polygon attribString:attribString attribIcon:attribIcon attribUrl:attribUrl];
+
+			// support for {apikey}
+			if ( [url containsString:@"{apikey}"] ) {
+				NSString * apikey = nil;
+				if ( [url containsString:@".thunderforest.com/"] ) {
+					apikey = @"be3dc024e3924c22beb5f841d098a8a3";	// Please don't use in other apps. Sign up for a free account at Thunderforest.com insead.
+				} else {
+					NSLog(@"*** Aerial needs {apikey): %@",name);
+					continue;
+				}
+				url = [url stringByReplacingOccurrencesOfString:@"{apikey}" withString:apikey];
+			}
+
+			AerialService * service = [AerialService aerialWithName:name identifier:identifier url:url maxZoom:maxZoom roundUp:YES startDate:startDateString endDate:endDateString wmsProjection:projection polygon:polygon attribString:attribString attribIcon:attribIcon attribUrl:attribUrl];
 			[externalAerials addObject:service];
 			CGPathRelease( polygon );
 
@@ -704,16 +684,21 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 		if ( json == nil )
 			return nil;
 		if ( [json isKindOfClass:[NSArray class]] ) {
-			// unversioned variety
+			// unversioned (old ELI) variety
 			return [self processOsmLabAerialsList:json isGeoJSON:NO];
 		} else {
 			NSDictionary * meta = json[@"meta"];
-			NSString * formatVersion = meta[@"format_version"];
-			if ( ![formatVersion isEqualToString:@"1.0"] )
-				return nil;
-			NSString * metaType = json[@"type"];
-			if ( ![metaType isEqualToString:@"FeatureCollection"] )
-				return nil;
+			if ( meta == nil ) {
+				// josm variety
+			} else {
+				// new ELI variety
+				NSString * formatVersion = meta[@"format_version"];
+				if ( ![formatVersion isEqualToString:@"1.0"] )
+					return nil;
+				NSString * metaType = json[@"type"];
+				if ( ![metaType isEqualToString:@"FeatureCollection"] )
+					return nil;
+			}
 			NSArray * features = json[@"features"];
 			return [self processOsmLabAerialsList:features isGeoJSON:YES];
 		}
@@ -727,13 +712,12 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 {
 	// get cached data
 	NSData * cachedData = [NSData dataWithContentsOfFile:[self pathToExternalAerialsCache]];
-
 	NSDate * now = [NSDate date];
-	NSDate * lastDownload = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastImageryDownloadDate"];
-	if ( cachedData == nil || (lastDownload && [now timeIntervalSinceDate:lastDownload] >= 60*60*24*7) ) {
+	_lastDownloadDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastImageryDownloadDate"];
+	if ( cachedData == nil || (_lastDownloadDate && [now timeIntervalSinceDate:_lastDownloadDate] >= 60*60*24*7) ) {
 		// download newer version periodically
-//		NSString * urlString = @"https://raw.githubusercontent.com/osmlab/editor-layer-index/gh-pages/imagery.json";
-		NSString * urlString = @"https://osmlab.github.io/editor-layer-index/imagery.geojson";
+		NSString * urlString = @"https://josm.openstreetmap.de/maps?format=geojson";
+		//NSString * urlString = @"https://osmlab.github.io/editor-layer-index/imagery.geojson";
 		NSURL * downloadUrl = [NSURL URLWithString:urlString];
 		NSURLSessionDataTask * downloadTask = [[NSURLSession sharedSession] dataTaskWithURL:downloadUrl completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 			[[NSUserDefaults standardUserDefaults] setObject:now forKey:@"lastImageryDownloadDate"];
@@ -749,6 +733,7 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			}
 		}];
 	   	[downloadTask resume];
+		_lastDownloadDate = now;
 	}
 
    	// read cached version
@@ -835,6 +820,12 @@ static NSString * RECENTLY_USED_KEY = @"AerialListRecentlyUsed";
 			[result addObject:service];
 		}
 	}
+	[result addObject: [AerialService maxarPremiumAerial]];
+	[result addObject: [AerialService maxarStandardAerial]];
+
+	[result sortUsingComparator:^NSComparisonResult(AerialService * _Nonnull obj1, AerialService * _Nonnull obj2) {
+		return [obj1.name compare:obj2.name];
+	}];
 	return result;
 }
 

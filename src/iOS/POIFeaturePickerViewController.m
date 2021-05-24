@@ -7,11 +7,7 @@
 //
 
 #import "iosapi.h"
-<<<<<<< HEAD
 #import "PersistentWebCache.h"
-=======
-#import "CommonPresetList.h"
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "POITabBarController.h"
 #import "POIFeaturePickerViewController.h"
 
@@ -19,7 +15,6 @@
 static const NSInteger MOST_RECENT_DEFAULT_COUNT = 5;
 static const NSInteger MOST_RECENT_SAVED_MAXIMUM = 100;
 
-<<<<<<< HEAD
 
 @interface FeaturePickerCell : UITableViewCell
 @property (strong,atomic)		NSString	* featureID;
@@ -31,18 +26,13 @@ static const NSInteger MOST_RECENT_SAVED_MAXIMUM = 100;
 @end
 
 
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 @implementation POIFeaturePickerViewController
 
 static NSMutableArray	*	mostRecentArray;
 static NSInteger			mostRecentMaximum;
 
-<<<<<<< HEAD
 static PersistentWebCache * logoCache;	// static so memory cache persists each time we appear
 
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 +(void)loadMostRecentForGeometry:(NSString *)geometry
 {
@@ -52,17 +42,10 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 	NSString * defaults = [NSString stringWithFormat:@"mostRecentTypes.%@", geometry];
 	NSArray * a = [[NSUserDefaults standardUserDefaults] objectForKey:defaults];
 	mostRecentArray = [NSMutableArray arrayWithCapacity:a.count+1];
-<<<<<<< HEAD
 	for ( NSString * featureID in a ) {
 		PresetFeature * feature = [PresetsDatabase.shared presetFeatureForFeatureID:featureID];
 		if ( feature ) {
 			[mostRecentArray addObject:feature];
-=======
-	for ( NSString * featureName in a ) {
-		CommonPresetFeature * tagInfo = [CommonPresetFeature commonPresetFeatureWithName:featureName];
-		if ( tagInfo ) {
-			[mostRecentArray addObject:tagInfo];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		}
 	}
 }
@@ -82,7 +65,6 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 {
 	[super viewDidLoad];
 
-<<<<<<< HEAD
 	if ( logoCache == nil ) {
 		logoCache = [[PersistentWebCache alloc] initWithName:@"presetLogoCache" memorySize:5*1000000];
 	}
@@ -90,11 +72,6 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 	self.tableView.estimatedRowHeight = 44.0; // or could use UITableViewAutomaticDimension;
 	self.tableView.rowHeight = UITableViewAutomaticDimension;
 
-=======
-	self.tableView.estimatedRowHeight = 44.0; // or could use UITableViewAutomaticDimension;
-	self.tableView.rowHeight = UITableViewAutomaticDimension;
-	
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	NSString * geometry = [self currentSelectionGeometry];
 	if ( geometry == nil )
 		geometry = GEOMETRY_NODE;	// a brand new node
@@ -103,7 +80,6 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 
 	if ( _parentCategory == nil ) {
 		_isTopLevel = YES;
-<<<<<<< HEAD
 		_featureList = [PresetsDatabase.shared featuresAndCategoriesForGeometry:geometry];
 	} else {
 		_featureList = _parentCategory.members;
@@ -115,14 +91,6 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 	return UITableViewAutomaticDimension;
 }
 
-=======
-		_typeArray = [CommonPresetList featuresForGeometry:geometry];
-	} else {
-		_typeArray = _parentCategory.members;
-	}
-}
-
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	return _isTopLevel ? 2 : 1;
@@ -137,7 +105,6 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 	}
 }
 
-<<<<<<< HEAD
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
 	if ( _isTopLevel && section == 1 ) {
@@ -154,32 +121,21 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 	}
 	return nil;
 }
-=======
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if ( _searchArrayAll ) {
-<<<<<<< HEAD
 		return section == 0 && _isTopLevel ? _searchArrayRecent.count : _searchArrayAll.count;
-=======
-		return section == 0 ? _searchArrayRecent.count : _searchArrayAll.count;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	} else {
 		if ( _isTopLevel && section == 0 ) {
 			NSInteger count = mostRecentArray.count;
 			return count < mostRecentMaximum ? count : mostRecentMaximum;
 		} else {
-<<<<<<< HEAD
 			return _featureList.count;
-=======
-			return _typeArray.count;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		}
 	}
 }
 
-<<<<<<< HEAD
 - (BOOL)tableView:(UITableView *)tableView canFocusRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	return NO;
@@ -198,53 +154,10 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 		id tagInfo = _featureList[ indexPath.row ];
 		if ( [tagInfo isKindOfClass:[PresetCategory class]] ) {
 			PresetCategory * category = tagInfo;
-=======
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	UIColor *regularColor, *suggestionColor;
-	if ( @available(iOS 13.0, *) ) {
-		regularColor 	= [UIColor systemBackgroundColor];
-		suggestionColor = [UIColor secondarySystemBackgroundColor];
-	} else {
-		regularColor	= [UIColor whiteColor];
-		suggestionColor = [UIColor colorWithRed:1.0 green:0.9 blue:0.9 alpha:1.0];
-	}
-
-	if ( _searchArrayAll ) {
-		UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FinalCell" forIndexPath:indexPath];
-		CommonPresetFeature * feature = indexPath.section == 0 ? _searchArrayRecent[ indexPath.row ] : _searchArrayAll[ indexPath.row ];
-		cell.textLabel.text			= feature.friendlyName;
-		cell.imageView.image		= [feature.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [cell.imageView setupTintColorForDarkMode];
-		cell.imageView.contentMode	= UIViewContentModeScaleAspectFit;
-		cell.detailTextLabel.text	= feature.summary;
-		cell.backgroundColor		= feature.suggestion ? suggestionColor : regularColor;
-		return cell;
-	}
-
-	if ( _isTopLevel && indexPath.section == 0 ) {
-		// most recents
-		UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FinalCell" forIndexPath:indexPath];
-		CommonPresetFeature * feature = mostRecentArray[ indexPath.row ];
-		cell.textLabel.text			= feature.friendlyName;
-		cell.imageView.image		= [feature.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [cell.imageView setupTintColorForDarkMode];
-		cell.imageView.contentMode	= UIViewContentModeScaleAspectFit;
-		cell.detailTextLabel.text	= feature.summary;
-		cell.accessoryType			= UITableViewCellAccessoryNone;
-		cell.backgroundColor		= feature.suggestion ? suggestionColor : regularColor;
-		return cell;
-	} else {
-		// type array
-		id tagInfo = _typeArray[ indexPath.row ];
-		if ( [tagInfo isKindOfClass:[CommonPresetCategory class]] ) {
-			CommonPresetCategory * category = tagInfo;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"SubCell" forIndexPath:indexPath];
 			cell.textLabel.text = category.friendlyName;
 			return cell;
 		} else {
-<<<<<<< HEAD
 			feature = tagInfo;
 		}
 	}
@@ -342,43 +255,14 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 	[mostRecentArray filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PresetFeature * f, id bindings) {
 		return ! [f.featureID isEqualToString:feature.featureID];
 	}]];
-=======
-			CommonPresetFeature * feature = tagInfo;
-			UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:@"FinalCell" forIndexPath:indexPath];
-			cell.textLabel.text			= feature.friendlyName;
-			cell.imageView.image		= [feature.icon imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            [cell.imageView setupTintColorForDarkMode];
-			cell.imageView.contentMode	= UIViewContentModeScaleAspectFit;
-			cell.detailTextLabel.text	= feature.summary;
-			cell.backgroundColor		= regularColor;
-
-			POITabBarController * tabController = (id)self.tabBarController;
-			NSString * geometry = [self currentSelectionGeometry];
-			NSString * currentFeature = [CommonPresetList featureNameForObjectDict:tabController.keyValueDict geometry:geometry];
-			BOOL selected = [currentFeature isEqualToString:feature.featureName];
-			cell.accessoryType = selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-			return cell;
-		}
-	}
-}
-
-+(void)updateMostRecentArrayWithSelection:(CommonPresetFeature *)feature geometry:(NSString *)geometry
-{
-	[mostRecentArray removeObject:feature];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	[mostRecentArray insertObject:feature atIndex:0];
 	if ( mostRecentArray.count > MOST_RECENT_SAVED_MAXIMUM ) {
 		[mostRecentArray removeLastObject];
 	}
 
 	NSMutableArray * a = [[NSMutableArray alloc] initWithCapacity:mostRecentArray.count];
-<<<<<<< HEAD
 	for ( PresetFeature * f in mostRecentArray ) {
 		[a addObject:f.featureID];
-=======
-	for ( CommonPresetFeature * f in mostRecentArray ) {
-		[a addObject:f.featureName];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 	}
 
 	NSString * defaults = [NSString stringWithFormat:@"mostRecentTypes.%@", geometry];
@@ -386,11 +270,7 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 }
 
 
-<<<<<<< HEAD
 -(void)updateTagsWithFeature:(PresetFeature *)feature
-=======
--(void)updateTagsWithFeature:(CommonPresetFeature *)feature
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 {
 	NSString * geometry = [self currentSelectionGeometry];
 	[self.delegate typeViewController:self didChangeFeatureTo:feature];
@@ -400,20 +280,14 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if ( _searchArrayAll ) {
-<<<<<<< HEAD
 		PresetFeature * feature = indexPath.section == 0 && _isTopLevel ? _searchArrayRecent[ indexPath.row ] : _searchArrayAll[ indexPath.row ];
 		[self updateTagsWithFeature:feature];
-=======
-		CommonPresetFeature * tagInfo = indexPath.section == 0 ? _searchArrayRecent[ indexPath.row ] : _searchArrayAll[ indexPath.row ];
-		[self updateTagsWithFeature:tagInfo];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		[self.navigationController popToRootViewControllerAnimated:YES];
 		return;
 	}
 
 	if ( _isTopLevel && indexPath.section == 0 ) {
 		// most recents
-<<<<<<< HEAD
 		PresetFeature * feature = mostRecentArray[ indexPath.row ];
 		[self updateTagsWithFeature:feature];
 		[self.navigationController popToRootViewControllerAnimated:YES];
@@ -422,27 +296,13 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 		id entry = _featureList[ indexPath.row ];
 		if ( [entry isKindOfClass:[PresetCategory class]] ) {
 			PresetCategory * category = entry;
-=======
-		CommonPresetFeature * tagInfo = mostRecentArray[ indexPath.row ];
-		[self updateTagsWithFeature:tagInfo];
-		[self.navigationController popToRootViewControllerAnimated:YES];
-	} else {
-		// type list
-		id entry = _typeArray[ indexPath.row ];
-		if ( [entry isKindOfClass:[CommonPresetCategory class]] ) {
-			CommonPresetCategory * category = entry;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			POIFeaturePickerViewController * sub = [self.storyboard instantiateViewControllerWithIdentifier:@"PoiTypeViewController"];
 			sub.parentCategory	= category;
 			sub.delegate		= self.delegate;
 			[_searchBar resignFirstResponder];
 			[self.navigationController pushViewController:sub animated:YES];
 		} else {
-<<<<<<< HEAD
 			PresetFeature * feature = entry;
-=======
-			CommonPresetFeature * feature = entry;
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 			[self updateTagsWithFeature:feature];
 			[self.navigationController popToRootViewControllerAnimated:YES];
 		}
@@ -456,7 +316,6 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 		// no search
 		_searchArrayAll = nil;
 		_searchArrayRecent = nil;
-<<<<<<< HEAD
 	} else {
 		// searching
 		NSString * geometry = [self currentSelectionGeometry];
@@ -464,17 +323,6 @@ static PersistentWebCache * logoCache;	// static so memory cache persists each t
 		_searchArrayAll = [results mutableCopy];
 		_searchArrayRecent = [mostRecentArray filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(PresetFeature * feature, NSDictionary *bindings) {
 			return [feature matchesSearchText:searchText geometry:geometry];
-=======
-#if 0
-		[_searchBar performSelector:@selector(resignFirstResponder) withObject:nil afterDelay:0.1];
-#endif
-	} else {
-		// searching
-		_searchArrayAll = [[CommonPresetList featuresInCategory:_parentCategory matching:searchText] mutableCopy];
-
-		_searchArrayRecent = [mostRecentArray filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(CommonPresetFeature * tagInfo, NSDictionary *bindings) {
-			return [tagInfo matchesSearchText:searchText];
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 		}]];
 	}
 	[self.tableView reloadData];

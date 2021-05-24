@@ -2,17 +2,6 @@
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-#import "CommonPresetList.h"
-=======
-#import "OsmObjects.h"
-#import "CommonTagList.h"
->>>>>>> c5a8eed4... Revert "Lanestepper"
-#import "LoginViewController.h"
-#import "KeyChain.h"
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
 #import "AppDelegate.h"
 #import "ContactUsViewController.h"
 #import "EditorMapLayer.h"
@@ -22,8 +11,6 @@
 #import "LoginViewController.h"
 #import "MainViewController.h"
 #import "OsmMapData.h"
-<<<<<<< HEAD
-<<<<<<< HEAD
 #import "OsmMember.h"
 #import "OsmNode.h"
 #import "OsmRelation.h"
@@ -33,15 +20,3 @@
 #import "VectorMath.h"
 
 UIImage * IconScaledForDisplay(UIImage *icon);
-=======
-#import "ContactUsViewController.h"
-#import "OsmNode.h"
-#import "OsmWay.h"
-#import "OsmRelation.h"
-#import "GeoURLParser.h"
-#import "URLParserResult.h"
-#import "MapViewController.h"
->>>>>>> 4d4c9d7a... Lanestepper, explicit close button, and iPad StoryBoard added
-=======
-#import "SettingsViewController.h"
->>>>>>> c5a8eed4... Revert "Lanestepper"

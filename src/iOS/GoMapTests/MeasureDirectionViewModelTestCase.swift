@@ -8,10 +8,6 @@
 
 import XCTest
 
-<<<<<<< HEAD
-=======
-@testable import Go_Map__
->>>>>>> c5a8eed4... Revert "Lanestepper"
 import CoreLocation
 @testable import Go_Map__
 
